@@ -1,6 +1,8 @@
 package server
 
 import (
+	"bufio"
+	"fmt"
 	"os"
 	"time"
 )
@@ -48,14 +50,93 @@ func CreateCalendar() *Calendar {
 
 // Advances the in-game time by one hour
 func AdvanceTime() {
+	DEBUGIT(5)
+	NowSec := time.Now().Unix()
+	if NowSec < pCalendar.TimeToAdvanceHour {
+		return
+	}
+	pCalendar.TimeToAdvanceHour = NowSec + REAL_MINUTES_PER_HOUR*60
+	pCalendar.Hour++
+	if pCalendar.Hour > HOURS_PER_DAY {
+		pCalendar.Day++
+		pCalendar.Hour = 1
+		pCalendar.DayOfWeek++
+		if pCalendar.DayOfWeek > DAYS_PER_WEEK {
+			pCalendar.DayOfWeek = 1
+		}
+	}
+	if pCalendar.Day > DAYS_PER_MONTH {
+		pCalendar.Month++
+		pCalendar.Day = 1
+	}
+	if pCalendar.Month > MONTHS_PER_YEAR {
+		pCalendar.Year++
+		pCalendar.Month = 1
+	}
+	SaveTime()
 }
 
 // Closes the calendar file
 func CloseCalendarFile() {
+	DEBUGIT(1)
+	if CalendarFile != nil {
+		CalendarFile.Close()
+	}
 }
 
 // Retrieves the start time from the calendar file
 func GetStartTime() {
+	DEBUGIT(1)
+	if CalendarFile == nil {
+		LogBuf = "Calendar::GetStartTime - Calendar file handle is nil"
+		LogIt(LogBuf)
+		return
+	}
+	scanner := bufio.NewScanner(CalendarFile)
+	var stuff string
+	if scanner.Scan() {
+		stuff = scanner.Text()
+	} else {
+		stuff = ""
+	}
+	CloseCalendarFile()
+	pCalendar.Year      = StrToInt(StrGetWord(stuff, 1))
+	pCalendar.Month     = StrToInt(StrGetWord(stuff, 2))
+	pCalendar.Day       = StrToInt(StrGetWord(stuff, 3))
+	pCalendar.Hour      = StrToInt(StrGetWord(stuff, 4))
+	pCalendar.DayOfWeek = StrToInt(StrGetWord(stuff, 5))
+	if pCalendar.Year <= 0 {
+		pCalendar.Year = 1
+		LogBuf = "Calendar::GetStartTime - Year forced to 1"
+		LogIt(LogBuf)
+	}
+	if pCalendar.Month <= 0 {
+		pCalendar.Month = 1
+		LogBuf = "Calendar::GetStartTime - Month forced to 1"
+		LogIt(LogBuf)
+	}
+	if pCalendar.Day <= 0 {
+		pCalendar.Day = 1
+		LogBuf = "Calendar::GetStartTime - Day forced to 1"
+		LogIt(LogBuf)
+	}
+	if pCalendar.Hour <= 0 {
+		pCalendar.Hour = 1
+		LogBuf = "Calendar::GetStartTime - Hour forced to 1"
+		LogIt(LogBuf)
+	}
+	if pCalendar.DayOfWeek <= 0 {
+		pCalendar.Hour = 1
+		LogBuf = "Calendar::GetStartTime - Day of Week forced to 1"
+		LogIt(LogBuf)
+	}
+	LogBuf = "Start date and time is: "
+	buf := fmt.Sprintf(
+		"Year: %d Month: %d Day: %d Hour: %d Day of Week: %d",
+		pCalendar.Year, pCalendar.Month, pCalendar.Day, pCalendar.Hour, pCalendar.DayOfWeek,
+	)
+	LogBuf += buf
+	LogIt(LogBuf)
 }
 
 // Gets the current in-game date and time
