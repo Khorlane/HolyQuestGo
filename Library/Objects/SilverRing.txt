@@ -1,0 +1,13 @@
+ObjectId:     SilverRing
+Names:        Silver Ring SilverRing
+Desc1:        a simple &Wsilver&N ring
+Desc2:        A simple &Wsilver&N ring is here.
+Desc3:
+  This simple &Wsilver&N ring is a modest ring made of pure
+silver.
+End Desc3
+Weight:       1
+Cost:         75
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Finger

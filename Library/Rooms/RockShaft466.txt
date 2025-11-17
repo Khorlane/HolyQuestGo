@@ -1,0 +1,30 @@
+RoomId:       RockShaft466
+RoomType:     None
+Terrain:      Mountain
+RoomName:     Rock Shaft
+RoomDesc:
+  You are in a small room hollowed out of the base of a
+massive rock pillar. Above you, ledges provide tenuous
+footing. To the northwest, a less claustrophobic ravine
+can be seen.
+End of RoomDesc
+
+ExitName:     NorthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom463
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     Up
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RockShaft470
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

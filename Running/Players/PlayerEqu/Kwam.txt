@@ -1,0 +1,4 @@
+04 goatskingorget
+07 goatskincloak
+11 goatskingloves
+20 smallclub

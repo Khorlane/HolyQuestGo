@@ -1,0 +1,28 @@
+RoomId:       ValleyGateAvenue22
+RoomType:     None
+Terrain:      Street
+RoomName:     Valley Gate Avenue
+RoomDesc:
+  This winding, narrow street connects the Valley Gate
+to Jesse Square.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyGateAvenue12
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyGateAvenue23
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

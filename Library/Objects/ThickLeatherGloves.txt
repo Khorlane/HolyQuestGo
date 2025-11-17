@@ -1,0 +1,13 @@
+ObjectId:     ThickLeatherGloves
+Names:        Thick Leather Gloves LeatherGloves
+Desc1:        a pair of thick leather gloves
+Desc2:        A pair of thick leather gloves has been dropped here.
+Desc3:
+  These gloves are made of leather and are very soft on the inside,
+but are extra thick for additonal protection.
+End Desc3
+Weight:       1
+Cost:         516
+Type:         Armor
+ArmorValue:   4
+ArmorWear:    Hands

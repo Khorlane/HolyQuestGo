@@ -1,0 +1,12 @@
+ObjectId:     GoldStud
+Names:        Gold Stud GoldStud
+Desc1:        a &Ygold&N stud
+Desc2:        A &Ygold&N stud is here.
+Desc3:
+  This &Ygold&N stud earring is a small sphere.
+End Desc3
+Weight:       1
+Cost:         55
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Ear

@@ -1,0 +1,18 @@
+MobileId:  Traveler
+Names:     Traveler
+Sex:       M
+Desc1:     a traveler
+Desc2:     A traveler is traveling (well doh!).
+Desc3:
+  This traveler is traveling to somewhere.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     99
+HitPoints: 0
+Armor:     0
+Attack:    Thrashes
+Damage:    0
+ExpPoints: 0
+Loot:      None
+Talk:      Traveler

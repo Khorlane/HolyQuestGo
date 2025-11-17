@@ -1,0 +1,29 @@
+RoomId:       SmallCave472
+RoomType:     None
+Terrain:      Hill
+RoomName:     Small Cave
+RoomDesc:
+  You are in a small room of the cave. The ceiling is high
+enough to allow you to stand comfortably. In one corner
+of the room, a stream of clear cold water can be seen.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallCave471
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallCave473
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

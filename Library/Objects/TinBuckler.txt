@@ -1,0 +1,12 @@
+ObjectId:     TinBuckler
+Names:        Tin Buckler TinBuckler
+Desc1:        a tin buckler
+Desc2:        A tin buckler is here.
+Desc3:
+  This buckler is made of tin, providing a some protection.
+End Desc3
+Weight:       3
+Cost:         27
+Type:         Armor
+ArmorValue:   3
+ArmorWear:    Shield

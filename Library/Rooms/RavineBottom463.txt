@@ -1,0 +1,55 @@
+RoomId:       RavineBottom463
+RoomType:     NoNPC
+Terrain:      Road
+RoomName:     Ravine Bottom
+RoomDesc:
+  You cannot see the sky, the ravine has become like a
+tunnel. The walls tower above your head and arch toward
+each other, blocking your view of the sky. A light breeze
+can be felt coming from the southeast. Sounds of running
+water can be heard coming from the southwest.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom460
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom462
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RockShaft466
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallCave471
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom461
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

@@ -1,0 +1,12 @@
+ObjectId:     SilverAnklet
+Names:        Silver Anklet SilverAnklet
+Desc1:        a &Wsilver&N anklet
+Desc2:        A &Wsilver&N anklet is here.
+Desc3:
+  This pure &Wsilver&N anklet chain has very small links.
+End Desc3
+Weight:       1
+Cost:         120
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Ankle

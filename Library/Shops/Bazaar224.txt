@@ -1,0 +1,18 @@
+Welcome to the bazaar
+
+Item: RatWhisker
+Item: RatEar
+Item: RatTail
+Item: SnakeEye
+Item: SnakeTail
+Item: SnakeTongue
+Item: SnakeVenom
+Item: SnakeSkin
+Item: BeeWing
+Item: BeeStinger
+Item: HornetWing
+Item: HornetStinger
+
+End of Items
+
+End of Shop

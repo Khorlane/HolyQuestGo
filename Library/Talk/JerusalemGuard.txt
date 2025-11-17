@@ -1,0 +1,26 @@
+Maximum Message Number 4
+
+Message 1
+  Are you talking to me?
+End of Message
+
+Message 2 
+  Hi, how are doing this fine day? It is a fine
+day, isn't it? Well, no matter what you think, I
+think it is a fine day.
+End of Message
+
+Message 3
+  My job is to guard,
+  To guard is my job,
+  And if my job was not to guard,
+  I would not be a guard.
+End of Message
+
+Message 4
+  There is a merchant in the bazaar that will pay
+for items taken from vermin found in the dump
+that can be found to the south of the city.
+End of Message
+
+End of Messages

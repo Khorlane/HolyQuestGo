@@ -1,0 +1,12 @@
+ObjectId:     GoatskinGorget
+Names:        Goatskin Gorget GoatskinGorget
+Desc1:        a goatskin gorget
+Desc2:        A goatskin gorget is here.
+Desc3:
+  This goatskin gorget is tattered and almost usless.
+End Desc3
+Weight:       1
+Cost:         69
+Type:         Armor
+ArmorValue:   2
+ArmorWear:    Neck

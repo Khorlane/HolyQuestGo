@@ -1,0 +1,36 @@
+RoomId:       LedgeEnd341
+RoomType:     None
+Terrain:      Hill
+RoomName:     Ledge End
+RoomDesc:
+  A ledge rises from here to the east and south and continues
+around both sides of the camp. To the northwest is a fire pit.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CampLedge343
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CampLedge342
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: FirePit324
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

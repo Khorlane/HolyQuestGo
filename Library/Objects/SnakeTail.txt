@@ -1,0 +1,10 @@
+ObjectId:     SnakeTail
+Names:        Snake Tail SnakeTail
+Desc1:        a snake tail
+Desc2:        A snake tail.
+Desc3:
+  A snake tail.
+End Desc3
+Weight:       1
+Cost:         7
+Type:         Junk

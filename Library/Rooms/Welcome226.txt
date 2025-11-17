@@ -1,0 +1,32 @@
+RoomId:       Welcome226
+RoomType:     None
+Terrain:      Street
+RoomName:     Welcome
+RoomDesc:
+  Welcome to Jerusalem, King David's new capitol of all
+Israel. The king is looking for adventurers who are
+interested in joining him in his quest to bring peace and
+prosperity to the kingdom.
+
+To begin your training, type 'e' and press enter.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: WarriorTraining383
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CitadelStreet14
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

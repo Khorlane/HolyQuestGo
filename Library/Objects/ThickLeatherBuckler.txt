@@ -1,0 +1,14 @@
+ObjectId:     ThickLeatherBuckler
+Names:        Thick Leather Buckler LeatherBuckler
+Desc1:        a thick leather buckler
+Desc2:        A thick leather buckler is here.
+Desc3:
+  This leather buckler is a small round shield covered with
+several layers of thick leather offering good protection from
+incoming enemy attacks.
+End Desc3
+Weight:       4
+Cost:         1624
+Type:         Armor
+ArmorValue:   11
+ArmorWear:    Shield

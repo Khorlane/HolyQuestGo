@@ -1,0 +1,12 @@
+ObjectId:     LeatherGorget
+Names:        Leather Gorget LeatherGorget
+Desc1:        a leather gorget
+Desc2:        A leather gorget is here.
+Desc3:
+  This leather gorget is well made and offers some protection.
+End Desc3
+Weight:       1
+Cost:         317
+Type:         Armor
+ArmorValue:   4
+ArmorWear:    Neck

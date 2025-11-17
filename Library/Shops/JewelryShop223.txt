@@ -1,0 +1,14 @@
+Welcome to my jewelry shop
+
+Item: GoldAnklet
+Item: SilverAnklet
+Item: GoldStud
+Item: SilverStud
+Item: GoldRing
+Item: SilverRing
+Item: GoldBracelet
+Item: SilverBracelet
+
+End of Items
+
+End of Shop

@@ -1,0 +1,4 @@
+1 rattlesnake
+1 rubbishsnake
+1 sewerrat
+1 smallrat

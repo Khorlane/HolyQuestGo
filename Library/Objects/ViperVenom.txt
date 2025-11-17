@@ -1,0 +1,10 @@
+ObjectId:     ViperVenom
+Names:        Viper Venom ViperVenom
+Desc1:        some viper venom
+Desc2:        Some viper venom.
+Desc3:
+  Some viper venom.
+End Desc3
+Weight:       1
+Cost:         40
+Type:         Junk

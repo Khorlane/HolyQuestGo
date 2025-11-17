@@ -1,0 +1,12 @@
+ObjectId:     GoldRing
+Names:        Gold Ring GoldRing
+Desc1:        a simple &Ygold&N ring
+Desc2:        A simple &Ygold&N ring is here.
+Desc3:
+  This simple &Ygold&N ring is a modest ring made of pure gold.
+End Desc3
+Weight:       1
+Cost:         125
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Finger

@@ -1,0 +1,36 @@
+RoomId:       ArmorMerchant491
+RoomType:     None
+Terrain:      Street
+RoomName:     Armor Merchant
+RoomDesc:
+  How lucky you are! A merchant traveling with a cavaran has set
+up shop right here in Bethlehem.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemSquare490
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemSquare487
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Baker488
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

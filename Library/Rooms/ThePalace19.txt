@@ -1,0 +1,21 @@
+RoomId:       ThePalace19
+RoomType:     None
+Terrain:      Street
+RoomName:     The Palace
+RoomDesc:
+  You stand at the front door of the palace of King David.
+Inside the palace are the private quarters of the king,
+his wives, and his children.
+End of RoomDesc
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RoyalStairway20
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

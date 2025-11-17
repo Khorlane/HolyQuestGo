@@ -1,0 +1,13 @@
+ObjectId:     LeatherBreastplate
+Names:        Leather Breastplate LeatherBreastplate
+Desc1:        a leather breastplate
+Desc2:        A leather breastplate is here.
+Desc3:
+  This leather breastplate has been embossed with intricate
+geometric patterns.
+End Desc3
+Weight:       4
+Cost:         1320
+Type:         Armor
+ArmorValue:   13
+ArmorWear:    Chest

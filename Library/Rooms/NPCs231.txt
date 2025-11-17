@@ -1,0 +1,37 @@
+RoomId:       NPCs231
+RoomType:     None
+Terrain:      Street
+RoomName:     NPCs
+RoomDesc:
+  NPC stands for Non-Player Character. NPCs are people,
+animals, insects, anything living. Some of the NPCs are your
+enemies and should be vanquished and other NPCs should be
+left alone. For example, a rat is fair game, but a guard is
+not. To fight a small rat (when manage to you find one), just
+type 'kill smallrat'.
+
+  Most NPCs in are your enemies, some will give you
+information, others have nothing to say. You should 'hail'
+them to see if they will talk to you. To hail a guard, you
+would type 'hail guard'.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Skills368
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Items230
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

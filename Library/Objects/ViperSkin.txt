@@ -1,0 +1,10 @@
+ObjectId:     ViperSkin
+Names:        Viper Skin ViperSkin
+Desc1:        a viper skin
+Desc2:        A viper skin.
+Desc3:
+  A viper skin.
+End Desc3
+Weight:       1
+Cost:         16
+Type:         Junk

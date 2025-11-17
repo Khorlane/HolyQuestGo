@@ -1,0 +1,13 @@
+ObjectId:     JesseStatue
+Names:        Jesse Statue JesseStatue
+Desc1:        a statue of Jesse
+Desc2:        A statue dominates the center of the square.
+Desc3:
+  The statue of David's beloved father, Jesse, was carved
+from the finest &Wmarble&N by master craftsmen and given to
+David as a gift upon his anointment as king of all the
+tribes of Israel.
+End Desc3
+Weight:       0
+Cost:         0
+Type:         NoTake

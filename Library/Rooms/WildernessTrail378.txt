@@ -1,0 +1,30 @@
+RoomId:       WildernessTrail378
+RoomType:     None
+Terrain:      Hill
+RoomName:     Wilderness Trail
+RoomDesc:
+  This land doesn't recieve much rainfall and the ground is
+composed primarily of infertile Senonian Chalk. During the
+winter months, the wilderness usually has a light covering
+of green grass.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: WildernessTrail351
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: WildernessTrail353
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

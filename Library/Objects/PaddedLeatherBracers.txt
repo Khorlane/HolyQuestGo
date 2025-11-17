@@ -1,0 +1,13 @@
+ObjectId:     PaddedLeatherBracers
+Names:        Padded Leather Bracers PaddedLeather LeatherBraces PaddedLeatherBracers
+Desc1:        a pair of padded leather bracers
+Desc2:        A pair of padded leather bracers is here.
+Desc3:
+  This pair of padded leather braces fits comfortably on the arms
+and protects them from unwanted damage.
+End Desc3
+Weight:       2
+Cost:         1185
+Type:         Armor
+ArmorValue:   9
+ArmorWear:    Arms

@@ -1,0 +1,76 @@
+RoomId:       HornetSpawnRoom322
+RoomType:     None
+Terrain:      Inside
+RoomName:     Hornet Spawn Room
+RoomDesc:
+ This is where hornets are spawned. Players must never see
+this room, All exits are one ways.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows265
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: VineyardWall292
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: VineyardWall296
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: VineyardWall316
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows270
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows253
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Tower250
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows243
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

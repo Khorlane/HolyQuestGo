@@ -1,0 +1,12 @@
+ObjectId:     SmallShield
+Names:        Small Shield SmallShield
+Desc1:        a small shield
+Desc2:        A small shield is here.
+Desc3:
+  This shield is small, providing a little protection.
+End Desc3
+Weight:       2
+Cost:         19
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Shield

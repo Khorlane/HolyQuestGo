@@ -1,0 +1,37 @@
+RoomId:       RavineTrail391
+RoomType:     None
+Terrain:      Hill
+RoomName:     Ravine Trail
+RoomDesc:
+  To trail turns and descneds further into the ravine just
+southwest of here. To the north the trail gets considerably
+steeper.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail390
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail390
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail392
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

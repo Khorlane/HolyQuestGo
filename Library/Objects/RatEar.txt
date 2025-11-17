@@ -1,0 +1,10 @@
+ObjectId:     RatEar
+Names:        Rat Ear RatEar
+Desc1:        a rat ear
+Desc2:        A rat ear.
+Desc3:
+  A rat and its ear have been parted.
+End Desc3
+Weight:       1
+Cost:         2
+Type:         Junk

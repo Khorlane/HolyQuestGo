@@ -1,0 +1,30 @@
+RoomId:       VineyardWall316
+RoomType:     None
+Terrain:      Street
+RoomName:     Vineyard Wall
+RoomDesc:
+  The vineyard is surrounded by a wall and a ditch, Soil
+excavated from the ditch was used to form the foundation
+of the wall. A fence of thorns is on top of the wall to
+keep out any damaging wild animals.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: VineyardWall317
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: VineyardWall315
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

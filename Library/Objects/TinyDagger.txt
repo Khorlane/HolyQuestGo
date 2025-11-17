@@ -1,0 +1,12 @@
+ObjectId:     TinyDagger
+Names:        Tiny Dagger TinyDagger
+Desc1:        a tiny dagger
+Desc2:        A tiny dagger is here.
+Desc3:
+  This dagger is tiny, but pointy.
+End Desc3
+Weight:       2
+Cost:         18
+Type:         Weapon
+WeaponType:   Dagger
+WeaponDamage: 10

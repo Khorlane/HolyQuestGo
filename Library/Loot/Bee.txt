@@ -1,0 +1,2 @@
+1 50 BeeStinger
+2 50 BeeWing

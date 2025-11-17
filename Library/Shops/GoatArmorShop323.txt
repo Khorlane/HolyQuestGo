@@ -1,0 +1,17 @@
+Welcome to my armor shop
+
+Item: GoatskinGorget
+Item: GoatskinCloak
+Item: GoatskinGloves
+Item: GoatskinBelt
+Item: GoatskinBracers
+Item: GoatskinBreastplate
+Item: GoatskinGreaves
+Item: GoatskinSandals
+Item: GoatskinBuckler
+Item: GoatskinShoulderArmor
+Item: GoatskinHelmet
+
+End of Items
+
+End of Shop

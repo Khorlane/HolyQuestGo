@@ -1,0 +1,18 @@
+MobileId:  RockSnake
+Names:     Rock Snake RockSnake
+Sex:       N
+Desc1:     a rock snake
+Desc2:     A rock snake slithers away and looks for a rock to hide under.
+Desc3:
+  The rock snake hisses at you.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     4
+HitPoints: 0
+Armor:     0
+Attack:    Bites
+Damage:    0
+ExpPoints: 0
+Loot:      Snake
+Talk:      Snake

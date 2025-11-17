@@ -1,0 +1,20 @@
+RoomId:       TheArk218
+RoomType:     None
+Terrain:      Street
+RoomName:     The Ark
+RoomDesc:
+  Before you is a beautiful tent made of the finest
+materials containing the ark of the covenant of the LORD.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CitadelStreet384
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

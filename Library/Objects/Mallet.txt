@@ -1,0 +1,13 @@
+ObjectId:     Mallet
+Names:        Mallet
+Desc1:        a mallet
+Desc2:        A mallet is here.
+Desc3:
+  This mallet a scored haft providing a better grip. The large
+head of the mallet is made of heavy wood.
+End Desc3
+Weight:       2
+Cost:         269
+Type:         Weapon
+WeaponType:   Hammer
+WeaponDamage: 29

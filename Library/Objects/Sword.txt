@@ -1,0 +1,13 @@
+ObjectId:     Sword
+Names:        Sword
+Desc1:        a sword
+Desc2:        A sword is here.
+Desc3:
+  This is a standard issue sword with a common hilt and blade. It
+is fairly sharp and well balanced.
+End Desc3
+Weight:       5
+Cost:         1472
+Type:         Weapon
+WeaponType:   Sword
+WeaponDamage: 59

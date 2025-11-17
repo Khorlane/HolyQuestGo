@@ -1,0 +1,13 @@
+ObjectId:     SilverBracelet
+Names:        Silver Bracelet SilverBracelet
+Desc1:        a simple &Wsilver&N bracelet
+Desc2:        A simple &Wsilver&N bracelet is here.
+Desc3:
+  This pure &Wsilver&N bracelet has links that cross in a
+serpentine pattern.
+End Desc3
+Weight:       1
+Cost:         150
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Wrist

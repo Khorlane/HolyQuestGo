@@ -1,0 +1,10 @@
+ObjectId:     ViperEye
+Names:        Viper Eye ViperEye
+Desc1:        a viper eye
+Desc2:        A viper eye.
+Desc3:
+  A viper eye.
+End Desc3
+Weight:       1
+Cost:         10
+Type:         Junk

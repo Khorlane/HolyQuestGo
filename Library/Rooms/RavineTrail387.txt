@@ -1,0 +1,28 @@
+RoomId:       RavineTrail387
+RoomType:     None
+Terrain:      Hill
+RoomName:     Ravine Trail
+RoomDesc:
+  The trail ziz zags as you make your way between the Ravine
+and the Wilderness Trail Junction.
+End of RoomDesc
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: WildernessTrailJunction385
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail388
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

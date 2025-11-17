@@ -1,0 +1,10 @@
+ObjectId:     LeopardSkin
+Names:        Leopard Skin LeopardSkin
+Desc1:        a leopard skin
+Desc2:        A leopard skin
+Desc3:
+  A leopard skin.
+End Desc3
+Weight:       1
+Cost:         15
+Type:         Junk

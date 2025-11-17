@@ -1,0 +1,37 @@
+RoomId:       ThiefdomEast328
+RoomType:     None
+Terrain:      Hill
+RoomName:     Thiefdom East
+RoomDesc:
+  Not much here, these thieves are not doing very well or
+maybe they are doing quite weel but just don't want anyone
+to know.
+End of RoomDesc
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ThiefdomEast344
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ThiefdomEast345
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: FirePit324
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

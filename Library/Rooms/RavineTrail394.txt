@@ -1,0 +1,44 @@
+RoomId:       RavineTrail394
+RoomType:     None
+Terrain:      Hill
+RoomName:     Ravine Trail
+RoomDesc:
+  The main trail continues south, but there are also trails to
+the southwest and southeast.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail393
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail396
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail399
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail395
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

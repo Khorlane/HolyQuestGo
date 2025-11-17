@@ -1,0 +1,37 @@
+RoomId:       Help232
+RoomType:     None
+Terrain:      Street
+RoomName:     Help
+RoomDesc:
+  There is a scroll that you will find most useful during
+your adventures. It is known as Help. Use the 'help' and
+'show help' commands to access this valuable scroll.
+Becoming a mightly warrior is very much dependent on your
+understanding of the Help scroll.
+
+  Ok recruit, your initail training is complete and you are
+expected to continue your training on your own and with other
+warriors. Figure things out for yourself.
+
+Now get out there and secure the kingdom for your king. 
+End of RoomDesc
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SpringGateStreet7
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Skills368
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

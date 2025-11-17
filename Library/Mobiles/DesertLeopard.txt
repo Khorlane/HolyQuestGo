@@ -1,0 +1,18 @@
+MobileId:  DesertLeopard
+Names:     Desert Leopard DesertLeopard
+Sex:       M
+Desc1:     a desert leopard
+Desc2:     A desert leopard is pacing here
+Desc3:
+  The desert leopard has found some prey.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     12
+HitPoints: 0
+Armor:     0
+Attack:    Claws
+Damage:    0
+ExpPoints: 0
+Loot:      Leopard
+Talk:      Leopard

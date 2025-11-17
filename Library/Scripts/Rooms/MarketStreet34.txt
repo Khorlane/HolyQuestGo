@@ -1,0 +1,7 @@
+Script MarketStreet34
+{
+  int A
+
+  A = 1 + 2
+}
+EndScript

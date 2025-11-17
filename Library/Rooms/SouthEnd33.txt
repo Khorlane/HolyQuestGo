@@ -1,0 +1,28 @@
+RoomId:       SouthEnd33
+RoomType:     None
+Terrain:      Street
+RoomName:     South End
+RoomDesc:
+  This is the southern part of the city. Houses line
+the street on both sides.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SouthEnd32
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SouthEnd26
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

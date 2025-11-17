@@ -1,0 +1,5 @@
+2 35 ViperEye
+1 25 ViperTail
+1 30 ViperTongue
+1 10 ViperVenom
+1 35 ViperSkin

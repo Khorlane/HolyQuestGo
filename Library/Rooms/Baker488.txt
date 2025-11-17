@@ -1,0 +1,36 @@
+RoomId:       Baker488
+RoomType:     None
+Terrain:      Street
+RoomName:     Baker
+RoomDesc:
+  The local baker is here selling provisions to the locals and
+travelers alike.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemSquare487
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemSquare485
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ArmorMerchant491
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

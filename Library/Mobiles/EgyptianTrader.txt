@@ -1,0 +1,18 @@
+MobileId:  EgyptianTrader
+Names:     Egyptian Trader EgyptianTrader
+Sex:       M
+Desc1:     an Egyptian trader
+Desc2:     The Egyptain trader is ready to trade.
+Desc3:
+  The Egyptian trader is tall, dark skinned, and has pitch black hair.
+End Desc3
+Action:    NoMove
+Faction:   Neutral
+Level:     99
+HitPoints: 0
+Armor:     0
+Attack:    Thrashes
+Damage:    0
+ExpPoints: 0
+Loot:      None
+Talk:      Merchant

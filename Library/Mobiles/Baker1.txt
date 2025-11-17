@@ -1,0 +1,18 @@
+MobileId:  Baker1
+Names:     Baker
+Sex:       M
+Desc1:     the baker
+Desc2:     The village baker is selling provisions.
+Desc3:
+  The baker has an assortment of provisions.
+End Desc3
+Action:    NoMove
+Faction:   Neutral
+Level:     99
+HitPoints: 0
+Armor:     0
+Attack:    Thrashes
+Damage:    0
+ExpPoints: 0
+Loot:      None
+Talk:      Merchant

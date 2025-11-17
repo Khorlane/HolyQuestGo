@@ -1,0 +1,12 @@
+ObjectId:     TinEspaliers
+Names:        Tin Espaliers TinEspaliers
+Desc1:        a pair of tin espaliers
+Desc2:        A pair of tin espaliers is here.
+Desc3:
+  These tin espaliers are tanished and dented.
+End Desc3
+Weight:       2
+Cost:         27
+Type:         Armor
+ArmorValue:   3
+ArmorWear:    Shoulders

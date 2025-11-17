@@ -1,0 +1,10 @@
+ObjectId:     HornetWing
+Names:        Hornet Wing HornetWing
+Desc1:        a hornet wing
+Desc2:        A hornet wing has been left here.
+Desc3:
+  The hornet and its wing have been parted.
+End Desc3
+Weight:       1
+Cost:         9
+Type:         Junk

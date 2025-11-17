@@ -1,0 +1,18 @@
+MobileId:  BurlyThief
+Names:     Burly Thief BurlyThief
+Sex:       M
+Desc1:     a burly thief
+Desc2:     A buryl thief is ready to kill you.
+Desc3:
+  A burly thief eyes you warily, ready to steal your life.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     9
+HitPoints: 0
+Armor:     0
+Attack:    Stabs
+Damage:    0
+ExpPoints: 0
+Loot:      Thief
+Talk:      Thief

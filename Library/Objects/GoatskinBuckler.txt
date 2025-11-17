@@ -1,0 +1,13 @@
+ObjectId:     GoatskinBuckler
+Names:        Goat Skin Buckler GoatSkin SkinBuckler GoatskinBuckler
+Desc1:        a goatskin buckler
+Desc2:        A goatskin buckler is here.
+Desc3:
+  The goatskin buckler is a small round shield covered with
+several layers of goatskin.
+End Desc3
+Weight:       4
+Cost:         145
+Type:         Armor
+ArmorValue:   4
+ArmorWear:    Shield

@@ -1,0 +1,38 @@
+RoomId:       JesseSquare8
+RoomType:     None
+Terrain:      Street
+RoomName:     Jesse Square
+RoomDesc:
+  Down the hillside to the east you can see the
+Kidron Valley. To the north and west is King David's
+palace citadel. Occassionaly the sounds of the busy
+market can be heard.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see Spring Gate Street.
+ExitToRoomId: SpringGateStreet7
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see Valley Gate Avenue.
+ExitToRoomId: ValleyGateAvenue12
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see Palace Way.
+ExitToRoomId: PalaceWay9
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

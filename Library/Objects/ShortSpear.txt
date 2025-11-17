@@ -1,0 +1,13 @@
+ObjectId:     ShortSpear
+Names:        Short Spear ShortSpear
+Desc1:        a short spear
+Desc2:        A short spear is here.
+Desc3:
+  This spear's haft is short and topped with a simple
+pointed blade.
+End Desc3
+Weight:       2
+Cost:         269
+Type:         Weapon
+WeaponType:   Spear
+WeaponDamage: 29

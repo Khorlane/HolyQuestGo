@@ -1,0 +1,13 @@
+ObjectId:     TinHelmet
+Names:        Tin Helmet TinHelmet
+Desc1:        a tin helmet
+Desc2:        A tin helmet is here.
+Desc3:
+  This helmet is made of tin will protect your head, a
+little bit.
+End Desc3
+Weight:       2
+Cost:         27
+Type:         Armor
+ArmorValue:   3
+ArmorWear:    Head

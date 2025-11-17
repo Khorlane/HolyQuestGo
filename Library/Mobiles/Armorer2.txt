@@ -1,0 +1,18 @@
+MobileId:  Armorer2
+Names:     Armorer
+Sex:       M
+Desc1:     the armorer
+Desc2:     The armorer is ready to assist you with your choice of armor.
+Desc3:
+  The armorer is smiling and seems eager to do business with you.
+End Desc3
+Action:    NoMove
+Faction:   Neutral
+Level:     99
+HitPoints: 0
+Armor:     0
+Attack:    Thrashes
+Damage:    0
+ExpPoints: 0
+Loot:      None
+Talk:      Merchant

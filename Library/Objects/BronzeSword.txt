@@ -1,0 +1,14 @@
+ObjectId:     BronzeSword
+Names:        Bronze Sword BronzeSword
+Desc1:        a bronze sword
+Desc2:        A bronze sword is here.
+Desc3:
+  The gripe of this bronze sword extends straight from the hilt.
+The end of the gripe curves around and is capped by the depiction
+of the head of an eagle.
+End Desc3
+Weight:       5
+Cost:         3827
+Type:         Weapon
+WeaponType:   Sword
+WeaponDamage: 89

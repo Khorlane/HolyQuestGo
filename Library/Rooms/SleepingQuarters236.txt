@@ -1,0 +1,29 @@
+RoomId:       SleepingQuarters236
+RoomType:     None
+Terrain:      Inside
+RoomName:     Sleeping Quarters
+RoomDesc:
+  There is plenty of space here for entertaining family and
+friends. At night the family sleeps here. Ladders lead up and
+down from this room.
+End of RoomDesc
+
+ExitName:     Up
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Roof237
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     Down
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallHouse233
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

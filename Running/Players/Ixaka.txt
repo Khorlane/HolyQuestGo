@@ -1,0 +1,37 @@
+Name:Ixaka
+Password:aixaka4u
+Admin:Yes
+AFK:No
+AllowAssist:Yes
+AllowGroup:Yes
+ArmorClass:25
+Born:1053632563
+Color:Yes
+Experience:7015.40039115.0
+GoToArrive:A &Ygolden&N trumpet fanfare accompanies &MIxaka&N's arrival!!!
+GoToDepart:A &Ygolden&N trumpet fanfare accompanies &MIxaka&N's departure!!!
+HitPoints:93
+Hunger:0
+Invisible:No
+Level:3
+MovePoints:25
+OneWhack:No
+Online:Yes
+Position:stand
+RoomId:GihonSpring68
+RoomInfo:Yes
+Sex:M
+Silver:1726
+SkillAxe:29
+SkillClub:0
+SkillDagger:0
+SkillHammer:0
+SkillSpear:0
+SkillStaff:0
+SkillSword:0
+Thirst:0
+TimePlayed:157950
+Title:&WT&Mhe &WS&Mteadfast&N
+WeaponDamage:59
+WeaponDesc1:a sword
+WeaponType:sword

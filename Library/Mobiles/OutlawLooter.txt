@@ -1,0 +1,18 @@
+MobileId:  OutlawLooter
+Names:     Outlaw Looter OutlawLooter
+Sex:       M
+Desc1:     an outlaw looter
+Desc2:     An outlaw looter is guarding his loot.
+Desc3:
+  The outlaw looter examines some loot from his most recent raid.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     11
+HitPoints: 0
+Armor:     0
+Attack:    Punches
+Damage:    0
+ExpPoints: 0
+Loot:      Outlaw
+Talk:      Outlaw

@@ -1,0 +1,45 @@
+RoomId:       OutcastThieves358
+RoomType:     None
+Terrain:      Hill
+RoomName:     Outcast Thieves
+RoomDesc:
+  You are at the entrance to the outcast thieves' camp.
+There is a campfire to the south. Great hiding places
+amongst the rocks are east and west of here.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RockyGap354
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: AmongstTheRocks360
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: FirePit361
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: AmongstTheRocks359
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

@@ -1,0 +1,3 @@
+2 60 RatEar
+1 35 RatTail
+5 40 RatWhisker

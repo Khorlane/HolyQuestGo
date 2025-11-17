@@ -1,0 +1,28 @@
+RoomId:       SpringGateRoad42
+RoomType:     None
+Terrain:      Road
+RoomName:     Spring Gate Road
+RoomDesc:
+  This road traverses the hillside up to the Spring Gate
+and down to the valley.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SpringGateRoad43
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: OutsideSpringGate41
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

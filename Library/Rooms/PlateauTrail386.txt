@@ -1,0 +1,31 @@
+RoomId:       PlateauTrail386
+RoomType:     None
+Terrain:      Hill
+RoomName:     Plateau Trail
+RoomDesc:
+  The trail ascends to a dry, windswept plateau that is
+dotted with sprigs of grass. Wild goats can be found here
+foraging for food. Animals that like to eat goats are found
+here too. Continuing up to the plateau requires careful
+climbing as the trail becomes a series of rock ledges.
+End of RoomDesc
+
+ExitName:     NorthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: WildernessTrailJunction385
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     Up
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PlateauTrail424
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

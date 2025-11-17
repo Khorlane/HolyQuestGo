@@ -1,0 +1,36 @@
+RoomId:       SpringGateStreet7
+RoomType:     None
+Terrain:      Street
+RoomName:     Spring Gate Street
+RoomDesc:
+  This street leads from the Spring Gate up the hill
+towards King David's palace.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Help232
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SpringGateStreet6
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: JesseSquare8
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

@@ -1,0 +1,13 @@
+01 goatskinhelmet
+04 goatskingorget
+05 goatskinshoulderarmor
+06 goatskinbreastplate
+07 torncloak
+08 goatskinbracers
+11 goatskingloves
+12 silverring
+13 goldring
+15 goatskinbelt
+16 clothleggings
+19 goatskinsandals
+20 sword

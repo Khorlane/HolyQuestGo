@@ -1,0 +1,29 @@
+RoomId:       RavineTrail393
+RoomType:     NoNPC
+Terrain:      Hill
+RoomName:     Ravine Trail
+RoomDesc:
+  The walls of the ravine rise sharply on both sides of the
+trail. Ledges extend along both sides, a great place for
+leopards and bears to rest and pounce on unsuspecting victims.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail392
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail394
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

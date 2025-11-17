@@ -1,0 +1,10 @@
+ObjectId:     RatTail
+Names:        Rat Tail RatTail
+Desc1:        a rat tail
+Desc2:        A rat tail.
+Desc3:
+  This tail is missing the rat to which it was attached.
+End Desc3
+Weight:       1
+Cost:         3
+Type:         Junk

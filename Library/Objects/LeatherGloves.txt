@@ -1,0 +1,13 @@
+ObjectId:     LeatherGloves
+Names:        Leather Gloves LeatherGloves
+Desc1:        a pair of leather gloves
+Desc2:        A pair of leather gloves has been dropped here.
+Desc3:
+  These gloves are made of leather and are very soft,
+providing a good grip on your weapon of choice.
+End Desc3
+Weight:       1
+Cost:         211
+Type:         Armor
+ArmorValue:   3
+ArmorWear:    Hands

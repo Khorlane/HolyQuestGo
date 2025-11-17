@@ -1,0 +1,13 @@
+ObjectId:     LeatherSandals
+Names:        Leather Sandals LeatherSandals
+Desc1:        a pair of leather sandals
+Desc2:        A pair of leather sandals is here.
+Desc3:
+  This pair of leather sandals appears to be in good
+condition will provide some foot protection.
+End Desc3
+Weight:       1
+Cost:         211
+Type:         Armor
+ArmorValue:   3
+ArmorWear:    Feet

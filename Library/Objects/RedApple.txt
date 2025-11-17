@@ -1,0 +1,11 @@
+ObjectId:     RedApple
+Names:        Red Apple RedApple
+Desc1:        a &Rred&N apple
+Desc2:        A &Rred&N apple is here.
+Desc3:
+  This &Rred&N apple is firm and smells delicious.
+End Desc3
+Weight:       1
+Cost:         5
+Type:         Food
+FoodPct:      20

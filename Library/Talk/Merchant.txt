@@ -1,0 +1,28 @@
+Maximum Message Number 5
+
+Message 1
+  May I help you?
+End of Message
+
+Message 2 
+  I'm sorry that I didn't notice you sooner, I
+must have been daydreaming about my profits.
+End of Message
+
+Message 3
+  Feel free to browse my fine selection of
+merchandise. I'll be right here should need any
+assistance.
+End of Message
+
+Message 4
+  I hope you brought lots of money and are ready
+to part with it.
+End of Message
+
+Message 5
+  Ah, a customer! How nice of you to drop by and
+visit my shop.
+End of Message
+
+End of Messages

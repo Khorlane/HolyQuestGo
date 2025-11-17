@@ -1,0 +1,12 @@
+ObjectId:     LongStick
+Names:        Long Stick LongStick
+Desc1:        a long stick
+Desc2:        A long stick is here.
+Desc3:
+  The long stick is long enough to use both hands to wield it.
+End Desc3
+Weight:       2
+Cost:         18
+Type:         Weapon
+WeaponType:   Staff
+WeaponDamage: 10

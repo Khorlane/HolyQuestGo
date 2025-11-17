@@ -1,0 +1,13 @@
+ObjectId:     ShabbySandals
+Names:        Shabby Sandals ShabbySandals
+Desc1:        a pair of shabby sandals
+Desc2:        A pair of shabby sandals is here.
+Desc3:
+  This pair of shabby sandals appears to be on the verge of
+falling apart.
+End Desc3
+Weight:       1
+Cost:         6
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Feet

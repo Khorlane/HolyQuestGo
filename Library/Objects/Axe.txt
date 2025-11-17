@@ -1,0 +1,13 @@
+ObjectId:     Axe
+Names:        Axe
+Desc1:        an axe
+Desc2:        An axe is here.
+Desc3:
+  This is a small woodcutter's axe used for cutting down
+trees. It also can be very useful as a weapon.
+End Desc3
+Weight:       2
+Cost:         1472
+Type:         Weapon
+WeaponType:   Axe
+WeaponDamage: 59

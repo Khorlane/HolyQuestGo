@@ -1,0 +1,36 @@
+RoomId:       EgyptianTrader486
+RoomType:     None
+Terrain:      Street
+RoomName:     Egyptian Trader
+RoomDesc:
+  An Egyptian merchant has his wares laid out in nice neat rows
+for your browsing pleasure.
+End of RoomDesc
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemSquare485
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemSquare487
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Tanner489
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

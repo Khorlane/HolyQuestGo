@@ -1,0 +1,13 @@
+ObjectId:     Hammer
+Names:        Hammer
+Desc1:        a hammer
+Desc2:        A hammer is here.
+Desc3:
+  The handle of this hammer is long and fits comfortably into
+the hand. The iron head is lashed to the handle with rawhide.
+End Desc3
+Weight:       2
+Cost:         1472
+Type:         Weapon
+WeaponType:   Hammer
+WeaponDamage: 59

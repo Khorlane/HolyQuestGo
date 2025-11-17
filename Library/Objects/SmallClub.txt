@@ -1,0 +1,12 @@
+ObjectId:     SmallClub
+Names:        Small Club SmallClub
+Desc1:        a small club
+Desc2:        A small club is here.
+Desc3:
+  The small club is made of wood.
+End Desc3
+Weight:       2
+Cost:         18
+Type:         Weapon
+WeaponType:   Club
+WeaponDamage: 10

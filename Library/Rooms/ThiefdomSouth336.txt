@@ -1,0 +1,21 @@
+RoomId:       ThiefdomSouth336
+RoomType:     None
+Terrain:      Hill
+RoomName:     Thiefdom South
+RoomDesc:
+  Not much here, these thieves are not doing very well or
+maybe they are doing quite weel but just don't want anyone
+to know.
+End of RoomDesc
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ThiefdomSouth326
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

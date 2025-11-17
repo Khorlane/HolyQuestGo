@@ -1,0 +1,47 @@
+RoomId:       SmallHouse233
+RoomType:     NoNPC
+Terrain:      Inside
+RoomName:     Small House
+RoomDesc:
+  The floor of this room is covered with smooth white plaster.
+This room serves as space for receiving guests, preparing
+food, and other household tasks.To the north is a stable and
+storage for agricultural produce and to the east is another
+storage area. A ladder leads up to the upstairs area.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Stable234
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Storage235
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SouthEnd26
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     Up
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SleepingQuarters236
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

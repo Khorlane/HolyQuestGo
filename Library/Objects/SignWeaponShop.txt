@@ -1,0 +1,11 @@
+ObjectId:     SignWeaponShop
+Names:        Sign
+Desc1:        a sign
+Desc2:        A sign is hanging near the weaponsmith's bench.
+Desc3:
+  The LIST command will display items that you can BUY and SELL
+at this shop.
+End Desc3
+Weight:       0
+Cost:         0
+Type:         NoTake

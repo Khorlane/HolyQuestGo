@@ -1,0 +1,37 @@
+Name:Kwam
+Password:akwam4u
+Admin:Yes
+AFK:No
+AllowAssist:No
+AllowGroup:No
+ArmorClass:6
+Born:1086973758
+Color:Yes
+Experience:15755.00000015.0
+GoToArrive:arrives!
+GoToDepart:leaves!
+HitPoints:155
+Hunger:0
+Invisible:No
+Level:3
+MovePoints:25
+OneWhack:No
+Online:Yes
+Position:stand
+RoomId:JesseSquare8
+RoomInfo:Yes
+Sex:M
+Silver:5
+SkillAxe:15
+SkillClub:0
+SkillDagger:0
+SkillHammer:0
+SkillSpear:0
+SkillStaff:0
+SkillSword:0
+Thirst:0
+TimePlayed:7541
+Title:&WT&Mhe&N &WS&Mteadfast&N
+WeaponDamage:10
+WeaponDesc1:a small club
+WeaponType:Club

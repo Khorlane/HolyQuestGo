@@ -1,0 +1,39 @@
+RoomId:       AmongstTheRocks364
+RoomType:     None
+Terrain:      Hill
+RoomName:     Amongst The Rocks
+RoomDesc:
+  What a great place for theives, especially outcast
+theives, to hide! If there isn't a theif here, there
+most likely will be one coming along soon. More rocks
+can be seen to the north and east. There is a campfire
+to the northeast.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: AmongstTheRocks362
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: FirePit361
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: AmongstTheRocks365
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

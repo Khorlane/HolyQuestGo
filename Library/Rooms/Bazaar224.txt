@@ -1,0 +1,28 @@
+RoomId:       Bazaar224
+RoomType:     None
+Terrain:      Street
+RoomName:     Bazaar
+RoomDesc:
+  A wide array of goods are for sale here in
+the Jerusalem Bazaar.
+End of RoomDesc
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Bazaar367
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     Street
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: MarketStreet28
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

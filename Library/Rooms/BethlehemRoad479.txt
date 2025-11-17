@@ -1,0 +1,28 @@
+RoomId:       BethlehemRoad479
+RoomType:     None
+Terrain:      Road
+RoomName:     Bethlehem Road
+RoomDesc:
+  To the north is the capitol city of Israel, the city
+of David, Jerusalem. To the south is open county.
+End of RoomDesc
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyoftheKidron217
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemRoad480
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

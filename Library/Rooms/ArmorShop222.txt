@@ -1,0 +1,38 @@
+RoomId:       ArmorShop222
+RoomType:     None
+Terrain:      Street
+RoomName:     Armor Shop
+RoomDesc:
+  Various types of armor are displayed all around the
+shop. This shop appears to specialize in less expensive
+armor. Through a doorway to the west comes the distinct
+smell of goats.
+End of RoomDesc
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: LeatherArmorShop381
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: GoatArmorShop323
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     Street
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: MarketStreet34
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

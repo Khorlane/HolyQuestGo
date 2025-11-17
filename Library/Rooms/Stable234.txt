@@ -1,0 +1,21 @@
+RoomId:       Stable234
+RoomType:     None
+Terrain:      Inside
+RoomName:     Stable
+RoomDesc:
+  This long narrow room is divided from the main living area by
+a row of pillars and the floor is paved with cobblestones. Here
+the family stores fresh produce and stables animals.
+End of RoomDesc
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallHouse233
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

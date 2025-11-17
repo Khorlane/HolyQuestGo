@@ -1,0 +1,4 @@
+Spring Calm   Dry
+Summer Breeze LightRain
+Fall   Wind   MediumRain
+Winter Gusts  HeavyRain

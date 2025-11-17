@@ -1,0 +1,10 @@
+ObjectId:     SnakeSkin
+Names:        Snake Skin SnakeSkin
+Desc1:        a snake skin
+Desc2:        A snake skin.
+Desc3:
+  A snake skin.
+End Desc3
+Weight:       1
+Cost:         6
+Type:         Junk

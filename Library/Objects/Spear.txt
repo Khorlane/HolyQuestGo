@@ -1,0 +1,13 @@
+ObjectId:     Spear
+Names:        Spear
+Desc1:        a spear
+Desc2:        A spear is here.
+Desc3:
+  The shaft of this spear is unremarkable, but the blade is
+long and sharp.
+End Desc3
+Weight:       2
+Cost:         1472
+Type:         Weapon
+WeaponType:   Spear
+WeaponDamage: 59

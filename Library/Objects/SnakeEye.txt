@@ -1,0 +1,10 @@
+ObjectId:     SnakeEye
+Names:        Snake Eye SnakeEye
+Desc1:        a snake eye
+Desc2:        A snake eye.
+Desc3:
+  A snake eye.
+End Desc3
+Weight:       1
+Cost:         4
+Type:         Junk

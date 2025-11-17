@@ -1,0 +1,28 @@
+RoomId:       ValleyofTyropoeon55
+RoomType:     None
+Terrain:      Road
+RoomName:     Valley of Tyropoeon
+RoomDesc:
+  This valley is actually a ravine and is named Tyropoean
+meaning "the valley of the cheese makers".
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyoftheKidron48
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyofTyropoeon47
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

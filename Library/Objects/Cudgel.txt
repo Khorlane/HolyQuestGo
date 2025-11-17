@@ -1,0 +1,14 @@
+ObjectId:     Cudgel
+Names:        Cudgel
+Desc1:        a cudgel
+Desc2:        A cudgel is here.
+Desc3:
+  This cudgel consists one long haft and is enlarged at the
+clubbing end. The grip is wrapped with cloth secured with
+string.
+End Desc3
+Weight:       2
+Cost:         269
+Type:         Weapon
+WeaponType:   Club
+WeaponDamage: 29

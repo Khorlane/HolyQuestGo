@@ -1,0 +1,24 @@
+Name:Amiela
+Password:3nutbush
+Admin:No
+AllowAssist:No
+AllowGroup:No
+Born:1047978460
+Color:No
+Experience:0
+GoToArrive:
+GoToDepart:
+HitPoints:0
+Level:1
+MovePoints:25
+OneWhack:No
+Position:stand
+RoomId:JesseSquare8
+RoomInfo:No
+Sex:F
+Silver:0
+TimePlayed:0
+Title:
+WeaponDamage:10
+WeaponDesc1:a pair of bare hands
+WeaponType:Hand

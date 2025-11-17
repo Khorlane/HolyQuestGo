@@ -1,0 +1,28 @@
+RoomId:       PlateauTop464
+RoomType:     None
+Terrain:      Hill
+RoomName:     Plateau Top
+RoomDesc:
+  You are on a narrow ledge leading between the plateau and
+the massive rock pillar.
+End of RoomDesc
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PlateauTop454
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PlateauTop465
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

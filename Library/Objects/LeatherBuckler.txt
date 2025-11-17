@@ -1,0 +1,13 @@
+ObjectId:     LeatherBuckler
+Names:        Leather Buckler LeatherBuckler
+Desc1:        a leather buckler
+Desc2:        A leather buckler is here.
+Desc3:
+  The leather buckler is a small round shield covered with
+several layers of leather.
+End Desc3
+Weight:       4
+Cost:         666
+Type:         Armor
+ArmorValue:   7
+ArmorWear:    Shield

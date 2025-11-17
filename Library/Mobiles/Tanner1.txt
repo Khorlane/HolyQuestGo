@@ -1,0 +1,18 @@
+MobileId:  Tanner1
+Names:     Tanner
+Sex:       M
+Desc1:     the tanner
+Desc2:     The tanner is ready to tan some hide.
+Desc3:
+  The tanner beams a smile in your direction.
+End Desc3
+Action:    NoMove
+Faction:   Neutral
+Level:     99
+HitPoints: 0
+Armor:     0
+Attack:    Thrashes
+Damage:    0
+ExpPoints: 0
+Loot:      None
+Talk:      Merchant

@@ -1,0 +1,54 @@
+PRAGMA
+	page_size=4096
+;
+--------------
+-- RoomType --
+--------------
+CREATE
+  TABLE RoomType
+  (
+    RoomId    VARCHAR NOT NULL, 
+    RoomType  VARCHAR NOT NULL
+  )
+;
+CREATE
+  INDEX RoomTypeX1
+  ON RoomType
+  (
+    RoomId ASC
+  )
+;
+-----------------
+-- RoomTerrain --
+-----------------
+CREATE
+  TABLE RoomTerrain
+  (
+    RoomId      VARCHAR NOT NULL, 
+    RoomTerrain VARCHAR NOT NULL
+  )
+;
+CREATE
+  UNIQUE INDEX RoomTerrainX1
+  ON RoomTerrain
+  (
+    RoomId ASC
+  )
+;
+--------------
+-- RoomExit --
+--------------
+CREATE
+  TABLE RoomExit
+  (
+    RoomId        VARCHAR NOT NULL, 
+    ExitToRoomId  VARCHAR NOT NULL
+  )
+;
+CREATE
+  INDEX RoomExitX1
+  ON RoomExit
+  (
+    RoomId ASC
+  )
+;

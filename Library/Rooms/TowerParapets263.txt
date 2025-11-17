@@ -1,0 +1,21 @@
+RoomId:       TowerParapets263
+RoomType:     None
+Terrain:      Inside
+RoomName:     Tower Parapets
+RoomDesc:
+  From here any theives or enemies can be spotted with
+ease by the watchman. A ladder leads down through a small
+opening.
+End of RoomDesc
+
+ExitName:     Down
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Tower250
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

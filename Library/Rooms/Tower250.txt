@@ -1,0 +1,56 @@
+RoomId:       Tower250
+RoomType:     None
+Terrain:      Street
+RoomName:     Tower
+RoomDesc:
+  You are inside the stone tower that is used to protect
+the vineyard. It also provides a place for the owner and
+their family to stay during the summer while the grapes
+are being picked. Doorways lead out into the vineyard in
+all directions. A ladder leads up through a small hole
+above your head.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows246
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows252
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows256
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows251
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     Up
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: TowerParapets263
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

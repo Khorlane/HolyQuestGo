@@ -1,0 +1,12 @@
+ObjectId:     GoldBracelet
+Names:        Gold Bracelet GoldBracelet
+Desc1:        a simple &Ygold&N bracelet
+Desc2:        A simple &Ygold&N bracelet is here.
+Desc3:
+  This pure &Ygold&N bracelet has links that cross in a serpentine pattern.
+End Desc3
+Weight:       1
+Cost:         250
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Wrist

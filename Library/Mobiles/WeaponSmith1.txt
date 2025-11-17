@@ -1,0 +1,19 @@
+MobileId:  WeaponSmith1
+Names:     Weapon Smith WeaponSmith
+Sex:       M
+Desc1:     the weaponsmith
+Desc2:     The weaponsmith is ready to assist you with your choice of weapons.
+Desc3:
+  The weaponsmith is big, tall, and very strong. His stern
+expression indicates that he is all business.
+End Desc3
+Action:    NoMove
+Faction:   Neutral
+Level:     99
+HitPoints: 0
+Armor:     0
+Attack:    Thrashes
+Damage:    0
+ExpPoints: 0
+Loot:      None
+Talk:      Merchant

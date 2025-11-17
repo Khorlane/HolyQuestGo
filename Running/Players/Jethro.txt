@@ -1,0 +1,24 @@
+Name:Jethro
+Password:head1234
+Admin:No
+AllowAssist:Yes
+AllowGroup:Yes
+Born:1048452961
+Color:No
+Experience:20800
+GoToArrive:
+GoToDepart:
+HitPoints:186
+Level:6
+MovePoints:25
+OneWhack:No
+Position:sit
+RoomId:JesseSquare8
+RoomInfo:No
+Sex:M
+Silver:681
+TimePlayed:22488
+Title:
+WeaponDamage:50
+WeaponDesc1:a long sword
+WeaponType:sword

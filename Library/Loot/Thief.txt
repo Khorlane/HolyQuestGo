@@ -1,0 +1,9 @@
+2 15 DateCake
+1 15 LambLeg
+2 30 RedApple
+1 10 WaterSKin
+1 05 SilverRing
+1 05 SilverAnklet
+1 05 SilverStud
+1 10 LeatherBelt
+1 10 LeatherSandals

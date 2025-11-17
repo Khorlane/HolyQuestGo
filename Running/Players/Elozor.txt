@@ -1,0 +1,24 @@
+Name:Elozor
+Password:cHrST77Hl
+Admin:No
+AllowAssist:No
+AllowGroup:No
+Born:1049751525
+Color:No
+Experience:0
+GoToArrive:
+GoToDepart:
+HitPoints:31
+Level:1
+MovePoints:25
+OneWhack:No
+Position:stand
+RoomId:JesseSquare8
+RoomInfo:No
+Sex:M
+Silver:0
+TimePlayed:79
+Title:
+WeaponDamage:5
+WeaponDesc1:a pair of bare hands
+WeaponType:Hand

@@ -1,0 +1,12 @@
+ObjectId:     TrainingTunic
+Names:        Training Tunic TrainingTunic
+Desc1:        a training tunic
+Desc2:        A training tunic is here.
+Desc3:
+  This training tunic is quite unremarkable.
+End Desc3
+Weight:       2
+Cost:         38
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Chest

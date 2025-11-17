@@ -1,0 +1,15 @@
+I buy and sell hides and viper parts
+
+Item: BearHide
+Item: LeopardSkin
+Item: LionPelt
+Item: ViperEye
+Item: ViperTail
+Item: ViperTongue
+Item: ViperVenom
+Item: ViperSkin
+
+
+End of Items
+
+End of Shop

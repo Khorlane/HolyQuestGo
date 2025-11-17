@@ -1,0 +1,18 @@
+MobileId:  QueenBee
+Names:     Queen Bee QueenBee
+Sex:       N
+Desc1:     a queen bee
+Desc2:     A queen bee is flying straight towards you.
+Desc3:
+  The queen bee is not happy about your presence.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     3
+HitPoints: -15
+Armor:     0
+Attack:    Stings
+Damage:    -7
+ExpPoints: 15
+Loot:      Bee
+Talk:      None

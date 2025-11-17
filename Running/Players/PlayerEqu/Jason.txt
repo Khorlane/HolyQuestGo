@@ -1,0 +1,13 @@
+01 traininghelmet
+02 goldstud
+04 clothgorget
+05 shoulderpads
+06 trainingtunic
+07 torncloak
+08 clothbracers
+11 clothgloves
+14 smallshield
+15 sash
+16 clothleggings
+19 shabbysandals
+20 rustysword

@@ -1,0 +1,28 @@
+RoomId:       PlateauTop465
+RoomType:     NoNPC
+Terrain:      Hill
+RoomName:     Plateau Top
+RoomDesc:
+  The narrow ledge leads up toward a small opening in the
+side of the massive pillar and down toward the plateau.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PlateauTop464
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RockShaft467
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

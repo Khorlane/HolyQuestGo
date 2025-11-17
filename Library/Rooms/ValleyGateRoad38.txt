@@ -1,0 +1,28 @@
+RoomId:       ValleyGateRoad38
+RoomType:     None
+Terrain:      Road
+RoomName:     Valley Gate Road
+RoomDesc:
+  This road traverses the hillside up to the Valley Gate
+and down to the valley.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyGateRoad37
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyoftheKidron39
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

@@ -1,0 +1,12 @@
+ObjectId:     DateCake
+Names:        Date Cake DateCake
+Desc1:        a date cake
+Desc2:        A date cake is here.
+Desc3:
+  Date cakes are made from mashed dates combined with honey,
+oil, and flour.
+End Desc3
+Weight:       1
+Cost:         10
+Type:         Food
+FoodPct:      40

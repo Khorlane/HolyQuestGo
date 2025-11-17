@@ -1,0 +1,12 @@
+ObjectId:     LongSword
+Names:        Long Sword LongSword
+Desc1:        a long sword
+Desc2:        A long sword with a long, shiny, sharp blade is here.
+Desc3:
+  The long sword has a long, shiny, sharp blade.
+End Desc3
+Weight:       16
+Cost:         18855
+Type:         Weapon
+WeaponType:   Sword
+WeaponDamage: 178

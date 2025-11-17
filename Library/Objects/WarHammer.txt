@@ -1,0 +1,14 @@
+ObjectId:     WarHammer
+Names:        War Hammer WarHammer
+Desc1:        a war hammer
+Desc2:        A war hammer is here.
+Desc3:
+  The hammer head is attached to a long hardwood handle
+with strips of bronze down both sides. The bronze strips are
+decorated with geometric designs.
+End Desc3
+Weight:       2
+Cost:         3827
+Type:         Weapon
+WeaponType:   Hammer
+WeaponDamage: 89

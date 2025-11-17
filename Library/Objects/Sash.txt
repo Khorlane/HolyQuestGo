@@ -1,0 +1,12 @@
+ObjectId:     Sash
+Names:        Sash
+Desc1:        a sash
+Desc2:        A sash is here.
+Desc3:
+  This is just a simple sash, nothing special.
+End Desc3
+Weight:       1
+Cost:         9
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Waist

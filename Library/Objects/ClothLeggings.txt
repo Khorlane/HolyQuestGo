@@ -1,0 +1,12 @@
+ObjectId:     ClothLeggings
+Names:        Cloth Leggings ClothLeggings
+Desc1:        a pair of cloth leggings
+Desc2:        A pair of cloth leggings is here.
+Desc3:
+  This pair of cloth leggings is made of cloth.
+End Desc3
+Weight:       2
+Cost:         12
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Legs

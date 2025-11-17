@@ -1,0 +1,12 @@
+ObjectId:     PaddedLeatherGorget
+Names:        Padded Leather Gorget PaddedLeather LeatherGorget PaddedLeatherGorget
+Desc1:        a padded leather gorget
+Desc2:        A padded leather gorget is here.
+Desc3:
+  The padding inside this leather gorget offers comfort and protection.
+End Desc3
+Weight:       1
+Cost:         773
+Type:         Armor
+ArmorValue:   6
+ArmorWear:    Neck

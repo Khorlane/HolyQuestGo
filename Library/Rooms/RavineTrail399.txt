@@ -1,0 +1,45 @@
+RoomId:       RavineTrail399
+RoomType:     None
+Terrain:      Hill
+RoomName:     Ravine Trail
+RoomDesc:
+  The ravine is a litte wider here, animals tracks can be seen
+in the dust to each side of the main trail. To the south the
+trail slopes down to the bottom of the ravine.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail394
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail396
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom402
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail395
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

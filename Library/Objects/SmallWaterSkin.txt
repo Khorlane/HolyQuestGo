@@ -1,0 +1,12 @@
+ObjectId:     SmallWaterSkin
+Names:        small water skin waterskin smallwaterskin
+Desc1:        a small waterskin
+Desc2:        A small waterskin is here.
+Desc3:
+  This waterskin is quite small, but it contains &Ccool&N clear
+water.
+End Desc3
+Weight:       1
+Cost:         5
+Type:         Drink
+DrinkPct:     20

@@ -1,0 +1,13 @@
+ObjectId:     LeatherHelmet
+Names:        Leather Helmet LeatherHelmet
+Desc1:        a leather helmet
+Desc2:        A leather helmet is here.
+Desc3:
+  This helmet is made of layered leather and formed to fit
+snuggly on your head.
+End Desc3
+Weight:       2
+Cost:         486
+Type:         Armor
+ArmorValue:   6
+ArmorWear:    Head

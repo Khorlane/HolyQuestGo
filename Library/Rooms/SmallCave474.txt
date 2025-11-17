@@ -1,0 +1,22 @@
+RoomId:       SmallCave474
+RoomType:     None
+Terrain:      Hill
+RoomName:     Small Cave
+RoomDesc:
+  The passage opens into an oddly shaped room. There are
+some bones and tufts of fur scattered around the floor. As
+you continue to survery the grisly scene, you see what
+appears to be the remains of a goat's leg.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallCave473
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

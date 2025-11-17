@@ -1,0 +1,19 @@
+RoomId:       Dump148
+RoomType:     None
+Terrain:      Road
+RoomName:     Dump
+RoomDesc:
+  You are surrounded by rubbish of all kinds.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Dump147
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

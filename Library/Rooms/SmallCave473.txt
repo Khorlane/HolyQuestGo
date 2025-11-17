@@ -1,0 +1,27 @@
+RoomId:       SmallCave473
+RoomType:     None
+Terrain:      Hill
+RoomName:     Small Cave
+RoomDesc:
+  A narrow passage allows you to continue exploring the cave.
+End of RoomDesc
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallCave472
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallCave474
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

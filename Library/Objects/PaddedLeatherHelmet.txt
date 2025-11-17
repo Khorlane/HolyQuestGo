@@ -1,0 +1,13 @@
+ObjectId:     PaddedLeatherHelmet
+Names:        Padded Leather Helmet PaddedLeather LeatherHelmet PaddedLeatherHelmet
+Desc1:        a padded leather helmet
+Desc2:        A padded leather helmet is here.
+Desc3:
+  This helmet is made of layered leather and is formed to fit
+snuggly and comfortably on your head 
+End Desc3
+Weight:       2
+Cost:         1185
+Type:         Armor
+ArmorValue:   9
+ArmorWear:    Head

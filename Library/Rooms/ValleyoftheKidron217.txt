@@ -1,0 +1,36 @@
+RoomId:       ValleyoftheKidron217
+RoomType:     None
+Terrain:      Road
+RoomName:     Valley of the Kidron
+RoomDesc:
+  The Kidron brook flows through this valley, but
+only in the winter. It is just a dry bed during the
+summer. A dusty road heads off to the southwest.
+
+To the south, the valley plunges down among the bare
+terraces, precipices, and crags of the wilderness of
+Judea, the wilderness of the scapegoat. So barren and
+blistered, so furnace-like does the valley become as
+it drops below the level of the sea, that it takes the
+name of Wady-en-Nar or the Fire Wady.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyoftheKidron48
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemRoad479
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

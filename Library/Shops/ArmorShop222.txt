@@ -1,0 +1,17 @@
+Welcome to my armor shop
+
+Item: ClothGorget
+Item: TornCloak
+Item: ClothGloves
+Item: Sash
+Item: ClothBracers
+Item: TrainingTunic
+Item: ClothLeggings
+Item: ShabbySandals
+Item: SmallShield
+Item: ShoulderPads
+Item: TrainingHelmet
+
+End of Items
+
+End of Shop
