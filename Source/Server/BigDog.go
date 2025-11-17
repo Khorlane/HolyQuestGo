@@ -24,51 +24,41 @@ func BigDog() {
 		PrintIt("BigDog() - Change directory to HomeDir failed")
 		os.Exit(1)
 	}
-
 	stopItFileName = CONTROL_DIR + "StopIt"
 	goGoGoFileName = CONTROL_DIR + "GoGoGo"
-
 	if FileExist(stopItFileName) {
 		if err := Rename(stopItFileName, goGoGoFileName); err != nil {
 			PrintIt("BigDog() - Rename of 'StopIt' to 'GoGoGo' failed!")
 			os.Exit(1)
 		}
 	}
-
 	OpenLogFile()
 	LogBuf = "OMugs version " + VERSION + " has started"
 	LogIt(LogBuf)
 	LogBuf = "Home directory is " + HomeDir
 	LogIt(LogBuf)
-
 	EventTick = EVENT_TICK
 	MobHealTick = 0
 	whoIsOnlineTick = 0
 	StateConnections = true
 	StateRunning = true
 	StateStopping = false
-	// rand.Seed(time.Now().UnixNano()) // If Seed is not called, the generator is seeded randomly at program startup.
-
 	if ValErr := ValidateIt("All"); ValErr {
 		LogBuf = "OMugs has stopped"
 		LogIt(LogBuf)
 		CloseLogFile()
 		return
 	}
-
 	SockOpenPort(PORT_NBR)
 	InitDescriptor()
-
 	for StateRunning {
 		time.Sleep(MILLI_SECONDS_TO_SLEEP * time.Millisecond)
 		AdvanceTime()
-
 		if !StateStopping && FileExist(stopItFileName) {
 			StateStopping = true
 			LogBuf = "Game is stopping"
 			LogIt(LogBuf)
 		}
-
 		if !StateStopping {
 			SockCheckForNewConnections()
 			if StateConnections && DnodeCount == 1 {
@@ -77,7 +67,6 @@ func BigDog() {
 				StateConnections = false
 			}
 		}
-
 		if StateConnections {
 			SockRecv()
 			EventTick++
@@ -85,7 +74,6 @@ func BigDog() {
 				EventTick = 0
 				Events()
 			}
-
 			MobHealTick++
 			if MobHealTick >= MOB_HEAL_TICK {
 				MobHealTick = 0
@@ -94,7 +82,6 @@ func BigDog() {
 		} else if StateStopping {
 			StateRunning = false
 		}
-
 		whoIsOnlineTick++
 		if whoIsOnlineTick >= WHO_IS_ONLINE_TICK {
 			whoIsOnlineTick = 0
@@ -102,7 +89,6 @@ func BigDog() {
 			pWhoIsOnline.Destroy()
 		}
 	}
-
 	ClearDescriptor()
 	SockClosePort(PORT_NBR)
 	pWhoIsOnline := NewWhoIsOnline(HomeDir)
@@ -127,9 +113,17 @@ func FileExist(Name string) bool {
 	return !os.IsNotExist(err)
 }
 
-// Rename renames a file
-func Rename(file1, file2 string) error {
-	return os.Rename(file1, file2)
+// Return the number of seconds since the epoch
+func GetTimeSeconds() int {
+	now := time.Now()
+	epoch := now.Unix()
+	return int(epoch)
+}
+
+// Print a message to stdout
+func PrintIt(message string) {
+	message = "\r\n" + message + "\r\n"
+	println(message)
 }
 
 // Remove deletes a file and returns an error value
@@ -138,10 +132,9 @@ func Remove(file1 string) error {
 	return err
 }
 
-// Print a message to stdout
-func PrintIt(message string) {
-	message = "\r\n" + message + "\r\n"
-	println(message)
+// Rename renames a file
+func Rename(file1, file2 string) error {
+	return os.Rename(file1, file2)
 }
 
 // Pause execution for the specified duration
@@ -163,13 +156,6 @@ func (w *WhoIsOnline) Destroy() {
 // Represents the online players
 type WhoIsOnline struct {
 	// Placeholder for WhoIsOnline fields
-}
-
-// Return the number of seconds since the epoch
-func GetTimeSeconds() int {
-	now := time.Now()
-	epoch := now.Unix()
-	return int(epoch)
 }
 
 //-----------------------------------------------------------------------------
