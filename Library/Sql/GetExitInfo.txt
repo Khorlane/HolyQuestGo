@@ -1,0 +1,11 @@
+Select
+  b.FromID  as iFromRoomNbr,
+  b.DirType as iDirection,
+  b.Name    as iAlternateExit,
+  b.Label   as iExitDesc,
+  b.ToID    as iToRoomNbr,
+  a.Name    as iToRoomName
+From ObjectTbl a,
+     ExitTbl   b
+Where a.ObjId = b.ToID
+Order by b.FromID, b.DirType

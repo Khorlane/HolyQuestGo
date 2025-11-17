@@ -1,0 +1,29 @@
+RoomId:       OutsideSpringGate41
+RoomType:     None
+Terrain:      Road
+RoomName:     Outside Spring Gate
+RoomDesc:
+  To the east is Jerusalem's Spring Gate. Going away
+from the city, the road winds down the side of Mount
+Moriah to the valley floor.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SpringGateRoad42
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SpringGate1
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

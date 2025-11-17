@@ -1,0 +1,23 @@
+RoomId:       Roof237
+RoomType:     None
+Terrain:      Inside
+RoomName:     Roof
+RoomDesc:
+  From the rooftop all of Jerusalem can be seen. To the north
+you can see King David's palace. To the east is a magnificent
+view of the Kidron Valley. To the west is the Valley of Tyropoeon.
+To the south is the entrance to the Hinnom Valley.
+
+End of RoomDesc
+
+ExitName:     Down
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SleepingQuarters236
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

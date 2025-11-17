@@ -1,0 +1,28 @@
+RoomId:       RavineTrail392
+RoomType:     None
+Terrain:      Hill
+RoomName:     Ravine Trail
+RoomDesc:
+  The trail here is strew with rocks and debris which have
+taken the same path as you.
+End of RoomDesc
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail393
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail391
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

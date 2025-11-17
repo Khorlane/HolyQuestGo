@@ -1,0 +1,12 @@
+ObjectId:     SilverStud
+Names:        Silver Stud SilverStud
+Desc1:        a &Wsilver&N stud
+Desc2:        A &Wsilver&N stud is here.
+Desc3:
+  This &Wsilver&N stud earring is a small sphere.
+End Desc3
+Weight:       1
+Cost:         33
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Ear

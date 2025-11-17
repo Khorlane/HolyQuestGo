@@ -1,0 +1,14 @@
+ObjectId:     ShodStaff
+Names:        Shod Staff ShodStaff
+Desc1:        a shod staff
+Desc2:        A shod staff is here.
+Desc3:
+  Parts of this staff are covered with metal to increase
+striking power and resist damage. The ends have been
+sharpened to enhance its damage.
+End Desc3
+Weight:       4
+Cost:         3827
+Type:         Weapon
+WeaponType:   Staff
+WeaponDamage: 89

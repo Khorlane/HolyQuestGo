@@ -1,0 +1,45 @@
+RoomId:       RavineBottom400
+RoomType:     None
+Terrain:      Road
+RoomName:     Ravine Bottom
+RoomDesc:
+  The bottom of the ravine is fairly flat and open. A few
+boulders and scraggly bushes are scattered around providing
+very little cover from sun or beast.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail396
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom401
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom406
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom402
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

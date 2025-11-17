@@ -1,0 +1,28 @@
+RoomId:       MarketGate21
+RoomType:     NoNPC
+Terrain:      Street
+RoomName:     Market Gate
+RoomDesc:
+  To the west is the Valley of Tyropoeon. To the east is
+Palace Way.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PalaceWay11
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyofTyropoeon52
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

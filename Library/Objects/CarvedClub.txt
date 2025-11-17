@@ -1,0 +1,14 @@
+ObjectId:     CarvedClub
+Names:        Carved Club CarvedClub
+Desc1:        a carved club
+Desc2:        A carved club is here.
+Desc3:
+  The most distinguishing part of this club is the carved
+head. In addition to the intricate design, the craftsman
+created numerous nobs and points on the club head.
+End Desc3
+Weight:       2
+Cost:         3827
+Type:         Weapon
+WeaponType:   Club
+WeaponDamage: 89

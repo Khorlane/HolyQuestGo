@@ -1,0 +1,20 @@
+RoomId:       JewelryShop223
+RoomType:     None
+Terrain:      Street
+RoomName:     Jewelry Shop
+RoomDesc:
+  Various types of jewelry are displayed all around the
+shop. The jewelry here is of good quality.
+End of RoomDesc
+
+ExitName:     Street
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: MarketStreet29
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

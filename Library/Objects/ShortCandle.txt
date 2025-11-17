@@ -1,0 +1,11 @@
+ObjectId:     ShortCandle
+Names:        Short Candle ShortCandle
+Desc1:        a short candle
+Desc2:        A short candle is lying on the ground.
+Desc3:
+  A simple short candle.
+End Desc3
+Weight:       1
+Cost:         2
+Type:         Light
+Hours:        5

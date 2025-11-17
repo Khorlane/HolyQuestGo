@@ -1,0 +1,13 @@
+ObjectId:     GoatskinSandals
+Names:        Goat Skin Sandals GoatSkin SkinSandals GoatskinSandals
+Desc1:        a pair of goatskin sandals
+Desc2:        A pair of goatskin sandals is here.
+Desc3:
+  Goatskin sandals are very comfortable, everyone should
+have a pair!
+End Desc3
+Weight:       1
+Cost:         46
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Feet

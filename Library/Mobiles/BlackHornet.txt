@@ -1,0 +1,18 @@
+MobileId:  BlackHornet
+Names:     Black Hornet BlackHornet
+Sex:       N
+Desc1:     a black hornet
+Desc2:     A black hornet is dive bombing your head.
+Desc3:
+  The black hornet has a lance-like stinger and can sting repeatedly.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     6
+HitPoints: 0
+Armor:     0
+Attack:    Stings
+Damage:    0
+ExpPoints: 0
+Loot:      Hornet
+Talk:      None

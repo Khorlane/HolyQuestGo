@@ -1,0 +1,28 @@
+RoomId:       BethlehemGate484
+RoomType:     None
+Terrain:      Road
+RoomName:     Bethlehem Gate
+RoomDesc:
+  The village gate is simple, but effective. It is closed
+and bolted whenever the villagers feel threatened.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemRoad482
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemSquare485
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

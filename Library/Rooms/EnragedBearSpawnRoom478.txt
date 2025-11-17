@@ -1,0 +1,21 @@
+RoomId:       EnragedBearSpawnRoom478
+RoomType:     None
+Terrain:      Inside
+RoomName:     Enraged Bear Spawn Room
+RoomDesc:
+  This is where the enraged bear is spawned.
+Players must never see this room,
+All exits are oneway.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallCave474
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

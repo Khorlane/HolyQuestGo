@@ -1,0 +1,37 @@
+RoomId:       WildernessTrailJunction385
+RoomType:     None
+Terrain:      Hill
+RoomName:     Wilderness Trail Junction
+RoomDesc:
+  Several trails converge here. To the east the trail leads
+straight to a camp of less than desirable characters. Other
+trails can be seen to the southeast and southwest.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: WildernessTrail357
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PlateauTrail386
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail387
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

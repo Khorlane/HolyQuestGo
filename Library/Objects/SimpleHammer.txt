@@ -1,0 +1,12 @@
+ObjectId:     SimpleHammer
+Names:        Simple Hammer SimpleHammer
+Desc1:        a simple hammer
+Desc2:        A simple hammer is here.
+Desc3:
+  This hammer is really just a simple, unremarkable hammer.
+End Desc3
+Weight:       2
+Cost:         18
+Type:         Weapon
+WeaponType:   Hammer
+WeaponDamage: 10

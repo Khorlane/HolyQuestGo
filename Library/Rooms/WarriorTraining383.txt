@@ -1,0 +1,38 @@
+RoomId:       WarriorTraining383
+RoomType:     None
+Terrain:      Street
+RoomName:     Warrior Training
+RoomDesc:
+  Welcome to king David's mighty warrior training. You
+are wise to elist the help of the royal trainers as
+you begin developing the skills needed to defend the
+kingdom.
+
+  Let's start at the beginning. As with all new recruits,
+you will first need to learn walk and talk. Ah, now you
+may believe that you already know how to walk and talk,
+but just hang on a minute or two and maybe you will
+learn something.
+
+  Ok, walk east by typing 'e'.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Walking227
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Welcome226
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

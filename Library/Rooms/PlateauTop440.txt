@@ -1,0 +1,45 @@
+RoomId:       PlateauTop440
+RoomType:     None
+Terrain:      Road
+RoomName:     Plateau Top
+RoomDesc:
+  Flat land stretches in all directions with nothing but
+sparse grass to break the monotony. Of course vast unbroken
+stretches of sparse grass can become monotonous eventually.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PlateauTop435
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PlateauTop446
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PlateauTop445
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PlateauTop444
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

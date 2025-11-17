@@ -1,0 +1,29 @@
+RoomId:       RoyalStairway20
+RoomType:     None
+Terrain:      Street
+RoomName:     Royal Stairway
+RoomDesc:
+  Made of the finest marble, the stairway connects the palace
+and the rest of the royal compound. The palace is to the north
+and south of the stairway is Citadel street.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ThePalace19
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CitadelStreet384
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

@@ -1,0 +1,2 @@
+1 50 HornetStinger
+2 50 HornetWing

@@ -1,0 +1,17 @@
+Welcome to my armor shop
+
+Item: LeatherGorget
+Item: LeatherCloak
+Item: LeatherGloves
+Item: LeatherBelt
+Item: LeatherBracers
+Item: LeatherBreastplate
+Item: LeatherGreaves
+Item: LeatherSandals
+Item: LeatherBuckler
+Item: LeatherShoulderArmor
+Item: LeatherHelmet
+
+End of Items
+
+End of Shop

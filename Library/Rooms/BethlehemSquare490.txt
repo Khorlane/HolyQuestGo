@@ -1,0 +1,38 @@
+RoomId:       BethlehemSquare490
+RoomType:     None
+Terrain:      Street
+RoomName:     Bethlehem Square
+RoomDesc:
+  The square is a large open area where the residents of
+Bethlehem, travelers from afar, brave adventurers, and
+enterprising merchants can gather to exchange news, gossip,
+and to buy and sell goods.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Tanner489
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemSquare487
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ArmorMerchant491
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

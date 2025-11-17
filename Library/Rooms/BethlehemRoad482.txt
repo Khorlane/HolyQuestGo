@@ -1,0 +1,36 @@
+RoomId:       BethlehemRoad482
+RoomType:     None
+Terrain:      Road
+RoomName:     Bethlehem Road
+RoomDesc:
+  The road continue north and south. To the west is the gate to the
+town of Bethlehem.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemRoad481
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemRoad483
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemGate484
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

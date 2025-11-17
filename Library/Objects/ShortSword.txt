@@ -1,0 +1,12 @@
+ObjectId:     ShortSword
+Names:        Short Sword ShortSword
+Desc1:        a short sword
+Desc2:        A short sword is here.
+Desc3:
+  The short sword has a short, shiny, sharp blade.
+End Desc3
+Weight:       5
+Cost:         269
+Type:         Weapon
+WeaponType:   Sword
+WeaponDamage: 29

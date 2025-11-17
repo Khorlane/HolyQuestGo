@@ -1,0 +1,13 @@
+ObjectId:     PaddedLeatherBreastplate
+Names:        Padded Leather Breastplate PaddedLeather LeatherBreastplate PaddedLeatherBreastplate
+Desc1:        a padded leather breastplate
+Desc2:        A padded leather breastplate is here.
+Desc3:
+  The padding in this leather breastplate makes it very comfortable
+to wear and offers good protection to vital body parts.
+End Desc3
+Weight:       4
+Cost:         3220
+Type:         Armor
+ArmorValue:   20
+ArmorWear:    Chest

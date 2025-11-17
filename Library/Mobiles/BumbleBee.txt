@@ -1,0 +1,18 @@
+MobileId:  BumbleBee
+Names:     Bumble Bee BumbleBee
+Sex:       N
+Desc1:     a bumble bee
+Desc2:     A bumble bee is flying in a circle around you.
+Desc3:
+  The bumble bee is fully capable of defending itself.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     2
+HitPoints: -10
+Armor:     0
+Attack:    Stings
+Damage:    -3
+ExpPoints: 0
+Loot:      Bee
+Talk:      None

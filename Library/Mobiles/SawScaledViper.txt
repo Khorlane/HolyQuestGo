@@ -1,0 +1,19 @@
+MobileId:  SawScaledViper
+Names:     Saw Scaled Viper SawScaled SawScaledViper
+Sex:       M
+Desc1:     a saw-scaled viper
+Desc2:     A small, but extremely dangerous, saw-scaled viper is here.
+Desc3:
+  The saw-scaled viper is rubbing the sides of its body together, producing
+a rasping sound.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     16
+HitPoints: 10
+Armor:     0
+Attack:    Bites
+Damage:    3
+ExpPoints: 25
+Loot:      Viper
+Talk:      Viper

@@ -1,0 +1,10 @@
+ObjectId:     HornetStinger
+Names:        Hornet Stinger HornetStinger
+Desc1:        a hornet stinger
+Desc2:        A hornet stinger.
+Desc3:
+  The hornet and its stinger have been parted.
+End Desc3
+Weight:       1
+Cost:         9
+Type:         Junk

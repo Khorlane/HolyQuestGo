@@ -1,0 +1,19 @@
+RoomId:       HinnomValley64
+RoomType:     None
+Terrain:      Road
+RoomName:     Hinnom Valley
+RoomDesc:
+  Steep walls surround you on all sides, except to the south.
+End of RoomDesc
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: HinnomValley63
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

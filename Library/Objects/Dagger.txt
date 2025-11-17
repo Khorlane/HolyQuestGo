@@ -1,0 +1,13 @@
+ObjectId:     Dagger
+Names:        Dagger
+Desc1:        a dagger
+Desc2:        A dagger is here.
+Desc3:
+  This dagger has a leather wrapped hilt attached to a very
+sharp double edge blade.
+End Desc3
+Weight:       2
+Cost:         1472
+Type:         Weapon
+WeaponType:   Dagger
+WeaponDamage: 59

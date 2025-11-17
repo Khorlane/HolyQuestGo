@@ -1,0 +1,27 @@
+RoomId:       RavineTrail390
+RoomType:     None
+Terrain:      Mountain
+RoomName:     Ravine Trail
+RoomDesc:
+  The trail is steep here in the northern end of the ravine.
+End of RoomDesc
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail391
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     Up
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineTrail389
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

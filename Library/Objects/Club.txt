@@ -1,0 +1,13 @@
+ObjectId:     Club
+Names:        Club
+Desc1:        a club
+Desc2:        A club is here.
+Desc3:
+  This club is made from a single piece of very hard wood
+and is crafted to provide balance and ease of swing.
+End Desc3
+Weight:       2
+Cost:         1472
+Type:         Weapon
+WeaponType:   Club
+WeaponDamage: 59

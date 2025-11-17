@@ -1,0 +1,12 @@
+ObjectId:     HorsehairCloak
+Names:        Horsehair Cloak HorsehairCloak
+Desc1:        a horse hair cloak
+Desc2:        A horse hair cloak is here.
+Desc3:
+  This cloak, made of horse hair, smells bad.
+End Desc3
+Weight:       3
+Cost:         12
+Type:         Armor
+ArmorValue:   2
+ArmorWear:    Back

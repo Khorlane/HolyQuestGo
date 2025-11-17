@@ -1,0 +1,45 @@
+RoomId:       PalaceWay10
+RoomType:     None
+Terrain:      Street
+RoomName:     Palace Way
+RoomDesc:
+  This broad, clean, but busy street passes before the
+palace citadel. The sounds of the busy market can be
+heard clearly coming from the south.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PalaceGate13
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PalaceWay9
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: MarketStreet27
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PalaceWay11
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

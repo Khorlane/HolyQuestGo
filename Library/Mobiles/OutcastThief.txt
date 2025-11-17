@@ -1,0 +1,18 @@
+MobileId:  OutcastThief
+Names:     Outcast Thief OutcastThief
+Sex:       M
+Desc1:     an outcast thief
+Desc2:     An outcast thief sneaking around the rocks.
+Desc3:
+  An outcast thief eyes you warily, ready to steal your life.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     7
+HitPoints: 0
+Armor:     0
+Attack:    Stabs
+Damage:    0
+ExpPoints: 0
+Loot:      Thief
+Talk:      Thief

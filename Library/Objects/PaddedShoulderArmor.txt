@@ -1,0 +1,13 @@
+ObjectId:     PaddedShoulderArmor
+Names:        Padded Shoulder Armor PaddedShoulder ShoulderArmor PaddedShoulderArmor
+Desc1:        some padded shoulder armor
+Desc2:        Some padded shoulder armor is here.
+Desc3:
+  Padded shoulder armor goes on the shoulders over the
+breastplate to provide additional protection and comfort.
+End Desc3
+Weight:       2
+Cost:         773
+Type:         Armor
+ArmorValue:   6
+ArmorWear:    Shoulders

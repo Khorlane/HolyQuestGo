@@ -1,0 +1,18 @@
+MobileId:  HoneyBee
+Names:     Honey Bee HoneyBee
+Sex:       N
+Desc1:     a honey bee
+Desc2:     A honey bee buzzes about your head.
+Desc3:
+  The honey bee's stinger is ready for action!
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     1
+HitPoints: -20
+Armor:     0
+Attack:    Stings
+Damage:    -5
+ExpPoints: 0
+Loot:      Bee
+Talk:      None

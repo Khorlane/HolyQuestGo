@@ -1,0 +1,10 @@
+ObjectId:     BeeWing
+Names:        Bee Wing BeeWing
+Desc1:        a bee wing
+Desc2:        A bee wing has been left here.
+Desc3:
+  The bee and its wing have been parted.
+End Desc3
+Weight:       1
+Cost:         3
+Type:         Junk

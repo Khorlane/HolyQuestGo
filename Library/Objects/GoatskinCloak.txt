@@ -1,0 +1,12 @@
+ObjectId:     GoatskinCloak
+Names:        Goat Skin Cloak Goatskin SkinCloak GoatskinCloak
+Desc1:        a goatskin cloak
+Desc2:        A goatskin cloak is here.
+Desc3:
+  This cloak is made of goatskin and is very plain.
+End Desc3
+Weight:       3
+Cost:         93
+Type:         Armor
+ArmorValue:   3
+ArmorWear:    Back

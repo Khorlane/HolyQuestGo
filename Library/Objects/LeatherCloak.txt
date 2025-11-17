@@ -1,0 +1,12 @@
+ObjectId:     LeatherCloak
+Names:        Leather Cloak LeatherCloak
+Desc1:        a leather cloak
+Desc2:        A leather cloak is here.
+Desc3:
+  This cloak is made of leather and is very plain.
+End Desc3
+Weight:       3
+Cost:         429
+Type:         Armor
+ArmorValue:   5
+ArmorWear:    Back

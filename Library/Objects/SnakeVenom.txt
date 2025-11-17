@@ -1,0 +1,10 @@
+ObjectId:     SnakeVenom
+Names:        Snake Venom SnakeVenom
+Desc1:        some snake venom
+Desc2:        Some snake venom.
+Desc3:
+  Some snake venom.
+End Desc3
+Weight:       1
+Cost:         15
+Type:         Junk

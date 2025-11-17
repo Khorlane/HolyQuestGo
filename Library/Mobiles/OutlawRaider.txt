@@ -1,0 +1,18 @@
+MobileId:  OutlawRaider
+Names:     Outlaw Raider OutlawRaider
+Sex:       M
+Desc1:     an outlaw raider
+Desc2:     An outlaw raider is here planning his next raid.
+Desc3:
+  The outlaw raider is considering you as the target his next raid party.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     13
+HitPoints: 0
+Armor:     0
+Attack:    Stabs
+Damage:    0
+ExpPoints: 0
+Loot:      Outlaw
+Talk:      Outlaw

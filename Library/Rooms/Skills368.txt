@@ -1,0 +1,33 @@
+RoomId:       Skills368
+RoomType:     None
+Terrain:      Street
+RoomName:     Skills
+RoomDesc:
+  Skills are used to increase your effectiveness with your
+weapon type of choice. It is highly recommended that you
+choose the type of weapon you wish to fight with and stick
+with it until you have mastered that type of weapon. Weapon
+skill is 0 to 100 percent, 100 being mastered.Each time you
+gain a level, you will get skill points that you may use to
+improve your weapon skill.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Help232
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: NPCs231
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

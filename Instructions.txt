@@ -1,0 +1,8 @@
+Project: Converting code from cpp to Go
+- There is a 1 to 1 relationship between the original cpp source file and the converted go source file,
+  meaning that for each ccp source there will be a corresponding go source file.
+- Retain comments
+- Always indent 2 spaces
+- Always keep the same function names and the same case
+- Always keep the same variable names and the same case
+- Name all variables using PascalCase

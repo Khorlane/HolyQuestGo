@@ -1,0 +1,18 @@
+MobileId:  OutlawTrooper
+Names:     Outlaw Trooper OutlawTrooper
+Sex:       M
+Desc1:     an outlaw trooper
+Desc2:     An outlaw trooper is waiting for his marching orders.
+Desc3:
+  The outlaw trooper ignores you and continues studying a hole in his sandal.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     16
+HitPoints: 0
+Armor:     0
+Attack:    Crushes
+Damage:    0
+ExpPoints: 0
+Loot:      Outlaw
+Talk:      Outlaw

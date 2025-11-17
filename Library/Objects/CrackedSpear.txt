@@ -1,0 +1,12 @@
+ObjectId:     CrackedSpear
+Names:        Cracked Spear CrackedSpear
+Desc1:        a cracked spear
+Desc2:        A cracked spear is here.
+Desc3:
+  This spear is old, worn out, and cracked.
+End Desc3
+Weight:       2
+Cost:         18
+Type:         Weapon
+WeaponType:   Spear
+WeaponDamage: 10

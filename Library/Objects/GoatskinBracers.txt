@@ -1,0 +1,12 @@
+ObjectId:     GoatskinBracers
+Names:        Goat Skin Bracers GoatSkin SkinBracers GoatskinBracers
+Desc1:        a pair of goatskin bracers
+Desc2:        A pair of goatskin bracers is here.
+Desc3:
+  This pair of bracers is made of goatskin.
+End Desc3
+Weight:       2
+Cost:         106
+Type:         Armor
+ArmorValue:   3
+ArmorWear:    Arms

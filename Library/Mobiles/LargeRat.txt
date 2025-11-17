@@ -1,0 +1,20 @@
+MobileId:  LargeRat
+Names:     Large Rat LargeRat
+Sex:       N
+Desc1:     a large rat
+Desc2:     A large rat bares its teeth, ready for a fight.
+Desc3:
+  The large rat's mangy fur is dark brown and covers a very
+skinny body. At the corners of its mouth, a little foam can be
+seen.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     2
+HitPoints: -10
+Armor:     0
+Attack:    Bites
+Damage:    -3
+ExpPoints: 0
+Loot:      Rat
+Talk:      None

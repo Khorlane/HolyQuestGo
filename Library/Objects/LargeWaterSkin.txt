@@ -1,0 +1,12 @@
+ObjectId:     LargeWaterSkin
+Names:        large water skin waterskin largewaterskin
+Desc1:        a large waterskin
+Desc2:        A large waterskin is here.
+Desc3:
+  This waterskin is very large and chock full of &Ccool&N
+clear water.
+End Desc3
+Weight:       1
+Cost:         25
+Type:         Drink
+DrinkPct:     100

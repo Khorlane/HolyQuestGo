@@ -1,0 +1,13 @@
+ObjectId:     PaddedLeatherGreaves
+Names:        Padded Leather Greaves PaddedLeather LeatherGreaves PaddedLeatherGreaves
+Desc1:        a pair of padded leather greaves
+Desc2:        A pair of padded leather greaves is here.
+Desc3:
+  This pair of padded leather greaves are quite comfortable
+and will protect your shins.
+End Desc3
+Weight:       3
+Cost:         1045
+Type:         Armor
+ArmorValue:   8
+ArmorWear:    Legs

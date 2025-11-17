@@ -1,0 +1,20 @@
+RoomId:       LeatherArmorShop381
+RoomType:     None
+Terrain:      Street
+RoomName:     Leather Armor Shop
+RoomDesc:
+  Various types of armor are displayed all around the
+shop. This shop appears to specialize in leather armor.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ArmorShop222
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

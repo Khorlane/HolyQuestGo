@@ -1,0 +1,14 @@
+ObjectId:     CopperSpear
+Names:        Copper Spear CopperSpear
+Desc1:        a copper spear
+Desc2:        A copper spear is here.
+Desc3:
+  The pointed and sharp copper blade of this spear is attached
+to a long wooden shaft by a tang. The shaft is wrapped with
+leather to provide a good gripe.
+End Desc3
+Weight:       2
+Cost:         3827
+Type:         Weapon
+WeaponType:   Spear
+WeaponDamage: 89

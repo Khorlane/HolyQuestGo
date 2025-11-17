@@ -1,0 +1,18 @@
+MobileId:  GateKeeper2
+Names:     Gate Keeper GateKeeper
+Sex:       M
+Desc1:     the gate keeper
+Desc2:     The gate keeper stands at attention, ready to protect the city.
+Desc3:
+  The gate keeper is well equiped to protect the city from any intruders.
+End Desc3
+Action:    NoMove
+Faction:   Neutral
+Level:     99
+HitPoints: 0
+Armor:     0
+Attack:    Stabs
+Damage:    0
+ExpPoints: 0
+Loot:      None
+Talk:      JerusalemGuard

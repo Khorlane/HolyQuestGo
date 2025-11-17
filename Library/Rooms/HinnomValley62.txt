@@ -1,0 +1,28 @@
+RoomId:       HinnomValley62
+RoomType:     None
+Terrain:      Road
+RoomName:     Hinnom Valley
+RoomDesc:
+  This valley is acutally a ravine that is deep and
+narrow with steep, rocky sides.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: HinnomValley63
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: HinnomValley61
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

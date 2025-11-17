@@ -1,0 +1,17 @@
+Come, sit, and buy some armor
+
+Item: PaddedLeatherGorget
+Item: PaddedLeatherCloak
+Item: ThickLeatherGloves
+Item: PaddedLeatherBelt
+Item: PaddedLeatherBracers
+Item: PaddedLeatherBreastplate
+Item: PaddedLeatherGreaves
+Item: ThickLeatherSandals
+Item: thickLeatherBuckler
+Item: PaddedShoulderArmor
+Item: PaddedLeatherHelmet
+
+End of Items
+
+End of Shop

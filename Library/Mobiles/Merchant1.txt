@@ -1,0 +1,18 @@
+MobileId:  Merchant1
+Names:     Merchant
+Sex:       M
+Desc1:     the merchant
+Desc2:     The merchant is here to make money.
+Desc3:
+  The merchant sits on a fine rug, ready to haggle.
+End Desc3
+Action:    NoMove
+Faction:   Neutral
+Level:     99
+HitPoints: 0
+Armor:     0
+Attack:    Thrashes
+Damage:    0
+ExpPoints: 0
+Loot:      None
+Talk:      Merchant

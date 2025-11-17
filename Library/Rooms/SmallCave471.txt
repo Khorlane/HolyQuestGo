@@ -1,0 +1,29 @@
+RoomId:       SmallCave471
+RoomType:     NoNPC
+Terrain:      Hill
+RoomName:     Small Cave
+RoomDesc:
+  The ceiling of cave is very low, causing you to crawl on
+hands and knees as you enter or leave the cave. As you crawl
+you notice bear tracks.
+End of RoomDesc
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom463
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallCave472
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

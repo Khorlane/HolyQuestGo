@@ -1,0 +1,12 @@
+Welcome to the food court
+
+Item: RedApple
+Item: DateCake
+Item: LambLeg
+Item: SmallWaterSkin
+Item: WaterSkin
+Item: LargeWaterSkin
+
+End of Items
+
+End of Shop

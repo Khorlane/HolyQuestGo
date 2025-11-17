@@ -1,0 +1,41 @@
+RoomId:       Items230
+RoomType:     None
+Terrain:      Street
+RoomName:     Items
+RoomDesc:
+  Items are sometimes referred to as objects. Some
+examples of items are: sword, apple, waterskin,
+training tunic, etc. You acquire items by defeating
+your enemies, buying them from a shopkeeper, or another
+warrior may give you an item. Items can be divided into
+categories such as food, drink, armor, and weapons.
+
+All items have one or more names. For example a pair of
+goatskin gloves has the following names: 'goat', 'skin',
+'goatskin', 'gloves', and 'goatskingloves'. So if you
+are buying gloves and the vendor has leather gloves and
+goatskingloves for sell and you type 'buy gloves', you
+will get the first gloves in the vendor's list of items.
+To ensure you get the item you really want, use the full
+name, like 'buy goatskingloves'.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: NPCs231
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Rooms229
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

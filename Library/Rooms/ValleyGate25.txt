@@ -1,0 +1,29 @@
+RoomId:       ValleyGate25
+RoomType:     NoNPC
+Terrain:      Street
+RoomName:     Valley Gate
+RoomDesc:
+  Passing out of the city, the road descends into the
+Kindron Valley. If you are entering the city, Jesse
+Square is to the north along Valley Gate Avenue.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyGateRoad35
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyGateAvenue24
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

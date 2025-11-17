@@ -1,0 +1,18 @@
+MobileId:  Merchant3
+Names:     Merchant
+Sex:       M
+Desc1:     the merchant
+Desc2:     The merchant is selling stuff
+Desc3:
+  The merchant smiles and motions for you to come closer.
+End Desc3
+Action:    NoMove
+Faction:   Neutral
+Level:     99
+HitPoints: 0
+Armor:     0
+Attack:    Thrashes
+Damage:    0
+ExpPoints: 0
+Loot:      None
+Talk:      Merchant

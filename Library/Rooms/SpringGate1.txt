@@ -1,0 +1,28 @@
+RoomId:       SpringGate1
+RoomType:     NoNPC
+Terrain:      Street
+RoomName:     Spring Gate
+RoomDesc:
+  From here, the road continues uphill into the city
+and downhill to the Gihon Spring and the Kidron Valley.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: OutsideSpringGate41
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SpringGateStreet2
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

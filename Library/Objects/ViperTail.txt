@@ -1,0 +1,10 @@
+ObjectId:     ViperTail
+Names:        Viper Tail ViperTail
+Desc1:        a viper tail
+Desc2:        A viper tail.
+Desc3:
+  A viper tail.
+End Desc3
+Weight:       1
+Cost:         18
+Type:         Junk

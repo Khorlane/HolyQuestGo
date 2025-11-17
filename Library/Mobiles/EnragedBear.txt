@@ -1,0 +1,18 @@
+MobileId:  EnragedBear
+Names:     Enraged Bear EnragedBear
+Sex:       M
+Desc1:     an enraged bear
+Desc2:     An enraged bear is here pawing the ground.
+Desc3:
+  The enraged bear stares back at you with dark, squinty eyes.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     16
+HitPoints: 15
+Armor:     0
+Attack:    Mauls
+Damage:    5
+ExpPoints: 50
+Loot:      Bear
+Talk:      Bear

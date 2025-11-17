@@ -1,0 +1,13 @@
+ObjectId:     ShepherdStaff
+Names:        Shepherd Staff ShepherdStaff
+Desc1:        a shepherd's staff
+Desc2:        A shepherd's staff is here.
+Desc3:
+  The shepherd's staff is made of olive wood and has been worn
+smooth by daily use.
+End Desc3
+Weight:       4
+Cost:         269
+Type:         Weapon
+WeaponType:   Staff
+WeaponDamage: 29

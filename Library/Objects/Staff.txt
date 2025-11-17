@@ -1,0 +1,13 @@
+ObjectId:     Staff
+Names:        Staff
+Desc1:        a staff
+Desc2:        A staff is here.
+Desc3:
+  This staff is made of quality hardword and has two grips near
+the center of the shaft.
+End Desc3
+Weight:       4
+Cost:         1472
+Type:         Weapon
+WeaponType:   Staff
+WeaponDamage: 59

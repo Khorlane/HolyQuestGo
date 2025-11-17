@@ -1,0 +1,13 @@
+ObjectId:     LeatherShoulderArmor
+Names:        Leather Shoulder Armor LeatherShoulder ShoulderArmor LeatherShoulderArmor
+Desc1:        some leather shoulder armor
+Desc2:        Some leather shoulder armor is here.
+Desc3:
+  Leather shoulder armor goes on the shoulders over the
+breastplate to provide additional protection.
+End Desc3
+Weight:       2
+Cost:         317
+Type:         Armor
+ArmorValue:   4
+ArmorWear:    Shoulders

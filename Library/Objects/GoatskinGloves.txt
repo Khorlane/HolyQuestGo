@@ -1,0 +1,13 @@
+ObjectId:     GoatskinGloves
+Names:        Goat Skin Gloves Goatskin SkinGoat GoatskinGloves
+Desc1:        a pair of goatskin gloves
+Desc2:        A pair of goatskin gloves has been dropped here.
+Desc3:
+  These gloves are made of goatskin and are very soft,
+providing a good grip on your weapon of choice.
+End Desc3
+Weight:       1
+Cost:         46
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Hands

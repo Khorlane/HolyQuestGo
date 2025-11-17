@@ -1,0 +1,20 @@
+Welcome to my weapon shop
+
+Item: BluntAxe
+Item: SmallClub
+Item: TinyDagger
+Item: SimpleHammer
+Item: CrackedSpear
+Item: LongStick
+Item: RustySword
+Item: KindlingAxe
+Item: Cudgel
+Item: Dirk
+Item: Mallet
+Item: ShortSpear
+Item: ShepherdStaff
+Item: ShortSword
+
+End of Items
+
+End of Shop

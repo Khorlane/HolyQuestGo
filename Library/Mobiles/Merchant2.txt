@@ -1,0 +1,19 @@
+MobileId:  Merchant2
+Names:     Merchant
+Sex:       M
+Desc1:     the merchant
+Desc2:     A merchant is looking for customers.
+Desc3:
+  The merchant has several very delisious food items ready
+for you dining pleasure.
+End Desc3
+Action:    NoMove
+Faction:   Neutral
+Level:     99
+HitPoints: 0
+Armor:     0
+Attack:    Thrashes
+Damage:    0
+ExpPoints: 0
+Loot:      None
+Talk:      Merchant

@@ -1,0 +1,21 @@
+RoomId:       GoatArmorShop323
+RoomType:     None
+Terrain:      Street
+RoomName:     Goat Armor Shop
+RoomDesc:
+  Various types of armor are displayed all around the
+shop. This shop appears to specialize in goatskin
+armor.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ArmorShop222
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

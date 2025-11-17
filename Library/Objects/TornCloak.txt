@@ -1,0 +1,12 @@
+ObjectId:     TornCloak
+Names:        Torn Cloak TornCloak
+Desc1:        a torn cloak
+Desc2:        A torn cloak is here.
+Desc3:
+  This cloak is torn and dirty.
+End Desc3
+Weight:       2
+Cost:         12
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Back

@@ -1,0 +1,18 @@
+MobileId:  KingThief
+Names:     King Thief KingThief
+Sex:       M
+Desc1:     a king thief
+Desc2:     The king thief taunts you.
+Desc3:
+  The king of the thieves is laughing at you.
+End Desc3
+Action:    NoMove
+Faction:   Neutral
+Level:     10
+HitPoints: 0
+Armor:     0
+Attack:    Stabs
+Damage:    0
+ExpPoints: 250
+Loot:      KingThief
+Talk:      Thief

@@ -1,0 +1,45 @@
+RoomId:       CitadelStreet14
+RoomType:     None
+Terrain:      Street
+RoomName:     Citadel Street
+RoomDesc:
+  Government buildings occupy both sides of the street.
+Officials from across the kingdom come here to meet with
+King David and his ministers.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CitadelStreet17
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Welcome226
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PalaceGate13
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CitadelStreet15
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

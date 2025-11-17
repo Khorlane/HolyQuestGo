@@ -1,0 +1,28 @@
+RoomId:       CampLedge346
+RoomType:     None
+Terrain:      Hill
+RoomName:     Camp Ledge
+RoomDesc:
+  This ledge provides a great view of the camp and is used
+to defend the camp in case of a raid or wild animal attach.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CampLedge347
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CampLedge348
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

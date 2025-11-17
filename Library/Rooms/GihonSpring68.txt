@@ -1,0 +1,20 @@
+RoomId:       GihonSpring68
+RoomType:     NoFight NoNPC Drink
+Terrain:      Road
+RoomName:     Gihon Spring
+RoomDesc:
+  The water source for the City of David. To the south is
+the Spring Gate road.
+End of RoomDesc
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SpringGateRoad45
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

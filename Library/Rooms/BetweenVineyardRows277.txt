@@ -1,0 +1,28 @@
+RoomId:       BetweenVineyardRows277
+RoomType:     None
+Terrain:      Field
+RoomName:     Between Vineyard Rows
+RoomDesc:
+  Grape vines from the rows on both side grow up the
+trellises and form an arch over your head.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows284
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows247
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

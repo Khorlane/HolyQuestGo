@@ -1,0 +1,13 @@
+ObjectId:     TrainingHelmet
+Names:        Training Helmet TrainingHelmet
+Desc1:        a &Mpurple&N training helmet
+Desc2:        A &Mpurple&N training helmet is here.
+Desc3:
+  This &Mpurple&N training helmet will protect your head, a
+little bit.
+End Desc3
+Weight:       1
+Cost:         14
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Head

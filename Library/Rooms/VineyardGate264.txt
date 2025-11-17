@@ -1,0 +1,47 @@
+RoomId:       VineyardGate264
+RoomType:     None
+Terrain:      Street
+RoomName:     Vineyard Gate
+RoomDesc:
+  Through the gate to east is a lush vineyard. The owner
+has spent countless hours cultivating and pruning the vines
+in hopes of a bountiful harvest. Heaidng west through the
+gate will take to the Kindron Valley.
+
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: VineyardWall289
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BetweenVineyardRows248
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: VineyardWall319
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: VineyardPath382
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

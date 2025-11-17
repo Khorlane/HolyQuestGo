@@ -1,0 +1,13 @@
+ObjectId:     ThickLeatherSandals
+Names:        Thick Leather Sandals LeatherSandals
+Desc1:        a pair of lick leather sandals
+Desc2:        A pair of thick leather sandals is here.
+Desc3:
+  This pair of thick leather sandals will make your journeys
+more tolerable.
+End Desc3
+Weight:       1
+Cost:         516
+Type:         Armor
+ArmorValue:   4
+ArmorWear:    Feet

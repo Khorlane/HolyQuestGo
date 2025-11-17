@@ -1,0 +1,36 @@
+RoomId:       SouthEnd26
+RoomType:     None
+Terrain:      Street
+RoomName:     South End
+RoomDesc:
+  This is the southern part of the city. Houses line
+the street on both sides.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyGateAvenue24
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallHouse233
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SouthEnd33
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

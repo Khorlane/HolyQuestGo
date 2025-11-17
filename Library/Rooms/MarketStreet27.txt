@@ -1,0 +1,36 @@
+RoomId:       MarketStreet27
+RoomType:     None
+Terrain:      Street
+RoomName:     Market Street
+RoomDesc:
+  Vendors of a wide assortment of goods can be found
+here day and night selling the wares.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PalaceWay10
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: MarketStreet28
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: MarketStreet34
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

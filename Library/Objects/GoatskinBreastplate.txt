@@ -1,0 +1,12 @@
+ObjectId:     GoatskinBreastplate
+Names:        Goat Skin Breast Plate GoatSkin SkinBreast Breastplate GoatskinBreastplate
+Desc1:        a goatskin breastplate
+Desc2:        A goatskin breastplate is here.
+Desc3:
+  This goatskin breastplate is made of tanned goatskin.
+End Desc3
+Weight:       4
+Cost:         287
+Type:         Armor
+ArmorValue:   7
+ArmorWear:    Chest

@@ -1,0 +1,13 @@
+ObjectId:     GoatskinBelt
+Names:        Goat Skin Belt GoatSkin SkinBelt GoatskinBelt
+Desc1:        a goatskin belt
+Desc2:        A goatskin belt is here.
+Desc3:
+  This belt is a strip of goatskin that can be tied around
+the waist.
+End Desc3
+Weight:       1
+Cost:         69
+Type:         Armor
+ArmorValue:   2
+ArmorWear:    Waist

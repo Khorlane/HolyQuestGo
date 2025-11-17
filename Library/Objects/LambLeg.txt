@@ -1,0 +1,12 @@
+ObjectId:     LambLeg
+Names:        Lamb Leg LambLeg
+Desc1:        a lamb leg
+Desc2:        A lamb leg is here.
+Desc3:
+  Roasted leg of lamb is made by rubbing the leg with olive
+oil and spices and then slow roasting it over the fire.
+End Desc3
+Weight:       1
+Cost:         25
+Type:         Food
+FoodPct:      100

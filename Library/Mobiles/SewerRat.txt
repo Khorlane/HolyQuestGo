@@ -1,0 +1,19 @@
+MobileId:  SewerRat
+Names:     Sewer Rat SewerRat
+Sex:       N
+Desc1:     a sewer rat
+Desc2:     A sewer rat snaps its teeth and looks for someone to bite.
+Desc3:
+  The sewer rat's beady &Rred&N eyes meet your eyes with a cold
+stare. Its tail twitches in anticipation of a fight.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     3
+HitPoints: -15
+Armor:     0
+Attack:    Bites
+Damage:    -7
+ExpPoints: 15
+Loot:      Rat
+Talk:      None

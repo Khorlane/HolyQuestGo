@@ -1,0 +1,10 @@
+ObjectId:     LionPelt
+Names:        Lion Pelt LionPelt
+Desc1:        the pelt of a lion
+Desc2:        A lion pelt.
+Desc3:
+  A lion pelt.
+End Desc3
+Weight:       1
+Cost:         13
+Type:         Junk

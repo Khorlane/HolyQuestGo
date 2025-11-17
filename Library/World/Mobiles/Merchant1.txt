@@ -1,0 +1,3 @@
+MaxInWorld: 1
+RoomId:     Bazaar224
+Interval:   0 0 0 0 0 0 0 

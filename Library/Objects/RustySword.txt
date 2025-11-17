@@ -1,0 +1,13 @@
+ObjectId:     RustySword
+Names:        Rusty Sword RustySword
+Desc1:        a rusty sword
+Desc2:        A rusty sword is here.
+Desc3:
+  This sword's handle is about to fall off. The blade is dull
+and very rusty.
+End Desc3
+Weight:       2
+Cost:         18
+Type:         Weapon
+WeaponType:   Sword
+WeaponDamage: 10

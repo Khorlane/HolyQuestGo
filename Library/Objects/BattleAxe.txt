@@ -1,0 +1,14 @@
+ObjectId:     BattleAxe
+Names:        Battle Axe BattleAxe
+Desc1:        a battle axe
+Desc2:        A battle axe is here.
+Desc3:
+  The hardwood handle of this axe is quite long with the axe
+head inserted into a slot at the end.  It is clear that this axe
+was designed with the experienced warrior in mind.
+End Desc3
+Weight:       2
+Cost:         3827
+Type:         Weapon
+WeaponType:   Axe
+WeaponDamage: 89

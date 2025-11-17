@@ -1,0 +1,12 @@
+ObjectId:     LeatherBelt
+Names:        Leather Belt LeatherBelt
+Desc1:        a leather belt
+Desc2:        A leather belt is here.
+Desc3:
+  This is a leather belt with a smooth finish.
+End Desc3
+Weight:       1
+Cost:         317
+Type:         Armor
+ArmorValue:   4
+ArmorWear:    Waist

@@ -1,0 +1,20 @@
+RoomId:       BethlehemRoad483
+RoomType:     None
+Terrain:      Road
+RoomName:     Bethlehem Road
+RoomDesc:
+  The road continues to the north, but a big pile of rubble
+blocks your travel to the south.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemRoad482
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

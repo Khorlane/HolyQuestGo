@@ -1,0 +1,29 @@
+RoomId:       ValleyoftheKidron46
+RoomType:     None
+Terrain:      Road
+RoomName:     Valley of the Kidron
+RoomDesc:
+  The Kidron brook flows through this valley, but
+only in the winter. It is just a dry bed during the
+summer.
+End of RoomDesc
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyoftheKidron67
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SpringGateRoad45
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

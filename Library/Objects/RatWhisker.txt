@@ -1,0 +1,10 @@
+ObjectId:     RatWhisker
+Names:        Rat Whisker RatWhisker
+Desc1:        a rat whisker
+Desc2:        A rat whisker.
+Desc3:
+  A whisker from a rat that does not need it anymore.
+End Desc3
+Weight:       1
+Cost:         1
+Type:         Junk

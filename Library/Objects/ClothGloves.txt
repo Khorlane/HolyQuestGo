@@ -1,0 +1,12 @@
+ObjectId:     ClothGloves
+Names:        Cloth Gloves ClothGloves
+Desc1:        a pair of cloth gloves
+Desc2:        A pair of cloth gloves has been dropped here.
+Desc3:
+  These gloves are made of cloth and are very plain.
+End Desc3
+Weight:       1
+Cost:         6
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Hands

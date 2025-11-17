@@ -1,0 +1,18 @@
+MobileId:  Viper
+Names:     Viper
+Sex:       N
+Desc1:     a viper
+Desc2:     A viper is coiled and ready to strike.
+Desc3:
+  The viper's tongue flicks the air in anticipation of a warm meal.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     6
+HitPoints: 31
+Armor:     0
+Attack:    Bites
+Damage:    9
+ExpPoints: 100
+Loot:      Viper
+Talk:      Snake

@@ -1,0 +1,18 @@
+MobileId:  RubbishSnake
+Names:     Rubbish Snake RubbishSnake
+Sex:       N
+Desc1:     a rubbish snake
+Desc2:     A rubbish snake slithers away and looks for some rubbish to hide under.
+Desc3:
+  The rubbish snake hisses at you.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     5
+HitPoints: 0
+Armor:     0
+Attack:    Bites
+Damage:    0
+ExpPoints: 0
+Loot:      Snake
+Talk:      Snake

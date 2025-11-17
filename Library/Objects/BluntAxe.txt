@@ -1,0 +1,12 @@
+ObjectId:     BluntAxe
+Names:        Blunt Axe BluntAxe
+Desc1:        a blunt axe
+Desc2:        A blunt axe is here.
+Desc3:
+  This axe is very blunt, but will still do some damage.
+End Desc3
+Weight:       2
+Cost:         18
+Type:         Weapon
+WeaponType:   Axe
+WeaponDamage: 10

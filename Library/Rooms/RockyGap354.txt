@@ -1,0 +1,29 @@
+RoomId:       RockyGap354
+RoomType:     NoNPC
+Terrain:      Hill
+RoomName:     Rocky Gap
+RoomDesc:
+  A narrow winding passage leads through a gap in the
+rocks from the main trail to the north back into the
+rocks to the south.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: WildernessTrail352
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: OutcastThieves358
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

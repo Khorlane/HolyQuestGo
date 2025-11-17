@@ -1,0 +1,15 @@
+ObjectId:     BoneDagger
+Names:        Bone Dagger BoneDagger
+Desc1:        a bone dagger
+Desc2:        A bone dagger is here.
+Desc3:
+  The blade of this dagger is wide at the hilt, but quickly narrows
+toward the tip of the blade. The hilt is lightly decorated and to the
+end of the hilt is attached a highly polished, cresent shaped piece
+of bone.
+End Desc3
+Weight:       2
+Cost:         3827
+Type:         Weapon
+WeaponType:   Dagger
+WeaponDamage: 89

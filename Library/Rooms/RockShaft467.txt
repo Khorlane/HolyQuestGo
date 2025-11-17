@@ -1,0 +1,30 @@
+RoomId:       RockShaft467
+RoomType:     None
+Terrain:      Mountain
+RoomName:     Rock Shaft
+RoomDesc:
+  You are in a small room hollowed out of the massive rock
+pillar. Below you, ledges provide tenuous footing. To the
+northeast, across a narrow ledge, a less claustrophobic
+plateau can be seen.
+End of RoomDesc
+
+ExitName:     NorthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PlateauTop465
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     Down
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RockShaft468
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

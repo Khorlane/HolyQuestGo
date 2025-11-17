@@ -1,0 +1,12 @@
+ObjectId:     LeatherGreaves
+Names:        Leather Greaves LeatherGreaves
+Desc1:        a pair of leather greaves
+Desc2:        A pair of leather greaves is here.
+Desc3:
+  This pair of leather greaves is made of leather.
+End Desc3
+Weight:       3
+Cost:         428
+Type:         Armor
+ArmorValue:   5
+ArmorWear:    Legs

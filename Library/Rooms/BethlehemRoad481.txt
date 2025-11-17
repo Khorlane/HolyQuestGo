@@ -1,0 +1,28 @@
+RoomId:       BethlehemRoad481
+RoomType:     None
+Terrain:      Road
+RoomName:     Bethlehem Road
+RoomDesc:
+  The road continue north and south. The town of Bethlehem can
+be see to the south. To the north is open country.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemRoad480
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemRoad482
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

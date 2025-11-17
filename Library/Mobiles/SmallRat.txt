@@ -1,0 +1,18 @@
+MobileId:  SmallRat
+Names:     Small Rat SmallRat
+Sex:       N
+Desc1:     a small rat
+Desc2:     A small rat squeaks and scurries away, looking for cover.
+Desc3:
+  The small rat is very ugly and needs to die!
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     1
+HitPoints: -20
+Armor:     0
+Attack:    Bites
+Damage:    -5
+ExpPoints: 0
+Loot:      Rat
+Talk:      None

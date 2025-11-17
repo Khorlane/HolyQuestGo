@@ -1,0 +1,20 @@
+Select
+  a.FromId,
+  b.ObjId,
+  b.Name,
+  a.DirType,
+  a.DirToType
+From ExitTbl   a,
+     ObjectTbl b
+Where a.FromId = b.ObjId
+  and (   (DirType = 0 and DirToType <> 4)
+       or (DirType = 1 and DirToType <> 5)
+       or (DirType = 2 and DirToType <> 6)
+       or (DirType = 3 and DirToType <> 7)
+       or (DirType = 4 and DirToType <> 0)
+       or (DirType = 5 and DirToType <> 1)
+       or (DirType = 6 and DirToType <> 2)
+       or (DirType = 7 and DirToType <> 3)
+       or (DirType = 8 and DirToType <> 9)
+       or (DirType = 9 and DirToType <> 8)
+      )

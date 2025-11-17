@@ -1,0 +1,45 @@
+RoomId:       CitadelStreet384
+RoomType:     None
+Terrain:      Street
+RoomName:     Citadel Street
+RoomDesc:
+  Government buildings can be seen to east and west. To the
+north is a marble stairway leading to the palace. The tent
+containing the Ark is to the south.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RoyalStairway20
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CitadelStreet18
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: TheArk218
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: CitadelStreet16
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

@@ -1,0 +1,42 @@
+RoomId:       Walking227
+RoomType:     None
+Terrain:      Street
+RoomName:     Walking
+RoomDesc:
+  Very good, you can walk. The exits for this room
+are east and west. You may continue your training
+by using any of the following commands to move east:
+
+e
+east
+go east
+
+  The last form of the move command 'go <exit>' is used
+when an exit is not a compass direction. For example, if a
+room had an exit called ArmorShop, to get to the Armor Shop
+you would use the command 'go armorshop'. You can't use that
+command in this room because there is no exit labeled
+ArmorShop. But, as you explore Jerusalem you may discover a
+room with an exit that is labeled ArmorShop and you will know
+how to enter the shop.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Talking228
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: WarriorTraining383
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

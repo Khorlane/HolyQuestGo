@@ -1,0 +1,37 @@
+RoomId:       AmongstTheRocks365
+RoomType:     None
+Terrain:      Hill
+RoomName:     Amongst The Rocks
+RoomDesc:
+  You are at the backside of the outcast thieves' camp.
+There is a campfire to the north. Great hiding places
+amongst the rocks are east and west of here.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: FirePit361
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: AmongstTheRocks366
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: AmongstTheRocks364
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

@@ -1,0 +1,13 @@
+ObjectId:     KidskinGloves
+Names:        Kidskin Gloves KidskinGloves
+Desc1:        a pair of kidskin gloves
+Desc2:        A pair of kidskin gloves has been dropped here.
+Desc3:
+  These gloves are made of soft smooth leather from the
+hide of a young goat.
+End Desc3
+Weight:       1
+Cost:         3
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Hands

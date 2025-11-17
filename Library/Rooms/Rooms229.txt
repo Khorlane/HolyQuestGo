@@ -1,0 +1,40 @@
+RoomId:       Rooms229
+RoomType:     None
+Terrain:      Street
+RoomName:     Rooms
+RoomDesc:
+  A room is more correctly referred to as a place. Now
+that place might indeed be a room, like a bedroom. But
+it also might be a place, like a town square or city
+street or a road or ... well surely you get the idea.
+
+Each time you enter a 'room', you will always see at
+least three things: The room name, the room description,
+and the room exits. This information can be very
+interesting the first time you see it, but after moving
+through the same rooms over and over, it becomes much
+less interesting as it typically does not change.
+
+For those who think the room descriptions are lacking in
+some way, please volunteer to rewrite them.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Items230
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Talking228
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

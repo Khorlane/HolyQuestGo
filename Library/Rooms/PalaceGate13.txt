@@ -1,0 +1,27 @@
+RoomId:       PalaceGate13
+RoomType:     NoNPC
+Terrain:      Street
+RoomName:     Palace Gate
+RoomDesc:
+  To the north is palace and to the south is Palace Way.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+  You see the Citadel.
+ExitToRoomId: CitadelStreet14
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+  You see Palace Way.
+ExitToRoomId: PalaceWay10
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

@@ -1,0 +1,35 @@
+RoomId:       Tanner489
+RoomType:     None
+Terrain:      Street
+RoomName:     Tanner
+RoomDesc:
+  The local tanner sits on a leapard skin, ready to do business.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: EgyptianTrader486
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemSquare487
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemSquare490
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

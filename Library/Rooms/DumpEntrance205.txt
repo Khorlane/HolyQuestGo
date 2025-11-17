@@ -1,0 +1,29 @@
+RoomId:       DumpEntrance205
+RoomType:     None
+Terrain:      Road
+RoomName:     Dump Entrance
+RoomDesc:
+  A large amount of rubbish is directly east of where
+you are standing. To the northwest, the Hinnom Valley
+contiues.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Dump204
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     NorthWest
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: HinnomValley61
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

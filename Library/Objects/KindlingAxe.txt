@@ -1,0 +1,13 @@
+ObjectId:     KindlingAxe
+Names:        Kindling Axe KindlingAxe
+Desc1:        a kindling axe
+Desc2:        A kindling axe is here.
+Desc3:
+  This is a small, sharp axe used for chopping kindling used
+to start cooking fires. It also makes a nice weapon.
+End Desc3
+Weight:       2
+Cost:         269
+Type:         Weapon
+WeaponType:   Axe
+WeaponDamage: 29

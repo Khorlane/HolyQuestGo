@@ -1,0 +1,20 @@
+RoomId:       Storage235
+RoomType:     None
+Terrain:      Inside
+RoomName:     Storage
+RoomDesc:
+  This long broad room at the back of the house provides spaces
+for long-term storage.
+End of RoomDesc
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: SmallHouse233
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

@@ -1,0 +1,12 @@
+ObjectId:     ClothGorget
+Names:        Cloth Gorget ClothGorget
+Desc1:        a cloth gorget
+Desc2:        A cloth gorget is here.
+Desc3:
+  This cloth gorget is tattered and almost usless.
+End Desc3
+Weight:       1
+Cost:         9
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Neck

@@ -1,0 +1,18 @@
+MobileId:  ScrawnyLion
+Names:     Scrawny Lion ScrawnyLion
+Sex:       M
+Desc1:     a scrawny lion
+Desc2:     A scrawny lion looks like he hasn't eaten in weeks.
+Desc3:
+  The scrawny lion heads in your direction.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     10
+HitPoints: 0
+Armor:     0
+Attack:    Claws
+Damage:    0
+ExpPoints: 0
+Loot:      Lion
+Talk:      Lion

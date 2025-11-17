@@ -1,0 +1,12 @@
+ObjectId:     GoldAnklet
+Names:        Gold Anklet GoldAnklet
+Desc1:        a &Ygold&N anklet
+Desc2:        A &Ygold&N anklet is here.
+Desc3:
+  This pure &Ygold&N anklet chain has very small links.
+End Desc3
+Weight:       1
+Cost:         200
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Ankle

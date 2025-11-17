@@ -1,0 +1,34 @@
+RoomId:       Talking228
+RoomType:     None
+Terrain:      Street
+RoomName:     Talking
+RoomDesc:
+  There are many ways to communicate with other warriors,
+but let's start with talking. You may talk to other
+warriors who are in the same room as you by using the 'say'
+command, for example, you would type 'say Hi everyone'.
+
+  Congratulations recruit! You are now fully
+capable of walking and talking. Now get moving,
+there is more learn. (go east)
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Rooms229
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: Walking227
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

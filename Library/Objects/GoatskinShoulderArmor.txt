@@ -1,0 +1,13 @@
+ObjectId:     GoatskinShoulderArmor
+Names:        Goat Skin Shoulder Armor GoatSkin SkinShoulder ShoulderArmor GoatskinShoulderArmor
+Desc1:        some goatskin shoulder armor
+Desc2:        Some goatskin shoulder armor is here.
+Desc3:
+  Goatskin shoulder armor goes on the shoulders over the
+breastplate to provide additional protection.
+End Desc3
+Weight:       2
+Cost:         69
+Type:         Armor
+ArmorValue:   2
+ArmorWear:    Shoulders

@@ -1,0 +1,12 @@
+ObjectId:     GoatskinGreaves
+Names:        Goat Skin Greaves GoatSkin SkinGreaves GoatskinGreaves
+Desc1:        a pair of goatskin greaves
+Desc2:        A pair of goatskin greaves is here.
+Desc3:
+  This pair of greaves is made of goatskin.
+End Desc3
+Weight:       3
+Cost:         93
+Type:         Armor
+ArmorValue:   3
+ArmorWear:    Legs

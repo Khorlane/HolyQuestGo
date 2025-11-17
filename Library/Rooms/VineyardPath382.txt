@@ -1,0 +1,28 @@
+RoomId:       VineyardPath382
+RoomType:     NoNPC
+Terrain:      Street
+RoomName:     Vineyard Path
+RoomDesc:
+  This path leads from the Kidron up the hillside
+to a vineyard.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: VineyardGate264
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyoftheKidron67
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

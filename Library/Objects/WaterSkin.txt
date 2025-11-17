@@ -1,0 +1,12 @@
+ObjectId:     WaterSkin
+Names:        water skin waterskin
+Desc1:        a waterskin
+Desc2:        A waterskin is here.
+Desc3:
+  This waterskin is full of &Ccool&N clear
+water.
+End Desc3
+Weight:       1
+Cost:         15
+Type:         Drink
+DrinkPct:     60

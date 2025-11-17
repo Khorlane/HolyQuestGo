@@ -1,0 +1,10 @@
+ObjectId:     SnakeTongue
+Names:        Snake Tongue SnakeTongue
+Desc1:        a snake tongue
+Desc2:        A snake tongue.
+Desc3:
+  A snake tongue.
+End Desc3
+Weight:       1
+Cost:         6
+Type:         Junk

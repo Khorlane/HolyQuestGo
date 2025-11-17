@@ -1,0 +1,34 @@
+RoomId:       WildernessTrail357
+RoomType:     None
+Terrain:      Hill
+RoomName:     Wilderness Trail
+RoomDesc:
+  This land doesn't recieve much rainfall and the ground is
+composed primarily of infertile Senonian Chalk. During the
+winter months, the wilderness usually has a light covering
+of green grass.
+
+  This is a wild, barren, uninhabitable region, fit only to
+afford scanty pasturage for sheep and goats, and a secure
+home for leopards, bears, wild goats, and outlaws.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: WildernessTrail356
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: WildernessTrailJunction385
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

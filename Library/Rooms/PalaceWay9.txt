@@ -1,0 +1,28 @@
+RoomId:       PalaceWay9
+RoomType:     None
+Terrain:      Street
+RoomName:     Palace Way
+RoomDesc:
+  This broad, clean, but busy street passes before the
+palace citadel.
+End of RoomDesc
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: JesseSquare8
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     West
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: PalaceWay10
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

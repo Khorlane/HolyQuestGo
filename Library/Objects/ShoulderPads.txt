@@ -1,0 +1,12 @@
+ObjectId:     ShoulderPads
+Names:        Shoulder Pads ShoulderPads
+Desc1:        a pair of shoulder pads
+Desc2:        A pair of shoulder pads is here.
+Desc3:
+  These shoulder pads are better than nothing.
+End Desc3
+Weight:       1
+Cost:         9
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Shoulders

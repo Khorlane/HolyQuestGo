@@ -1,0 +1,18 @@
+MobileId:  BrownBear
+Names:     Brown Bear BrownBear
+Sex:       M
+Desc1:     a brown bear
+Desc2:     A brown bear aimlessly swats the air.
+Desc3:
+  The bown bear pauses from his aimless swatting, staring in your direction.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     14
+HitPoints: 0
+Armor:     0
+Attack:    Mauls
+Damage:    0
+ExpPoints: 0
+Loot:      Bear
+Talk:      Bear

@@ -1,0 +1,37 @@
+RoomId:       ValleyoftheKidron67
+RoomType:     None
+Terrain:      Road
+RoomName:     Valley of the Kidron
+RoomDesc:
+  The Kidron brook flows through this valley, but
+only in the winter. It is just a dry bed during the
+summer. To the east is a vineyard.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyoftheKidron46
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     East
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: VineyardPath382
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: ValleyoftheKidron66
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

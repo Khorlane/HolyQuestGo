@@ -1,0 +1,27 @@
+RoomId:       BethlehemRoad480
+RoomType:     None
+Terrain:      Road
+RoomName:     Bethlehem Road
+RoomDesc:
+  The road continue north and south.
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemRoad479
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     South
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: BethlehemRoad481
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

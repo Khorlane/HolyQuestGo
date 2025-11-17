@@ -1,0 +1,28 @@
+RoomId:       RavineBottom461
+RoomType:     None
+Terrain:      Road
+RoomName:     Ravine Bottom
+RoomDesc:
+  The ravine walls tower above your head, causing the sun
+to shine in this part of the ravine only at noontime
+End of RoomDesc
+
+ExitName:     North
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom419
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+ExitName:     SouthEast
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: RavineBottom463
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room

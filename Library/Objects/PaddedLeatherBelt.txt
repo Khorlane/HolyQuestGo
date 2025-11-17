@@ -1,0 +1,13 @@
+ObjectId:     PaddedLeatherBelt
+Names:        Padded Leather Belt PaddedLeather LeatherBelt PaddedLeatherBelt
+Desc1:        a padded leather belt
+Desc2:        A padded leather belt is here.
+Desc3:
+  This is a leather belt has soft padding on back and a smooth,
+lightly decorated finish on the front.
+End Desc3
+Weight:       1
+Cost:         773
+Type:         Armor
+ArmorValue:   6
+ArmorWear:    Waist

@@ -1,0 +1,13 @@
+ObjectId:     GoatskinHelmet
+Names:        Goat Skin Helmet GoatSkin SkinHelmet GoatskinHelmet
+Desc1:        a goatskin helmet
+Desc2:        A goatskin helmet is here.
+Desc3:
+  This helmet is made of layered goatskin and formed to fit
+snuggly on your head.
+End Desc3
+Weight:       2
+Cost:         106
+Type:         Armor
+ArmorValue:   3
+ArmorWear:    Head

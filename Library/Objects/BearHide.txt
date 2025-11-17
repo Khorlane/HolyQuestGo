@@ -1,0 +1,10 @@
+ObjectId:     BearHide
+Names:        Bear Hide BearHide
+Desc1:        a bear's hide
+Desc2:        A bear hide.
+Desc3:
+  A bear hide.
+End Desc3
+Weight:       1
+Cost:         17
+Type:         Junk

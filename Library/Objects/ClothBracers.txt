@@ -1,0 +1,12 @@
+ObjectId:     ClothBracers
+Names:        Cloth Bracers ClothBracers
+Desc1:        a pair of cloth bracers
+Desc2:        A pair of cloth bracers is here.
+Desc3:
+  This pair of bracers is made of cloth.
+End Desc3
+Weight:       1
+Cost:         14
+Type:         Armor
+ArmorValue:   1
+ArmorWear:    Arms

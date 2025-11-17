@@ -1,0 +1,18 @@
+MobileId:  Thief
+Names:     Thief
+Sex:       M
+Desc1:     a thief
+Desc2:     A thief sneaking around the rocks.
+Desc3:
+  A thief eyes you warily, ready to steal your life.
+End Desc3
+Action:    None
+Faction:   Neutral
+Level:     8
+HitPoints: 0
+Armor:     0
+Attack:    Stabs
+Damage:    0
+ExpPoints: 0
+Loot:      Thief
+Talk:      Thief

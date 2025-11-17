@@ -1,0 +1,13 @@
+ObjectId:     PaddedLeatherCloak
+Names:        Padded Leather Cloak PaddedLeather LeatherCloak PaddedLeatherCloak
+Desc1:        a padded leather cloak
+Desc2:        A padded leather cloak is here.
+Desc3:
+  This cloak is made of leather and padding making it strong and offering
+protection from the elements as well as enemies.
+End Desc3
+Weight:       3
+Cost:         1046
+Type:         Armor
+ArmorValue:   8
+ArmorWear:    Back

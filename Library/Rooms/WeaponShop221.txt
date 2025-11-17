@@ -1,0 +1,21 @@
+RoomId:       WeaponShop221
+RoomType:     None
+Terrain:      Street
+RoomName:     Weapon Shop
+RoomDesc:
+  Weapons are displayed all around the shop. From the
+look of the weapons, it appears that high quality is
+not of prime concern.
+End of RoomDesc
+
+ExitName:     Street
+ExitDesc:     
+You see nothing special.
+ExitToRoomId: MarketStreet34
+ExitDoor:     No
+ExitLocked    No
+ExitKeyObjId: None
+
+End of Exits
+
+End of Room
