@@ -93,11 +93,9 @@ func GetStartTime() {
 		return
 	}
 	scanner := bufio.NewScanner(CalendarFile)
-	var stuff string
+	stuff := ""
 	if scanner.Scan() {
 		stuff = scanner.Text()
-	} else {
-		stuff = ""
 	}
 	CloseCalendarFile()
 	pCalendar.Year      = StrToInt(StrGetWord(stuff, 1))
