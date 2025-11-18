@@ -11,13 +11,11 @@ var LogFile *os.File
 // Open log file
 func OpenLogFile() {
 	LogFileName := LOG_DIR + "SrvrLog.txt"
-
 	if _, Err := os.Stat(LogFileName); Err == nil {
 		LogTime := fmt.Sprintf("%d", time.Now().Unix())
 		LogSaveFileName := LogFileName[:len(LogFileName)-4] + "." + LogTime + ".txt"
 		os.Rename(LogFileName, LogSaveFileName)
 	}
-
 	var Err error
 	LogFile, Err = os.Create(LogFileName)
 	if Err != nil {
@@ -42,7 +40,6 @@ func LogIt(Message string) {
 		fmt.Println("Log file is not open")
 		return
 	}
-
 	DisplayCurrentTime := time.Now().Format("2006-01-02 15:04:05 ")
 	LogMessage := DisplayCurrentTime + Message + "\n"
 	LogFile.WriteString(LogMessage)

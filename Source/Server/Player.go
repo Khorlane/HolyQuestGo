@@ -126,3 +126,8 @@ func CreatePrompt(pPlayer *Player) {
 	pPlayer.Output += mpStr + "M "
 	pPlayer.Output += "> "
 }
+
+// Return the current output string for the player
+func GetPlayerOutput(pPlayer *Player) string {
+	return pPlayer.Output
+}
