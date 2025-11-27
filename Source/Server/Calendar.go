@@ -33,7 +33,8 @@ var pCalendar =	 &Calendar{
 	TimeToAdvanceHour: 60,
 }
 
-func CreateCalendar() *Calendar {
+// Initializes the calendar system
+func CalendarConstructor() {
 	DEBUGIT(1)
 	timer := time.Now().Unix()
 	pCalendar.TimeToAdvanceHour = timer + REAL_MINUTES_PER_HOUR*60
@@ -45,7 +46,12 @@ func CreateCalendar() *Calendar {
 	LoadDayOfMonthArray()
 	LoadHourNamesArray()
 	LoadMonthNamesArray()
-	return pCalendar
+}
+
+// Cleans up the calendar system
+func CalendarDestructor() {
+	DEBUGIT(1)
+	SaveTime()
 }
 
 // Advances the in-game time by one hour
@@ -74,6 +80,24 @@ func AdvanceTime() {
 		pCalendar.Month = 1
 	}
 	SaveTime()
+}
+
+// Format and return the current in-game date and time
+func GetTime() string {
+	DEBUGIT(1)
+	FormattedDateTime := ""
+	Stuff := pCalendar.DayNames[pCalendar.DayOfWeek-1]
+	FormattedDateTime += Stuff + ", "
+	Stuff = pCalendar.MonthNames[pCalendar.Month-1]
+	FormattedDateTime += Stuff + " "
+	Stuff = pCalendar.DayOfMonth[pCalendar.Day-1]
+	FormattedDateTime += Stuff + ", "
+	Buffer := fmt.Sprintf("%d ", pCalendar.Year)
+	Stuff = Buffer
+	FormattedDateTime += Stuff
+	Stuff = pCalendar.HourNames[pCalendar.Hour-1]
+	FormattedDateTime += Stuff
+	return FormattedDateTime
 }
 
 // Closes the calendar file
@@ -137,23 +161,21 @@ func GetStartTime() {
 	LogIt(LogBuf)
 }
 
-// Gets the current in-game date and time
-// Format and return the current in-game date and time
-func GetTime() string {
+// Opens the calendar file for reading
+func OpenCalendarFile() {
 	DEBUGIT(1)
-	FormattedDateTime := ""
-	Stuff := pCalendar.DayNames[pCalendar.DayOfWeek-1]
-	FormattedDateTime += Stuff + ", "
-	Stuff = pCalendar.MonthNames[pCalendar.Month-1]
-	FormattedDateTime += Stuff + " "
-	Stuff = pCalendar.DayOfMonth[pCalendar.Day-1]
-	FormattedDateTime += Stuff + ", "
-	Buffer := fmt.Sprintf("%d ", pCalendar.Year)
-	Stuff = Buffer
-	FormattedDateTime += Stuff
-	Stuff = pCalendar.HourNames[pCalendar.Hour-1]
-	FormattedDateTime += Stuff
-	return FormattedDateTime
+	CalendarFileIsOpen = false
+	CalendarFileName := CONTROL_DIR + "Calendar.txt"
+	CalendarFileInp, err := os.Open(CalendarFileName)
+	if err != nil {
+		LogBuf = "Calendar file not found."
+		LogIt(LogBuf)
+		LogBuf = "Forcing start date to Year: 1 Month: 1 Day: 1 Hour: 1 Day of Week: 1"
+		LogIt(LogBuf)
+		return
+	}
+	CalendarFile = CalendarFileInp
+	CalendarFileIsOpen = true
 }
 
 // Loads the day names from a file into the DayNames array
@@ -238,23 +260,6 @@ func LoadMonthNamesArray() {
 			pCalendar.MonthNames = append(pCalendar.MonthNames, line)
 		}
 	}
-}
-
-// Opens the calendar file for reading
-func OpenCalendarFile() {
-	DEBUGIT(1)
-	CalendarFileIsOpen = false
-	CalendarFileName := CONTROL_DIR + "Calendar.txt"
-	CalendarFileInp, err := os.Open(CalendarFileName)
-	if err != nil {
-		LogBuf = "Calendar file not found."
-		LogIt(LogBuf)
-		LogBuf = "Forcing start date to Year: 1 Month: 1 Day: 1 Hour: 1 Day of Week: 1"
-		LogIt(LogBuf)
-		return
-	}
-	CalendarFile = CalendarFileInp
-	CalendarFileIsOpen = true
 }
 
 // Saves the current in-game time to the calendar file
