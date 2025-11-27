@@ -12,10 +12,9 @@ import (
 func BigDog() {
 	var (
 		EventTick        int
-		MobHealTick      int
-		whoIsOnlineTick  int
-		stopItFileName   string
 		goGoGoFileName   string
+		MobHealTick      int
+		stopItFileName   string
 	)
 
 	PrintIt("OMugs Starting")
@@ -38,11 +37,10 @@ func BigDog() {
 	LogBuf = "Home directory is " + HomeDir
 	LogIt(LogBuf)
 	EventTick = EVENT_TICK
-	MobHealTick = 0
-	whoIsOnlineTick = 0
+	MobHealTick      = 0
 	StateConnections = true
-	StateRunning = true
-	StateStopping = false
+	StateRunning     = true
+	StateStopping    = false
 	if ValErr := ValidateIt("All"); ValErr {
 		LogBuf = "OMugs has stopped"
 		LogIt(LogBuf)
@@ -83,17 +81,9 @@ func BigDog() {
 		} else if StateStopping {
 			StateRunning = false
 		}
-		whoIsOnlineTick++
-		if whoIsOnlineTick >= WHO_IS_ONLINE_TICK {
-			whoIsOnlineTick = 0
-			pWhoIsOnline := NewWhoIsOnline(HomeDir)
-			pWhoIsOnline.Destroy()
-		}
 	}
 	ClearDescriptor()
 	SockClosePort(PORT_NBR)
-	pWhoIsOnline := NewWhoIsOnline(HomeDir)
-	pWhoIsOnline.Destroy()
 	CalendarDestructor()
 	LogBuf = "OMugs has stopped"
 	LogIt(LogBuf)
@@ -115,6 +105,17 @@ func FileExist(Name string) bool {
 	return !os.IsNotExist(err)
 }
 
+// Rename renames a file
+func Rename(file1, file2 string) error {
+	return os.Rename(file1, file2)
+}
+
+// Remove deletes a file and returns an error value
+func Remove(file1 string) error {
+	err := os.Remove(file1)
+	return err
+}
+
 // Return the number of seconds since the epoch
 func GetTimeSeconds() int {
 	now := time.Now()
@@ -128,36 +129,9 @@ func PrintIt(message string) {
 	println(message)
 }
 
-// Remove deletes a file and returns an error value
-func Remove(file1 string) error {
-	err := os.Remove(file1)
-	return err
-}
-
-// Rename renames a file
-func Rename(file1, file2 string) error {
-	return os.Rename(file1, file2)
-}
-
 // Pause execution for the specified duration
 func Sleep(milliseconds int) {
 	time.Sleep(time.Duration(milliseconds) * time.Millisecond)
-}
-
-// Create a new WhoIsOnline instance
-func NewWhoIsOnline(homeDir string) *WhoIsOnline {
-	// Placeholder for creating a new WhoIsOnline instance
-	return &WhoIsOnline{}
-}
-
-// Clean up the WhoIsOnline instance
-func (w *WhoIsOnline) Destroy() {
-	// Placeholder for destroying the WhoIsOnline instance
-}
-
-// Represents the online players
-type WhoIsOnline struct {
-	// Placeholder for WhoIsOnline fields
 }
 
 //-----------------------------------------------------------------------------
@@ -474,6 +448,27 @@ func StrSetAt(Str1 string, Position int, c byte) string {
 	return string(b)
 }
 
+// Remove leading, trailing, and extra spaces
+func StrSqueeze(Str1 string) string {
+  // Trim leading and trailing spaces
+  Str1 = StrTrimLeft(Str1)
+  Str1 = StrTrimRight(Str1)
+  // Replace consecutive spaces with a single space
+  for strings.Contains(Str1, "  ") {
+    Str1 = strings.ReplaceAll(Str1, "  ", " ")
+  }
+  return Str1
+}
+
+// Convert a string to an integer (Provides stoi functionality)
+func StrToInt(Str string) int {
+  Nbr, err := strconv.Atoi(Str)
+  if err != nil {
+    return 0
+  }
+  return Nbr
+}
+
 // Remove leading whitespace
 func StrTrimLeft(Str1 string) string {
   if Str1 == "" {
@@ -533,26 +528,4 @@ func StrWordCount(Str1 string) int {
 	}
 
 	return NWords
-}
-
-// Remove leading, trailing, and extra spaces
-func StrSqueeze(Str1 string) string {
-  // Trim leading and trailing spaces
-  Str1 = StrTrimLeft(Str1)
-  Str1 = StrTrimRight(Str1)
-  // Replace consecutive spaces with a single space
-  for strings.Contains(Str1, "  ") {
-    Str1 = strings.ReplaceAll(Str1, "  ", " ")
-  }
-  return Str1
-}
-
-// Convert a string to an integer
-func StrToInt(Str string) int {
-  Nbr, err := strconv.Atoi(Str)
-  if err != nil {
-    // Handle the error by returning 0 as a default value
-    return 0
-  }
-  return Nbr
 }
