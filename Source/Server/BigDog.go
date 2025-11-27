@@ -51,6 +51,7 @@ func BigDog() {
 	}
 	SockOpenPort(PORT_NBR)
 	InitDescriptor()
+	CalendarConstructor()
 	for StateRunning {
 		time.Sleep(MILLI_SECONDS_TO_SLEEP * time.Millisecond)
 		AdvanceTime()
@@ -93,6 +94,7 @@ func BigDog() {
 	SockClosePort(PORT_NBR)
 	pWhoIsOnline := NewWhoIsOnline(HomeDir)
 	pWhoIsOnline.Destroy()
+	CalendarDestructor()
 	LogBuf = "OMugs has stopped"
 	LogIt(LogBuf)
 	CloseLogFile()
