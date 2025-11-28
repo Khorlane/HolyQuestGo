@@ -16,3 +16,9 @@ func SockOpenPort(port int) {
 
 func SockClosePort(port int) {
 }
+
+// Close a socket handle (placeholder for C++ closesocket)
+func CloseSocket(fd int) int {
+  // TODO: replace with real socket close when socket layer is added
+  return 0
+}
