@@ -2,12 +2,6 @@ package server
 
 import "time"
 
-// pDnodeActor is a global pointer to a Dnode instance.
-var pDnodeActor *Dnode
-//lint:ignore U1000 This field is reserved for future use
-var pDnodeSrc   *Dnode
-//lint:ignore U1000 This field is reserved for future use
-var pDnodeTgt   *Dnode
 var DnodeCount   int = 0
 
 // Descriptor Node structure
@@ -24,56 +18,83 @@ type Dnode struct {
   CmdTime2                        time.Time
   CmdTime3                        time.Time
   DnodeFd                         int
+	FightTick                       int
+	HungerThirstTick                int
+	InputTick                       int
+	PlayerInput                     string
   PlayerIpAddress                 string
   PlayerName                      string
 	PlayerNewCharacter              string
 	PlayerOut                       string
 	PlayerPassword                  string
-	PlayerWrongPasswordCount        int
-	FightTick                       int
-	HungerThirstTick                int
-	InputTick                       int
-	StatsTick                       int
 	PlayerStateAfk                  bool
 	PlayerStateBye                  bool
 	PlayerStateFighting             bool
 	PlayerStateInvisible            bool
 	PlayerStateLoggingOn            bool
 	PlayerStatePlaying              bool
+	PlayerStateReconnecting         bool
 	PlayerStateSendBanner           bool
 	PlayerStateWaitMaleFemale       bool
 	PlayerStateWaitName             bool
 	PlayerStateWaitNameConfirmation bool
 	PlayerStateWaitNewCharacter     bool
 	PlayerStateWaitPassword         bool
+	PlayerWrongPasswordCount        int
+	StatsTick                       int
 }
 
-// NewDnode creates and initializes a new Dnode instance.
-func NewDnode(SocketHandle int, IpAddress string) *Dnode {
+// pDnodeActor is a global pointer to a Dnode instance.
+var pDnodeActor  *Dnode
+//lint:ignore U1000 This field is reserved for future use
+var pDnodeSrc    *Dnode
+//lint:ignore U1000 This field is reserved for future use
+var pDnodeTgt    *Dnode
+
+//lint:ignore U1000 This field is reserved for future use
+var pDnodeCursor *Dnode
+//lint:ignore U1000 This field is reserved for future use
+var pDnodeHead   *Dnode
+
+// Create and initialize a new Dnode instance
+func DnodeConstructor(SocketHandle int, IpAddress string) *Dnode {
 	DnodeCount = DnodeCount + 1
 	return &Dnode{
-		DnodeFd:                 SocketHandle,
-		PlayerIpAddress:         IpAddress,
-		PlayerName:              "Player name unknown",
-		PlayerNewCharacter:      "",
-		PlayerOut:               "",
-		PlayerPassword:          "",
-		PlayerWrongPasswordCount: 0,
-		FightTick:               0,
-		HungerThirstTick:        0,
-		InputTick:               0,
-		StatsTick:               0,
-		PlayerStateAfk:          false,
-		PlayerStateBye:          false,
-		PlayerStateFighting:     false,
-		PlayerStateInvisible:    false,
-		PlayerStateLoggingOn:    false,
-		PlayerStatePlaying:      false,
-		PlayerStateSendBanner:   true,
-		PlayerStateWaitMaleFemale: false,
-		PlayerStateWaitName:     false,
+		DnodeFd:                         SocketHandle,
+		PlayerIpAddress:                 IpAddress,
+		PlayerName:                      "Player name unknown",
+		PlayerNewCharacter:              "",
+		PlayerOut:                       "",
+		PlayerPassword:                  "",
+		PlayerWrongPasswordCount:        0,
+		FightTick:                       0,
+		HungerThirstTick:                0,
+		InputTick:                       0,
+		StatsTick:                       0,
+		PlayerStateAfk:                  false,
+		PlayerStateBye:                  false,
+		PlayerStateFighting:             false,
+		PlayerStateInvisible:            false,
+		PlayerStateLoggingOn:            false,
+		PlayerStatePlaying:              false,
+		PlayerStateSendBanner:           true,
+		PlayerStateWaitMaleFemale:       false,
+		PlayerStateWaitName:             false,
 		PlayerStateWaitNameConfirmation: false,
-		PlayerStateWaitNewCharacter: false,
-		PlayerStateWaitPassword: false,
+		PlayerStateWaitNewCharacter:     false,
+		PlayerStateWaitPassword:         false,
 	}
+}
+
+// Dnode destructor
+func DnodeDestructor(pDnode *Dnode) {
+  DnodeCount--
+  pDnode.pDnodePrev.pDnodeNext = pDnode.pDnodeNext
+  pDnode.pDnodeNext.pDnodePrev = pDnode.pDnodePrev
+}
+
+
+// Return Dnode count
+func GetDnodeCount() int {
+  return DnodeCount
 }
