@@ -1,6 +1,9 @@
 package server
 
-import "time"
+import (
+	"syscall"
+	"time"
+)
 
 var DnodeCount   int = 0
 
@@ -17,11 +20,11 @@ type Dnode struct {
   CmdTime1                        time.Time
   CmdTime2                        time.Time
   CmdTime3                        time.Time
-  DnodeFd                         int
+  DnodeFd                         syscall.Handle
 	FightTick                       int
 	HungerThirstTick                int
 	InputTick                       int
-	PlayerInput                     string
+	PlayerInp                       string
   PlayerIpAddress                 string
   PlayerName                      string
 	PlayerNewCharacter              string
@@ -44,20 +47,16 @@ type Dnode struct {
 	StatsTick                       int
 }
 
-// pDnodeActor is a global pointer to a Dnode instance.
 var pDnodeActor  *Dnode
 //lint:ignore U1000 This field is reserved for future use
 var pDnodeSrc    *Dnode
 //lint:ignore U1000 This field is reserved for future use
 var pDnodeTgt    *Dnode
-
-//lint:ignore U1000 This field is reserved for future use
 var pDnodeCursor *Dnode
-//lint:ignore U1000 This field is reserved for future use
 var pDnodeHead   *Dnode
 
 // Create and initialize a new Dnode instance
-func DnodeConstructor(SocketHandle int, IpAddress string) *Dnode {
+func DnodeConstructor(SocketHandle syscall.Handle, IpAddress string) *Dnode {
 	DnodeCount = DnodeCount + 1
 	return &Dnode{
 		DnodeFd:                         SocketHandle,

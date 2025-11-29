@@ -63,7 +63,7 @@ type Player struct {
 }
 
 // NewPlayer creates and initializes a new Player instance.
-func NewPlayer() *Player {
+func PlayerConstructor() *Player {
 	return &Player{
 		pPlayerGrpMember: [GRP_LIMIT]*Player{},
 		pPlayerFollowers: [GRP_LIMIT]*Player{},
@@ -115,6 +115,28 @@ func NewPlayer() *Player {
 		WeaponDesc1:      "",
 		WeaponType:       "",
 	}
+}
+
+// player destructor
+func PlayerDestructor(pPlayer *Player) {
+	// Currently no dynamic memory to free
+}
+
+// Placeholder for: void Player::Save()
+func pDnodeActor_pPlayer_Save() {
+}
+
+// Placeholder for: void Player::Save()
+func pDnodeOthers_pPlayer_Save() {
+}
+
+// Placeholder for: void Player::CreatePrompt()
+func pDnodeActor_pPlayer_CreatePrompt() {
+}
+
+// Placeholder for: string Player::GetOutput()
+func pDnodeActor_pPlayer_GetOutput() string {
+	return ""
 }
 
 // Create player prompt

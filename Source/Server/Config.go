@@ -7,7 +7,7 @@ import (
 // Configuration constants
 const (
 	// Version information
-	VERSION = "2022.08.25"
+	VERSION = "2025.11.28"
 
 	// Debugging level
 	DEBUG_LVL = 1 // 0 to turn off, 1 or more to turn on
@@ -128,19 +128,6 @@ var (
 	Stuff             string
 	TmpStr            string
 	ValErr            bool
-)
-
-// Color codes
-const (
-	Normal        = "\x1B[0;m"   // &N
-	BrightBlack   = "\x1B[1;30m" // &K
-	BrightRed     = "\x1B[1;31m" // &R
-	BrightGreen   = "\x1B[1;32m" // &G
-	BrightYellow  = "\x1B[1;33m" // &Y
-	BrightBlue    = "\x1B[1;34m" // &B
-	BrightMagenta = "\x1B[1;35m" // &M
-	BrightCyan    = "\x1B[1;36m" // &C
-	BrightWhite   = "\x1B[1;37m" // &W
 )
 
 // DebugIt logs a message if the debug level is greater than or equal to the specified level.
