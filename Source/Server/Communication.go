@@ -11,7 +11,7 @@ import (
 var pDnodeOthers *Dnode
 var ListenSocket  syscall.Handle
 var ValidCmds     []string
-var SockAddr syscall.Sockaddr
+var SockAddr      syscall.Sockaddr
 
 const WSAEWOULDBLOCK syscall.Errno = 10035
 const WSAEINTR       syscall.Errno = 10004
@@ -22,7 +22,194 @@ func LogonGreeting() {
 func UpdatePlayerStats() {
 }
 
-func SendToRoom(RoomId string, Message string) {
+// Return pointer of target, if target in 'playing' state
+func GetTargetDnode(TargetName string) *Dnode {
+  var pDnodeLookup *Dnode
+  var TargetFound   bool
+  var LookupName    string
+
+  TargetFound = false
+  TargetName = StrMakeLower(TargetName)
+  SetpDnodeCursorFirst()
+  for !EndOfDnodeList() {
+    pDnodeLookup = GetDnode()
+    LookupName = StrMakeLower(pDnodeLookup.PlayerName)
+    if TargetName == LookupName {
+      if pDnodeLookup.PlayerStatePlaying {
+        TargetFound = true
+        break
+      }
+    }
+    SetpDnodeCursorNext()
+  }
+  RepositionDnodeCursor()
+  if TargetFound {
+    return pDnodeLookup
+  }
+  return nil
+}
+
+// Check to see if player is fighting
+func IsFighting() bool {
+  var RandomNumber int
+  var FightingMsg string
+
+  if !pDnodeActor.PlayerStateFighting {
+    return false
+  }
+  RandomNumber = GetRandomNumber(5)
+  switch RandomNumber {
+  case 1:
+    FightingMsg = "You are fighting for your life!"
+  case 2:
+    FightingMsg = "Not now, your are fighting."
+  case 3:
+    FightingMsg = "No can do, you are fighting"
+  case 4:
+    FightingMsg = "You are busy swinging a weapon."
+  case 5:
+    FightingMsg = "NO!, now get back in the fight!."
+  default:
+    FightingMsg = "You are fighting."
+  }
+  pDnodeActor.PlayerOut += FightingMsg
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+  return true
+}
+
+// Check to see if player is sleeping
+func IsSleeping() bool {
+  var RandomNumber int
+  var SleepingMsg string
+
+  if pDnodeActor.pPlayer.Position != "sleep" {
+    return false
+  }
+  RandomNumber = GetRandomNumber(5)
+  switch RandomNumber {
+  case 1:
+    SleepingMsg = "You must be dreaming."
+  case 2:
+    SleepingMsg = "You dream about doing something."
+  case 3:
+    SleepingMsg = "It's such a nice dream, please don't wake me."
+  case 4:
+    SleepingMsg = "Your snoring almost wakes you up."
+  case 5:
+    SleepingMsg = "Dream, dream, dreeeeaaaammmm, all I do is dream."
+  default:
+    SleepingMsg = "You must be dreaming."
+  }
+  pDnodeActor.PlayerOut += SleepingMsg
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+  return true
+}
+
+// Send output to all players
+func SendToAll(PlayerMsg, AllMsg string) {
+  SetpDnodeCursorFirst()
+  for !EndOfDnodeList() {
+    pDnodeOthers = GetDnode()
+    if pDnodeActor == pDnodeOthers {
+      pDnodeActor.PlayerOut += PlayerMsg
+    } else {
+      if pDnodeOthers.PlayerStatePlaying {
+        if pDnodeActor.PlayerStateInvisible {
+          SetpDnodeCursorNext()
+          continue
+        }
+        pDnodeOthers.PlayerOut += AllMsg
+        CreatePrompt(pDnodeOthers.pPlayer)
+        pDnodeOthers.PlayerOut += GetPlayerOutput(pDnodeOthers.pPlayer)
+      }
+    }
+    SetpDnodeCursorNext()
+  }
+  RepositionDnodeCursor()
+}
+
+// Send output to other players in the same room as player
+func SendToRoom(TargetRoomId, MsgText string) {
+  var LookupRoomId string
+
+  SetpDnodeCursorFirst()
+  for !EndOfDnodeList() {
+    pDnodeOthers = GetDnode()
+    if pDnodeOthers.PlayerStatePlaying {
+      LookupRoomId = pDnodeOthers.pPlayer.RoomId
+      if pDnodeSrc != pDnodeOthers {
+        if pDnodeTgt != pDnodeOthers {
+          if TargetRoomId == LookupRoomId {
+            if pDnodeOthers.pPlayer.Position != "sleep" {
+              if pDnodeSrc != nil {
+                if pDnodeSrc.PlayerStateInvisible {
+                  SetpDnodeCursorNext()
+                  continue
+                }
+              }
+              if pDnodeOthers.PlayerStateInvisible {
+                SetpDnodeCursorNext()
+                continue
+              }
+              pDnodeOthers.PlayerOut += "\r\n"
+              pDnodeOthers.PlayerOut += MsgText
+              pDnodeOthers.PlayerOut += "&N"
+              pDnodeOthers.PlayerOut += "\r\n"
+              CreatePrompt(pDnodeOthers.pPlayer)
+              pDnodeOthers.PlayerOut += GetPlayerOutput(pDnodeOthers.pPlayer)
+            }
+          }
+        }
+      }
+    }
+    SetpDnodeCursorNext()
+  }
+  RepositionDnodeCursor()
+}
+
+// Show players in a given room
+func ShowPlayersInRoom(pDnode *Dnode) {
+  var LookupRoomId string
+  var TargetRoomId string
+
+  TargetRoomId = pDnode.pPlayer.RoomId
+  SetpDnodeCursorFirst()
+  for !EndOfDnodeList() {
+    pDnodeOthers = GetDnode()
+    if pDnode != pDnodeOthers {
+      if pDnodeOthers.PlayerStatePlaying {
+        LookupRoomId = pDnodeOthers.pPlayer.RoomId
+        if TargetRoomId == LookupRoomId {
+          if pDnodeOthers.PlayerStateInvisible {
+            SetpDnodeCursorNext()
+            continue
+          }
+          pDnode.PlayerOut += "\r\n"
+          pDnode.PlayerOut += "&W"
+          pDnode.PlayerOut += pDnodeOthers.PlayerName
+          pDnode.PlayerOut += " is "
+          if pDnodeOthers.PlayerStateFighting {
+            pDnode.PlayerOut += "engaged in a fight!"
+          } else if pDnodeOthers.pPlayer.Position == "sleep" {
+            pDnode.PlayerOut += "here, sound asleep."
+          } else {
+            pDnode.PlayerOut += pDnodeOthers.pPlayer.Position
+            if pDnodeOthers.pPlayer.Position == "sit" {
+              pDnode.PlayerOut += "t"
+            }
+            pDnode.PlayerOut += "ing here."
+          }
+          pDnode.PlayerOut += "&N"
+        }
+      }
+    }
+    SetpDnodeCursorNext()
+  }
+  RepositionDnodeCursor()
 }
 
 // Close a socket handle (C++ closesocket equivalent)
@@ -133,7 +320,6 @@ func SockRecv() {
   SetpDnodeCursorFirst()
   for !EndOfDnodeList() {
     pDnodeActor = GetDnode()
-
     // Check connection status (logon timeout)
     if !pDnodeActor.PlayerStatePlaying {
       pDnodeActor.InputTick++
@@ -146,11 +332,9 @@ func SockRecv() {
         pDnodeActor.PlayerOut += "No input ... closing connection"
       }
     }
-
     // Receive / exception handling via non-blocking recv
     buf := make([]byte, MAX_INPUT_LENGTH)
     n, _, err := syscall.Recvfrom(pDnodeActor.DnodeFd, buf, 0)
-
     if err != nil {
       if err != WSAEWOULDBLOCK && err != WSAEINTR {
         // Exception: kick out connection
@@ -178,7 +362,6 @@ func SockRecv() {
         pDnodeActor.InputTick = 0
       }
     }
-
     // Banner for new connection
     if pDnodeActor.PlayerStateSendBanner {
       pDnodeActor.PlayerStateSendBanner = false
@@ -189,7 +372,6 @@ func SockRecv() {
       pDnodeActor.PlayerOut += "Create a new character Y-N?"
       pDnodeActor.PlayerOut += "\r\n"
     }
-
     // Update player stats
     if pDnodeActor.PlayerStatePlaying {
       pDnodeActor.StatsTick++
@@ -229,7 +411,6 @@ func SockRecv() {
         }
       }
     }
-
     // Handle fights
     if pDnodeActor.PlayerStateFighting {
       pDnodeActor.FightTick++
@@ -238,7 +419,6 @@ func SockRecv() {
         Violence()
       }
     }
-
     // Is game stopping?
     if StateStopping {
       SetpDnodeCursorFirst()
@@ -261,13 +441,11 @@ func SockRecv() {
       }
       RepositionDnodeCursor()
     }
-
     // Send player output
     if StrGetLength(pDnodeActor.PlayerOut) > 0 {
       Color()
       SockSend(pDnodeActor.PlayerOut)
     }
-
     // Is player quitting?
     if pDnodeActor.PlayerStateBye {
       if !pDnodeActor.PlayerStateReconnecting {
@@ -290,7 +468,6 @@ func SockRecv() {
       SetpDnodeCursorNext()
       continue
     }
-
     // Process player input
     if !StateStopping {
       LineFeedPosition := StrFindOneOf(pDnodeActor.PlayerInp, "\r\n")
@@ -310,7 +487,6 @@ func SockRecv() {
         CommandParse()
       }
     }
-
     SetpDnodeCursorNext()
   }
 }
@@ -321,6 +497,10 @@ func Color() {
 
  // Load command array
 func CommandArrayLoad() {
+}
+
+// Command check
+func CommandCheck() {
 }
 
 // Command parsing
