@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"syscall"
@@ -491,17 +492,96 @@ func SockRecv() {
   }
 }
 
-// Color processing placeholder
+// Replace or strip out color codes
 func Color() {
+  if !pDnodeActor.PlayerStatePlaying {
+    return
+  }
+  sPlayerOut := pDnodeActor.PlayerOut
+  if pDnodeActor.pPlayer.Color {
+    StrReplace(&sPlayerOut, "&N", Normal)
+    StrReplace(&sPlayerOut, "&K", BrightBlack)
+    StrReplace(&sPlayerOut, "&R", BrightRed)
+    StrReplace(&sPlayerOut, "&G", BrightGreen)
+    StrReplace(&sPlayerOut, "&Y", BrightYellow)
+    StrReplace(&sPlayerOut, "&B", BrightBlue)
+    StrReplace(&sPlayerOut, "&M", BrightMagenta)
+    StrReplace(&sPlayerOut, "&C", BrightCyan)
+    StrReplace(&sPlayerOut, "&W", BrightWhite)
+  } else {
+    StrReplace(&sPlayerOut, "&N", "")
+    StrReplace(&sPlayerOut, "&K", "")
+    StrReplace(&sPlayerOut, "&R", "")
+    StrReplace(&sPlayerOut, "&G", "")
+    StrReplace(&sPlayerOut, "&Y", "")
+    StrReplace(&sPlayerOut, "&B", "")
+    StrReplace(&sPlayerOut, "&M", "")
+    StrReplace(&sPlayerOut, "&C", "")
+    StrReplace(&sPlayerOut, "&W", "")
+  }
+  pDnodeActor.PlayerOut = sPlayerOut
 }
 
- // Load command array
+// Load command array
 func CommandArrayLoad() {
+  ValidCmdsFileName := VALID_CMDS_DIR + "ValidCommands.txt"
+  file, err := os.Open(ValidCmdsFileName)
+  if err != nil {
+    LogBuf = "Communication::CommandArrayLoad - Open Valid Commands file failed (read)"
+    LogIt(LogBuf)
+    return
+  }
+  defer file.Close()
+  ValidCmds = ValidCmds[:0]
+  scanner := bufio.NewScanner(file)
+  for scanner.Scan() {
+    line := scanner.Text()
+    ValidCmds = append(ValidCmds, line)
+  }
+  LogBuf = "Command array loaded"
+  LogIt(LogBuf)
 }
 
-// Command check
-func CommandCheck() {
+// Check command authorization, level, and validity
+func CommandCheck(MudCmdChk string) string {
+  var CommandCheckResult string
+  var ValCmd string
+  var ValCmdInfo string
+  var WhoCanDo string
+
+  CommandCheckResult = "Not Found"
+  for _, ValidCmd := range ValidCmds {
+    ValCmdInfo = ValidCmd
+    ValCmd = StrGetWord(ValCmdInfo, 1)
+    WhoCanDo = StrGetWord(ValCmdInfo, 2)
+    if MudCmdChk == ValCmd {
+      if WhoCanDo == "all" {
+        CommandCheckResult = "Ok"
+        break
+      } else if WhoCanDo == "admin" {
+        if pDnodeActor.pPlayer.Admin {
+          CommandCheckResult = "Ok"
+          break
+        } else {
+          CommandCheckResult = "NotOk"
+        }
+      } else if StrToInt(WhoCanDo) > pDnodeActor.pPlayer.Level {
+        CommandCheckResult = "Level " + WhoCanDo
+        break
+      } else {
+        CommandCheckResult = "Ok"
+        break
+      }
+    }
+  }
+  if CommandCheckResult == "" {
+    LogBuf = "Communication::CommandCheck - Broke!"
+    LogIt(LogBuf)
+    CommandCheckResult = "Not Found"
+  }
+  return CommandCheckResult
 }
+
 
 // Command parsing
 func CommandParse() {
