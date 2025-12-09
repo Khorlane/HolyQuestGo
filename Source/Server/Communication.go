@@ -18,7 +18,6 @@ import (
 )
 
 // Globals
-//lint:ignore U1000 This field is reserved for future use
 var pDnodeOthers *Dnode
 var ListenSocket  syscall.Handle
 var ValidCmds     []string

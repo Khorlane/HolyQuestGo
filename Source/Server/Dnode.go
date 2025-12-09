@@ -17,9 +17,7 @@ var DnodeCount   int = 0
 
 // Descriptor Node structure
 type Dnode struct {
-//lint:ignore U1000 This field is reserved for future use
   pDnodeNext                     *Dnode
-//lint:ignore U1000 This field is reserved for future use
   pDnodePrev                     *Dnode
   pPlayer                        *Player
   CmdName1                        string
@@ -56,9 +54,7 @@ type Dnode struct {
 }
 
 var pDnodeActor  *Dnode
-//lint:ignore U1000 This field is reserved for future use
 var pDnodeSrc    *Dnode
-//lint:ignore U1000 This field is reserved for future use
 var pDnodeTgt    *Dnode
 var pDnodeCursor *Dnode
 var pDnodeHead   *Dnode
