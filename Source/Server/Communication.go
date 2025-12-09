@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"syscall"
+	"time"
 )
 
 // Globals
@@ -492,6 +493,11 @@ func SockRecv() {
   }
 }
 
+// Return current time in milliseconds
+func clock() int64 {
+  return time.Now().UnixMilli()
+}
+
 // Replace or strip out color codes
 func Color() {
   if !pDnodeActor.PlayerStatePlaying {
@@ -582,9 +588,772 @@ func CommandCheck(MudCmdChk string) string {
   return CommandCheckResult
 }
 
-
 // Command parsing
 func CommandParse() {
+  var BadCommandMsg string
+  var CmdStrLength int
+  var CommandCheckResult string
+  var MudCmdChk string
+  var MudCmdOk bool
+  var PositionOfNewline int
+  var RandomNumber int
+
+  //**************************
+  // Get next command string *
+  //**************************
+  CmdStr = pDnodeActor.PlayerInp
+  CmdStrLength = StrGetLength(CmdStr)
+  PositionOfNewline = StrFindOneOf(CmdStr, "\r\n")
+  if PositionOfNewline < 0 {
+    // No newline found, skip out
+    return
+  }
+  CmdStr = StrLeft(CmdStr, PositionOfNewline)
+  pDnodeActor.PlayerInp = StrRight(pDnodeActor.PlayerInp, CmdStrLength-PositionOfNewline)
+  pDnodeActor.PlayerInp = StrTrimLeft(pDnodeActor.PlayerInp)
+  if CmdStr == "" {
+    // Player hit enter without typing anything
+    if !pDnodeActor.PlayerStateLoggingOn {
+      // Player is not logging on
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  //***************
+  // Player logon *
+  //***************
+  if pDnodeActor.PlayerStateLoggingOn {
+    // Player just connected and needs to logon
+    DoLogon()
+    return
+  }
+  //*************
+  // Get MudCmd *
+  //*************
+  MudCmd = StrGetWord(CmdStr, 1)
+  MudCmd = StrMakeLower(MudCmd)
+  // Translate 'n' into 'go north'
+  MudCmd = TranslateWord(MudCmd)
+  if StrCountWords(MudCmd) == 2 {
+    // Re-get MudCmd. In the case of 'go north', MudCmd is 'go'
+    CmdStr = MudCmd
+    MudCmd = StrGetWord(CmdStr, 1)
+    MudCmd = StrMakeLower(MudCmd)
+  }
+  // Check for spamming
+  if MudCmd != "go" {
+    // 'go' command is ok
+    pDnodeActor.CmdName3 = pDnodeActor.CmdName2
+    pDnodeActor.CmdName2 = pDnodeActor.CmdName1
+    pDnodeActor.CmdName1 = MudCmd
+    pDnodeActor.CmdTime3 = pDnodeActor.CmdTime2
+    pDnodeActor.CmdTime2 = pDnodeActor.CmdTime1
+    pDnodeActor.CmdTime1 = clock()
+    if pDnodeActor.CmdName1 == pDnodeActor.CmdName2 {
+      // Command same as last command
+      if pDnodeActor.CmdName1 == pDnodeActor.CmdName3 {
+        // Command same as last two commands
+        if pDnodeActor.CmdTime1-pDnodeActor.CmdTime3 < 1000 {
+          // Stop spamming
+          pDnodeActor.PlayerOut += "&R"
+          pDnodeActor.PlayerOut += "NO SPAMMING!!"
+          pDnodeActor.PlayerOut += "&N"
+          pDnodeActor.PlayerOut += "\r\n"
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerInp = ""
+          return
+        }
+      }
+    }
+  }
+  //****************
+  // Check command *
+  //****************
+  MudCmdOk = false
+  MudCmdChk = MudCmd
+  CommandCheckResult = CommandCheck(MudCmdChk)
+  if CommandCheckResult == "Ok" {
+    // Mud command is Ok for this player
+    MudCmdOk = true
+  } else if StrGetWord(CommandCheckResult, 1) == "Level" {
+    // Level restriction on command
+    pDnodeActor.PlayerOut += "You must attain level "
+    pDnodeActor.PlayerOut += StrGetWord(CommandCheckResult, 2)
+    pDnodeActor.PlayerOut += " before you can use that command."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //******************
+  //* SOCIAL command *
+  //******************
+  if !MudCmdOk {
+    // Not validated yet, maybe cmd is a social
+    if IsSocial() {
+      // Yep, it was a social
+      return
+    }
+  }
+  //**************
+  // Bad command *
+  //**************
+  if !MudCmdOk {
+    // Not a valid cmd and it is not a social
+    RandomNumber = GetRandomNumber(5)
+    switch RandomNumber {
+    case 1:
+      BadCommandMsg = "How's that?"
+    case 2:
+      BadCommandMsg = "You try to give a command, but fail."
+    case 3:
+      BadCommandMsg = "Hmmm, making up commands?"
+    case 4:
+      BadCommandMsg = "Ehh, what's that again?"
+    case 5:
+      BadCommandMsg = "Feeling creative?"
+    default:
+      BadCommandMsg = "Your command is not clear."
+    }
+    pDnodeActor.PlayerOut += BadCommandMsg
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  //**********************
+  //* Process the MudCmd *
+  //**********************
+
+  // ADVANCE command
+  if MudCmd == "advance" {
+    DoAdvance()
+    return
+  }
+
+  // AFK command
+  if MudCmd == "afk" {
+    DoAfk()
+    return
+  }
+
+  // ASSIST command
+  if MudCmd == "assist" {
+    DoAssist()
+    return
+  }
+
+  // BUY command
+  if MudCmd == "buy" {
+    DoBuy()
+    return
+  }
+
+  // CHAT command
+  if MudCmd == "chat" {
+    DoChat()
+    return
+  }
+
+  // COLOR command
+  if MudCmd == "color" {
+    DoColor()
+    return
+  }
+
+  // CONSIDER command
+  if MudCmd == "consider" {
+    DoConsider()
+    return
+  }
+
+  // DELETE command
+  if MudCmd == "delete" {
+    DoDelete()
+    return
+  }
+
+  // DESTROY command
+  if MudCmd == "destroy" {
+    DoDestroy()
+    return
+  }
+
+  // DRINK command
+  if MudCmd == "drink" {
+    DoDrink()
+    return
+  }
+
+  // DROP command
+  if MudCmd == "drop" {
+    DoDrop()
+    return
+  }
+
+  // EAT command
+  if MudCmd == "eat" {
+    DoEat()
+    return
+  }
+
+  // EMOTE command
+  if MudCmd == "emote" {
+    DoEmote()
+    return
+  }
+
+  // EQUIPMENT command
+  if MudCmd == "equipment" {
+    DoEquipment()
+    return
+  }
+
+  // EXAMINE command
+  if MudCmd == "examine" {
+    DoExamine()
+    return
+  }
+
+  // FLEE command
+  if MudCmd == "flee" {
+    DoFlee()
+    return
+  }
+
+  // FOLLOW command
+  if MudCmd == "follow" {
+    DoFollow(pDnodeActor, CmdStr)
+    return
+  }
+
+  // GET command
+  if MudCmd == "get" {
+    DoGet()
+    return
+  }
+
+  // GIVE command
+  if MudCmd == "give" {
+    DoGive()
+    return
+  }
+
+  // GO command
+  if MudCmd == "go" {
+    DoGo()
+    return
+  }
+
+  // GOTOARRIVE command
+  if MudCmd == "gotoarrive" {
+    DoGoToArrive()
+    return
+  }
+
+  // GOTODEPART command
+  if MudCmd == "gotodepart" {
+    DoGoToDepart()
+    return
+  }
+
+  // GOTO command
+  if MudCmd == "goto" {
+    DoGoTo()
+    return
+  }
+
+  // GROUP command
+  if MudCmd == "group" {
+    DoGroup()
+    return
+  }
+
+  // GSAY command
+  if MudCmd == "gsay" {
+    DoGsay()
+    return
+  }
+
+  // HAIL command
+  if MudCmd == "hail" {
+    DoHail()
+    return
+  }
+
+  // HELP command
+  if MudCmd == "help" {
+    DoHelp()
+    return
+  }
+
+  // INVENTORY command
+  if MudCmd == "inventory" {
+    DoInventory()
+    return
+  }
+
+  // INVISIBLE command
+  if MudCmd == "invisible" {
+    DoInvisible()
+    return
+  }
+
+  // KILL command
+  if MudCmd == "kill" {
+    DoKill()
+    return
+  }
+
+  // LIST command
+  if MudCmd == "list" {
+    DoList()
+    return
+  }
+
+  // LOAD command
+  if MudCmd == "load" {
+    DoLoad()
+    return
+  }
+
+  // LOOK command
+  if MudCmd == "look" {
+    DoLook(CmdStr)
+    return
+  }
+
+  // MONEY command
+  if MudCmd == "money" {
+    DoMoney()
+    return
+  }
+
+  // MOTD command
+  if MudCmd == "motd" {
+    DoMotd()
+    return
+  }
+
+  // OneWhack command
+  if MudCmd == "onewhack" {
+    DoOneWhack()
+    return
+  }
+
+  // PASSWORD command
+  if MudCmd == "password" {
+    DoPassword()
+    return
+  }
+
+  // PLAYED command
+  if MudCmd == "played" {
+    DoPlayed()
+    return
+  }
+
+  // QUIT command
+  if MudCmd == "quit" {
+    DoQuit()
+    return
+  }
+
+  // REFRESH command
+  if MudCmd == "refresh" {
+    DoRefresh()
+    return
+  }
+
+  // REMOVE command
+  if MudCmd == "remove" {
+    DoRemove()
+    return
+  }
+
+  // RESTORE command
+  if MudCmd == "restore" {
+    DoRestore(CmdStr)
+    return
+  }
+
+  // ROOMINFO command
+  if MudCmd == "roominfo" {
+    DoRoomInfo()
+    return
+  }
+
+  // SAVE command
+  if MudCmd == "save" {
+    DoSave()
+    return
+  }
+
+  // SAY command
+  if MudCmd == "say" {
+    DoSay()
+    return
+  }
+
+  // SELL command
+  if MudCmd == "sell" {
+    DoSell()
+    return
+  }
+
+  // SHOW command
+  if MudCmd == "show" {
+    DoShow()
+    return
+  }
+
+  // SIT command
+  if MudCmd == "sit" {
+    DoSit()
+    return
+  }
+
+  // SLEEP command
+  if MudCmd == "sleep" {
+    DoSleep()
+    return
+  }
+
+  // STAND command
+  if MudCmd == "stand" {
+    DoStand()
+    return
+  }
+
+  // STATUS command
+  if MudCmd == "status" {
+    DoStatus()
+    return
+  }
+
+  // STOP command
+  if MudCmd == "stop" {
+    DoStop()
+    return
+  }
+
+  // TELL command
+  if MudCmd == "tell" {
+    DoTell()
+    return
+  }
+
+  // TIME command
+  if MudCmd == "time" {
+    DoTime()
+    return
+  }
+
+  // TITLE command
+  if MudCmd == "title" {
+    DoTitle()
+    return
+  }
+
+  // TRAIN command
+  if MudCmd == "train" {
+    DoTrain()
+    return
+  }
+
+  // WAKE command
+  if MudCmd == "wake" {
+    DoWake()
+    return
+  }
+
+  // WEAR command
+  if MudCmd == "wear" {
+    DoWear()
+    return
+  }
+
+  // WHERE command
+  if MudCmd == "where" {
+    DoWhere()
+    return
+  }
+
+  // WHO command
+  if MudCmd == "who" {
+    DoWho()
+    return
+  }
+
+  // WIELD command
+  if MudCmd == "wield" {
+    DoWield()
+    return
+  }
+
+	pDnodeActor.PlayerOut += "Command is valid, but not implemented at this time."
+	pDnodeActor.PlayerOut += "\r\n"
+	CreatePrompt(pDnodeActor.pPlayer)
+	pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+	// Log it
+	MudCmd = StrMakeFirstUpper(MudCmd)
+	LogBuf = MudCmd
+	LogBuf += " is in command array, but Do"
+	LogBuf += MudCmd
+	LogBuf += " is not coded."
+	LogIt(LogBuf)
+}
+
+
+func DoAdvance() {
+  // TODO: implement DoAdvance
+}
+
+func DoAfk() {
+  // TODO: implement DoAfk
+}
+
+func DoAssist() {
+  // TODO: implement DoAssist
+}
+
+func DoBuy() {
+  // TODO: implement DoBuy
+}
+
+func DoChat() {
+  // TODO: implement DoChat
+}
+
+func DoColor() {
+  // TODO: implement DoColor
+}
+
+func DoConsider() {
+  // TODO: implement DoConsider
+}
+
+func DoDelete() {
+  // TODO: implement DoDelete
+}
+
+func DoDestroy() {
+  // TODO: implement DoDestroy
+}
+
+func DoDrink() {
+  // TODO: implement DoDrink
+}
+
+func DoDrop() {
+  // TODO: implement DoDrop
+}
+
+func DoEat() {
+  // TODO: implement DoEat
+}
+
+func DoEmote() {
+  // TODO: implement DoEmote
+}
+
+func DoEquipment() {
+  // TODO: implement DoEquipment
+}
+
+func DoExamine() {
+  // TODO: implement DoExamine
+}
+
+func DoFlee() {
+  // TODO: implement DoFlee
+}
+
+func DoFollow(pDnode *Dnode, CmdStr string) {
+  // TODO: implement DoFollow
+}
+
+func DoGet() {
+  // TODO: implement DoGet
+}
+
+func DoGive() {
+  // TODO: implement DoGive
+}
+
+func DoGo() {
+  // TODO: implement DoGo
+}
+
+func DoGoTo() {
+  // TODO: implement DoGoTo
+}
+
+func DoGoToArrive() {
+  // TODO: implement DoGoToArrive
+}
+
+func DoGoToDepart() {
+  // TODO: implement DoGoToDepart
+}
+
+func DoGroup() {
+  // TODO: implement DoGroup
+}
+
+func DoGsay() {
+  // TODO: implement DoGsay
+}
+
+func DoHail() {
+  // TODO: implement DoHail
+}
+
+func DoHelp() {
+  // TODO: implement DoHelp
+}
+
+func DoInventory() {
+  // TODO: implement DoInventory
+}
+
+func DoInvisible() {
+  // TODO: implement DoInvisible
+}
+
+func DoKill() {
+  // TODO: implement DoKill
+}
+
+func DoList() {
+  // TODO: implement DoList
+}
+
+func DoLoad() {
+  // TODO: implement DoLoad
+}
+
+func DoLogon() {
+  // TODO: implement DoLogon
+}
+
+func DoLook(CmdStr string) {
+  // TODO: implement DoLook
+}
+
+func DoMoney() {
+  // TODO: implement DoMoney
+}
+
+func DoMotd() {
+  // TODO: implement DoMotd
+}
+
+func DoOneWhack() {
+  // TODO: implement DoOneWhack
+}
+
+func DoPassword() {
+  // TODO: implement DoPassword
+}
+
+func DoPlayed() {
+  // TODO: implement DoPlayed
+}
+
+func DoQuit() {
+  // TODO: implement DoQuit
+}
+
+func DoRefresh() {
+  // TODO: implement DoRefresh
+}
+
+func DoRemove() {
+  // TODO: implement DoRemove
+}
+
+func DoRestore(CmdStr string) {
+  // TODO: implement DoRestore
+}
+
+func DoRoomInfo() {
+  // TODO: implement DoRoomInfo
+}
+
+func DoSave() {
+  // TODO: implement DoSave
+}
+
+func DoSay() {
+  // TODO: implement DoSay
+}
+
+func DoSell() {
+  // TODO: implement DoSell
+}
+
+func DoShow() {
+  // TODO: implement DoShow
+}
+
+func DoSit() {
+  // TODO: implement DoSit
+}
+
+func DoSleep() {
+  // TODO: implement DoSleep
+}
+
+func DoStand() {
+  // TODO: implement DoStand
+}
+
+func DoStatus() {
+  // TODO: implement DoStatus
+}
+
+func DoStop() {
+  // TODO: implement DoStop
+}
+
+func DoTell() {
+  // TODO: implement DoTell
+}
+
+func DoTime() {
+  // TODO: implement DoTime
+}
+
+func DoTitle() {
+  // TODO: implement DoTitle
+}
+
+func DoTrain() {
+  // TODO: implement DoTrain
+}
+
+func DoWake() {
+  // TODO: implement DoWake
+}
+
+func DoWear() {
+  // TODO: implement DoWear
+}
+
+func DoWhere() {
+  // TODO: implement DoWhere
+}
+
+func DoWho() {
+  // TODO: implement DoWho
+}
+
+func DoWield() {
+  // TODO: implement DoWield
 }
 
 // Reposition Dnode cursor
