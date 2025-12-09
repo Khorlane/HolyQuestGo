@@ -21,14 +21,14 @@ var HelpText string
 func IsHelp() bool {
 	DEBUGIT(1)
 	Found := false
-	if !OpenFile() {
+	if !OpenHelpFile() {
 		return false
 	}
 	HelpLookup := StrGetWord(CmdStr, 2)
 	HelpLookup = StrMakeLower(HelpLookup)
 	HelpText = "Not Done"
 	for HelpText != "End of Help" {
-		ReadLine()
+		HelpReadLine()
 		HelpText = StrTrimLeft(HelpText)
 		TmpStr = StrLeft(HelpText, 5)
 		if TmpStr == "Help:" {
@@ -50,7 +50,7 @@ func IsHelp() bool {
 	return false
 }
 
-func OpenFile() bool {
+func OpenHelpFile() bool {
 	DEBUGIT(1)
 	HelpFileName := HELP_DIR + "Help.txt"
 	file, err := os.Open(HelpFileName)
@@ -62,7 +62,7 @@ func OpenFile() bool {
 	return true
 }
 
-func ReadLine() {
+func HelpReadLine() {
 	DEBUGIT(1)
 	if HelpScanner != nil && HelpScanner.Scan() {
 		HelpText = HelpScanner.Text()
@@ -74,7 +74,7 @@ func ReadLine() {
 func ShowHelp() {
 	TmpStr = StrLeft(HelpText, 13)
 	for TmpStr != "Related help:" {
-		ReadLine()
+		HelpReadLine()
 		pDnodeActor.PlayerOut += HelpText
 		pDnodeActor.PlayerOut += "\r\n"
 		TmpStr = StrLeft(HelpText, 13)
