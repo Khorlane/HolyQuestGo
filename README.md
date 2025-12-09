@@ -30,3 +30,10 @@ From the project root:
 del HolyQuestGo.exe
 go build -o HolyQuestGo.exe
 ./HolyQuestGo
+```
+
+---
+
+## License
+
+This project is licensed under the [Unlicense](./LICENSE). This means the code is released into the public domain, and you are free to use, modify, and distribute it without restriction. For more details, see the LICENSE file in the project root.
