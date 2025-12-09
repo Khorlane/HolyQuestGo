@@ -1,3 +1,12 @@
+//*******************************************************************
+// HolyQuest: Powered by the Online Multi-User Game Server (OMugs)  *
+// File:      Object.go                                             *
+// Usage:     Manages game objects and their interactions            *
+// This file is part of the HolyQuestGo project.                    *
+// It is licensed under the Unlicense.                              *
+// See the LICENSE file in the project root for details.            *
+//*******************************************************************
+
 package server
 
 import (

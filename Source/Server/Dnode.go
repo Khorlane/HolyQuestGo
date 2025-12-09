@@ -1,3 +1,12 @@
+//*******************************************************************
+// HolyQuest: Powered by the Online Multi-User Game Server (OMugs)  *
+// File:      Dnode.go                                              *
+// Usage:     Manages descriptor nodes for player connections       *
+// This file is part of the HolyQuestGo project.                    *
+// It is licensed under the Unlicense.                              *
+// See the LICENSE file in the project root for details.            *
+//*******************************************************************
+
 package server
 
 import (
