@@ -1,3 +1,12 @@
+//*******************************************************************
+// HolyQuest: Powered by the Online Multi-User Game Server (OMugs)  *
+// File:      BigDog.go                                             *
+// Usage:     Starting point for all HolyQuest stuff                *
+// This file is part of the HolyQuestGo project.                    *
+// It is licensed under the Unlicense.                              *
+// See the LICENSE file in the project root for details.            *
+//*******************************************************************
+
 package server
 
 import (
