@@ -160,7 +160,7 @@ func GetPlayerOutput(pPlayer *Player) string {
 
 // Save player stuff
 func PlayerSave() {
-  if !PlayerOpenFile(pPlayer.Name, "Write") {
+  if !OpenPlayerFile(pPlayer.Name, "Write") {
     LogBuf = "Player::Save - Error opening player file for write, Players directory may not exist"
     LogIt(LogBuf)
     return
@@ -383,7 +383,7 @@ func PlayerCloseFile() {
 }
 
 // Open player file
-func PlayerOpenFile(Name string, Mode string) bool {
+func OpenPlayerFile(Name string, Mode string) bool {
   PlayerFileName := PLAYER_DIR + Name + ".txt"
   if Mode == "Read" {
     f, err := os.Open(PlayerFileName)
