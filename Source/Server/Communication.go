@@ -352,7 +352,8 @@ func SockRecv() {
         if pDnodeActor.PlayerStatePlaying {
           pDnodeActor.PlayerStatePlaying = false
           if pDnodeActor.pPlayer != nil {
-            pDnodeActor_pPlayer_Save()
+            pPlayer = pDnodeActor.pPlayer
+            PlayerSave()
           }
         }
       }
@@ -363,7 +364,8 @@ func SockRecv() {
         if pDnodeActor.PlayerStatePlaying {
           pDnodeActor.PlayerStatePlaying = false
           if pDnodeActor.pPlayer != nil {
-            pDnodeActor_pPlayer_Save()
+						pPlayer = pDnodeActor.pPlayer
+            PlayerSave()
           }
         }
       } else if n > 0 {
@@ -408,16 +410,17 @@ func SockRecv() {
           pDnodeActor.PlayerOut += "\r\n"
           pDnodeActor.PlayerOut += "You are extremely hungry!!!"
           pDnodeActor.PlayerOut += "\r\n"
-          pDnodeActor_pPlayer_CreatePrompt()
-          pDnodeActor.PlayerOut += pDnodeActor_pPlayer_GetOutput()
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetPlayerOutput(pPlayer)
         }
         if pDnodeActor.pPlayer.Thirst > 99 {
           pDnodeActor.pPlayer.Thirst = 100
           pDnodeActor.PlayerOut += "\r\n"
           pDnodeActor.PlayerOut += "You are extremely thirsty!!!"
           pDnodeActor.PlayerOut += "\r\n"
-          pDnodeActor_pPlayer_CreatePrompt()
-          pDnodeActor.PlayerOut += pDnodeActor_pPlayer_GetOutput()
+
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetPlayerOutput(pPlayer)
         }
       }
     }
@@ -438,7 +441,8 @@ func SockRecv() {
           pDnodeOthers.PlayerStateBye = true
           pDnodeOthers.PlayerStatePlaying = false
           if pDnodeOthers.PlayerStatePlaying {
-            pDnodeOthers_pPlayer_Save()
+						pPlayer = pDnodeOthers.pPlayer
+            PlayerSave()
           }
           pDnodeOthers.PlayerOut += "\r\n"
           pDnodeOthers.PlayerOut += "Game is stopping ... Bye Bye!"
@@ -1116,8 +1120,123 @@ func CommandParse() {
 }
 
 
+// Advance command
 func DoAdvance() {
-  // TODO: implement DoAdvance
+  var Level int
+  var LevelString string
+  var PlayerName string
+  var PlayerNameSave string
+  var TargetName string
+  var TargetNameSave string
+
+  DEBUGIT(1)
+
+  PlayerName = pDnodeActor.PlayerName
+  TargetName = StrGetWord(CmdStr, 2)
+  PlayerNameSave = PlayerName
+  TargetNameSave = TargetName
+  PlayerName = StrMakeLower(PlayerName)
+  TargetName = StrMakeLower(TargetName)
+  Level = StrToInt(StrGetWord(CmdStr, 3))
+  LevelString = fmt.Sprintf("%d", Level)
+
+  if TargetName == "" {
+    // No name given
+    pDnodeActor.PlayerOut += "Advance who?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  // Get target Dnode pointer
+  pDnodeTgt = GetTargetDnode(TargetName)
+  if pDnodeTgt == nil {
+    // Target player not found
+    pDnodeActor.PlayerOut += TargetNameSave
+    pDnodeActor.PlayerOut += " is not online.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  if Level == pDnodeTgt.pPlayer.Level {
+    // Advance to same level ... that's just plain silly
+    pDnodeActor.PlayerOut += TargetNameSave
+    pDnodeActor.PlayerOut += " is already at level "
+    pDnodeActor.PlayerOut += LevelString
+    pDnodeActor.PlayerOut += "."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  if Level == 0 {
+    // Advance to level 0 ... not valid
+    pDnodeActor.PlayerOut += TargetNameSave
+    pDnodeActor.PlayerOut += " cannot be advanced to level "
+    pDnodeActor.PlayerOut += LevelString
+    pDnodeActor.PlayerOut += "."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  TargetNameSave = pDnodeTgt.PlayerName
+
+  // Level up! or Down :(
+  LogBuf = pDnodeTgt.PlayerName
+  if Level > pDnodeTgt.pPlayer.Level {
+    // Level up!
+    LogBuf += " has been advanced to level "
+  } else {
+    // Level down :(
+    LogBuf += " has been demoted to level "
+  }
+  LogBuf += LevelString
+  LogBuf += " by "
+  LogBuf += pDnodeActor.PlayerName
+  LogIt(LogBuf)
+
+  // Send message to player
+  pDnodeActor.PlayerOut += TargetNameSave
+  pDnodeActor.PlayerOut += " is now level "
+  pDnodeActor.PlayerOut += LevelString
+  pDnodeActor.PlayerOut += "."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+
+  // Send message to target
+  pDnodeTgt.PlayerOut += "\r\n"
+  pDnodeTgt.PlayerOut += "&Y"
+  pDnodeTgt.PlayerOut += PlayerNameSave
+  if Level > pDnodeTgt.pPlayer.Level {
+    // Level up!
+    pDnodeTgt.PlayerOut += " has advanced you to level "
+  } else {
+    // Level down :(
+    pDnodeTgt.PlayerOut += " has DEMOTED you to level "
+  }
+  pDnodeTgt.PlayerOut += LevelString
+  pDnodeTgt.PlayerOut += "!"
+  pDnodeTgt.PlayerOut += "&N"
+  pDnodeTgt.PlayerOut += "\r\n"
+
+  // Make it so
+  pDnodeTgt.pPlayer.Level = Level
+  pDnodeTgt.pPlayer.Experience = CalcLevelExperience(Level)
+	pPlayer = pDnodeTgt.pPlayer
+  PlayerSave()
+
+  // Prompt
+  CreatePrompt(pDnodeTgt.pPlayer)
+  pDnodeTgt.PlayerOut += GetPlayerOutput(pDnodeTgt.pPlayer)
+
+  // Restore the player as a bonus to being advanced
+  DoRestore("restore " + pDnodeTgt.pPlayer.Name)
 }
 
 func DoAfk() {

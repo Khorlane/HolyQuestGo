@@ -61,7 +61,7 @@ var pDnodeHead   *Dnode
 
 // Create and initialize a new Dnode instance
 func DnodeConstructor(SocketHandle syscall.Handle, IpAddress string) *Dnode {
-  DnodeCount = DnodeCount + 1
+  DnodeCount++
   return &Dnode{
     pDnodeNext:                      nil,
     pDnodePrev:                      nil,

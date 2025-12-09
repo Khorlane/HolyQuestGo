@@ -1,6 +1,6 @@
 //*******************************************************************
 // HolyQuest: Powered by the Online Multi-User Game Server (OMugs)  *
-// File:      Player.go                                             *	
+// File:      Player.go                                             *
 // Usage:     Manages player entities and their interactions        *
 // This file is part of the HolyQuestGo project.                    *
 // It is licensed under the Unlicense.                              *
@@ -9,7 +9,17 @@
 
 package server
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
+
+var pPlayer      *Player = nil
+var PlayerFile   *os.File
+var PlayerReader *bufio.Reader
+var PlayerCount   int = 0
 
 // Player represents a player in the game.
 type Player struct {
@@ -18,9 +28,6 @@ type Player struct {
 	pPlayerFollowers [GRP_LIMIT]*Player
 	SessionTime      int
 	RoomIdBeforeMove string
-
-	// Private variables static
-	Count int
 
 	// Private variables
 	pDnode           *Dnode
@@ -73,79 +80,67 @@ type Player struct {
 
 // NewPlayer creates and initializes a new Player instance.
 func PlayerConstructor() *Player {
+	PlayerCount++
 	return &Player{
-		pPlayerGrpMember: [GRP_LIMIT]*Player{},
-		pPlayerFollowers: [GRP_LIMIT]*Player{},
-		SessionTime:      0,
-		RoomIdBeforeMove: "",
-		Count:            0,
-		pDnode:           nil,
-		Output:           "",
-		PlayerRoomBitPos: 0,
-		PlayerRoomBits:   [8]bool{},
-		PlayerRoomChar:   0,
+		pPlayerGrpMember:  [GRP_LIMIT]*Player{},
+		pPlayerFollowers:  [GRP_LIMIT]*Player{},
+		SessionTime:       0,
+		RoomIdBeforeMove:  "",
+		pDnode:            nil,
+		Output:            "",
+		PlayerRoomBitPos:  0,
+		PlayerRoomBits:    [8]bool{},
+		PlayerRoomChar:    0,
 		PlayerRoomCharPos: 0,
-		PlayerRoomVector: []byte{},
-		Name:             "",
-		Password:         "",
-		Admin:            false,
-		Afk:              "",
-		AllowAssist:      false,
-		AllowGroup:       false,
-		ArmorClass:       0,
-		Born:             0,
-		Color:            false,
-		Experience:       0.0,
-		GoToArrive:       "",
-		GoToDepart:       "",
-		HitPoints:        0,
-		Hunger:           0,
-		Invisible:        false,
-		Level:            0,
-		MovePoints:       0,
-		OneWhack:         false,
-		Online:           "",
-		Position:         "",
-		RoomId:           "",
-		RoomInfo:         false,
-		Sex:              "",
-		Silver:           0,
-		SkillAxe:         0,
-		SkillClub:        0,
-		SkillDagger:      0,
-		SkillHammer:      0,
-		SkillSpear:       0,
-		SkillStaff:       0,
-		SkillSword:       0,
-		Thirst:           0,
-		TimePlayed:       0,
-		Title:            "",
-		WeaponDamage:     0,
-		WeaponDesc1:      "",
-		WeaponType:       "",
+		PlayerRoomVector:  []byte{},
+		Name:              "",
+		Password:          "",
+		Admin:             false,
+		Afk:               "",
+		AllowAssist:       false,
+		AllowGroup:        false,
+		ArmorClass:        0,
+		Born:              0,
+		Color:             false,
+		Experience:        0.0,
+		GoToArrive:        "",
+		GoToDepart:        "",
+		HitPoints:         0,
+		Hunger:            0,
+		Invisible:         false,
+		Level:             0,
+		MovePoints:        0,
+		OneWhack:          false,
+		Online:            "",
+		Position:          "",
+		RoomId:            "",
+		RoomInfo:          false,
+		Sex:               "",
+		Silver:            0,
+		SkillAxe:          0,
+		SkillClub:         0,
+		SkillDagger:       0,
+		SkillHammer:       0,
+		SkillSpear:        0,
+		SkillStaff:        0,
+		SkillSword:        0,
+		Thirst:            0,
+		TimePlayed:        0,
+		Title:             "",
+		WeaponDamage:      0,
+		WeaponDesc1:       "",
+		WeaponType:        "",
 	}
 }
 
 // player destructor
 func PlayerDestructor(pPlayer *Player) {
-	// Currently no dynamic memory to free
+	PlayerCount--
 }
 
-// Placeholder for: void Player::Save()
-func pDnodeActor_pPlayer_Save() {
-}
-
-// Placeholder for: void Player::Save()
-func pDnodeOthers_pPlayer_Save() {
-}
-
-// Placeholder for: void Player::CreatePrompt()
-func pDnodeActor_pPlayer_CreatePrompt() {
-}
-
-// Placeholder for: string Player::GetOutput()
-func pDnodeActor_pPlayer_GetOutput() string {
-	return ""
+func CalcLevelExperience(Level int) float64 {
+	var Experience float64
+	return Experience
 }
 
 // Create player prompt
@@ -161,4 +156,274 @@ func CreatePrompt(pPlayer *Player) {
 // Return the current output string for the player
 func GetPlayerOutput(pPlayer *Player) string {
 	return pPlayer.Output
+}
+
+// Save player stuff
+func PlayerSave() {
+  if !PlayerOpenFile(pPlayer.Name, "Write") {
+    LogBuf = "Player::Save - Error opening player file for write, Players directory may not exist"
+    LogIt(LogBuf)
+    return
+  }
+
+  // Name
+  Stuff = "Name:" + pPlayer.Name
+  PlayerWriteLine(Stuff)
+
+  // Password
+  Stuff = "Password:" + pPlayer.Password
+  PlayerWriteLine(Stuff)
+
+  // Admin
+  if pPlayer.Admin {
+    Stuff = "Admin:Yes"
+  } else {
+    Stuff = "Admin:No"
+  }
+  PlayerWriteLine(Stuff)
+
+  // AFK
+  if pPlayer.pDnode.PlayerStateAfk {
+    Stuff = "AFK:Yes"
+  } else {
+    Stuff = "AFK:No"
+  }
+  PlayerWriteLine(Stuff)
+
+  // AllowAssist
+  if pPlayer.AllowAssist {
+    Stuff = "AllowAssist:Yes"
+  } else {
+    Stuff = "AllowAssist:No"
+  }
+  PlayerWriteLine(Stuff)
+
+  // AllowGroup
+  if pPlayer.AllowGroup {
+    Stuff = "AllowGroup:Yes"
+  } else {
+    Stuff = "AllowGroup:No"
+  }
+  PlayerWriteLine(Stuff)
+
+  // ArmorClass - save only, ParsePlayerStuff calls CalcPlayerArmorClass
+  TmpStr = fmt.Sprintf("%d", pPlayer.ArmorClass)
+  Stuff = "ArmorClass:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // Born
+  TmpStr = fmt.Sprintf("%d", pPlayer.Born)
+  Stuff = "Born:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // Color
+  if pPlayer.Color {
+    Stuff = "Color:Yes"
+  } else {
+    Stuff = "Color:No"
+  }
+  PlayerWriteLine(Stuff)
+
+  // Experience
+  TmpStr = fmt.Sprintf("%15.0f", pPlayer.Experience)
+  Stuff = "Experience:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // GoToArrive
+  Stuff = "GoToArrive:" + pPlayer.GoToArrive
+  PlayerWriteLine(Stuff)
+
+  // GoToDepart
+  Stuff = "GoToDepart:" + pPlayer.GoToDepart
+  PlayerWriteLine(Stuff)
+
+  // HitPoints
+  TmpStr = fmt.Sprintf("%d", pPlayer.HitPoints)
+  Stuff = "HitPoints:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // Hunger
+  TmpStr = fmt.Sprintf("%d", pPlayer.Hunger)
+  Stuff = "Hunger:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // Invisible
+  if pPlayer.Invisible {
+    Stuff = "Invisible:Yes"
+  } else {
+    Stuff = "Invisible:No"
+  }
+  PlayerWriteLine(Stuff)
+
+  // Level
+  TmpStr = fmt.Sprintf("%d", pPlayer.Level)
+  Stuff = "Level:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // MovePoints
+  TmpStr = fmt.Sprintf("%d", pPlayer.MovePoints)
+  Stuff = "MovePoints:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // OneWhack
+  if pPlayer.OneWhack {
+    Stuff = "OneWhack:Yes"
+  } else {
+    Stuff = "OneWhack:No"
+  }
+  PlayerWriteLine(Stuff)
+
+  // Online
+  if pPlayer.pDnode.PlayerStatePlaying {
+    Stuff = "Online:Yes"
+  } else {
+    Stuff = "Online:No"
+  }
+  PlayerWriteLine(Stuff)
+
+  // Position
+  Stuff = "Position:" + pPlayer.Position
+  PlayerWriteLine(Stuff)
+
+  // RoomId
+  Stuff = "RoomId:" + pPlayer.RoomId
+  PlayerWriteLine(Stuff)
+
+  // RoomInfo
+  if pPlayer.RoomInfo {
+    Stuff = "RoomInfo:Yes"
+  } else {
+    Stuff = "RoomInfo:No"
+  }
+  PlayerWriteLine(Stuff)
+
+  // Sex
+  Stuff = "Sex:" + pPlayer.Sex
+  PlayerWriteLine(Stuff)
+
+  // Silver
+  TmpStr = fmt.Sprintf("%d", pPlayer.Silver)
+  Stuff = "Silver:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // SkillAxe
+  TmpStr = fmt.Sprintf("%d", pPlayer.SkillAxe)
+  Stuff = "SkillAxe:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // SkillClub
+  TmpStr = fmt.Sprintf("%d", pPlayer.SkillClub)
+  Stuff = "SkillClub:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // SkillDagger
+  TmpStr = fmt.Sprintf("%d", pPlayer.SkillDagger)
+  Stuff = "SkillDagger:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // SkillHammer
+  TmpStr = fmt.Sprintf("%d", pPlayer.SkillHammer)
+  Stuff = "SkillHammer:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // SkillSpear
+  TmpStr = fmt.Sprintf("%d", pPlayer.SkillSpear)
+  Stuff = "SkillSpear:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // SkillStaff
+  TmpStr = fmt.Sprintf("%d", pPlayer.SkillStaff)
+  Stuff = "SkillStaff:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // SkillSword
+  TmpStr = fmt.Sprintf("%d", pPlayer.SkillSword)
+  Stuff = "SkillSword:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // Thirst
+  TmpStr = fmt.Sprintf("%d", pPlayer.Thirst)
+  Stuff = "Thirst:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // TimePlayed
+  if pPlayer.pDnode.PlayerStatePlaying {
+    // Don't update TimePlayed if player is not 'playing'
+    pPlayer.TimePlayed += GetTimeSeconds() - pPlayer.SessionTime
+    pPlayer.SessionTime = GetTimeSeconds()
+  }
+  TmpStr = fmt.Sprintf("%d", pPlayer.TimePlayed)
+  Stuff = "TimePlayed:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // Title
+  Stuff = "Title:" + pPlayer.Title
+  PlayerWriteLine(Stuff)
+
+  // WeaponDamage
+  TmpStr = fmt.Sprintf("%d", pPlayer.WeaponDamage)
+  Stuff = "WeaponDamage:" + TmpStr
+  PlayerWriteLine(Stuff)
+
+  // WeaponDesc1
+  Stuff = "WeaponDesc1:" + pPlayer.WeaponDesc1
+  PlayerWriteLine(Stuff)
+
+  // WeaponType
+  Stuff = "WeaponType:" + pPlayer.WeaponType
+  PlayerWriteLine(Stuff)
+
+  // Done
+  PlayerCloseFile()
+}
+
+// Close player file
+func PlayerCloseFile() {
+  PlayerFile.Close()
+}
+
+// Open player file
+func PlayerOpenFile(Name string, Mode string) bool {
+  PlayerFileName := PLAYER_DIR + Name + ".txt"
+  if Mode == "Read" {
+    f, err := os.Open(PlayerFileName)
+    if err != nil {
+      return false
+    }
+    PlayerFile = f
+    PlayerReader = bufio.NewReader(PlayerFile)
+    return true
+  } else if Mode == "Write" {
+    f, err := os.Create(PlayerFileName)
+    if err != nil {
+      return false
+    }
+    PlayerFile = f
+    PlayerReader = bufio.NewReader(PlayerFile)
+    return true
+  } else {
+    LogBuf = "Player::OpenFile - Mode is not 'Read' or 'Write'"
+    LogIt(LogBuf)
+    os.Exit(1)
+    return false
+  }
+}
+
+// Read a line from player file
+func PlayerReadLine() {
+  line, err := PlayerReader.ReadString('\n')
+  if err != nil {
+    Stuff = ""
+    return
+  }
+  Stuff = strings.TrimRight(line, "\r\n")
+}
+
+// Write a line to player file
+func PlayerWriteLine(Stuff string) {
+  Stuff = Stuff + "\n"
+  if PlayerFile != nil {
+    _, _ = PlayerFile.WriteString(Stuff)
+    PlayerFile.Sync()
+  }
 }
