@@ -36,7 +36,6 @@ func LogValErr(Message string, FileName string) {
 func ValidateIt(ValidationType string) bool {
 	ValErr = false
 	ValidationType = StrMakeLower(ValidationType)
-
 	switch ValidationType {
 		case "all":
 			ValidateAll()
@@ -52,7 +51,6 @@ func ValidateIt(ValidationType string) bool {
 			ValidateLibraryShops()
 			ValidateLibraryWorldMobiles()
 	}
-
 	if ValErr {
 		LogBuf = "ValErr - Validation failed!!"
 		LogIt(LogBuf)
@@ -60,7 +58,6 @@ func ValidateIt(ValidationType string) bool {
 		LogBuf = "Validation successful!!"
 		LogIt(LogBuf)
 	}
-
 	return ValErr
 }
 
@@ -89,20 +86,17 @@ func ValidateLibraryLoot() {
 
 	LogBuf = "Begin validation LibraryLoot"
 	LogIt(LogBuf)
-
 	if err := ChgDir(LOOT_DIR); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryLoot - Change directory to LOOT_DIR failed")
 		return
 	}
-
 	// Get list of all LibraryLoot files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryLoot - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateLibraryLoot - ReadDir failed")
@@ -112,7 +106,6 @@ func ValidateLibraryLoot() {
 		if entry.IsDir() {
 			continue
 		}
-
 		// Open player file
 		LootFileName = entry.Name()
 		LootFileName = LOOT_DIR + LootFileName
@@ -123,7 +116,6 @@ func ValidateLibraryLoot() {
 			return
 		}
 		defer LootFile.Close()
-
 		LineCount = 0
 		Scanner := bufio.NewScanner(LootFile)
 		for Scanner.Scan() {
@@ -131,7 +123,6 @@ func ValidateLibraryLoot() {
 			if Stuff == "" {
 				break
 			}
-
 			LineCount++
 			ObjectId = StrGetWord(Stuff, 3)
 
@@ -145,7 +136,6 @@ func ValidateLibraryLoot() {
 			}
 		}
 	}
-
 	LogBuf = "Done validating LibraryLoot"
 	LogIt(LogBuf)
 }
@@ -162,20 +152,17 @@ func ValidateLibraryMobiles() {
 
 	LogBuf = "Begin validation LibraryMobiles"
 	LogIt(LogBuf)
-
 	if err := ChgDir(MOBILES_DIR); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryMobiles - Change directory to MOBILES_DIR failed")
 		return
 	}
-
 	// Get list of all LibraryMobiles files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryMobiles - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateLibraryMobiles - ReadDir failed")
@@ -185,7 +172,6 @@ func ValidateLibraryMobiles() {
 		if entry.IsDir() {
 			continue
 		}
-
 		// Open mobile file
 		MobileFileName = entry.Name()
 		MobileId = StrLeft(MobileFileName, StrGetLength(MobileFileName)-4)
@@ -197,7 +183,6 @@ func ValidateLibraryMobiles() {
 			return
 		}
 		defer MobileFile.Close()
-
 		LineCount = 0
 		Scanner := bufio.NewScanner(MobileFile)
 		for Scanner.Scan() {
@@ -205,18 +190,15 @@ func ValidateLibraryMobiles() {
 			if Stuff == "" {
 				break
 			}
-
 			LineCount++
 			FieldName = StrGetWord(Stuff, 1)
 			FieldValue = StrGetWord(Stuff, 2)
-
 			// MobileId field must be first
 			if LineCount == 1 && FieldName != "MobileId:" {
 				Message = "MobileId field must be the first field"
 				FileName = MobileFileName
 				LogValErr(Message, FileName)
 			}
-
 			// MobileId validation
 			if FieldName == "MobileId:" && MobileId != FieldValue {
 				Message = "MobileId must match file name"
@@ -225,7 +207,6 @@ func ValidateLibraryMobiles() {
 			}
 		}
 	}
-
 	LogBuf = "Done validating LibraryMobiles"
 	LogIt(LogBuf)
 }
@@ -242,20 +223,17 @@ func ValidateLibraryObjects() {
 
 	LogBuf = "Begin validation LibraryObjects"
 	LogIt(LogBuf)
-
 	if err := ChgDir(OBJECTS_DIR); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryObjects - Change directory to OBJECTS_DIR failed")
 		return
 	}
-
 	// Get list of all LibraryObjects files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryObjects - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateLibraryObjects - ReadDir failed")
@@ -265,7 +243,6 @@ func ValidateLibraryObjects() {
 		if entry.IsDir() {
 			continue
 		}
-
 		// Open object file
 		ObjectFileName = entry.Name()
 		ObjectId = StrLeft(ObjectFileName, StrGetLength(ObjectFileName)-4)
@@ -277,7 +254,6 @@ func ValidateLibraryObjects() {
 			return
 		}
 		defer ObjectFile.Close()
-
 		LineCount = 0
 		Scanner := bufio.NewScanner(ObjectFile)
 		for Scanner.Scan() {
@@ -285,18 +261,15 @@ func ValidateLibraryObjects() {
 			if Stuff == "" {
 				break
 			}
-
 			LineCount++
 			FieldName = StrGetWord(Stuff, 1)
 			FieldValue = StrGetWord(Stuff, 2)
-
 			// ObjectId field must be first
 			if LineCount == 1 && FieldName != "ObjectId:" {
 				Message = "ObjectId field must be the first field"
 				FileName = ObjectFileName
 				LogValErr(Message, FileName)
 			}
-
 			// ObjectId validation
 			if FieldName == "ObjectId:" && ObjectId != FieldValue {
 				Message = "ObjectId must match file name"
@@ -305,7 +278,6 @@ func ValidateLibraryObjects() {
 			}
 		}
 	}
-
 	LogBuf = "Done validating LibraryObjects"
 	LogIt(LogBuf)
 }
@@ -322,20 +294,17 @@ func ValidateLibraryRooms() {
 
 	LogBuf = "Begin validation LibraryRooms"
 	LogIt(LogBuf)
-
 	if err := ChgDir(ROOMS_DIR); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryRooms - Change directory to ROOMS_DIR failed")
 		return
 	}
-
 	// Get list of all LibraryRooms files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryRooms - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateLibraryRooms - ReadDir failed")
@@ -345,7 +314,6 @@ func ValidateLibraryRooms() {
 		if entry.IsDir() {
 			continue
 		}
-
 		// Open room file
 		RoomFileName = entry.Name()
 		RoomId = StrLeft(RoomFileName, StrGetLength(RoomFileName)-4)
@@ -357,7 +325,6 @@ func ValidateLibraryRooms() {
 			return
 		}
 		defer RoomFile.Close()
-
 		LineCount = 0
 		Scanner := bufio.NewScanner(RoomFile)
 		for Scanner.Scan() {
@@ -365,7 +332,6 @@ func ValidateLibraryRooms() {
 			if Stuff == "End of Room" {
 				break
 			}
-
 			LineCount++
 			FieldName = StrGetWord(Stuff, 1)
 			FieldValue = StrGetWord(Stuff, 2)
@@ -376,7 +342,6 @@ func ValidateLibraryRooms() {
 				FileName = RoomFileName
 				LogValErr(Message, FileName)
 			}
-
 			// RoomId validation
 			if FieldName == "RoomId:" && RoomId != FieldValue {
 				Message = "RoomId must match file name"
@@ -385,7 +350,6 @@ func ValidateLibraryRooms() {
 			}
 		}
 	}
-
 	LogBuf = "Done validating LibraryRooms"
 	LogIt(LogBuf)
 }
@@ -402,20 +366,17 @@ func ValidateLibraryShops() {
 
 	LogBuf = "Begin validation LibraryShops"
 	LogIt(LogBuf)
-
 	if err := ChgDir(SHOPS_DIR); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryShops - Change directory to SHOPS_DIR failed")
 		return
 	}
-
 	// Get list of all LibraryShops files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryShops - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateLibraryShops - ReadDir failed")
@@ -425,7 +386,6 @@ func ValidateLibraryShops() {
 		if entry.IsDir() {
 			continue
 		}
-
 		// Open shop file
 		ShopFileName = entry.Name()
 		ShopFileName = SHOPS_DIR + ShopFileName
@@ -436,7 +396,6 @@ func ValidateLibraryShops() {
 			return
 		}
 		defer ShopFile.Close()
-
 		LineCount = 0
 		Scanner := bufio.NewScanner(ShopFile)
 		for Scanner.Scan() {
@@ -444,15 +403,12 @@ func ValidateLibraryShops() {
 			if Stuff == "End of Shop" {
 				break
 			}
-
 			LineCount++
 			FieldName = StrGetWord(Stuff, 1)
 			FieldValue = StrGetWord(Stuff, 2)
-
 			if FieldName != "Item:" {
 				continue
 			}
-
 			// Item validation
 			ObjectId = FieldValue
 			ObjectIdFileName := OBJECTS_DIR + ObjectId + ".txt"
@@ -463,7 +419,6 @@ func ValidateLibraryShops() {
 			}
 		}
 	}
-
 	LogBuf = "Done validating LibraryShops"
 	LogIt(LogBuf)
 }
@@ -483,20 +438,17 @@ func ValidateLibraryWorldMobiles() {
 
 	LogBuf = "Begin validation LibraryWorldMobiles"
 	LogIt(LogBuf)
-
 	if err := ChgDir(WORLD_MOBILES_DIR); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryWorldMobiles - Change directory to WORLD_MOBILES_DIR failed")
 		return
 	}
-
 	// Get list of all LibraryWorldMobiles files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateLibraryWorldMobiles - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateLibraryWorldMobiles - ReadDir failed")
@@ -506,7 +458,6 @@ func ValidateLibraryWorldMobiles() {
 		if entry.IsDir() {
 			continue
 		}
-
 		// Open world mobile file
 		WorldMobileFileName = entry.Name()
 		if WorldMobileFileName == "ReadMe.txt" {
@@ -523,7 +474,6 @@ func ValidateLibraryWorldMobiles() {
 			return
 		}
 		defer WorldMobileFile.Close()
-
 		// MobileId
 		MobileIdFileName = MOBILES_DIR + MobileId + ".txt"
 		if !FileExist(MobileIdFileName) {
@@ -532,7 +482,6 @@ func ValidateLibraryWorldMobiles() {
 			FileName = WorldMobileFileName
 			LogValErr(Message, FileName)
 		}
-
 		// Check file contents
 		LineCount = 0
 		Scanner := bufio.NewScanner(WorldMobileFile)
@@ -541,11 +490,9 @@ func ValidateLibraryWorldMobiles() {
 			if Stuff == "" {
 				break
 			}
-
 			LineCount++
 			FieldName = StrGetWord(Stuff, 1)
 			FieldValue = StrGetWord(Stuff, 2)
-
 			// RoomId
 			if FieldName == "RoomId:" {
 				RoomIdFileName = ROOMS_DIR + FieldValue + ".txt"
@@ -576,20 +523,17 @@ func ValidateRunningPlayers() {
 
 	LogBuf = "Begin validation RunningPlayers"
 	LogIt(LogBuf)
-
 	if err := ChgDir(PLAYER_DIR); err != nil {
 		// Change directory failed
 		LogIt("ValidateRunningPlayers - Change directory to PLAYER_DIR failed")
 		return
 	}
-
 	// Get list of all RunningPlayers files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateRunningPlayers - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateRunningPlayers - ReadDir failed")
@@ -599,7 +543,6 @@ func ValidateRunningPlayers() {
 		if entry.IsDir() {
 			continue
 		}
-
 		// Open player file
 		PlayerFileName = entry.Name()
 		PlayerName = StrLeft(PlayerFileName, StrGetLength(PlayerFileName)-4)
@@ -611,7 +554,6 @@ func ValidateRunningPlayers() {
 			return
 		}
 		defer PlayerFile.Close()
-
 		LineCount = 0
 		Scanner := bufio.NewScanner(PlayerFile)
 		for Scanner.Scan() {
@@ -619,12 +561,10 @@ func ValidateRunningPlayers() {
 			if Stuff == "" {
 				break
 			}
-
 			LineCount++
 			StrReplace(&Stuff, ":", " ")
 			FieldName = StrGetWord(Stuff, 1)
 			FieldValue = StrGetWord(Stuff, 2)
-
 			// Name field must be first
 			if LineCount == 1 {
 				if FieldName != "Name" {
@@ -634,7 +574,6 @@ func ValidateRunningPlayers() {
 					LogValErr(Message, FileName)
 				}
 			}
-
 			// Name validation
 			if FieldName == "Name" {
 				if PlayerName != FieldValue {
@@ -644,7 +583,6 @@ func ValidateRunningPlayers() {
 					LogValErr(Message, FileName)
 				}
 			}
-
 			// RoomId validation
 			if FieldName == "RoomId" {
 				RoomIdFileName = ROOMS_DIR + FieldValue + ".txt"
@@ -657,7 +595,6 @@ func ValidateRunningPlayers() {
 			}
 		}
 	}
-
 	LogBuf = "Done validating RunningPlayers"
 	LogIt(LogBuf)
 }
@@ -674,20 +611,17 @@ func ValidateRunningPlayersPlayerEqu() {
 
 	LogBuf = "Begin validation RunningPlayersPlayerEqu"
 	LogIt(LogBuf)
-
 	if err := ChgDir(PLAYER_EQU_DIR); err != nil {
 		// Change directory failed
 		LogIt("ValidateRunningPlayersPlayerEqu - Change directory to PLAYER_EQU_DIR failed")
 		return
 	}
-
 	// Get list of all RunningPlayersPlayerEqu files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateRunningPlayersPlayerEqu - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateRunningPlayersPlayerEqu - ReadDir failed")
@@ -708,7 +642,6 @@ func ValidateRunningPlayersPlayerEqu() {
 			return
 		}
 		defer PlayerEquFile.Close()
-
 		LineCount = 0
 		Scanner := bufio.NewScanner(PlayerEquFile)
 		for Scanner.Scan() {
@@ -716,11 +649,9 @@ func ValidateRunningPlayersPlayerEqu() {
 			if Stuff == "" {
 				break
 			}
-
 			LineCount++
 			WearPosition = StrGetWord(Stuff, 1)
 			ObjectId = StrGetWord(Stuff, 2)
-
 			// Wear position validation
 			if WearPosition < "01" {
 				// Wear position must be 01 - 20
@@ -734,7 +665,6 @@ func ValidateRunningPlayersPlayerEqu() {
 				FileName = PlayerEquFileName
 				LogValErr(Message, FileName)
 			}
-
 			// ObjectId validation
 			ObjectIdFileName = OBJECTS_DIR + ObjectId + ".txt"
 			if !FileExist(ObjectIdFileName) {
@@ -745,7 +675,6 @@ func ValidateRunningPlayersPlayerEqu() {
 			}
 		}
 	}
-
 	LogBuf = "Done validating RunningPlayersPlayerEqu"
 	LogIt(LogBuf)
 }
@@ -761,20 +690,17 @@ func ValidateRunningPlayersPlayerObj() {
 
 	LogBuf = "Begin validation RunningPlayersPlayerObj"
 	LogIt(LogBuf)
-
 	if err := ChgDir(PLAYER_OBJ_DIR); err != nil {
 		// Change directory failed
 		LogIt("ValidateRunningPlayersPlayerObj - Change directory to PLAYER_OBJ_DIR failed")
 		return
 	}
-
 	// Get list of all RunningPlayersPlayerObj files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateRunningPlayersPlayerObj - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateRunningPlayersPlayerObj - ReadDir failed")
@@ -784,7 +710,6 @@ func ValidateRunningPlayersPlayerObj() {
 		if entry.IsDir() {
 			continue
 		}
-
 		// Open player object file
 		PlayerObjFileName = entry.Name()
 		PlayerObjFileName = PLAYER_OBJ_DIR + PlayerObjFileName
@@ -795,7 +720,6 @@ func ValidateRunningPlayersPlayerObj() {
 			return
 		}
 		defer PlayerObjFile.Close()
-
 		LineCount = 0
 		Scanner := bufio.NewScanner(PlayerObjFile)
 		for Scanner.Scan() {
@@ -803,10 +727,8 @@ func ValidateRunningPlayersPlayerObj() {
 			if Stuff == "" {
 				break
 			}
-
 			LineCount++
 			ObjectId = StrGetWord(Stuff, 2)
-
 			// ObjectId validation
 			ObjectIdFileName = OBJECTS_DIR + ObjectId + ".txt"
 			if !FileExist(ObjectIdFileName) {
@@ -817,7 +739,6 @@ func ValidateRunningPlayersPlayerObj() {
 			}
 		}
 	}
-
 	LogBuf = "Done validating RunningPlayersPlayerObj"
 	LogIt(LogBuf)
 }
@@ -842,14 +763,12 @@ func ValidateRunningRoomMob() {
 		LogIt("ValidateRunningRoomMob - Change directory to ROOM_MOB_DIR failed")
 		return
 	}
-
 	// Get list of all RunningRoomMob files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateRunningRoomMob - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateRunningRoomMob - ReadDir failed")
@@ -859,7 +778,6 @@ func ValidateRunningRoomMob() {
 		if entry.IsDir() {
 			continue
 		}
-
 		// Open room mob file
 		RoomMobFileName = entry.Name()
 		if RoomMobFileName == "ReadMe.txt" {
@@ -875,7 +793,6 @@ func ValidateRunningRoomMob() {
 			return
 		}
 		defer RoomMobFile.Close()
-
 		// RoomId validation
 		RoomIdFileName = ROOMS_DIR + RoomId + ".txt"
 		if !FileExist(RoomIdFileName) {
@@ -884,7 +801,6 @@ func ValidateRunningRoomMob() {
 			FileName = RoomMobFileName
 			LogValErr(Message, FileName)
 		}
-
 		// Check file contents
 		LineCount = 0
 		Scanner := bufio.NewScanner(RoomMobFile)
@@ -893,7 +809,6 @@ func ValidateRunningRoomMob() {
 			if Stuff == "" {
 				break
 			}
-
 			LineCount++
 			MobileId = StrGetWord(Stuff, 2)
 			PositionOfDot = StrFindFirstChar(MobileId, '.')
@@ -901,7 +816,6 @@ func ValidateRunningRoomMob() {
 				// Mobile is hurt
 				MobileId = StrLeft(MobileId, PositionOfDot)
 			}
-
 			// MobileId validation
 			MobileIdFileName = MOBILES_DIR + MobileId + ".txt"
 			if !FileExist(MobileIdFileName) {
@@ -912,7 +826,6 @@ func ValidateRunningRoomMob() {
 			}
 		}
 	}
-
 	LogBuf = "Done validating RunningRoomMob"
 	LogIt(LogBuf)
 }
@@ -930,20 +843,17 @@ func ValidateRunningRoomObj() {
 
 	LogBuf = "Begin validation RunningRoomObj"
 	LogIt(LogBuf)
-
 	if err := ChgDir(ROOM_OBJ_DIR); err != nil {
 		// Change directory failed
 		LogIt("ValidateRunningRoomObj - Change directory to ROOM_OBJ_DIR failed")
 		return
 	}
-
 	// Get list of all RunningRoomObj files
 	if err := ChgDir(HomeDir); err != nil {
 		// Change directory failed
 		LogIt("ValidateRunningRoomObj - Change directory to HomeDir failed")
 		return
 	}
-
 	entries, err := os.ReadDir("./")
 	if err != nil {
 		LogIt("ValidateRunningRoomObj - ReadDir failed")
@@ -953,7 +863,6 @@ func ValidateRunningRoomObj() {
 		if entry.IsDir() {
 			continue
 		}
-
 		// Open RunningRoomObj file
 		RoomObjFileName = entry.Name()
 		if RoomObjFileName == "ReadMe.txt" {
@@ -969,7 +878,6 @@ func ValidateRunningRoomObj() {
 			return
 		}
 		defer RoomObjFile.Close()
-
 		// RoomId validation
 		RoomIdFileName = ROOMS_DIR + RoomId + ".txt"
 		if !FileExist(RoomIdFileName) {
@@ -978,7 +886,6 @@ func ValidateRunningRoomObj() {
 			FileName = RoomObjFileName
 			LogValErr(Message, FileName)
 		}
-
 		// Check file contents
 		LineCount = 0
 		Scanner := bufio.NewScanner(RoomObjFile)
@@ -987,10 +894,8 @@ func ValidateRunningRoomObj() {
 			if Stuff == "" {
 				break
 			}
-
 			LineCount++
 			ObjectId = StrGetWord(Stuff, 2)
-
 			// ObjectId validation
 			ObjectIdFileName = OBJECTS_DIR + ObjectId + ".txt"
 			if !FileExist(ObjectIdFileName) {
@@ -1001,7 +906,6 @@ func ValidateRunningRoomObj() {
 			}
 		}
 	}
-
 	LogBuf = "Done validating RunningRoomObj"
 	LogIt(LogBuf)
 }
