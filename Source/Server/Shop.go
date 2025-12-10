@@ -20,7 +20,6 @@ func IsShop(RoomId string) bool {
 	ShopFileName := SHOPS_DIR + RoomId + ".txt"
 	return FileExist(ShopFileName)
 }
-
 // IsShopObject checks if a shop buys and sells a specific object.
 func IsShopObject(RoomId string, ObjectName string) bool {
 	ShopFileName := SHOPS_DIR + RoomId + ".txt"
@@ -31,7 +30,6 @@ func IsShopObject(RoomId string, ObjectName string) bool {
 		return false
 	}
 	defer ShopFile.Close()
-
 	scanner := bufio.NewScanner(ShopFile)
 	for scanner.Scan() {
 		Stuff := scanner.Text()
@@ -51,10 +49,8 @@ func IsShopObject(RoomId string, ObjectName string) bool {
 		LogIt("Shop::IsShopObject - Error reading shop file")
 		return false
 	}
-
 	// Object not found in shop item list
 	ShopFile.Close()
-
 	//***************************************************
 	//* No match found, try getting match using 'names' *
 	//***************************************************
@@ -65,7 +61,6 @@ func IsShopObject(RoomId string, ObjectName string) bool {
 		return false
 	}
 	defer ShopFile.Close()
-
 	scanner = bufio.NewScanner(ShopFile)
 	for scanner.Scan() {
 		Stuff := scanner.Text()
@@ -89,7 +84,6 @@ func IsShopObject(RoomId string, ObjectName string) bool {
 		LogIt("Shop::IsShopObject - Error reading shop file")
 		return false
 	}
-
 	// No match found, Object is not buyable from this shop
 	return false
 }
@@ -113,7 +107,6 @@ func ListObjects(RoomId string, PlayerOut *string) {
 	}
 	defer ShopFile.Close()
 	scanner := bufio.NewScanner(ShopFile)
-
 	// Shop welcome message
 	if scanner.Scan() {
 		Stuff = scanner.Text()
@@ -145,7 +138,6 @@ func ListObjects(RoomId string, PlayerOut *string) {
 	StrReplace(&ShopText, " ", "-")
 	pDnodeActor.PlayerOut += ShopText
 	pDnodeActor.PlayerOut += "\r\n"
-	
 	// List items for trade
 	for scanner.Scan() {
 		Stuff = scanner.Text()
