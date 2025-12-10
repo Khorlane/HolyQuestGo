@@ -74,13 +74,17 @@ func GetSqlStmt(sqlStmtId string) string {
 		log.Fatalf("GetSqlStmt - Open SqlStmt file failed: %v", err)
 	}
 	defer file.Close()
-
 	scanner := bufio.NewScanner(file)
 	var sqlStmt strings.Builder
 	for scanner.Scan() {
 		sqlStmt.WriteString(scanner.Text() + " ")
 	}
 	return strings.TrimSpace(sqlStmt.String())
+}
+
+// Substitute $thingies to more meaningful pronouns
+func PronounSubstitute(MsgText string) string {
+	return MsgText
 }
 
 // Translate a word
