@@ -9,9 +9,38 @@
 
 package server
 
-// Placeholder for Social-related functions
-
 func IsSocial() bool {
-  // TODO: implement IsSocial
-  return false
+	return false
+}
+
+func CloseSocialFile() {
+	// TODO: Implement CloseFile logic
+}
+
+func OpenSocialFile() bool {
+	return false
+}
+
+func PositionNotOk(pDnode *Dnode, MinPos string) bool {
+	return false
+}
+
+func PosNbr(Position string) int {
+	return 0
+}
+
+func ReadLine() string {
+	return ""
+}
+
+func SendToPlayer(MsgText string) {
+	// TODO: Implement SendToPlayer logic
+}
+
+func SendToTarget(pDnodeTgt1 *Dnode, MsgText string) {
+	// TODO: Implement SendToTarget logic
+}
+
+func Socialize(MinPos string, MsgText string) {
+	// TODO: Implement Socialize logic
 }
