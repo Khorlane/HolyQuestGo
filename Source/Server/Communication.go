@@ -1253,9 +1253,152 @@ func DoAfk() {
   pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
 }
 
-
+// Assist command
 func DoAssist() {
-  // TODO: implement DoAssist
+  var AssistMsg string
+  var MobileId string
+  var PlayerNameCheck string
+  var TargetNameCheck string
+  var TargetNameSave string
+  var TargetNotHere bool
+
+  DEBUGIT(1)
+
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) < 2 {
+    // No object or target
+    pDnodeActor.PlayerOut += "Assist whom?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  PlayerNameCheck = pDnodeActor.PlayerName
+  TargetNameCheck = StrGetWord(CmdStr, 2)
+  TargetNameSave = TargetNameCheck
+  PlayerNameCheck = StrMakeLower(PlayerNameCheck)
+  TargetNameCheck = StrMakeLower(TargetNameCheck)
+
+  if PlayerNameCheck == TargetNameCheck {
+    // Player is trying to assist themself
+    pDnodeActor.PlayerOut += "You can't assist youself.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  //*********************
+  //* Turning assist on *
+  //*********************
+  if TargetNameCheck == "on" {
+    pDnodeActor.pPlayer.AllowAssist = true
+    pDnodeActor.PlayerOut += "You are now accepting assists.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  //**********************
+  //* Turning assist off *
+  //**********************
+  if TargetNameCheck == "off" {
+    pDnodeActor.pPlayer.AllowAssist = false
+    pDnodeActor.PlayerOut += "You are now rejecting assists.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  //******************
+  //* Is target OK ? *
+  //******************
+  TargetNotHere = false
+  pDnodeTgt = GetTargetDnode(TargetNameCheck)
+  if pDnodeTgt == nil {
+    // Target is not online and/or not in 'playing' state
+    TargetNotHere = true
+  } else {
+    // Target is online and playing
+    if pDnodeActor.pPlayer.RoomId != pDnodeTgt.pPlayer.RoomId {
+      // Target is not in the same room
+      TargetNotHere = true
+    }
+  }
+
+  if TargetNotHere {
+    // Tell player that target is not here
+    pDnodeActor.PlayerOut += TargetNameSave
+    pDnodeActor.PlayerOut += " is not here.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  if !pDnodeTgt.PlayerStateFighting {
+    // Tell player that target is not fighting
+    pDnodeActor.PlayerOut += pDnodeTgt.pPlayer.Name
+    pDnodeActor.PlayerOut += " is not fighting."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  if !pDnodeTgt.pPlayer.AllowAssist {
+    // Tell player that target is not accepting assistance
+    pDnodeActor.PlayerOut += pDnodeTgt.pPlayer.Name
+    pDnodeActor.PlayerOut += " is not accepting assistance."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    return
+  }
+
+  //******************
+  //* Send to player *
+  //******************
+  pDnodeActor.PlayerOut += "You begin assisting "
+  pDnodeActor.PlayerOut += pDnodeTgt.pPlayer.Name
+  pDnodeActor.PlayerOut += ".\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+
+  //******************
+  //* Send to target *
+  //******************
+  pDnodeTgt.PlayerOut += "\r\n"
+  pDnodeTgt.PlayerOut += pDnodeActor.pPlayer.Name
+  pDnodeTgt.PlayerOut += " begins assisting you.\r\n"
+  CreatePrompt(pDnodeTgt.pPlayer)
+  pDnodeTgt.PlayerOut += GetPlayerOutput(pDnodeTgt.pPlayer)
+
+  //****************
+  //* Send to room *
+  //****************
+  AssistMsg = pDnodeActor.PlayerName
+  AssistMsg += " begins assisting "
+  AssistMsg += pDnodeTgt.pPlayer.Name
+  AssistMsg += "."
+  pDnodeSrc = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, AssistMsg)
+
+  //**************************
+  //* Make the assist happen *
+  //**************************
+  MobileId = GetPlayerMobMobileId(pDnodeTgt.PlayerName)
+  CreatePlayerMob(pDnodeActor.PlayerName, MobileId)
+  pDnodeActor.PlayerStateFighting = true
 }
 
 func DoBuy() {
@@ -1557,4 +1700,8 @@ func SockSend(arg string) {
     return
   }
   pDnodeActor.PlayerOut = ""
+}
+
+func Violence() {
+	// Implementation goes here
 }
