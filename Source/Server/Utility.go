@@ -62,10 +62,7 @@ func GetHomeDir() string {
 
 // Get a random number
 func GetRandomNumber(limit int) int {
-	randomNumber := rand.Intn(limit) + 1
-	if randomNumber > limit {
-		randomNumber = limit
-	}
+	randomNumber := min(rand.Intn(limit) + 1, limit)
 	return randomNumber
 }
 
