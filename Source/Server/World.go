@@ -20,6 +20,55 @@ import (
 	"time"
 )
 
+// Create 'spawn mobile' events
+func CreateSpawnMobileEvents() {
+	if err := ChgDir(WORLD_MOBILES_DIR); err != nil {
+		LogIt("CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed")
+		os.Exit(1)
+	}
+	err := filepath.Walk("./", func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			return nil
+		}
+		WorldMobileFileName := info.Name()
+		MobileID := strings.TrimSuffix(WorldMobileFileName, filepath.Ext(WorldMobileFileName))
+		if MobileID == "ReadMe" {
+			return nil
+		}
+		ControlMobSpawnFileName := CONTROL_MOB_SPAWN_DIR + MobileID
+		if _, err := os.Stat(ControlMobSpawnFileName); err == nil {
+			return nil
+		}
+		WorldMobileFilePath := WORLD_MOBILES_DIR + WorldMobileFileName
+		file, err := os.Open(WorldMobileFilePath)
+		if err != nil {
+			LogIt("CreateSpawnMobileEvents - Open World Mobile file failed")
+			os.Exit(1)
+		}
+		defer file.Close()
+		var Stuff string
+		fmt.Fscanln(file, &Stuff)
+		if !strings.HasPrefix(Stuff, "MaxInWorld:") {
+			LogIt("CreateSpawnMobileEvents - World mobile file format error MaxInWorld")
+			os.Exit(1)
+		}
+		// Placeholder for CountMob and additional logic
+		return nil
+	})
+	if err != nil {
+		LogIt("CreateSpawnMobileEvents - Error walking through files")
+		os.Exit(1)
+	}
+	if err := ChgDir(HomeDir); err != nil {
+		LogIt("CreateSpawnMobileEvents - Change directory to HomeDir failed")
+		os.Exit(1)
+	}
+}
+
+
 // Check 'spawn mobile' events
 func CheckSpawnMobileEvents() {
 	CheckTime := fmt.Sprintf("%d", GetTimeSeconds())
@@ -73,53 +122,6 @@ func CheckSpawnMobileEvents() {
 	}
 }
 
-// Create 'spawn mobile' events
-func CreateSpawnMobileEvents() {
-	if err := ChgDir(WORLD_MOBILES_DIR); err != nil {
-		LogIt("CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed")
-		os.Exit(1)
-	}
-	err := filepath.Walk("./", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-		WorldMobileFileName := info.Name()
-		MobileID := strings.TrimSuffix(WorldMobileFileName, filepath.Ext(WorldMobileFileName))
-		if MobileID == "ReadMe" {
-			return nil
-		}
-		ControlMobSpawnFileName := CONTROL_MOB_SPAWN_DIR + MobileID
-		if _, err := os.Stat(ControlMobSpawnFileName); err == nil {
-			return nil
-		}
-		WorldMobileFilePath := WORLD_MOBILES_DIR + WorldMobileFileName
-		file, err := os.Open(WorldMobileFilePath)
-		if err != nil {
-			LogIt("CreateSpawnMobileEvents - Open World Mobile file failed")
-			os.Exit(1)
-		}
-		defer file.Close()
-		var Stuff string
-		fmt.Fscanln(file, &Stuff)
-		if !strings.HasPrefix(Stuff, "MaxInWorld:") {
-			LogIt("CreateSpawnMobileEvents - World mobile file format error MaxInWorld")
-			os.Exit(1)
-		}
-		// Placeholder for CountMob and additional logic
-		return nil
-	})
-	if err != nil {
-		LogIt("CreateSpawnMobileEvents - Error walking through files")
-		os.Exit(1)
-	}
-	if err := ChgDir(HomeDir); err != nil {
-		LogIt("CreateSpawnMobileEvents - Change directory to HomeDir failed")
-		os.Exit(1)
-	}
-}
 // Handle world events
 func Events() {
 	CreateSpawnMobileEvents()
