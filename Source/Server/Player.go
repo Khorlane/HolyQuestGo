@@ -16,7 +16,6 @@ import (
 	"strings"
 )
 
-var pPlayer      *Player = nil
 var PlayerFile   *os.File
 var PlayerReader *bufio.Reader
 var PlayerCount   int = 0
@@ -159,7 +158,7 @@ func GetPlayerOutput(pPlayer *Player) string {
 }
 
 // Save player stuff
-func PlayerSave() {
+func PlayerSave(pPlayer *Player) {
   if !OpenPlayerFile(pPlayer.Name, "Write") {
     LogBuf = "Player::Save - Error opening player file for write, Players directory may not exist"
     LogIt(LogBuf)

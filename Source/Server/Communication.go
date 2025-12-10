@@ -352,8 +352,7 @@ func SockRecv() {
         if pDnodeActor.PlayerStatePlaying {
           pDnodeActor.PlayerStatePlaying = false
           if pDnodeActor.pPlayer != nil {
-            pPlayer = pDnodeActor.pPlayer
-            PlayerSave()
+            PlayerSave(pDnodeActor.pPlayer)
           }
         }
       }
@@ -364,8 +363,7 @@ func SockRecv() {
         if pDnodeActor.PlayerStatePlaying {
           pDnodeActor.PlayerStatePlaying = false
           if pDnodeActor.pPlayer != nil {
-						pPlayer = pDnodeActor.pPlayer
-            PlayerSave()
+            PlayerSave(pDnodeActor.pPlayer)
           }
         }
       } else if n > 0 {
@@ -411,7 +409,7 @@ func SockRecv() {
           pDnodeActor.PlayerOut += "You are extremely hungry!!!"
           pDnodeActor.PlayerOut += "\r\n"
           CreatePrompt(pDnodeActor.pPlayer)
-          pDnodeActor.PlayerOut += GetPlayerOutput(pPlayer)
+          pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
         }
         if pDnodeActor.pPlayer.Thirst > 99 {
           pDnodeActor.pPlayer.Thirst = 100
@@ -420,7 +418,7 @@ func SockRecv() {
           pDnodeActor.PlayerOut += "\r\n"
 
           CreatePrompt(pDnodeActor.pPlayer)
-          pDnodeActor.PlayerOut += GetPlayerOutput(pPlayer)
+          pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
         }
       }
     }
@@ -441,8 +439,7 @@ func SockRecv() {
           pDnodeOthers.PlayerStateBye = true
           pDnodeOthers.PlayerStatePlaying = false
           if pDnodeOthers.PlayerStatePlaying {
-						pPlayer = pDnodeOthers.pPlayer
-            PlayerSave()
+            PlayerSave(pDnodeOthers.pPlayer)
           }
           pDnodeOthers.PlayerOut += "\r\n"
           pDnodeOthers.PlayerOut += "Game is stopping ... Bye Bye!"
@@ -1228,8 +1225,7 @@ func DoAdvance() {
   // Make it so
   pDnodeTgt.pPlayer.Level = Level
   pDnodeTgt.pPlayer.Experience = CalcLevelExperience(Level)
-	pPlayer = pDnodeTgt.pPlayer
-  PlayerSave()
+  PlayerSave(pDnodeTgt.pPlayer)
 
   // Prompt
   CreatePrompt(pDnodeTgt.pPlayer)
@@ -1239,9 +1235,24 @@ func DoAdvance() {
   DoRestore("restore " + pDnodeTgt.pPlayer.Name)
 }
 
+// Afk command
 func DoAfk() {
-  // TODO: implement DoAfk
+  if pDnodeActor.PlayerStateAfk {
+    // Player returning from AFK
+    pDnodeActor.PlayerStateAfk = false
+    pDnodeActor.PlayerOut += "You are no longer Away From Keyboard"
+    pDnodeActor.PlayerOut += "\r\n"
+  } else {
+    // Player going AFK
+    pDnodeActor.PlayerOut += "You are now Away From Keyboard"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerStateAfk = true
+  }
+  PlayerSave(pDnodeActor.pPlayer)
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
 }
+
 
 func DoAssist() {
   // TODO: implement DoAssist
