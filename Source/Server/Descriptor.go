@@ -13,10 +13,10 @@ import "os"
 
 // Append new connection to connection list
 func AppendIt() {
-  pDnodeActor.pDnodePrev = pDnodeHead.pDnodePrev
+  pDnodeActor.pDnodePrev           = pDnodeHead.pDnodePrev
   pDnodeHead.pDnodePrev.pDnodeNext = pDnodeActor
-  pDnodeHead.pDnodePrev = pDnodeActor
-  pDnodeActor.pDnodeNext = pDnodeHead
+  pDnodeHead.pDnodePrev            = pDnodeActor
+  pDnodeActor.pDnodeNext           = pDnodeHead
 }
 
 // Clear descriptor linked list
@@ -54,10 +54,10 @@ func GetDnode() *Dnode {
 
 // Initialize descriptor pointers
 func InitDescriptor() {
-  pDnodeHead = DnodeConstructor(0, "")
+  pDnodeHead            = DnodeConstructor(0, "")
   pDnodeHead.pDnodeNext = pDnodeHead
   pDnodeHead.pDnodePrev = pDnodeHead
-  pDnodeCursor = pDnodeHead
+  pDnodeCursor          = pDnodeHead
 }
 
 // Set Dnode pointer to the first Dnode in the list
