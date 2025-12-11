@@ -26,12 +26,6 @@ var SockAddr      syscall.Sockaddr
 const WSAEWOULDBLOCK syscall.Errno = 10035
 const WSAEINTR       syscall.Errno = 10004
 
-func LogonGreeting() {
-}
-
-func UpdatePlayerStats() {
-}
-
 // Return pointer of target, if target in 'playing' state
 func GetTargetDnode(TargetName string) *Dnode {
   var pDnodeLookup *Dnode
@@ -220,15 +214,6 @@ func ShowPlayersInRoom(pDnode *Dnode) {
     SetpDnodeCursorNext()
   }
   RepositionDnodeCursor()
-}
-
-// Close a socket handle (C++ closesocket equivalent)
-func CloseSocket(fd syscall.Handle) int {
-  err := syscall.Closesocket(fd)
-  if err != nil {
-    return 1
-  }
-  return 0
 }
 
 // Check for new connections
@@ -500,11 +485,6 @@ func SockRecv() {
     }
     SetpDnodeCursorNext()
   }
-}
-
-// Return current time in milliseconds
-func clock() int64 {
-  return time.Now().UnixMilli()
 }
 
 // Replace or strip out color codes
@@ -1053,7 +1033,6 @@ func CommandParse() {
   LogIt(LogBuf)
 }
 
-
 // Advance command
 func DoAdvance() {
   var Level int
@@ -1064,7 +1043,6 @@ func DoAdvance() {
   var TargetNameSave string
 
   DEBUGIT(1)
-
   PlayerName = pDnodeActor.PlayerName
   TargetName = StrGetWord(CmdStr, 2)
   PlayerNameSave = PlayerName
@@ -1550,6 +1528,9 @@ func DoWield() {
   // TODO: implement DoWield
 }
 
+func LogonGreeting() {
+}
+
 // Reposition Dnode cursor
 func RepositionDnodeCursor() {
   SetpDnodeCursorFirst()
@@ -1615,6 +1596,24 @@ func SockSend(arg string) {
   pDnodeActor.PlayerOut = ""
 }
 
+// Update player statistics that are 'tick' dependant
+func UpdatePlayerStats() {
+}
+
+// Violence, as in ... WHACK 'em!
 func Violence() {
-  // Implementation goes here
+}
+
+// Return current time in milliseconds
+func clock() int64 {
+  return time.Now().UnixMilli()
+}
+
+// Close a socket handle (C++ closesocket equivalent)
+func CloseSocket(fd syscall.Handle) int {
+  err := syscall.Closesocket(fd)
+  if err != nil {
+    return 1
+  }
+  return 0
 }
