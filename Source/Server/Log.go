@@ -17,24 +17,6 @@ import (
 
 var LogFile *os.File
 
-// Open log file
-func OpenLogFile() {
-  LogFileName := LOG_DIR + "SrvrLog.txt"
-  if _, Err := os.Stat(LogFileName); Err == nil {
-    LogTime := fmt.Sprintf("%d", time.Now().Unix())
-    LogSaveFileName := LogFileName[:len(LogFileName)-4] + "." + LogTime + ".txt"
-    os.Rename(LogFileName, LogSaveFileName)
-  }
-  var Err error
-  LogFile, Err = os.Create(LogFileName)
-  if Err != nil {
-    fmt.Println("OpenLogFile() - Failed")
-    fmt.Println("Hard Exit!")
-    os.Exit(1)
-  }
-  fmt.Println("Log File is Open")
-}
-
 // Close log file
 func CloseLogFile() {
   if LogFile != nil {
@@ -53,4 +35,22 @@ func LogIt(Message string) {
   LogMessage := DisplayCurrentTime + Message + "\n"
   LogFile.WriteString(LogMessage)
   LogFile.Sync()
+}
+
+// Open log file
+func OpenLogFile() {
+  LogFileName := LOG_DIR + "SrvrLog.txt"
+  if _, Err := os.Stat(LogFileName); Err == nil {
+    LogTime := fmt.Sprintf("%d", time.Now().Unix())
+    LogSaveFileName := LogFileName[:len(LogFileName)-4] + "." + LogTime + ".txt"
+    os.Rename(LogFileName, LogSaveFileName)
+  }
+  var Err error
+  LogFile, Err = os.Create(LogFileName)
+  if Err != nil {
+    fmt.Println("OpenLogFile() - Failed")
+    fmt.Println("Hard Exit!")
+    os.Exit(1)
+  }
+  fmt.Println("Log File is Open")
 }
