@@ -1561,8 +1561,132 @@ func DoConsider() {
   pMobile = nil
 }
 
+// Delete command
 func DoDelete() {
-  // TODO: implement DoDelete
+  var AllMsg         string
+  var Name           string
+  var Password       string
+  var Phrase         string
+  var PlayerFileName string
+  var PlayerMsg      string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) < 3 {
+    pDnodeActor.PlayerOut += "You must provide your name and password."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  Name = StrGetWord(CmdStr, 2)
+  Password = StrGetWord(CmdStr, 3)
+  Phrase = StrGetWords(CmdStr, 4)
+  if Name != pDnodeActor.PlayerName {
+    pDnodeActor.PlayerOut += "Your name was not entered correctly."
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "Upper and lowercase letters must match."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if Password != pDnodeActor.pPlayer.Password {
+    pDnodeActor.PlayerOut += "Your password was not entered correctly."
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "Upper and lowercase letters must match."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if Phrase == "" {
+    pDnodeActor.PlayerOut += "If you really want delete your character,"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "add the phrase: MAKE IT SO"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "to the end of the command."
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "Like this: delete <name> <password> MAKE IT SO"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "and you will be immediately DELETED!!"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if Phrase != "MAKE IT SO" {
+    pDnodeActor.PlayerOut += "Ok, it seems that you provided a phrase"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "but it is _not_ 'MAKE IT SO'."
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "The command must be like this: delete <name> <password> MAKE IT SO"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*****************
+  //* Delete player *
+  //*****************
+  pDnodeActor.PlayerStateBye = true
+  pDnodeActor.PlayerStatePlaying = false
+  GrpLeave()
+  LogBuf = pDnodeActor.PlayerName
+  LogBuf += " issued the DELETE command"
+  LogIt(LogBuf)
+  // Delete Player file
+  PlayerFileName = PLAYER_DIR
+  PlayerFileName += pDnodeActor.PlayerName
+  PlayerFileName += ".txt"
+  err := Remove(PlayerFileName)
+  if err != nil {
+    LogBuf = "Communication::DoDelete - Failed to remove Player file: " + PlayerFileName + ". Error: " + err.Error()
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  // Delete PlayerEqu file
+  PlayerFileName = PLAYER_EQU_DIR
+  PlayerFileName += pDnodeActor.PlayerName
+  PlayerFileName += ".txt"
+  _ = Remove(PlayerFileName)
+  // Delete PlayerObj file
+  PlayerFileName = PLAYER_OBJ_DIR
+  PlayerFileName += pDnodeActor.PlayerName
+  PlayerFileName += ".txt"
+  _ = Remove(PlayerFileName)
+  // Delete PlayerRoom file
+  PlayerFileName = PLAYER_ROOM_DIR
+  PlayerFileName += pDnodeActor.PlayerName
+  PlayerFileName += ".txt"
+  _ = Remove(PlayerFileName)
+  // Send messages
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = nil
+  PlayerMsg = "You have been DELETED!!!"
+  PlayerMsg += "\r\n"
+  AllMsg = "\r\n"
+  AllMsg += pDnodeActor.PlayerName
+  AllMsg += " has just DELETED $pHimselfHerself."
+  AllMsg += "\r\n"
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = nil
+  AllMsg = PronounSubstitute(AllMsg)
+  pDnodeSrc = nil
+  pDnodeTgt = nil
+  SendToAll(PlayerMsg, AllMsg)
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoDestroy() {
