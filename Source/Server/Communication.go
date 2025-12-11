@@ -85,7 +85,7 @@ func IsFighting() bool {
   pDnodeActor.PlayerOut += FightingMsg
   pDnodeActor.PlayerOut += "\r\n"
   CreatePrompt(pDnodeActor.pPlayer)
-  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
   return true
 }
 
@@ -115,7 +115,7 @@ func IsSleeping() bool {
   pDnodeActor.PlayerOut += SleepingMsg
   pDnodeActor.PlayerOut += "\r\n"
   CreatePrompt(pDnodeActor.pPlayer)
-  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
   return true
 }
 
@@ -134,7 +134,7 @@ func SendToAll(PlayerMsg, AllMsg string) {
         }
         pDnodeOthers.PlayerOut += AllMsg
         CreatePrompt(pDnodeOthers.pPlayer)
-        pDnodeOthers.PlayerOut += GetPlayerOutput(pDnodeOthers.pPlayer)
+        pDnodeOthers.PlayerOut += GetOutput(pDnodeOthers.pPlayer)
       }
     }
     SetpDnodeCursorNext()
@@ -170,7 +170,7 @@ func SendToRoom(TargetRoomId, MsgText string) {
               pDnodeOthers.PlayerOut += "&N"
               pDnodeOthers.PlayerOut += "\r\n"
               CreatePrompt(pDnodeOthers.pPlayer)
-              pDnodeOthers.PlayerOut += GetPlayerOutput(pDnodeOthers.pPlayer)
+              pDnodeOthers.PlayerOut += GetOutput(pDnodeOthers.pPlayer)
             }
           }
         }
@@ -409,7 +409,7 @@ func SockRecv() {
           pDnodeActor.PlayerOut += "You are extremely hungry!!!"
           pDnodeActor.PlayerOut += "\r\n"
           CreatePrompt(pDnodeActor.pPlayer)
-          pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
         }
         if pDnodeActor.pPlayer.Thirst > 99 {
           pDnodeActor.pPlayer.Thirst = 100
@@ -418,7 +418,7 @@ func SockRecv() {
           pDnodeActor.PlayerOut += "\r\n"
 
           CreatePrompt(pDnodeActor.pPlayer)
-          pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
         }
       }
     }
@@ -625,7 +625,7 @@ func CommandParse() {
     if !pDnodeActor.PlayerStateLoggingOn {
       // Player is not logging on
       CreatePrompt(pDnodeActor.pPlayer)
-      pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
       return
     }
   }
@@ -670,7 +670,7 @@ func CommandParse() {
           pDnodeActor.PlayerOut += "&N"
           pDnodeActor.PlayerOut += "\r\n"
           CreatePrompt(pDnodeActor.pPlayer)
-          pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
           pDnodeActor.PlayerInp = ""
           return
         }
@@ -693,7 +693,7 @@ func CommandParse() {
     pDnodeActor.PlayerOut += " before you can use that command."
     pDnodeActor.PlayerOut += "\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   //******************
@@ -729,7 +729,7 @@ func CommandParse() {
     pDnodeActor.PlayerOut += BadCommandMsg
     pDnodeActor.PlayerOut += "\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   //**********************
@@ -1043,7 +1043,7 @@ func CommandParse() {
   pDnodeActor.PlayerOut += "Command is valid, but not implemented at this time."
   pDnodeActor.PlayerOut += "\r\n"
   CreatePrompt(pDnodeActor.pPlayer)
-  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
   // Log it
   MudCmd = StrMakeFirstUpper(MudCmd)
   LogBuf = MudCmd
@@ -1078,7 +1078,7 @@ func DoAdvance() {
     pDnodeActor.PlayerOut += "Advance who?"
     pDnodeActor.PlayerOut += "\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   // Get target Dnode pointer
@@ -1088,7 +1088,7 @@ func DoAdvance() {
     pDnodeActor.PlayerOut += TargetNameSave
     pDnodeActor.PlayerOut += " is not online.\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   if Level == pDnodeTgt.pPlayer.Level {
@@ -1099,7 +1099,7 @@ func DoAdvance() {
     pDnodeActor.PlayerOut += "."
     pDnodeActor.PlayerOut += "\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   if Level == 0 {
@@ -1110,7 +1110,7 @@ func DoAdvance() {
     pDnodeActor.PlayerOut += "."
     pDnodeActor.PlayerOut += "\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   TargetNameSave = pDnodeTgt.PlayerName
@@ -1134,7 +1134,7 @@ func DoAdvance() {
   pDnodeActor.PlayerOut += "."
   pDnodeActor.PlayerOut += "\r\n"
   CreatePrompt(pDnodeActor.pPlayer)
-  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
   // Send message to target
   pDnodeTgt.PlayerOut += "\r\n"
   pDnodeTgt.PlayerOut += "&Y"
@@ -1156,7 +1156,7 @@ func DoAdvance() {
   PlayerSave(pDnodeTgt.pPlayer)
   // Prompt
   CreatePrompt(pDnodeTgt.pPlayer)
-  pDnodeTgt.PlayerOut += GetPlayerOutput(pDnodeTgt.pPlayer)
+  pDnodeTgt.PlayerOut += GetOutput(pDnodeTgt.pPlayer)
   // Restore the player as a bonus to being advanced
   DoRestore("restore " + pDnodeTgt.pPlayer.Name)
 }
@@ -1176,7 +1176,7 @@ func DoAfk() {
   }
   PlayerSave(pDnodeActor.pPlayer)
   CreatePrompt(pDnodeActor.pPlayer)
-  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 // Assist command
@@ -1205,7 +1205,7 @@ func DoAssist() {
     pDnodeActor.PlayerOut += "Assist whom?"
     pDnodeActor.PlayerOut += "\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   PlayerNameCheck = pDnodeActor.PlayerName
@@ -1217,7 +1217,7 @@ func DoAssist() {
     // Player is trying to assist themself
     pDnodeActor.PlayerOut += "You can't assist youself.\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   //*********************
@@ -1227,7 +1227,7 @@ func DoAssist() {
     pDnodeActor.pPlayer.AllowAssist = true
     pDnodeActor.PlayerOut += "You are now accepting assists.\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   //**********************
@@ -1237,7 +1237,7 @@ func DoAssist() {
     pDnodeActor.pPlayer.AllowAssist = false
     pDnodeActor.PlayerOut += "You are now rejecting assists.\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   //******************
@@ -1260,7 +1260,7 @@ func DoAssist() {
     pDnodeActor.PlayerOut += TargetNameSave
     pDnodeActor.PlayerOut += " is not here.\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   if !pDnodeTgt.PlayerStateFighting {
@@ -1269,7 +1269,7 @@ func DoAssist() {
     pDnodeActor.PlayerOut += " is not fighting."
     pDnodeActor.PlayerOut += "\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   if !pDnodeTgt.pPlayer.AllowAssist {
@@ -1278,7 +1278,7 @@ func DoAssist() {
     pDnodeActor.PlayerOut += " is not accepting assistance."
     pDnodeActor.PlayerOut += "\r\n"
     CreatePrompt(pDnodeActor.pPlayer)
-    pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
   //******************
@@ -1288,7 +1288,7 @@ func DoAssist() {
   pDnodeActor.PlayerOut += pDnodeTgt.pPlayer.Name
   pDnodeActor.PlayerOut += ".\r\n"
   CreatePrompt(pDnodeActor.pPlayer)
-  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
   //******************
   //* Send to target *
   //******************
@@ -1296,7 +1296,7 @@ func DoAssist() {
   pDnodeTgt.PlayerOut += pDnodeActor.pPlayer.Name
   pDnodeTgt.PlayerOut += " begins assisting you.\r\n"
   CreatePrompt(pDnodeTgt.pPlayer)
-  pDnodeTgt.PlayerOut += GetPlayerOutput(pDnodeTgt.pPlayer)
+  pDnodeTgt.PlayerOut += GetOutput(pDnodeTgt.pPlayer)
   //****************
   //* Send to room *
   //****************

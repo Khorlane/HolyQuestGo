@@ -81,5 +81,5 @@ func ShowHelp() {
   }
   pDnodeActor.PlayerOut += "\r\n"
   CreatePrompt(pDnodeActor.pPlayer)
-  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
