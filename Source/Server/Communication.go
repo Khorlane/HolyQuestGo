@@ -1035,11 +1035,11 @@ func CommandParse() {
 
 // Advance command
 func DoAdvance() {
-  var Level int
-  var LevelString string
-  var PlayerName string
+  var Level          int
+  var LevelString    string
+  var PlayerName     string
   var PlayerNameSave string
-  var TargetName string
+  var TargetName     string
   var TargetNameSave string
 
   DEBUGIT(1)
@@ -1159,12 +1159,12 @@ func DoAfk() {
 
 // Assist command
 func DoAssist() {
-  var AssistMsg string
-  var MobileId string
+  var AssistMsg       string
+  var MobileId        string
   var PlayerNameCheck string
   var TargetNameCheck string
-  var TargetNameSave string
-  var TargetNotHere bool
+  var TargetNameSave  string
+  var TargetNotHere   bool
 
   DEBUGIT(1)
   //********************
@@ -1292,20 +1292,273 @@ func DoAssist() {
   pDnodeActor.PlayerStateFighting = true
 }
 
+// Buy command
 func DoBuy() {
-  // TODO: implement DoBuy
+  var Cost       int
+  var Desc1      string
+  var ObjectId   string
+  var ObjectName string
+  var RoomId     string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  RoomId = pDnodeActor.pPlayer.RoomId
+  if !IsShop(RoomId) {
+    // Room is not a shop
+    pDnodeActor.PlayerOut += "Find a shop."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  ObjectName = StrGetWord(CmdStr, 2)
+  if ObjectName == "" {
+    // No object given
+    pDnodeActor.PlayerOut += "Buy what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if StrCountWords(CmdStr) > 2 {
+    // Buy command not only takes 1 object
+    pDnodeActor.PlayerOut += "The buy command must be followed by only one word."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pObject = nil
+  IsShopObj(RoomId, ObjectName) // Sets pObject
+  if pObject == nil {
+    // Object not in shop for player to buy
+    pDnodeActor.PlayerOut += "That item cannot be bought here."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  ObjectId = pObject.ObjectId
+  Desc1 = pObject.Desc1
+  Cost = pObject.Cost
+  pObject = nil
+  if pDnodeActor.pPlayer.Silver < Cost {
+    // Player cannot afford item
+    pDnodeActor.PlayerOut += "You cannot afford that item."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*******************
+  //* Buy the object  *
+  //*******************
+  // Add object to player's inventory
+  AddObjToPlayerInv(pDnodeActor, ObjectId)
+  // Player receives some money
+  SetMoney('-', Cost, "Silver")
+  // Send messages
+  Buf = fmt.Sprintf("%d", Cost)
+  TmpStr = Buf
+  pDnodeActor.PlayerOut += "You buy "
+  pDnodeActor.PlayerOut += Desc1
+  pDnodeActor.PlayerOut += " for "
+  pDnodeActor.PlayerOut += TmpStr
+  pDnodeActor.PlayerOut += " piece(s) of silver."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Chat command
 func DoChat() {
-  // TODO: implement DoChat
+  var AllMsg    string
+  var ChatMsg   string
+  var PlayerMsg string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  ChatMsg = StrGetWords(CmdStr, 2)
+  if StrGetLength(ChatMsg) < 1 {
+    // Player did not enter any chat
+    pDnodeActor.PlayerOut += "You start to chat, but, about what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*************
+  //* Chat away *
+  //*************
+  PlayerMsg = "&G"
+  PlayerMsg += "You Chat: "
+  PlayerMsg += ChatMsg
+  PlayerMsg += "&N"
+  PlayerMsg += "\r\n"
+  AllMsg = "\r\n"
+  AllMsg += "&G"
+  AllMsg += pDnodeActor.PlayerName
+  AllMsg += " chats: "
+  AllMsg += ChatMsg
+  AllMsg += "&N"
+  AllMsg += "\r\n"
+  SendToAll(PlayerMsg, AllMsg)
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Color command
 func DoColor() {
-  // TODO: implement DoColor
+  DEBUGIT(1)
+  TmpStr = StrGetWord(CmdStr, 2)
+  TmpStr = StrMakeLower(TmpStr)
+  if TmpStr == "on" {
+    // Turn color on
+    pDnodeActor.pPlayer.Color = true
+    PlayerSave(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += "You will now see &RP&Gr&Ye&Bt&Mt&Cy&N &RC&Go&Yl&Bo&Mr&Cs&N.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if TmpStr == "off" {
+    // Turn color off
+    pDnodeActor.pPlayer.Color = false
+    PlayerSave(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += "Color is &Moff&N.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if pDnodeActor.pPlayer.Color {
+    // Color is on
+    pDnodeActor.PlayerOut += "&CColor&N is &Mon&N.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  } else {
+    // Color is off
+    pDnodeActor.PlayerOut += "Color is off.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  }
 }
 
+// Consider command
 func DoConsider() {
-  // TODO: implement DoConsider
+  var pMobile        *Mobile
+  var HintMsg         string
+  var LevelDiff       int
+  var MobileName      string
+  var PlayerName      string
+  var PlayerNameCheck string
+  var Target          string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) < 2 {
+    // No target
+    pDnodeActor.PlayerOut += "Consider whom or what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if StrCountWords(CmdStr) > 2 {
+    // Two many targets
+    pDnodeActor.PlayerOut += "Hmm, you are confused. Try 'help consider'."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  PlayerName = pDnodeActor.PlayerName
+  PlayerNameCheck = PlayerName
+  PlayerNameCheck = StrMakeLower(PlayerNameCheck)
+  Target = StrGetWord(CmdStr, 2)
+  MobileName = Target
+  Target = StrMakeLower(Target)
+  if Target == PlayerNameCheck {
+    // Trying to consider self
+    pDnodeActor.PlayerOut += "Consider yourself considered!"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if IsPlayer(Target) {
+    // Trying to consider another player
+    pDnodeActor.PlayerOut += "Why consider another player? Player killing is not allowed."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pMobile = IsMobInRoom(Target)
+  if pMobile == nil {
+    // Target mobile is not here
+    pDnodeActor.PlayerOut += "There doesn't seem to be a(n) "
+    pDnodeActor.PlayerOut += MobileName
+    pDnodeActor.PlayerOut += " here.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  // Build message based on level difference
+  LevelDiff = pMobile.Level - pDnodeActor.pPlayer.Level
+  if LevelDiff < -6 {
+    HintMsg = "&GDon't bother&N"
+  } else if LevelDiff == -6 {
+    HintMsg = "&GWay too easy&N"
+  } else if LevelDiff == -5 {
+    HintMsg = "&GVery easy&N"
+  } else if LevelDiff == -4 {
+    HintMsg = "&CEasy&N"
+  } else if LevelDiff == -3 {
+    HintMsg = "&CNo problem&N"
+  } else if LevelDiff == -2 {
+    HintMsg = "&CA worthy opponent&N"
+  } else if LevelDiff == -1 {
+    HintMsg = "&YYou might win&N"
+  } else if LevelDiff == 0 {
+    HintMsg = "&YTough fight&N"
+  } else if LevelDiff == 1 {
+    HintMsg = "&YLots of luck&N"
+  } else if LevelDiff == 2 {
+    HintMsg = "&RBad idea&N"
+  } else if LevelDiff > 2 {
+    HintMsg = "&RYOU ARE MAD&N"
+  }
+  //*****************
+  //* Send messages *
+  //*****************
+  // Send message to player
+  pDnodeActor.PlayerOut += "You consider "
+  pDnodeActor.PlayerOut += pMobile.Desc1
+  pDnodeActor.PlayerOut += "."
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += HintMsg
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  pMobile = nil
 }
 
 func DoDelete() {
