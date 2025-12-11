@@ -108,7 +108,6 @@ func GetTime() string {
 	FormattedDateTime += Stuff
 	return FormattedDateTime
 }
-
 // Closes the calendar file
 func CloseCalendarFile() {
 	DEBUGIT(1)
