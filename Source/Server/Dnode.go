@@ -107,7 +107,6 @@ func DnodeDestructor(pDnode *Dnode) {
   pDnode.pDnodeNext.pDnodePrev = pDnode.pDnodePrev
 }
 
-
 // Return Dnode count
 func GetDnodeCount() int {
   return DnodeCount
