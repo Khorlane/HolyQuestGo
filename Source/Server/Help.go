@@ -14,9 +14,9 @@ import (
   "os"
 )
 
-var HelpFile *os.File
+var HelpFile    *os.File
 var HelpScanner *bufio.Scanner
-var HelpText string
+var HelpText     string
 
 func IsHelp() bool {
   DEBUGIT(1)
