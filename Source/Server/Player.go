@@ -10,10 +10,10 @@
 package server
 
 import (
-	"bufio"
-	"fmt"
-	"os"
-	"strings"
+  "bufio"
+  "fmt"
+  "os"
+  "strings"
 )
 
 var PlayerFile   *os.File
@@ -22,139 +22,139 @@ var PlayerCount   int = 0
 
 // Player represents a player in the game.
 type Player struct {
-	// Public variables
-	pPlayerGrpMember [GRP_LIMIT]*Player
-	pPlayerFollowers [GRP_LIMIT]*Player
-	SessionTime      int
-	RoomIdBeforeMove string
+  // Public variables
+  pPlayerGrpMember [GRP_LIMIT]*Player
+  pPlayerFollowers [GRP_LIMIT]*Player
+  SessionTime      int
+  RoomIdBeforeMove string
 
-	// Private variables
-	pDnode           *Dnode
-	Output            string
-	PlayerRoomBitPos  int
-	PlayerRoomBits    [8]bool
-	PlayerRoomChar    byte
-	PlayerRoomCharPos int
-	PlayerRoomVector  []byte
+  // Private variables
+  pDnode           *Dnode
+  Output            string
+  PlayerRoomBitPos  int
+  PlayerRoomBits    [8]bool
+  PlayerRoomChar    byte
+  PlayerRoomCharPos int
+  PlayerRoomVector  []byte
 
-	// Player file variables
-	Name              string
-	Password          string
-	Admin             bool
-	Afk               string
-	AllowAssist       bool
-	AllowGroup        bool
-	ArmorClass        int
-	Born              int
-	Color             bool
-	Experience        float64
-	GoToArrive        string
-	GoToDepart        string
-	HitPoints         int
-	Hunger            int
-	Invisible         bool
-	Level             int
-	MovePoints        int
-	OneWhack          bool
-	Online            string
-	Position          string
-	RoomId            string
-	RoomInfo          bool
-	Sex               string
-	Silver            int
-	SkillAxe          int
-	SkillClub	        int
-	SkillDagger       int
-	SkillHammer       int
-	SkillSpear        int
-	SkillStaff        int
-	SkillSword        int
-	Thirst            int
-	TimePlayed        int
-	Title             string
-	WeaponDamage      int
-	WeaponDesc1       string
-	WeaponType        string
+  // Player file variables
+  Name              string
+  Password          string
+  Admin             bool
+  Afk               string
+  AllowAssist       bool
+  AllowGroup        bool
+  ArmorClass        int
+  Born              int
+  Color             bool
+  Experience        float64
+  GoToArrive        string
+  GoToDepart        string
+  HitPoints         int
+  Hunger            int
+  Invisible         bool
+  Level             int
+  MovePoints        int
+  OneWhack          bool
+  Online            string
+  Position          string
+  RoomId            string
+  RoomInfo          bool
+  Sex               string
+  Silver            int
+  SkillAxe          int
+  SkillClub         int
+  SkillDagger       int
+  SkillHammer       int
+  SkillSpear        int
+  SkillStaff        int
+  SkillSword        int
+  Thirst            int
+  TimePlayed        int
+  Title             string
+  WeaponDamage      int
+  WeaponDesc1       string
+  WeaponType        string
 }
 
 // NewPlayer creates and initializes a new Player instance.
 func PlayerConstructor() *Player {
-	PlayerCount++
-	return &Player{
-		pPlayerGrpMember:  [GRP_LIMIT]*Player{},
-		pPlayerFollowers:  [GRP_LIMIT]*Player{},
-		SessionTime:       0,
-		RoomIdBeforeMove:  "",
-		pDnode:            nil,
-		Output:            "",
-		PlayerRoomBitPos:  0,
-		PlayerRoomBits:    [8]bool{},
-		PlayerRoomChar:    0,
-		PlayerRoomCharPos: 0,
-		PlayerRoomVector:  []byte{},
-		Name:              "",
-		Password:          "",
-		Admin:             false,
-		Afk:               "",
-		AllowAssist:       false,
-		AllowGroup:        false,
-		ArmorClass:        0,
-		Born:              0,
-		Color:             false,
-		Experience:        0.0,
-		GoToArrive:        "",
-		GoToDepart:        "",
-		HitPoints:         0,
-		Hunger:            0,
-		Invisible:         false,
-		Level:             0,
-		MovePoints:        0,
-		OneWhack:          false,
-		Online:            "",
-		Position:          "",
-		RoomId:            "",
-		RoomInfo:          false,
-		Sex:               "",
-		Silver:            0,
-		SkillAxe:          0,
-		SkillClub:         0,
-		SkillDagger:       0,
-		SkillHammer:       0,
-		SkillSpear:        0,
-		SkillStaff:        0,
-		SkillSword:        0,
-		Thirst:            0,
-		TimePlayed:        0,
-		Title:             "",
-		WeaponDamage:      0,
-		WeaponDesc1:       "",
-		WeaponType:        "",
-	}
+  PlayerCount++
+  return &Player{
+    pPlayerGrpMember:  [GRP_LIMIT]*Player{},
+    pPlayerFollowers:  [GRP_LIMIT]*Player{},
+    SessionTime:       0,
+    RoomIdBeforeMove:  "",
+    pDnode:            nil,
+    Output:            "",
+    PlayerRoomBitPos:  0,
+    PlayerRoomBits:    [8]bool{},
+    PlayerRoomChar:    0,
+    PlayerRoomCharPos: 0,
+    PlayerRoomVector:  []byte{},
+    Name:              "",
+    Password:          "",
+    Admin:             false,
+    Afk:               "",
+    AllowAssist:       false,
+    AllowGroup:        false,
+    ArmorClass:        0,
+    Born:              0,
+    Color:             false,
+    Experience:        0.0,
+    GoToArrive:        "",
+    GoToDepart:        "",
+    HitPoints:         0,
+    Hunger:            0,
+    Invisible:         false,
+    Level:             0,
+    MovePoints:        0,
+    OneWhack:          false,
+    Online:            "",
+    Position:          "",
+    RoomId:            "",
+    RoomInfo:          false,
+    Sex:               "",
+    Silver:            0,
+    SkillAxe:          0,
+    SkillClub:         0,
+    SkillDagger:       0,
+    SkillHammer:       0,
+    SkillSpear:        0,
+    SkillStaff:        0,
+    SkillSword:        0,
+    Thirst:            0,
+    TimePlayed:        0,
+    Title:             "",
+    WeaponDamage:      0,
+    WeaponDesc1:       "",
+    WeaponType:        "",
+  }
 }
 
 // player destructor
 func PlayerDestructor(pPlayer *Player) {
-	PlayerCount--
+  PlayerCount--
 }
 
 func CalcLevelExperience(Level int) float64 {
-	var Experience float64
-	return Experience
+  var Experience float64
+  return Experience
 }
 
 // Create player prompt
 func CreatePrompt(pPlayer *Player) {
-	pPlayer.Output = "\r\n"
-	hpStr := fmt.Sprintf("%d", pPlayer.HitPoints)
-	pPlayer.Output += hpStr + "H "
-	mpStr := fmt.Sprintf("%d", pPlayer.MovePoints)
-	pPlayer.Output += mpStr + "M "
-	pPlayer.Output += "> "
+  pPlayer.Output = "\r\n"
+  hpStr := fmt.Sprintf("%d", pPlayer.HitPoints)
+  pPlayer.Output += hpStr + "H "
+  mpStr := fmt.Sprintf("%d", pPlayer.MovePoints)
+  pPlayer.Output += mpStr + "M "
+  pPlayer.Output += "> "
 }
 
 // Return the current output string for the player
 func GetPlayerOutput(pPlayer *Player) string {
-	return pPlayer.Output
+  return pPlayer.Output
 }
 
 // Save player stuff
@@ -164,15 +164,12 @@ func PlayerSave(pPlayer *Player) {
     LogIt(LogBuf)
     return
   }
-
   // Name
   Stuff = "Name:" + pPlayer.Name
   PlayerWriteLine(Stuff)
-
   // Password
   Stuff = "Password:" + pPlayer.Password
   PlayerWriteLine(Stuff)
-
   // Admin
   if pPlayer.Admin {
     Stuff = "Admin:Yes"
@@ -180,7 +177,6 @@ func PlayerSave(pPlayer *Player) {
     Stuff = "Admin:No"
   }
   PlayerWriteLine(Stuff)
-
   // AFK
   if pPlayer.pDnode.PlayerStateAfk {
     Stuff = "AFK:Yes"
@@ -188,7 +184,6 @@ func PlayerSave(pPlayer *Player) {
     Stuff = "AFK:No"
   }
   PlayerWriteLine(Stuff)
-
   // AllowAssist
   if pPlayer.AllowAssist {
     Stuff = "AllowAssist:Yes"
@@ -196,7 +191,6 @@ func PlayerSave(pPlayer *Player) {
     Stuff = "AllowAssist:No"
   }
   PlayerWriteLine(Stuff)
-
   // AllowGroup
   if pPlayer.AllowGroup {
     Stuff = "AllowGroup:Yes"
@@ -204,17 +198,14 @@ func PlayerSave(pPlayer *Player) {
     Stuff = "AllowGroup:No"
   }
   PlayerWriteLine(Stuff)
-
   // ArmorClass - save only, ParsePlayerStuff calls CalcPlayerArmorClass
   TmpStr = fmt.Sprintf("%d", pPlayer.ArmorClass)
   Stuff = "ArmorClass:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // Born
   TmpStr = fmt.Sprintf("%d", pPlayer.Born)
   Stuff = "Born:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // Color
   if pPlayer.Color {
     Stuff = "Color:Yes"
@@ -222,30 +213,24 @@ func PlayerSave(pPlayer *Player) {
     Stuff = "Color:No"
   }
   PlayerWriteLine(Stuff)
-
   // Experience
   TmpStr = fmt.Sprintf("%15.0f", pPlayer.Experience)
   Stuff = "Experience:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // GoToArrive
   Stuff = "GoToArrive:" + pPlayer.GoToArrive
   PlayerWriteLine(Stuff)
-
   // GoToDepart
   Stuff = "GoToDepart:" + pPlayer.GoToDepart
   PlayerWriteLine(Stuff)
-
   // HitPoints
   TmpStr = fmt.Sprintf("%d", pPlayer.HitPoints)
   Stuff = "HitPoints:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // Hunger
   TmpStr = fmt.Sprintf("%d", pPlayer.Hunger)
   Stuff = "Hunger:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // Invisible
   if pPlayer.Invisible {
     Stuff = "Invisible:Yes"
@@ -253,17 +238,14 @@ func PlayerSave(pPlayer *Player) {
     Stuff = "Invisible:No"
   }
   PlayerWriteLine(Stuff)
-
   // Level
   TmpStr = fmt.Sprintf("%d", pPlayer.Level)
   Stuff = "Level:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // MovePoints
   TmpStr = fmt.Sprintf("%d", pPlayer.MovePoints)
   Stuff = "MovePoints:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // OneWhack
   if pPlayer.OneWhack {
     Stuff = "OneWhack:Yes"
@@ -271,7 +253,6 @@ func PlayerSave(pPlayer *Player) {
     Stuff = "OneWhack:No"
   }
   PlayerWriteLine(Stuff)
-
   // Online
   if pPlayer.pDnode.PlayerStatePlaying {
     Stuff = "Online:Yes"
@@ -279,15 +260,12 @@ func PlayerSave(pPlayer *Player) {
     Stuff = "Online:No"
   }
   PlayerWriteLine(Stuff)
-
   // Position
   Stuff = "Position:" + pPlayer.Position
   PlayerWriteLine(Stuff)
-
   // RoomId
   Stuff = "RoomId:" + pPlayer.RoomId
   PlayerWriteLine(Stuff)
-
   // RoomInfo
   if pPlayer.RoomInfo {
     Stuff = "RoomInfo:Yes"
@@ -295,56 +273,45 @@ func PlayerSave(pPlayer *Player) {
     Stuff = "RoomInfo:No"
   }
   PlayerWriteLine(Stuff)
-
   // Sex
   Stuff = "Sex:" + pPlayer.Sex
   PlayerWriteLine(Stuff)
-
   // Silver
   TmpStr = fmt.Sprintf("%d", pPlayer.Silver)
   Stuff = "Silver:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // SkillAxe
   TmpStr = fmt.Sprintf("%d", pPlayer.SkillAxe)
   Stuff = "SkillAxe:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // SkillClub
   TmpStr = fmt.Sprintf("%d", pPlayer.SkillClub)
   Stuff = "SkillClub:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // SkillDagger
   TmpStr = fmt.Sprintf("%d", pPlayer.SkillDagger)
   Stuff = "SkillDagger:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // SkillHammer
   TmpStr = fmt.Sprintf("%d", pPlayer.SkillHammer)
   Stuff = "SkillHammer:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // SkillSpear
   TmpStr = fmt.Sprintf("%d", pPlayer.SkillSpear)
   Stuff = "SkillSpear:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // SkillStaff
   TmpStr = fmt.Sprintf("%d", pPlayer.SkillStaff)
   Stuff = "SkillStaff:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // SkillSword
   TmpStr = fmt.Sprintf("%d", pPlayer.SkillSword)
   Stuff = "SkillSword:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // Thirst
   TmpStr = fmt.Sprintf("%d", pPlayer.Thirst)
   Stuff = "Thirst:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // TimePlayed
   if pPlayer.pDnode.PlayerStatePlaying {
     // Don't update TimePlayed if player is not 'playing'
@@ -354,24 +321,19 @@ func PlayerSave(pPlayer *Player) {
   TmpStr = fmt.Sprintf("%d", pPlayer.TimePlayed)
   Stuff = "TimePlayed:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // Title
   Stuff = "Title:" + pPlayer.Title
   PlayerWriteLine(Stuff)
-
   // WeaponDamage
   TmpStr = fmt.Sprintf("%d", pPlayer.WeaponDamage)
   Stuff = "WeaponDamage:" + TmpStr
   PlayerWriteLine(Stuff)
-
   // WeaponDesc1
   Stuff = "WeaponDesc1:" + pPlayer.WeaponDesc1
   PlayerWriteLine(Stuff)
-
   // WeaponType
   Stuff = "WeaponType:" + pPlayer.WeaponType
   PlayerWriteLine(Stuff)
-
   // Done
   PlayerCloseFile()
 }

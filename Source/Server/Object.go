@@ -10,8 +10,8 @@
 package server
 
 import (
-	"bufio"
-	"os"
+  "bufio"
+  "os"
 )
 
 var ObjectFile     *os.File
@@ -20,46 +20,46 @@ var ObjectId        string
 
 // Object represents a single instance of an object in the game.
 type Object struct {
-	ObjectId          string
-	ArmorValue        int
-	ArmorWear         string
-	ContainerCapacity int
-	Cost              int
-	Count             string
-	Desc1             string
-	Desc2             string
-	Desc3             string
-	DrinkPct          int
-	FoodPct           int
-	LightHours        int
-	Names             string
-	Type              string
-	WeaponType        string
-	WeaponDamage      int
-	WearPosition      string
-	Weight            int
+  ObjectId          string
+  ArmorValue        int
+  ArmorWear         string
+  ContainerCapacity int
+  Cost              int
+  Count             string
+  Desc1             string
+  Desc2             string
+  Desc3             string
+  DrinkPct          int
+  FoodPct           int
+  LightHours        int
+  Names             string
+  Type              string
+  WeaponType        string
+  WeaponDamage      int
+  WearPosition      string
+  Weight            int
 }
 
 // Global instance of Object
 var pObject = &Object{
-	ObjectId:          "",
-	ArmorValue:        0,
-	ArmorWear:         "",
-	ContainerCapacity: 0,
-	Cost:              0,
-	Count:             "1",
-	Desc1:             "",
-	Desc2:             "",
-	Desc3:             "",
-	DrinkPct:          0,
-	FoodPct:           0,
-	LightHours:        0,
-	Names:             "",
-	Type:              "",
-	WeaponType:        "",
-	WeaponDamage:      0,
-	WearPosition:      "",
-	Weight:            0,
+  ObjectId:          "",
+  ArmorValue:        0,
+  ArmorWear:         "",
+  ContainerCapacity: 0,
+  Cost:              0,
+  Count:             "1",
+  Desc1:             "",
+  Desc2:             "",
+  Desc3:             "",
+  DrinkPct:          0,
+  FoodPct:           0,
+  LightHours:        0,
+  Names:             "",
+  Type:              "",
+  WeaponType:        "",
+  WeaponDamage:      0,
+  WearPosition:      "",
+  Weight:            0,
 }
 
 var ObjScanner = bufio.NewScanner(ObjectFile)
@@ -92,102 +92,102 @@ func NewObject() {
 
 // Add an object to player's equipment
 func AddObjToPlayerEqu(WearPosition string, ObjectId string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Add an object to player's inventory
 func AddObjToPlayerInv(pDnodeTgt1 *Dnode, ObjectId string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Add an object to room
 func AddObjToRoom(RoomId string, ObjectId string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
-// Calculate player armor class 
+// Calculate player armor class
 func CalcPlayerArmorClass() int {
-	var ArmorClass int
-	return ArmorClass
+  var ArmorClass int
+  return ArmorClass
 }
 
 // Close object file
 func CloseObjectFile() {
-	ObjectFile.Close()
+  ObjectFile.Close()
 }
 
 // Examine object
 func ExamineObj(ObjectId string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Is this a valid object?
 func IsObject(ObjectId string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Is object in player's equipment?
 func IsObjInPlayerEqu(ObjectName string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Is object in player's inventory?
 func IsObjInPlayerInv(ObjectName string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Is object in room?
 func IsObjInRoom(ObjectName string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Open Object file
 func OpenObjectFile(ObjectId string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Parse object stuff
 func ParseObjectStuff() {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Read a line from the object file
 func ReadObjLine() {
-	if ObjScanner.Scan() {
-		Stuff = ObjScanner.Text()
-		Stuff = StrTrimLeft(Stuff)
-		Stuff = StrTrimRight(Stuff)
-	}
+  if ObjScanner.Scan() {
+    Stuff = ObjScanner.Text()
+    Stuff = StrTrimLeft(Stuff)
+    Stuff = StrTrimRight(Stuff)
+  }
 }
 
 // Remove an object from player's equipment
 func RemoveObjFromPlayerEqu(ObjectId string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Remove an object from player's inventory
 func RemoveObjFromPlayerInv(ObjectId string, Count int) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Remove an object from room
 func RemoveObjFromRoom(ObjectId string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Show objects in room
 func ShowObjsInRoom(pDnode *Dnode) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Show player equipment
 func ShowPlayerEqu(pDnodeTgt1 *Dnode) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Show player inventory
 func ShowPlayerInv() {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Find an object wherever it is
@@ -197,17 +197,17 @@ func WhereObj(ObjectIdSearch string) {
   WhereObjRoomObj(ObjectIdSearch)
 }
 
-// Where is object in PlayerEqu 
+// Where is object in PlayerEqu
 func WhereObjPlayerEqu(ObjectIdSearch string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
-// Where is object in PlayerObj 
+// Where is object in PlayerObj
 func WhereObjPlayerObj(ObjectIdSearch string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
 
 // Where is object in RoomObj
 func WhereObjRoomObj(ObjectIdSearch string) {
-	// TODO: implement function logic
+  // TODO: implement function logic
 }
