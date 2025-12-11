@@ -1528,7 +1528,53 @@ func DoWield() {
   // TODO: implement DoWield
 }
 
+// Groups - Calculate group experience, if any
+func GrpExperience(MobileExpPoints int, MobileLevel int) {
+	return
+}
+
+// Groups - Player is leaving the group
+func GrpLeave() {
+	return
+}
+
+// Groups - Leader is leaving - Disband the whole group
+func GrpLeaveLeader() {
+	return
+}
+
+// Groups - Member is leaving - Remove them from the group
+func GrpLeaveMember() {
+	return
+}
+
+// Logon greeting
 func LogonGreeting() {
+}
+
+// Logon wait male female
+func LogonWaitMaleFemale() {
+	return
+}
+
+// Logon wait name
+func LogonWaitName() {
+	return
+}
+
+// Logon wait name confirmation
+func LogonWaitNameConfirmation() {
+	return
+}
+
+// Logon wait new character
+func LogonWaitNewCharacter() {
+	return
+}
+
+// Logon wait password
+func LogonWaitPassword() {
+	return
 }
 
 // Reposition Dnode cursor
@@ -1602,6 +1648,41 @@ func UpdatePlayerStats() {
 
 // Violence, as in ... WHACK 'em!
 func Violence() {
+}
+
+// Mobile's turn to do some damage
+func ViolenceMobile() {
+	return
+}
+
+// Mobile has died
+func ViolenceMobileDied(MobileBeenWhacked string, MobileDesc1 string, MobileId string) {
+	return
+}
+
+// Hand out the loot
+func ViolenceMobileLoot(Loot string) {
+	return
+}
+
+// Hand out the loot - for real this time
+func ViolenceMobileLootHandOut(Loot string) bool {
+	return false
+}
+
+// More mobiles to fight?
+func ViolenceMobileMore() {
+	return
+}
+
+// Player's turn to do some damage
+func ViolencePlayer() {
+	return
+}
+
+// Player has died, sad but true
+func ViolencePlayerDied(MobileDesc1 string) {
+	return
 }
 
 // Return current time in milliseconds
