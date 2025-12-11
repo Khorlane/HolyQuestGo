@@ -10,37 +10,37 @@
 package server
 
 func IsSocial() bool {
-	return false
+  return false
 }
 
 func CloseSocialFile() {
-	// TODO: Implement CloseFile logic
+  // TODO: Implement CloseFile logic
 }
 
 func OpenSocialFile() bool {
-	return false
+  return false
 }
 
 func PositionNotOk(pDnode *Dnode, MinPos string) bool {
-	return false
+  return false
 }
 
 func PosNbr(Position string) int {
-	return 0
+  return 0
 }
 
 func ReadLine() string {
-	return ""
+  return ""
 }
 
 func SendToPlayer(MsgText string) {
-	// TODO: Implement SendToPlayer logic
+  // TODO: Implement SendToPlayer logic
 }
 
 func SendToTarget(pDnodeTgt1 *Dnode, MsgText string) {
-	// TODO: Implement SendToTarget logic
+  // TODO: Implement SendToTarget logic
 }
 
 func Socialize(MinPos string, MsgText string) {
-	// TODO: Implement Socialize logic
+  // TODO: Implement Socialize logic
 }
