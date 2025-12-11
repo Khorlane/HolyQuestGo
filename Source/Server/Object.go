@@ -65,7 +65,7 @@ var pObject = &Object{
 var ObjScanner = bufio.NewScanner(ObjectFile)
 
 // Create a new object
-func NewObject() {
+func ObjectConstructor() {
   // Init object structure
   pObject.ArmorValue        = 0;
   pObject.ArmorWear         = "";
@@ -111,21 +111,6 @@ func CalcPlayerArmorClass() int {
   return ArmorClass
 }
 
-// Close object file
-func CloseObjectFile() {
-  ObjectFile.Close()
-}
-
-// Examine object
-func ExamineObj(ObjectId string) {
-  // TODO: implement function logic
-}
-
-// Is this a valid object?
-func IsObject(ObjectId string) {
-  // TODO: implement function logic
-}
-
 // Is object in player's equipment?
 func IsObjInPlayerEqu(ObjectName string) {
   // TODO: implement function logic
@@ -141,23 +126,9 @@ func IsObjInRoom(ObjectName string) {
   // TODO: implement function logic
 }
 
-// Open Object file
-func OpenObjectFile(ObjectId string) {
+// Is this a valid object?
+func IsObject(ObjectId string) {
   // TODO: implement function logic
-}
-
-// Parse object stuff
-func ParseObjectStuff() {
-  // TODO: implement function logic
-}
-
-// Read a line from the object file
-func ReadObjLine() {
-  if ObjScanner.Scan() {
-    Stuff = ObjScanner.Text()
-    Stuff = StrTrimLeft(Stuff)
-    Stuff = StrTrimRight(Stuff)
-  }
 }
 
 // Remove an object from player's equipment
@@ -175,11 +146,6 @@ func RemoveObjFromRoom(ObjectId string) {
   // TODO: implement function logic
 }
 
-// Show objects in room
-func ShowObjsInRoom(pDnode *Dnode) {
-  // TODO: implement function logic
-}
-
 // Show player equipment
 func ShowPlayerEqu(pDnodeTgt1 *Dnode) {
   // TODO: implement function logic
@@ -187,6 +153,11 @@ func ShowPlayerEqu(pDnodeTgt1 *Dnode) {
 
 // Show player inventory
 func ShowPlayerInv() {
+  // TODO: implement function logic
+}
+
+// Show objects in room
+func ShowObjsInRoom(pDnode *Dnode) {
   // TODO: implement function logic
 }
 
@@ -210,4 +181,33 @@ func WhereObjPlayerObj(ObjectIdSearch string) {
 // Where is object in RoomObj
 func WhereObjRoomObj(ObjectIdSearch string) {
   // TODO: implement function logic
+}
+
+// Examine object
+func ExamineObj(ObjectId string) {
+  // TODO: implement function logic
+}
+
+// Close object file
+func CloseObjectFile() {
+  ObjectFile.Close()
+}
+
+// Open Object file
+func OpenObjectFile(ObjectId string) {
+  // TODO: implement function logic
+}
+
+// Parse object stuff
+func ParseObjectStuff() {
+  // TODO: implement function logic
+}
+
+// Read a line from the object file
+func ReadObjLine() {
+  if ObjScanner.Scan() {
+    Stuff = ObjScanner.Text()
+    Stuff = StrTrimLeft(Stuff)
+    Stuff = StrTrimRight(Stuff)
+  }
 }
