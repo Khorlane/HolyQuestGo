@@ -22,7 +22,7 @@ func IsShop(RoomId string) bool {
 }
 
 // IsShopObject checks if a shop buys and sells a specific object.
-func IsShopObject(RoomId string, ObjectName string) bool {
+func IsShopObj(RoomId string, ObjectName string) bool {
   ShopFileName := SHOPS_DIR + RoomId + ".txt"
   ShopFile, err := os.Open(ShopFileName)
   if err != nil {
