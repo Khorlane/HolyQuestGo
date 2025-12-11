@@ -10,11 +10,11 @@
 package server
 
 import (
-	"bufio"
-	"fmt"
-	"os"
-	"syscall"
-	"time"
+  "bufio"
+  "fmt"
+  "os"
+  "syscall"
+  "time"
 )
 
 // Globals
@@ -732,388 +732,325 @@ func CommandParse() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   //**********************
   //* Process the MudCmd *
   //**********************
-
   // ADVANCE command
   if MudCmd == "advance" {
     DoAdvance()
     return
   }
-
   // AFK command
   if MudCmd == "afk" {
     DoAfk()
     return
   }
-
   // ASSIST command
   if MudCmd == "assist" {
     DoAssist()
     return
   }
-
   // BUY command
   if MudCmd == "buy" {
     DoBuy()
     return
   }
-
   // CHAT command
   if MudCmd == "chat" {
     DoChat()
     return
   }
-
   // COLOR command
   if MudCmd == "color" {
     DoColor()
     return
   }
-
   // CONSIDER command
   if MudCmd == "consider" {
     DoConsider()
     return
   }
-
   // DELETE command
   if MudCmd == "delete" {
     DoDelete()
     return
   }
-
   // DESTROY command
   if MudCmd == "destroy" {
     DoDestroy()
     return
   }
-
   // DRINK command
   if MudCmd == "drink" {
     DoDrink()
     return
   }
-
   // DROP command
   if MudCmd == "drop" {
     DoDrop()
     return
   }
-
   // EAT command
   if MudCmd == "eat" {
     DoEat()
     return
   }
-
   // EMOTE command
   if MudCmd == "emote" {
     DoEmote()
     return
   }
-
   // EQUIPMENT command
   if MudCmd == "equipment" {
     DoEquipment()
     return
   }
-
   // EXAMINE command
   if MudCmd == "examine" {
     DoExamine()
     return
   }
-
   // FLEE command
   if MudCmd == "flee" {
     DoFlee()
     return
   }
-
   // FOLLOW command
   if MudCmd == "follow" {
     DoFollow(pDnodeActor, CmdStr)
     return
   }
-
   // GET command
   if MudCmd == "get" {
     DoGet()
     return
   }
-
   // GIVE command
   if MudCmd == "give" {
     DoGive()
     return
   }
-
   // GO command
   if MudCmd == "go" {
     DoGo()
     return
   }
-
   // GOTOARRIVE command
   if MudCmd == "gotoarrive" {
     DoGoToArrive()
     return
   }
-
   // GOTODEPART command
   if MudCmd == "gotodepart" {
     DoGoToDepart()
     return
   }
-
   // GOTO command
   if MudCmd == "goto" {
     DoGoTo()
     return
   }
-
   // GROUP command
   if MudCmd == "group" {
     DoGroup()
     return
   }
-
   // GSAY command
   if MudCmd == "gsay" {
     DoGsay()
     return
   }
-
   // HAIL command
   if MudCmd == "hail" {
     DoHail()
     return
   }
-
   // HELP command
   if MudCmd == "help" {
     DoHelp()
     return
   }
-
   // INVENTORY command
   if MudCmd == "inventory" {
     DoInventory()
     return
   }
-
   // INVISIBLE command
   if MudCmd == "invisible" {
     DoInvisible()
     return
   }
-
   // KILL command
   if MudCmd == "kill" {
     DoKill()
     return
   }
-
   // LIST command
   if MudCmd == "list" {
     DoList()
     return
   }
-
   // LOAD command
   if MudCmd == "load" {
     DoLoad()
     return
   }
-
   // LOOK command
   if MudCmd == "look" {
     DoLook(CmdStr)
     return
   }
-
   // MONEY command
   if MudCmd == "money" {
     DoMoney()
     return
   }
-
   // MOTD command
   if MudCmd == "motd" {
     DoMotd()
     return
   }
-
   // OneWhack command
   if MudCmd == "onewhack" {
     DoOneWhack()
     return
   }
-
   // PASSWORD command
   if MudCmd == "password" {
     DoPassword()
     return
   }
-
   // PLAYED command
   if MudCmd == "played" {
     DoPlayed()
     return
   }
-
   // QUIT command
   if MudCmd == "quit" {
     DoQuit()
     return
   }
-
   // REFRESH command
   if MudCmd == "refresh" {
     DoRefresh()
     return
   }
-
   // REMOVE command
   if MudCmd == "remove" {
     DoRemove()
     return
   }
-
   // RESTORE command
   if MudCmd == "restore" {
     DoRestore(CmdStr)
     return
   }
-
   // ROOMINFO command
   if MudCmd == "roominfo" {
     DoRoomInfo()
     return
   }
-
   // SAVE command
   if MudCmd == "save" {
     DoSave()
     return
   }
-
   // SAY command
   if MudCmd == "say" {
     DoSay()
     return
   }
-
   // SELL command
   if MudCmd == "sell" {
     DoSell()
     return
   }
-
   // SHOW command
   if MudCmd == "show" {
     DoShow()
     return
   }
-
   // SIT command
   if MudCmd == "sit" {
     DoSit()
     return
   }
-
   // SLEEP command
   if MudCmd == "sleep" {
     DoSleep()
     return
   }
-
   // STAND command
   if MudCmd == "stand" {
     DoStand()
     return
   }
-
   // STATUS command
   if MudCmd == "status" {
     DoStatus()
     return
   }
-
   // STOP command
   if MudCmd == "stop" {
     DoStop()
     return
   }
-
   // TELL command
   if MudCmd == "tell" {
     DoTell()
     return
   }
-
   // TIME command
   if MudCmd == "time" {
     DoTime()
     return
   }
-
   // TITLE command
   if MudCmd == "title" {
     DoTitle()
     return
   }
-
   // TRAIN command
   if MudCmd == "train" {
     DoTrain()
     return
   }
-
   // WAKE command
   if MudCmd == "wake" {
     DoWake()
     return
   }
-
   // WEAR command
   if MudCmd == "wear" {
     DoWear()
     return
   }
-
   // WHERE command
   if MudCmd == "where" {
     DoWhere()
     return
   }
-
   // WHO command
   if MudCmd == "who" {
     DoWho()
     return
   }
-
   // WIELD command
   if MudCmd == "wield" {
     DoWield()
     return
   }
-
-	pDnodeActor.PlayerOut += "Command is valid, but not implemented at this time."
-	pDnodeActor.PlayerOut += "\r\n"
-	CreatePrompt(pDnodeActor.pPlayer)
-	pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
-	// Log it
-	MudCmd = StrMakeFirstUpper(MudCmd)
-	LogBuf = MudCmd
-	LogBuf += " is in command array, but Do"
-	LogBuf += MudCmd
-	LogBuf += " is not coded."
-	LogIt(LogBuf)
+  pDnodeActor.PlayerOut += "Command is valid, but not implemented at this time."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
+  // Log it
+  MudCmd = StrMakeFirstUpper(MudCmd)
+  LogBuf = MudCmd
+  LogBuf += " is in command array, but Do"
+  LogBuf += MudCmd
+  LogBuf += " is not coded."
+  LogIt(LogBuf)
 }
 
 
@@ -1136,7 +1073,6 @@ func DoAdvance() {
   TargetName = StrMakeLower(TargetName)
   Level = StrToInt(StrGetWord(CmdStr, 3))
   LevelString = fmt.Sprintf("%d", Level)
-
   if TargetName == "" {
     // No name given
     pDnodeActor.PlayerOut += "Advance who?"
@@ -1145,7 +1081,6 @@ func DoAdvance() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   // Get target Dnode pointer
   pDnodeTgt = GetTargetDnode(TargetName)
   if pDnodeTgt == nil {
@@ -1156,7 +1091,6 @@ func DoAdvance() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   if Level == pDnodeTgt.pPlayer.Level {
     // Advance to same level ... that's just plain silly
     pDnodeActor.PlayerOut += TargetNameSave
@@ -1168,7 +1102,6 @@ func DoAdvance() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   if Level == 0 {
     // Advance to level 0 ... not valid
     pDnodeActor.PlayerOut += TargetNameSave
@@ -1180,9 +1113,7 @@ func DoAdvance() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   TargetNameSave = pDnodeTgt.PlayerName
-
   // Level up! or Down :(
   LogBuf = pDnodeTgt.PlayerName
   if Level > pDnodeTgt.pPlayer.Level {
@@ -1196,7 +1127,6 @@ func DoAdvance() {
   LogBuf += " by "
   LogBuf += pDnodeActor.PlayerName
   LogIt(LogBuf)
-
   // Send message to player
   pDnodeActor.PlayerOut += TargetNameSave
   pDnodeActor.PlayerOut += " is now level "
@@ -1205,7 +1135,6 @@ func DoAdvance() {
   pDnodeActor.PlayerOut += "\r\n"
   CreatePrompt(pDnodeActor.pPlayer)
   pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
-
   // Send message to target
   pDnodeTgt.PlayerOut += "\r\n"
   pDnodeTgt.PlayerOut += "&Y"
@@ -1221,16 +1150,13 @@ func DoAdvance() {
   pDnodeTgt.PlayerOut += "!"
   pDnodeTgt.PlayerOut += "&N"
   pDnodeTgt.PlayerOut += "\r\n"
-
   // Make it so
   pDnodeTgt.pPlayer.Level = Level
   pDnodeTgt.pPlayer.Experience = CalcLevelExperience(Level)
   PlayerSave(pDnodeTgt.pPlayer)
-
   // Prompt
   CreatePrompt(pDnodeTgt.pPlayer)
   pDnodeTgt.PlayerOut += GetPlayerOutput(pDnodeTgt.pPlayer)
-
   // Restore the player as a bonus to being advanced
   DoRestore("restore " + pDnodeTgt.pPlayer.Name)
 }
@@ -1263,7 +1189,6 @@ func DoAssist() {
   var TargetNotHere bool
 
   DEBUGIT(1)
-
   //********************
   //* Validate command *
   //********************
@@ -1283,13 +1208,11 @@ func DoAssist() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   PlayerNameCheck = pDnodeActor.PlayerName
   TargetNameCheck = StrGetWord(CmdStr, 2)
-  TargetNameSave = TargetNameCheck
+  TargetNameSave  = TargetNameCheck
   PlayerNameCheck = StrMakeLower(PlayerNameCheck)
   TargetNameCheck = StrMakeLower(TargetNameCheck)
-
   if PlayerNameCheck == TargetNameCheck {
     // Player is trying to assist themself
     pDnodeActor.PlayerOut += "You can't assist youself.\r\n"
@@ -1297,7 +1220,6 @@ func DoAssist() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   //*********************
   //* Turning assist on *
   //*********************
@@ -1308,7 +1230,6 @@ func DoAssist() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   //**********************
   //* Turning assist off *
   //**********************
@@ -1319,7 +1240,6 @@ func DoAssist() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   //******************
   //* Is target OK ? *
   //******************
@@ -1335,7 +1255,6 @@ func DoAssist() {
       TargetNotHere = true
     }
   }
-
   if TargetNotHere {
     // Tell player that target is not here
     pDnodeActor.PlayerOut += TargetNameSave
@@ -1344,7 +1263,6 @@ func DoAssist() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   if !pDnodeTgt.PlayerStateFighting {
     // Tell player that target is not fighting
     pDnodeActor.PlayerOut += pDnodeTgt.pPlayer.Name
@@ -1354,7 +1272,6 @@ func DoAssist() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   if !pDnodeTgt.pPlayer.AllowAssist {
     // Tell player that target is not accepting assistance
     pDnodeActor.PlayerOut += pDnodeTgt.pPlayer.Name
@@ -1364,7 +1281,6 @@ func DoAssist() {
     pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
     return
   }
-
   //******************
   //* Send to player *
   //******************
@@ -1373,7 +1289,6 @@ func DoAssist() {
   pDnodeActor.PlayerOut += ".\r\n"
   CreatePrompt(pDnodeActor.pPlayer)
   pDnodeActor.PlayerOut += GetPlayerOutput(pDnodeActor.pPlayer)
-
   //******************
   //* Send to target *
   //******************
@@ -1382,7 +1297,6 @@ func DoAssist() {
   pDnodeTgt.PlayerOut += " begins assisting you.\r\n"
   CreatePrompt(pDnodeTgt.pPlayer)
   pDnodeTgt.PlayerOut += GetPlayerOutput(pDnodeTgt.pPlayer)
-
   //****************
   //* Send to room *
   //****************
@@ -1392,7 +1306,6 @@ func DoAssist() {
   AssistMsg += "."
   pDnodeSrc = pDnodeActor
   SendToRoom(pDnodeActor.pPlayer.RoomId, AssistMsg)
-
   //**************************
   //* Make the assist happen *
   //**************************
@@ -1650,8 +1563,8 @@ func RepositionDnodeCursor() {
 }
 
 // New connection
-func SockNewConnection() {  
-	DEBUGIT(1)
+func SockNewConnection() {
+  DEBUGIT(1)
   nfd, sa, err := syscall.Accept(ListenSocket)
   if err != nil {
     if err == WSAEWOULDBLOCK {
@@ -1703,5 +1616,5 @@ func SockSend(arg string) {
 }
 
 func Violence() {
-	// Implementation goes here
+  // Implementation goes here
 }
