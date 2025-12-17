@@ -1689,36 +1689,577 @@ func DoDelete() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Destroy command
 func DoDestroy() {
-  // TODO: implement DoDestroy
+  var ObjectName string
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) == 1 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Destroy what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //****************************
+  //* Does player have object? *
+  //****************************
+  TmpStr = StrGetWord(CmdStr, 2)
+  ObjectName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  pObject = nil
+  IsObjInPlayerInv(TmpStr) // Sets pObject
+  if pObject == nil {
+    pDnodeActor.PlayerOut += "You don't have a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += ".\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //******************
+  //* Destroy object *
+  //******************
+  // Remove object from player's inventory
+  RemoveObjFromPlayerInv(pObject.ObjectId, 1)
+  // Send messages
+  pDnodeActor.PlayerOut += "You help make the world cleaner by destroying "
+  pDnodeActor.PlayerOut += pObject.Desc1
+  pDnodeActor.PlayerOut += ".\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  pObject = nil
 }
 
+// Drink command
 func DoDrink() {
-  // TODO: implement DoDrink
+  var DrinkMsg string
+  var ObjectName string
+  var RoomId string
+  var RoomName string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if StrGetWord(CmdStr, 2) == "from" {
+    // Toss out 'from', just extra verbage for player's benefit
+    CmdStr = StrDelete(CmdStr, 5, 5)
+  }
+  if StrCountWords(CmdStr) == 1 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Drink from what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*************************
+  //* Is this a drink room? *
+  //*************************
+  RoomId = pDnodeActor.pPlayer.RoomId
+  if IsRoomType(RoomId, "Drink") {
+    // Room contains something to drink
+    RoomName = GetRoomName(RoomId)
+    TmpStr = StrGetWord(CmdStr, 2)
+    TmpStr = StrMakeLower(TmpStr)
+    RoomName = StrMakeLower(RoomName)
+    if StrIsWord(TmpStr, RoomName) {
+      //*****************
+      //* Player drinks *
+      //*****************
+      // Send messages
+      pDnodeActor.PlayerOut += "You take a drink of clear &Ccool&N water."
+      pDnodeActor.PlayerOut += "\r\n"
+      DrinkMsg = pDnodeActor.PlayerName
+      DrinkMsg += " takes a drink of clear &Ccool&N water."
+      pDnodeSrc = pDnodeActor
+      pDnodeTgt = pDnodeActor
+      SendToRoom(pDnodeActor.pPlayer.RoomId, DrinkMsg)
+      // Update thirst
+      Drink(pDnodeActor.pPlayer, 20)
+      PlayerSave(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      // Prompt
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  //****************************
+  //* Does player have object? *
+  //****************************
+  TmpStr = StrGetWord(CmdStr, 2)
+  ObjectName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  pObject = nil
+  IsObjInPlayerInv(TmpStr) // Sets pObject
+  if pObject == nil {
+    // Object not found in player's inventory
+    pDnodeActor.PlayerOut += "You don't have a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += " in your inventory.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*******************
+  //* Is object drink? *
+  //*******************
+  pObject.Type = StrMakeLower(pObject.Type)
+  if pObject.Type != "drink" {
+    // Object is not a drink
+    pDnodeActor.PlayerOut += "You can't drink "
+    pDnodeActor.PlayerOut += pObject.Desc1
+    pDnodeActor.PlayerOut += "."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //****************
+  //* Drink object *
+  //****************
+  // Send messages
+  pDnodeActor.PlayerOut += "You drink from "
+  pDnodeActor.PlayerOut += pObject.Desc1
+  pDnodeActor.PlayerOut += "."
+  pDnodeActor.PlayerOut += "\r\n"
+  DrinkMsg = pDnodeActor.PlayerName
+  DrinkMsg += " drinks from "
+  DrinkMsg += pObject.Desc1
+  DrinkMsg += "."
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, DrinkMsg)
+  // Drink and remove object from player's inventory
+  Drink(pDnodeActor.pPlayer, pObject.DrinkPct)
+  PlayerSave(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  RemoveObjFromPlayerInv(pObject.ObjectId, 1)
+  // Clean up and give prompt
+  pObject = nil
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Drop command
 func DoDrop() {
-  // TODO: implement DoDrop
+  var DropMsg string
+  var ObjectName string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) == 1 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Drop what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //****************************
+  //* Does player have object? *
+  //****************************
+  TmpStr = StrGetWord(CmdStr, 2)
+  ObjectName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  pObject = nil
+  IsObjInPlayerInv(TmpStr) // Sets pObject
+  if pObject == nil {
+    pDnodeActor.PlayerOut += "You don't have a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += " in your inventory.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //***************
+  //* Drop object *
+  //***************
+  // Remove object from player's inventory
+  RemoveObjFromPlayerInv(pObject.ObjectId, 1)
+  // Send messages
+  pDnodeActor.PlayerOut += "You drop "
+  pDnodeActor.PlayerOut += pObject.Desc1
+  pDnodeActor.PlayerOut += "."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  DropMsg = pDnodeActor.PlayerName
+  DropMsg += " drops "
+  DropMsg += pObject.Desc1
+  DropMsg += "."
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, DropMsg)
+  // Add object to room
+  AddObjToRoom(pDnodeActor.pPlayer.RoomId, pObject.ObjectId)
+  pObject = nil
 }
 
+// Eat command
 func DoEat() {
-  // TODO: implement DoEat
+  var EatMsg string
+  var ObjectName string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) == 1 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Eat what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //****************************
+  //* Does player have object? *
+  //****************************
+  TmpStr = StrGetWord(CmdStr, 2)
+  ObjectName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  pObject = nil
+  IsObjInPlayerInv(TmpStr) // Sets pObject
+  if pObject == nil {
+    pDnodeActor.PlayerOut += "You don't have a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += " in your inventory.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*******************
+  //* Is object food? *
+  //*******************
+  pObject.Type = StrMakeLower(pObject.Type)
+  if pObject.Type != "food" {
+    pDnodeActor.PlayerOut += "You can't eat "
+    pDnodeActor.PlayerOut += pObject.Desc1
+    pDnodeActor.PlayerOut += "."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //**************
+  //* Eat object *
+  //**************
+  // Send messages
+  pDnodeActor.PlayerOut += "You eat "
+  pDnodeActor.PlayerOut += pObject.Desc1
+  pDnodeActor.PlayerOut += "."
+  pDnodeActor.PlayerOut += "\r\n"
+  EatMsg = pDnodeActor.PlayerName
+  EatMsg += " eats "
+  EatMsg += pObject.Desc1
+  EatMsg += "."
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, EatMsg)
+  // Eat and remove object from player's inventory
+  Eat(pDnodeActor.pPlayer, pObject.FoodPct)
+  PlayerSave(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  RemoveObjFromPlayerInv(pObject.ObjectId, 1)
+  // Clean up and give prompt
+  pObject = nil
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Emote command
 func DoEmote() {
-  // TODO: implement DoEmote
+  var EmoteMsg string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  EmoteMsg = StrGetWords(CmdStr, 2)
+  if StrGetLength(EmoteMsg) < 1 {
+    // Player did not enter anything to say
+    pDnodeActor.PlayerOut += "You try to show emotion, but fail."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*******************
+  //* Emote something *
+  //*******************
+  pDnodeActor.PlayerOut += "&C"
+  pDnodeActor.PlayerOut += pDnodeActor.PlayerName
+  pDnodeActor.PlayerOut += " "
+  pDnodeActor.PlayerOut += EmoteMsg
+  pDnodeActor.PlayerOut += "&N"
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  TmpStr = "&C"
+  TmpStr += pDnodeActor.PlayerName
+  TmpStr += " "
+  TmpStr += EmoteMsg
+  TmpStr += "&N"
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, TmpStr)
 }
 
+// Equipment command
 func DoEquipment() {
-  // TODO: implement DoEquipment
+  DEBUGIT(1)
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  ShowPlayerEqu(pDnodeActor)
 }
 
+// Examine command
 func DoExamine() {
-  // TODO: implement DoExamine
+  var ObjectFound bool
+  var ObjectName string
+  var ObjectType string
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) == 1 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Examine what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //***********************************************
+  //* Ok, object, object ... where is the object? *
+  //***********************************************
+  ObjectFound = false
+  TmpStr = StrGetWord(CmdStr, 2)
+  ObjectName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  // Check room
+  pObject = nil
+  IsObjInRoom(TmpStr) // Sets pObject
+  if pObject != nil {
+    // Object is in the room
+    ObjectFound = true
+  } else {
+    // Check player inventory
+    pObject = nil
+    IsObjInPlayerInv(TmpStr) // Sets pObject
+    if pObject != nil {
+      // Object is in player's inventory
+      ObjectFound = true
+    } else {
+      // Check player equipment
+      pObject = nil
+      IsObjInPlayerEqu(TmpStr) // Sets pObject
+      if pObject != nil {
+        // Object is in player's equipment
+        ObjectFound = true
+      }
+    }
+  }
+  if !ObjectFound {
+    // Object can't be found
+    pDnodeActor.PlayerOut += "There doesn't seem to be a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += " here.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //************************************
+  //* Ojbect was found, now examine it *
+  //************************************
+  // Send messages
+  pDnodeActor.PlayerOut += "You examine "
+  pDnodeActor.PlayerOut += pObject.Desc1
+  pDnodeActor.PlayerOut += "."
+  pDnodeActor.PlayerOut += "\r\n"
+  // Examine object
+  pDnodeActor.PlayerOut += "Object type: "
+  pDnodeActor.PlayerOut += pObject.Type
+  pDnodeActor.PlayerOut += "\r\n"
+  ObjectType = pObject.Type
+  ObjectType = StrMakeLower(ObjectType)
+  if ObjectType == "weapon" {
+    // Object is a weapon
+    pDnodeActor.PlayerOut += "Weapon type: "
+    pDnodeActor.PlayerOut += pObject.WeaponType
+    pDnodeActor.PlayerOut += "\r\n"
+  }
+  ExamineObj(pObject.ObjectId)
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  pObject = nil
 }
 
+// Flee command
 func DoFlee() {
-  // TODO: implement DoFlee
+  var CandidateCount int
+  var CandidateList string
+  var CandidateTarget int
+  var FleeMsg string
+  var MobileId string
+  var MobileIdSave string
+  var MobPlayerFile *os.File
+  var MobPlayerFileName string
+  var MudCmdIsExit string
+  var PlayerName1 string
+  var PlayerName2 string
+  var RoomIdBeforeFleeing string
+  var Target string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if !pDnodeActor.PlayerStateFighting {
+    pDnodeActor.PlayerOut += "You can't flee, you aren't fighting.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  TmpStr = StrGetWord(CmdStr, 2)
+  if TmpStr == "" {
+    // No direction given
+    pDnodeActor.PlayerOut += "Aimless fleeing is not allowed.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  RoomIdBeforeFleeing = pDnodeActor.pPlayer.RoomId
+  MudCmdIsExit = "go"
+  sMudCmdIsExit := MudCmdIsExit
+  if !IsExit(sMudCmdIsExit) {
+    // Direction given is not valid
+    pDnodeActor.PlayerOut += "Flee where?\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //************************************
+  //* Player has been moved, they fled *
+  //************************************
+  // Let everyone in room know they fled
+  FleeMsg += "&R"
+  FleeMsg += pDnodeActor.PlayerName
+  FleeMsg += " has fled for $pHisHers life!!"
+  FleeMsg += "&N"
+  FleeMsg = PronounSubstitute(FleeMsg)
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(RoomIdBeforeFleeing, FleeMsg)
+  // Let player know they succeeded in fleeing
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += "&R"
+  pDnodeActor.PlayerOut += "You have sucessfully fled for your life!!"
+  pDnodeActor.PlayerOut += "&N"
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  //***********
+  //* Cleanup *
+  //***********
+  pDnodeActor.PlayerStateFighting = false
+  if pDnodeActor.pPlayer.pPlayerFollowers[0] != nil {
+    // Player is following someone, stop following
+    DoFollow(pDnodeActor, "follow none")
+  }
+  PlayerName1 = pDnodeActor.PlayerName
+  // Get mobile id for mob that fleeing player was fighting
+  MobileIdSave = GetPlayerMobMobileId(PlayerName1)
+  // Delete PlayerMob file -- player is no longer attacking mob
+  DeletePlayerMob(PlayerName1)
+  // See if a mob is whacking player
+  MobPlayerFileName = MOB_PLAYER_DIR
+  MobPlayerFileName += PlayerName1
+  MobPlayerFileName += ".txt"
+  var err error
+  MobPlayerFile, err = os.Open(MobPlayerFileName)
+  if err != nil {
+    // If MobPlayer does not exist, then no mob is fighting player
+    return
+	}
+	_ = MobPlayerFile.Close()
+  //***************************
+  //* Make mob switch targets *
+  //***************************
+  // Delete fighting mobiles from MobPlayer file
+  SetpDnodeCursorFirst()
+  for !EndOfDnodeList() {
+    // Loop thru all connections
+    pDnodeOthers = GetDnode()
+    if pDnodeOthers.PlayerStateFighting {
+      // Players who are fighting
+      if RoomIdBeforeFleeing == pDnodeOthers.pPlayer.RoomId {
+        // In the same room
+        PlayerName2 = pDnodeOthers.PlayerName
+        MobileId = GetPlayerMobMobileId(PlayerName2)
+        DeleteMobPlayer(PlayerName1, MobileId)
+        if MobileId == MobileIdSave {
+          // Add player to candidate list for MobileIdSave
+          CandidateList += PlayerName2
+          CandidateList += " "
+        }
+      }
+    }
+    SetpDnodeCursorNext()
+  }
+  // Re-position pDnodeCursor
+  RepositionDnodeCursor()
+  // Put mobiles that are not fighting back in room
+  PutMobBackInRoom(PlayerName1, RoomIdBeforeFleeing)
+  // Player is gone, so delete MobPlayer completely
+  DeleteMobPlayer(PlayerName1, "file")
+  // Select a new target for MobileIdSave
+  if StrGetLength(CandidateList) == 0 {
+    // No available target for MobileIdSave
+    return
+  }
+  CandidateCount = StrCountWords(CandidateList)
+  CandidateTarget = GetRandomNumber(CandidateCount)
+  Target = StrGetWord(CandidateList, CandidateTarget)
+  CreateMobPlayer(Target, MobileIdSave)
 }
 
 func DoFollow(pDnode *Dnode, CmdStr string) {

@@ -186,12 +186,12 @@ func CreatePrompt(pPlayer *Player) {
 }
 
 // Player drink
-func Drink(Percent int) {
+func Drink(pPlayer *Player, Percent int) {
 	return
 }
 
 // Player eat
-func Eat(Percent int) {
+func Eat(pPlayer *Player, Percent int) {
 	return
 }
 
