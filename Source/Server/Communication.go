@@ -3634,8 +3634,80 @@ func DoLogon() {
   }
 }
 
-func DoLook(CmdStr string) {
-  // TODO: implement DoLook
+// Look command
+func DoLook(CmdStr1 string) {
+  var pMobile         *Mobile
+  var IsPlayer         bool
+  var MudCmdIsExit     string
+  var TargetName       string
+
+  DEBUGIT(1)
+  CmdStr = CmdStr1
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  TmpStr = StrGetWord(CmdStr, 2)
+  //*****************
+  //* Just looking? *
+  //*****************
+  if TmpStr == "" {
+    // Just look
+    ShowRoom(pDnodeActor)
+    return
+  }
+  //**********************
+  //* Is it a room exit? *
+  //**********************
+  MudCmdIsExit = "look"
+  if IsExit(MudCmdIsExit) {
+    // Look room exit
+    return
+  }
+  //*******************
+  //* Is it a player? *
+  //*******************
+  IsPlayer = true
+  TargetName = TmpStr
+  TargetName = StrMakeLower(TargetName)
+  pDnodeTgt = GetTargetDnode(TargetName)
+  if pDnodeTgt == nil {
+    // Target is not online and/or not in 'playing' state
+    IsPlayer = false
+  } else {
+    // Target is online and playing
+    if pDnodeActor.pPlayer.RoomId != pDnodeTgt.pPlayer.RoomId {
+      // Target is not in the same room
+      IsPlayer = false
+    }
+  }
+  if IsPlayer {
+    // Show player
+    ShowPlayerEqu(pDnodeTgt)
+    return
+  }
+  //*******************
+  //* Is it a mobile? *
+  //*******************
+  pMobile = IsMobInRoom(TargetName)
+  if pMobile != nil {
+    // Player is looking at a mob
+    TmpStr = StrMakeFirstLower(pMobile.Desc1)
+    pDnodeActor.PlayerOut += "You look at "
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += "."
+    pDnodeActor.PlayerOut += "\r\n"
+    ExamineMob(pMobile.MobileId)
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    pMobile = nil
+    return
+  }
+  // Nothing found to look at
+  pDnodeActor.PlayerOut += "If it's an object, use examine, otherwise <shrug>."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoMoney() {
