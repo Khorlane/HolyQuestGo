@@ -5595,6 +5595,32 @@ func GrpLeaveMember() {
 
 // Logon greeting
 func LogonGreeting() {
+  var GreetingFile     *os.File
+  var GreetingFileName string
+
+  // Read greeting file
+  GreetingFileName = GREETING_DIR
+  GreetingFileName += "Greeting"
+  GreetingFileName += ".txt"
+  GreetingFile, err := os.Open(GreetingFileName)
+  if err != nil {
+    LogBuf = "Communication::LogonGreeting - Open Greeting file failed (read)"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  pDnodeActor.PlayerOut += "Version "
+  pDnodeActor.PlayerOut += VERSION
+  pDnodeActor.PlayerOut += "\r\n"
+  Scanner := bufio.NewScanner(GreetingFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "End of Greeting" {
+      break
+    }
+    Stuff += "\r\n"
+    pDnodeActor.PlayerOut += Stuff
+  }
+  GreetingFile.Close()
 }
 
 // Logon wait male female

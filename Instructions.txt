@@ -16,4 +16,5 @@ Project: Converting code from cpp to Go
 - Pattern: pDnodeActor->pPlayer->CreatePrompt() becomes: CreatePrompt(pDnodeActor.pPlayer)
 - Pattern: pDnodeActor->pPlayer->GetOutput()    becomes: GetOutput(pDnodeActor.pPlayer)
 - Pattern: InvCountInt = stoi(InvCountStr)      becomes: InvCountInt = StrToInt(InvCountStr)
+- Pattern: _endthread()                         becomes: os.Exit(1)
 - DO NOT APPLY the changes, just put result in chat window, ready for me to copy
