@@ -5470,17 +5470,127 @@ func GrpExperience(MobileExpPoints int, MobileLevel int) {
 
 // Groups - Player is leaving the group
 func GrpLeave() {
-	return
+  if pDnodeActor.pPlayer.pPlayerGrpMember[0] == nil {
+    // Player is not in a group
+    return
+  }
+  if pDnodeActor.pPlayer == pDnodeActor.pPlayer.pPlayerGrpMember[0] {
+    // Player is group leader, disband the whole group
+    GrpLeaveLeader()
+  } else {
+    // Player is a group member
+    GrpLeaveMember()
+  }
 }
 
 // Groups - Leader is leaving - Disband the whole group
 func GrpLeaveLeader() {
-	return
+  var pDnodeGrpMem *Dnode // Other group members
+  var i             int
+  var j             int
+
+  // Player is group leader, disband the whole group
+  for i = 1; i < GRP_LIMIT; i++ {
+    // For each group member
+    if pDnodeActor.pPlayer.pPlayerGrpMember[i] != nil {
+      // Get member's dnode before member's pointer is nulled
+      pDnodeGrpMem = GetTargetDnode(pDnodeActor.pPlayer.pPlayerGrpMember[i].Name)
+      // Null member's leader pointer
+      pDnodeActor.pPlayer.pPlayerGrpMember[i].pPlayerGrpMember[0] = nil
+      // Null member's pointer
+      pDnodeActor.pPlayer.pPlayerGrpMember[i] = nil
+      // Let the group members know that group is disbanded
+      pDnodeGrpMem.PlayerOut += "\r\n"
+      pDnodeGrpMem.PlayerOut += "The group has been disbanded.\r\n"
+      CreatePrompt(pDnodeGrpMem.pPlayer)
+      pDnodeGrpMem.PlayerOut += GetOutput(pDnodeGrpMem.pPlayer)
+      // Member now has no group, remove any followers of this member
+      for j = 0; j < GRP_LIMIT; j++ {
+        pDnodeGrpMem.pPlayer.pPlayerFollowers[j] = nil
+        pDnodeActor.pPlayer.pPlayerFollowers[j]  = nil
+      }
+    }
+  }
+  // Leader now has no group, remove any followers
+  for i = 0; i < GRP_LIMIT; i++ {
+    pDnodeActor.pPlayer.pPlayerFollowers[i]  = nil
+  }
+  // Complete the disbanding of the whole group
+  pDnodeActor.pPlayer.pPlayerGrpMember[0] = nil
+  pDnodeActor.PlayerOut += "Your group has been disbanded.\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 // Groups - Member is leaving - Remove them from the group
 func GrpLeaveMember() {
-	return
+  var pDnodeGrpLdr *Dnode // Group leader
+  var pDnodeGrpMem *Dnode // Other group members
+  var i             int
+  var j             int
+  var GrpEmpty      bool
+
+  if pDnodeActor.pPlayer.pPlayerFollowers[0] != nil {
+    // Player is following someone
+    DoFollow(pDnodeActor, "follow none")
+  }
+  for i = 1; i < GRP_LIMIT; i++ {
+    // Loop thru leader's member list to find player
+    if pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i] == pDnodeActor.pPlayer {
+      // Remove player from leader's group
+      pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i] = nil
+      j = i // Save player's subscript
+      break
+    }
+  }
+  // Complete the disbanding and let the player know
+  pDnodeActor.PlayerOut += "You have left the group.\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  // Let group leader know when a member leaves the group
+  pDnodeGrpLdr = GetTargetDnode(pDnodeActor.pPlayer.pPlayerGrpMember[0].Name)
+  pDnodeGrpLdr.PlayerOut += "\r\n"
+  pDnodeGrpLdr.PlayerOut += pDnodeActor.PlayerName
+  pDnodeGrpLdr.PlayerOut += " has left your group.\r\n"
+  GrpEmpty = true
+  for i = 1; i < GRP_LIMIT; i++ {
+    // For each member of leader's group
+    if pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i] != nil {
+      // Let other group members know that player has left
+      GrpEmpty = false
+      pDnodeGrpMem = GetTargetDnode(pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i].Name)
+      pDnodeGrpMem.PlayerOut += "\r\n"
+      pDnodeGrpMem.PlayerOut += pDnodeActor.PlayerName
+      pDnodeGrpMem.PlayerOut += " has left the group.\r\n"
+      CreatePrompt(pDnodeGrpMem.pPlayer)
+      pDnodeGrpMem.PlayerOut += GetOutput(pDnodeGrpMem.pPlayer)
+      if pDnodeActor.pPlayer == pDnodeGrpMem.pPlayer.pPlayerFollowers[0] {
+        // Another group member was following player
+        DoFollow(pDnodeGrpMem, "follow none")
+      }
+    }
+  }
+  pDnodeActor.pPlayer.pPlayerGrpMember[0] = nil
+  if GrpEmpty {
+    // Player was the last in the group, let the leader know
+    pDnodeGrpLdr.pPlayer.pPlayerGrpMember[0] = nil
+    pDnodeGrpLdr.PlayerOut += "Your group has disbanded.\r\n"
+    // Leader has no group, remove any followers
+    for i = 0; i < GRP_LIMIT; i++ {
+      pDnodeGrpLdr.pPlayer.pPlayerFollowers[i] = nil
+    }
+  }
+  CreatePrompt(pDnodeGrpLdr.pPlayer)
+  pDnodeGrpLdr.PlayerOut += GetOutput(pDnodeGrpLdr.pPlayer)
+  // Compact the list of members, so new members are at the end
+  for i = j; i < GRP_LIMIT-1; i++ { // j is subscript of member who is leaving
+    pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i] = pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i+1]
+    pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i+1] = nil
+  }
+  // When a member leaves a group, remove any followers
+  for i = 0; i < GRP_LIMIT; i++ {
+    pDnodeActor.pPlayer.pPlayerFollowers[i] = nil
+  }
 }
 
 // Logon greeting
