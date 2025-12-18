@@ -6275,7 +6275,67 @@ func ViolenceMobileLoot(Loot string) {
 
 // Hand out the loot - for real this time
 func ViolenceMobileLootHandOut(Loot string) bool {
-	return false
+  var pDnodeGrpMem  *Dnode
+  var pPlayerGrpLdr *Player
+  var Chance        int
+  var Count         int
+  var GotLoot       bool
+  var i             int
+  var ObjectId      string
+  var Percent       int
+
+  GotLoot  = false
+  Count    = StrToInt(StrGetWord(Loot, 1))
+  Percent  = StrToInt(StrGetWord(Loot, 2))
+  ObjectId = StrGetWord(Loot, 3)
+  for i = 1; i <= Count; i++ {
+    // For each object, for example twice if '2 60 RatEar' is specified
+    Chance = GetRandomNumber(100)
+    if Chance < Percent {
+      // Random number came up less than 'percent chance of getting loot'
+      pObject = nil
+      IsObject(ObjectId) // Sets pObject
+      if pObject == nil {
+        // Object does not exist, Log it
+        LogBuf += "Loot object not found"
+        LogBuf += " "
+        LogBuf += ObjectId
+        LogIt(LogBuf)
+      }
+      // Tell player what they got
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "You loot "
+      pDnodeActor.PlayerOut += pObject.Desc1
+      pDnodeActor.PlayerOut += "."
+      // If player is in a group, let other group members know what they looted
+      pPlayerGrpLdr = pDnodeActor.pPlayer.pPlayerGrpMember[0]
+      if pPlayerGrpLdr != nil {
+        // Player is in a group
+        for i = 0; i < GRP_LIMIT; i++ {
+          // Loop thru leader's member list
+          if pPlayerGrpLdr.pPlayerGrpMember[i] != nil {
+            // Group member
+            if pPlayerGrpLdr.pPlayerGrpMember[i] != pDnodeActor.pPlayer {
+              // Group member that is not the member who got the loot
+              pDnodeGrpMem = GetTargetDnode(pPlayerGrpLdr.pPlayerGrpMember[i].Name)
+              pDnodeGrpMem.PlayerOut += "\r\n"
+              pDnodeGrpMem.PlayerOut += pDnodeActor.PlayerName
+              pDnodeGrpMem.PlayerOut += " looted "
+              pDnodeGrpMem.PlayerOut += pObject.Desc1
+              pDnodeGrpMem.PlayerOut += "."
+            }
+          } else {
+            // No more members to process
+            break
+          }
+        }
+      }
+      pObject = nil
+      AddObjToPlayerInv(pDnodeActor, ObjectId)
+      GotLoot = true
+    }
+  }
+  return GotLoot
 }
 
 // More mobiles to fight?
