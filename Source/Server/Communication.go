@@ -3710,12 +3710,49 @@ func DoLook(CmdStr1 string) {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Money command
 func DoMoney() {
-  // TODO: implement DoMoney
+  DEBUGIT(1)
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  ShowMoney(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Motd command
 func DoMotd() {
-  // TODO: implement DoMotd
+  var MotdFile     *os.File
+  var MotdFileName string
+
+  DEBUGIT(1)
+  // Read Motd file
+  MotdFileName = MOTD_DIR
+  MotdFileName += "Motd"
+  MotdFileName += ".txt"
+  MotdFile, err := os.Open(MotdFileName)
+  if err != nil {
+    LogBuf = "Communication::DoMotd - Open Motd file failed (read)"
+    LogIt(LogBuf)
+    return
+  }
+  Scanner := bufio.NewScanner(MotdFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "End of Motd" {
+      break
+    }
+    Stuff += "\r\n"
+    pDnodeActor.PlayerOut += Stuff
+  }
+  MotdFile.Close()
+  if pDnodeActor.PlayerStatePlaying {
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  }
 }
 
 func DoOneWhack() {

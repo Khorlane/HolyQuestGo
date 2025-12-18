@@ -402,12 +402,12 @@ func SetMoney(PlusMinus byte, Amount int, Metal string) {
 }
 
 // Show player money
-func ShowMoney() {
+func ShowMoney(pPlayer *Player) {
 	return
 }
 
 // Show player status
-func ShowStatus() {
+func ShowStatus(pPlayer *Player) {
 	return
 }
 
