@@ -2814,9 +2814,69 @@ func DoGoToArrive() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// GoToDepart command
 func DoGoToDepart() {
-  // TODO: implement DoGoToDepart
+  var GoToDepart string
+	
+  DEBUGIT(1)
+  TmpStr = StrGetWord(CmdStr, 2)
+  TmpStr = StrMakeLower(TmpStr)
+  if TmpStr == "" { // Player entered 'gotodepart' by itself
+    if pDnodeActor.pPlayer.GoToDepart == "" { // Player has no departure message
+      pDnodeActor.PlayerOut += "You do not have a departure message"
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    } else { // Show player's departure message
+      pDnodeActor.PlayerOut += "Your departure message is: "
+      pDnodeActor.PlayerOut += pDnodeActor.pPlayer.GoToDepart
+      pDnodeActor.PlayerOut += "&N" // In case depart msg is messed up
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  if TmpStr == "none" { // Player entered 'gotodepart none'
+    if pDnodeActor.pPlayer.GoToDepart == "" { // Player has no departure message
+      pDnodeActor.PlayerOut += "You did not have an departure message and you still do not have an departure message"
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    } else {
+      pDnodeActor.pPlayer.GoToDepart = ""
+      pDnodeActor.PlayerOut += "Your departure message has been removed.\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  TmpStr = StrGetWords(CmdStr, 2)
+  GoToDepart = TmpStr
+  // Strip out color codes so arrival message length can be checked
+  StrReplace(&TmpStr, "&N", "")
+  StrReplace(&TmpStr, "&K", "")
+  StrReplace(&TmpStr, "&R", "")
+  StrReplace(&TmpStr, "&G", "")
+  StrReplace(&TmpStr, "&Y", "")
+  StrReplace(&TmpStr, "&B", "")
+  StrReplace(&TmpStr, "&M", "")
+  StrReplace(&TmpStr, "&C", "")
+  StrReplace(&TmpStr, "&W", "")
+  if StrGetLength(TmpStr) > 60 {
+    pDnodeActor.PlayerOut += "Departure message must be less than 61 characters, color codes do not count.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pDnodeActor.pPlayer.GoToDepart = GoToDepart
+  pDnodeActor.PlayerOut += "Your departure message has been set.\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
+
 
 func DoGroup() {
   // TODO: implement DoGroup
