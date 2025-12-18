@@ -5063,8 +5063,34 @@ func DoTrain() {
   PlayerSave(pDnodeActor.pPlayer)
 }
 
+// Wake command
 func DoWake() {
-  // TODO: implement DoWake
+  var WakeMsg string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if pDnodeActor.pPlayer.Position != "sleep" {
+    pDnodeActor.PlayerOut += "You are already awake."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //***********
+  //* Wake up *
+  //***********
+  pDnodeActor.pPlayer.Position = "sit"
+  PlayerSave(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += "You awake and sit up."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  WakeMsg = pDnodeActor.PlayerName + " awakens and sits up."
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, WakeMsg)
 }
 
 func DoWear() {
