@@ -5670,7 +5670,42 @@ func LogonWaitMaleFemale() {
 
 // Logon wait name
 func LogonWaitName() {
-	return
+  // Fix name so first letter is upper case, rest are lower case
+  pDnodeActor.PlayerName = StrMakeFirstUpper(CmdStr)
+  if pDnodeActor.PlayerNewCharacter == "Y" {
+    // New player
+    pDnodeActor.PlayerStateWaitNameConfirmation = true
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "You wish to be known as "
+    pDnodeActor.PlayerOut += pDnodeActor.PlayerName
+    pDnodeActor.PlayerOut += "? Y-N"
+    pDnodeActor.PlayerOut += "\r\n"
+  } else {
+    // Returning player
+    if !IsPlayer(pDnodeActor.PlayerName) {
+      // Name not found on file
+      pDnodeActor.PlayerStateWaitName = true
+      pDnodeActor.PlayerOut += pDnodeActor.PlayerName
+      pDnodeActor.PlayerOut += " is not a citizen of this realm."
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "Name?"
+      pDnodeActor.PlayerOut += "\r\n"
+    } else {
+      // Name found on file
+      pDnodeActor.PlayerStateWaitPassword = true
+      if pDnodeActor.PlayerStateWaitPassword {
+        // Prompt for password
+        pDnodeActor.PlayerOut += "\r\n"
+        pDnodeActor.PlayerOut += "Password?"
+        pDnodeActor.PlayerOut += "\r\n"
+        pDnodeActor.pPlayer = PlayerConstructor()
+        pDnodeActor.pPlayer.Name = pDnodeActor.PlayerName
+        ParsePlayerStuff()
+        pDnodeActor.PlayerPassword = pDnodeActor.pPlayer.Password
+      }
+    }
+  }
 }
 
 // Logon wait name confirmation
