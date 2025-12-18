@@ -3280,20 +3280,323 @@ func DoInventory() {
   ShowPlayerInv()
 }
 
+// Invisible command
 func DoInvisible() {
-  // TODO: implement DoInvisible
+  DEBUGIT(1)
+  TmpStr = StrGetWord(CmdStr, 2)
+  TmpStr = StrMakeLower(TmpStr)
+  if TmpStr == "on" {
+    // Turn Invisible on
+    pDnodeActor.pPlayer.Invisible = true
+    pDnodeActor.PlayerStateInvisible = true
+    PlayerSave(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += "You are invisible.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if TmpStr == "off" {
+    // Turn Invisible off
+    pDnodeActor.pPlayer.Invisible = false
+    pDnodeActor.PlayerStateInvisible = false
+    PlayerSave(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += "You are visible.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if pDnodeActor.pPlayer.Invisible {
+    // Invisible is on
+    pDnodeActor.PlayerOut += "Invisible is on.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  } else {
+    // Invisible is off
+    pDnodeActor.PlayerOut += "Invisible is off.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  }
 }
 
+// Kill command
 func DoKill() {
-  // TODO: implement DoKill
+  var pMobile        *Mobile
+  var KillMsg         string
+  var MobileId        string
+  var MobileName      string
+  var PlayerName      string
+  var PlayerNameCheck string
+  var RoomId          string
+  var Target          string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if pDnodeActor.pPlayer.Position == "sit" {
+    // Player is sitting
+    pDnodeActor.PlayerOut += "You must stand up before starting a fight!"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  RoomId = pDnodeActor.pPlayer.RoomId
+  if IsRoomType(RoomId, "NoFight") {
+    // No fighting is allowed in this room
+    pDnodeActor.PlayerOut += "You are not allowed to fight here."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if pDnodeActor.PlayerStateFighting {
+    // Player is fighting
+    pDnodeActor.PlayerOut += "You can only fight one opponent at a time!"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if StrCountWords(CmdStr) < 2 {
+    // No target
+    pDnodeActor.PlayerOut += "You need a target."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if StrCountWords(CmdStr) > 2 {
+    // Two many targets
+    pDnodeActor.PlayerOut += "Only one target at a time."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  PlayerName = pDnodeActor.PlayerName
+  PlayerNameCheck = PlayerName
+  PlayerNameCheck = StrMakeLower(PlayerNameCheck)
+  Target = StrGetWord(CmdStr, 2)
+  MobileName = Target
+  Target = StrMakeLower(Target)
+  if Target == PlayerNameCheck {
+    // Trying to kill self
+    pDnodeActor.PlayerOut += "That would be just awful."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if IsPlayer(Target) {
+    // Trying to kill another player
+    pDnodeActor.PlayerOut += "Don't even think about it, player killing is not allowed."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pMobile = IsMobInRoom(Target)
+  if pMobile == nil {
+    // Target mobile is not here
+    pDnodeActor.PlayerOut += "There doesn't seem to be a(n) "
+    pDnodeActor.PlayerOut += MobileName
+    pDnodeActor.PlayerOut += " here.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //**************
+  //* One Whack! *
+  //**************
+  if pDnodeActor.pPlayer.OneWhack {
+    // Admininstrator has set OneWhack to yes
+    pDnodeActor.PlayerStateFighting = false
+    pDnodeActor.PlayerOut += "&R"
+    pDnodeActor.PlayerOut += "One WHACK and "
+    pDnodeActor.PlayerOut += pMobile.Desc1
+    pDnodeActor.PlayerOut += " is dead!\r\n"
+    pDnodeActor.PlayerOut += "&N"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    // Send kill message to room
+    KillMsg = "&R"
+    KillMsg += PlayerName
+    KillMsg += " kills "
+    KillMsg += pMobile.Desc1
+    KillMsg += " with one WHACK!"
+    KillMsg += "&N"
+    pDnodeSrc = pDnodeActor
+    pDnodeTgt = pDnodeActor
+    SendToRoom(RoomId, KillMsg)
+    // Remove mobile from room
+    RemoveMobFromRoom(RoomId, pMobile.MobileId)
+    pMobile = nil
+    return
+  }
+  //*****************
+  //* Send messages *
+  //*****************
+  // Send message to player
+  pDnodeActor.PlayerOut += "&R"
+  pDnodeActor.PlayerOut += "You start a fight with "
+  pDnodeActor.PlayerOut += pMobile.Desc1
+  pDnodeActor.PlayerOut += "!"
+  pDnodeActor.PlayerOut += "&N"
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  // Send message to room
+  KillMsg = "&R"
+  KillMsg += PlayerName
+  KillMsg += " starts a fight with "
+  KillMsg += pMobile.Desc1
+  KillMsg += "!"
+  KillMsg += "&N"
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(RoomId, KillMsg)
+  //*****************
+  //* Start a fight *
+  //*****************
+  if !pMobile.Hurt {
+    //  Mobile not hurt
+    GetNextMobNbr()
+    CreateMobStatsFile(RoomId)
+    MobileId = pMobile.MobileId
+    RemoveMobFromRoom(RoomId, MobileId)
+    MobileId = pMobile.MobileId + "." + pMobile.MobNbr
+  } else {
+    // Mobile is hurt
+    MobileId = pMobile.MobileId + "." + pMobile.MobNbr
+    RemoveMobFromRoom(RoomId, MobileId)
+  }
+  UpdateMobInWorld(MobileId, "add") // Keep Mob InWorld count correct
+  // Set player and mobile to fight
+  CreatePlayerMob(PlayerName, MobileId)
+  CreateMobPlayer(PlayerName, MobileId)
+  pMobile = nil
+  pDnodeActor.PlayerStateFighting = true
 }
 
+// List command
 func DoList() {
-  // TODO: implement DoList
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  if !IsShop(pDnodeActor.pPlayer.RoomId) {
+    // Room is not a shop
+    pDnodeActor.PlayerOut += "Find a shop."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  ListObjects(pDnodeActor.pPlayer.RoomId, &pDnodeActor.PlayerOut)
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Load command
 func DoLoad() {
-  // TODO: implement DoLoad
+  var pMobile   *Mobile
+  var LoadMsg   string
+  var MobileId  string
+  var ObjectId  string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if StrCountWords(CmdStr) == 1 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Load what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if StrCountWords(CmdStr) != 3 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Usage: load obj{ect}|mob{ile} <target>"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  TmpStr = StrGetWord(CmdStr, 2)
+  TmpStr = StrMakeLower(TmpStr)
+  TmpStr = TranslateWord(TmpStr)
+  if StrIsNotWord(TmpStr, "object mobile") {
+    // obj or mob must be specified
+    pDnodeActor.PlayerOut += "2nd parm must be obj{ect}|mob{ile}\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //***************
+  //* Load object *
+  //***************
+  if TmpStr == "object" {
+    // Loading an object
+    ObjectId = StrGetWord(CmdStr, 3)
+    pObject = nil
+    IsObject(ObjectId) // Sets pObject
+    if pObject == nil {
+      // Object does not exist
+      pDnodeActor.PlayerOut += "Object not found.\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+    pObject = nil
+    AddObjToPlayerInv(pDnodeActor, ObjectId)
+    pDnodeActor.PlayerOut += "Load successful\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*****************
+  //* Load a mobile *
+  //*****************
+  if TmpStr == "mobile" {
+    // Loading an mobile
+    MobileId = StrGetWord(CmdStr, 3)
+    MobileId = StrMakeLower(MobileId)
+    pMobile = IsMobValid(MobileId)
+    if pMobile == nil {
+      // Mobile does not exist
+      pDnodeActor.PlayerOut += "Mobile not found.\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+    AddMobToRoom(pDnodeActor.pPlayer.RoomId, MobileId)
+    SpawnMobileNoMove(MobileId)
+    pDnodeActor.PlayerOut += "Load successful\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    LoadMsg = pMobile.Desc1
+    LoadMsg += " suddenly appears!"
+    pDnodeSrc = pDnodeActor
+    pDnodeTgt = pDnodeActor
+    SendToRoom(pDnodeActor.pPlayer.RoomId, LoadMsg)
+    pMobile = nil
+    return
+  }
 }
 
 func DoLogon() {
