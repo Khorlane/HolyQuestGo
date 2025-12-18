@@ -5770,7 +5770,23 @@ func LogonWaitNameConfirmation() {
 
 // Logon wait new character
 func LogonWaitNewCharacter() {
-	return
+  CmdStr = StrMakeUpper(CmdStr)
+  if !(StrFindOneOf(CmdStr, "YN") == 0 && StrGetLength(CmdStr) == 1) {
+    // Not Y or N ... try again
+    pDnodeActor.PlayerStateWaitNewCharacter = true
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "You must enter a Y or N."
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "Create a new character Y-N?"
+    pDnodeActor.PlayerOut += "\r\n"
+  } else {
+    // Y or N entered ... store response for use later
+    pDnodeActor.PlayerStateWaitName = true
+    pDnodeActor.PlayerNewCharacter = CmdStr
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "Name?"
+    pDnodeActor.PlayerOut += "\r\n"
+  }
 }
 
 // Logon wait password
