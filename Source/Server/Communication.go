@@ -4141,8 +4141,53 @@ func DoSave() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Say command
 func DoSay() {
-  // TODO: implement DoSay
+  var SayMsg string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  SayMsg = StrGetWords(CmdStr, 2)
+  if StrGetLength(SayMsg) < 1 {
+    // Player did not enter anything to say
+    pDnodeActor.PlayerOut += "You try to speak, but no words come out of your mouth."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if pDnodeActor.PlayerStateInvisible {
+    // Player can't speak while invisible
+    pDnodeActor.PlayerOut += "No talking while you are invisible."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*****************
+  //* Say something *
+  //*****************
+  pDnodeActor.PlayerOut += "&W"
+  pDnodeActor.PlayerOut += "You say: "
+  pDnodeActor.PlayerOut += SayMsg
+  pDnodeActor.PlayerOut += "&N"
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  TmpStr = "&W"
+  TmpStr += pDnodeActor.PlayerName
+  TmpStr += " says: "
+  TmpStr += SayMsg
+  TmpStr += "&N"
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, TmpStr)
 }
 
 func DoSell() {
