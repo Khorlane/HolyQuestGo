@@ -4699,8 +4699,73 @@ func DoTime() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Title command
 func DoTitle() {
-  // TODO: implement DoTitle
+  var Title string
+
+  DEBUGIT(1)
+  TmpStr = StrGetWord(CmdStr, 2)
+  TmpStr = StrMakeLower(TmpStr)
+  if TmpStr == "" {
+    // Player entered 'title' by itself
+    if pDnodeActor.pPlayer.Title == "" {
+      // Player has no title
+      pDnodeActor.PlayerOut += "You do not have a title"
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    } else {
+      // Show player's title
+      pDnodeActor.PlayerOut += "Your title is: "
+      pDnodeActor.PlayerOut += pDnodeActor.pPlayer.Title
+      pDnodeActor.PlayerOut += "&N" // In case title is messed up
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  if TmpStr == "none" {
+    // Player entered 'title none'
+    if pDnodeActor.pPlayer.Title == "" {
+      // Player has no title
+      pDnodeActor.PlayerOut += "You did not have a title and you still do not have a title"
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    } else {
+      pDnodeActor.pPlayer.Title = ""
+      pDnodeActor.PlayerOut += "Your title has been removed.\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  TmpStr = StrGetWords(CmdStr, 2)
+  Title = TmpStr
+  // Strip out color codes so Title length can be checked
+  StrReplace(&TmpStr, "&N", "")
+  StrReplace(&TmpStr, "&K", "")
+  StrReplace(&TmpStr, "&R", "")
+  StrReplace(&TmpStr, "&G", "")
+  StrReplace(&TmpStr, "&Y", "")
+  StrReplace(&TmpStr, "&B", "")
+  StrReplace(&TmpStr, "&M", "")
+  StrReplace(&TmpStr, "&C", "")
+  StrReplace(&TmpStr, "&W", "")
+  if StrGetLength(TmpStr) > 40 {
+    pDnodeActor.PlayerOut += "Title must be less than 41 characters, color codes do not count.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pDnodeActor.pPlayer.Title = Title
+  PlayerSave(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += "Your title has been set.\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoTrain() {
