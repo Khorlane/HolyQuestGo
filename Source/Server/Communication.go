@@ -5384,7 +5384,88 @@ func DoWield() {
 
 // Groups - Calculate group experience, if any
 func GrpExperience(MobileExpPoints int, MobileLevel int) {
-	return
+  var pDnode         *Dnode
+  var pDnodeGrpLdr   *Dnode // Group leader
+  var pDnodeGrpMem   *Dnode // Group members
+  var pPlayer        *Player
+  var ExpPoints       int
+  var fGrpLimit       float64
+  var fGrpMemberCount float64
+  var GainLoose       string
+  var GrpMemberCount  int
+  var i               int
+  var LevelTotal      float64
+  var PlayerExpPct    int
+
+  // Count group members
+  GrpMemberCount = 0
+  LevelTotal = 0
+  for i = 0; i < GRP_LIMIT; i++ {
+    // For each group member
+    pPlayer = pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i]
+    if pPlayer != nil {
+      // Found a member
+      GrpMemberCount++
+      LevelTotal += float64(pPlayer.Level)
+    }
+  }
+  // Award experience
+  fGrpMemberCount = float64(GrpMemberCount)
+  fGrpLimit = float64(GRP_LIMIT)
+  MobileExpPoints += int(float64(MobileExpPoints) * (fGrpMemberCount / fGrpLimit * MGBP / 100.0))
+  pDnodeGrpLdr = GetTargetDnode(pDnodeActor.pPlayer.pPlayerGrpMember[0].Name)
+  for i = 0; i < GRP_LIMIT; i++ {
+    // For each member of leader's group including the leader
+    if pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i] == nil {
+      // Done looping through group members
+      return
+    }
+    // Get group member's Dnode
+    pDnodeGrpMem = GetTargetDnode(pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i].Name)
+    if pDnodeActor.pPlayer.RoomId != pDnodeGrpMem.pPlayer.RoomId {
+      // Group members who are not in the same room do not get exp
+      continue
+    }
+    // Calculate experience
+    if MobileExpPoints >= 0 {
+      // Player gains xp
+      PlayerExpPct = int(float64(pDnodeGrpMem.pPlayer.Level) / LevelTotal * 100.0)
+      ExpPoints = int(float64(MobileExpPoints) * (float64(PlayerExpPct) / 100.0))
+      ExpPoints = CalcAdjustedExpPoints(pDnodeGrpMem.pPlayer.Level, MobileLevel, ExpPoints)
+      GainLoose = "gain"
+    } else {
+      // Player loses xp
+      ExpPoints = MobileExpPoints * pDnodeGrpMem.pPlayer.Level
+      GainLoose = "loose"
+    }
+    // Send experience message
+    if ExpPoints >= 0 {
+      // Player gains xp
+      Buf = fmt.Sprintf("%d", ExpPoints)
+      TmpStr = Buf
+    } else {
+      // Player looses xp
+      Buf = fmt.Sprintf("%d", ExpPoints*-1)
+      TmpStr = Buf
+    }
+    pDnodeGrpMem.PlayerOut += "\r\n"
+    pDnodeGrpMem.PlayerOut += "&Y"
+    pDnodeGrpMem.PlayerOut += "You "
+    pDnodeGrpMem.PlayerOut += GainLoose
+    pDnodeGrpMem.PlayerOut += " "
+    pDnodeGrpMem.PlayerOut += TmpStr
+    pDnodeGrpMem.PlayerOut += " points of Group Experience!"
+    pDnodeGrpMem.PlayerOut += "&N"
+    pDnodeGrpMem.PlayerOut += "\r\n"
+    // Gain some experience
+    pDnode = pDnodeGrpMem
+    GainExperience(pDnode, ExpPoints)
+    // Save player
+    PlayerSave(pDnodeGrpMem.pPlayer)
+    // Player prompt
+    CreatePrompt(pDnodeGrpMem.pPlayer)
+    pDnodeGrpMem.PlayerOut += GetOutput(pDnodeGrpMem.pPlayer)
+  }
 }
 
 // Groups - Player is leaving the group
