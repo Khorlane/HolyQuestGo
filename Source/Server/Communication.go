@@ -2460,8 +2460,73 @@ func DoFollow(pDnode *Dnode, CmdStr1 string) {
   pDnodeTgt.pPlayer.pPlayerFollowers[i] = pDnode.pPlayer
 }
 
+// Get command
 func DoGet() {
-  // TODO: implement DoGet
+  var GetMsg string
+  var ObjectName string
+	
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) == 1 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Get what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //**********************************************
+  //* See if object is in room and can be gotten *
+  //**********************************************
+  TmpStr = StrGetWord(CmdStr, 2)
+  ObjectName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  pObject = nil
+  IsObjInRoom(TmpStr) // Sets pObject
+  if pObject == nil {
+    pDnodeActor.PlayerOut += "There doesn't seem to be a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += " here.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if pObject.Type == "NoTake" && !pDnodeActor.pPlayer.Admin {
+    // Only administrators can 'get' a 'notake' object
+    pDnodeActor.PlayerOut += "You may not take that."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    pObject = nil
+    return
+  }
+  //**********************
+  //* So take the object *
+  //**********************
+  // Remove object from room
+  RemoveObjFromRoom(pObject.ObjectId)
+  // Send messages
+  pDnodeActor.PlayerOut += "You get "
+  pDnodeActor.PlayerOut += pObject.Desc1
+  pDnodeActor.PlayerOut += ".\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  GetMsg = pDnodeActor.PlayerName
+  GetMsg += " gets "
+  GetMsg += pObject.Desc1
+  GetMsg += "."
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, GetMsg)
+  // Add object to player's inventory
+  AddObjToPlayerInv(pDnodeTgt, pObject.ObjectId)
+  pObject = nil
 }
 
 func DoGive() {
