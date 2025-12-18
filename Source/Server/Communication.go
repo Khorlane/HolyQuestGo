@@ -3270,8 +3270,14 @@ func DoHelp() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Inventory command
 func DoInventory() {
-  // TODO: implement DoInventory
+  DEBUGIT(1)
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  ShowPlayerInv()
 }
 
 func DoInvisible() {
