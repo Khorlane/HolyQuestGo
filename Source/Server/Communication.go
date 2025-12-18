@@ -3895,8 +3895,35 @@ func DoPlayed() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Quit command
 func DoQuit() {
-  // TODO: implement DoQuit
+  var AllMsg    string
+  var PlayerMsg string
+
+  DEBUGIT(1)
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  pDnodeActor.PlayerStateBye     = true
+  pDnodeActor.PlayerStatePlaying = false
+  PlayerSave(pDnodeActor.pPlayer)
+  GrpLeave()
+  LogBuf = pDnodeActor.PlayerName
+  LogBuf += " issued the QUIT command"
+  LogIt(LogBuf)
+  PlayerMsg = "\r\n"
+  PlayerMsg += "Bye Bye!"
+  PlayerMsg += "\r\n"
+  AllMsg = "\r\n"
+  AllMsg += pDnodeActor.PlayerName
+  AllMsg += " has left the game."
+  AllMsg += "\r\n"
+  SendToAll(PlayerMsg, AllMsg)
 }
 
 func DoRefresh() {
