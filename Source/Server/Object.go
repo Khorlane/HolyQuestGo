@@ -91,8 +91,9 @@ func ObjectConstructor() {
 }
 
 // Add an object to player's equipment
-func AddObjToPlayerEqu(WearPosition string, ObjectId string) {
+func AddObjToPlayerEqu(WearPosition string, ObjectId string) bool {
   // TODO: implement function logic
+  return false
 }
 
 // Add an object to player's inventory

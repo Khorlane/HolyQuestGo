@@ -5093,8 +5093,102 @@ func DoWake() {
   SendToRoom(pDnodeActor.pPlayer.RoomId, WakeMsg)
 }
 
+// Wear command
 func DoWear() {
-  // TODO: implement DoWear
+  var ObjectName   string
+  var WearFailed   bool
+  var WearMsg      string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) == 1 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Wear what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  // Get pointer to object
+  TmpStr = StrGetWord(CmdStr, 2)
+  ObjectName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  pObject = nil
+  IsObjInPlayerInv(TmpStr) // Sets pObject
+  if pObject == nil {
+    // Player does not have object in inventory
+    pDnodeActor.PlayerOut += "You don't have a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += ".\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pObject.Type = StrMakeLower(pObject.Type)
+  if pObject.Type != "armor" {
+    // Player can't wear stuff that is NOT armor
+    pDnodeActor.PlayerOut += "You can't wear "
+    pDnodeActor.PlayerOut += pObject.Desc1
+    pDnodeActor.PlayerOut += ".\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    pObject = nil
+    return
+  }
+  // Handle wear positions that require left or right
+  if StrIsWord(pObject.WearPosition, "ear wrist finger ankle") {
+    // Object must be worn using left and right
+    TmpStr = StrGetWord(CmdStr, 3)
+    TmpStr = StrMakeLower(TmpStr)
+    if StrIsNotWord(TmpStr, "left right") {
+      // Player did not specify left or right
+      pDnodeActor.PlayerOut += "You must specify left or right"
+      pDnodeActor.PlayerOut += ".\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      pObject = nil
+      return
+    }
+    pObject.WearPosition += TmpStr
+  }
+  //***************
+  //* Wear object *
+  //***************
+  // Add object to player's equipment
+  WearFailed = AddObjToPlayerEqu(pObject.WearPosition, pObject.ObjectId)
+  if WearFailed {
+    // Already wearing an object in that wear position
+    pDnodeActor.PlayerOut += "You fail to wear "
+    pDnodeActor.PlayerOut += pObject.Desc1
+    pDnodeActor.PlayerOut += "."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    pObject = nil
+    return
+  }
+  // Increase player's ArmorClass
+  pDnodeActor.pPlayer.ArmorClass += pObject.ArmorValue
+  // Remove object from player's inventory
+  RemoveObjFromPlayerInv(pObject.ObjectId, 1)
+  // Send messages
+  pDnodeActor.PlayerOut += "You wear "
+  pDnodeActor.PlayerOut += pObject.Desc1
+  pDnodeActor.PlayerOut += "."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  WearMsg = pDnodeActor.PlayerName + " wears " + pObject.Desc1 + "."
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, WearMsg)
+  pObject = nil
 }
 
 func DoWhere() {
