@@ -6352,7 +6352,38 @@ func ViolenceMobileMore() {
 
 // Player's turn to do some damage
 func ViolencePlayer() {
-	return
+  var DamageToMobile    int
+  var DeadOrAlive       string
+  var MaxDamageToMobile int
+  var MobileArmor       int
+  var MobileBeenWhacked string
+  var MobileDesc1       string
+  var MobileId          string
+  var WeaponSkill       int
+  var WeaponType        string
+
+  WeaponSkill       = GetWeaponSkill()
+  WeaponType        = pDnodeActor.pPlayer.WeaponType
+  MaxDamageToMobile = pDnodeActor.pPlayer.WeaponDamage
+  MobileId          = GetPlayerMobMobileId(pDnodeActor.PlayerName)
+  MobileArmor       = GetMobileArmor(MobileId)
+  MobileDesc1       = GetMobileDesc1(MobileId)
+  DamageToMobile    = CalcDamageToMobile(MaxDamageToMobile, WeaponSkill)
+  MobileBeenWhacked = WhackMobile(MobileId, DamageToMobile, MobileDesc1, WeaponType)
+  // Player has whacked the mobile
+  DeadOrAlive = StrGetWord(MobileBeenWhacked, 1)
+  MobileBeenWhacked = StrDeleteWord(MobileBeenWhacked, 1)
+  DeadOrAlive = StrMakeLower(DeadOrAlive)
+  if DeadOrAlive == "alive" {
+    // Mobile is not dead, Send fight messages to player
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += MobileBeenWhacked
+    pDnodeActor.PlayerOut += "\r\n"
+  } else {
+    // Mobile is dead
+    ViolenceMobileDied(MobileBeenWhacked, MobileDesc1, MobileId)
+  }
+	MobileArmor = MobileArmor * 2 // To prevent unused variable warning, remove when used
 }
 
 // Player has died, sad but true
