@@ -2715,7 +2715,7 @@ func DoGo() {
 func DoGoTo() {
   var GoToMsg string
   var RoomId string
-	
+
   DEBUGIT(1)
   //********************
   //* Validate command *
@@ -2751,8 +2751,67 @@ func DoGoTo() {
   SendToRoom(pDnodeActor.pPlayer.RoomId, GoToMsg)
 }
 
+// GoToArrive command
 func DoGoToArrive() {
-  // TODO: implement DoGoToArrive
+  var GoToArrive string
+
+  DEBUGIT(1)
+  TmpStr = StrGetWord(CmdStr, 2)
+  TmpStr = StrMakeLower(TmpStr)
+  if TmpStr == "" { // Player entered 'gotoarrive' by itself
+    if pDnodeActor.pPlayer.GoToArrive == "" { // Player has no arrival message
+      pDnodeActor.PlayerOut += "You do not have an arrival message"
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    } else { // Show player's arrival message
+      pDnodeActor.PlayerOut += "Your arrival message is: "
+      pDnodeActor.PlayerOut += pDnodeActor.pPlayer.GoToArrive
+      pDnodeActor.PlayerOut += "&N" // In case arrive msg is messed up
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  if TmpStr == "none" { // Player entered 'gotoarrive none'
+    if pDnodeActor.pPlayer.GoToArrive == "" { // Player has no arrival message
+      pDnodeActor.PlayerOut += "You did not have an arrival message and you still do not have an arrival message"
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    } else {
+      pDnodeActor.pPlayer.GoToArrive = ""
+      pDnodeActor.PlayerOut += "Your arrival message has been removed.\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  TmpStr = StrGetWords(CmdStr, 2)
+  GoToArrive = TmpStr
+  // Strip out color codes so arrival message length can be checked
+  StrReplace(&TmpStr, "&N", "")
+  StrReplace(&TmpStr, "&K", "")
+  StrReplace(&TmpStr, "&R", "")
+  StrReplace(&TmpStr, "&G", "")
+  StrReplace(&TmpStr, "&Y", "")
+  StrReplace(&TmpStr, "&B", "")
+  StrReplace(&TmpStr, "&M", "")
+  StrReplace(&TmpStr, "&C", "")
+  StrReplace(&TmpStr, "&W", "")
+  if StrGetLength(TmpStr) > 60 {
+    pDnodeActor.PlayerOut += "Arrival message must be less than 61 characters, color codes do not count.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pDnodeActor.pPlayer.GoToArrive = GoToArrive
+  pDnodeActor.PlayerOut += "Your arrival message has been set.\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoGoToDepart() {
