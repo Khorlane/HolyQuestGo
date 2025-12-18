@@ -3926,8 +3926,41 @@ func DoQuit() {
   SendToAll(PlayerMsg, AllMsg)
 }
 
+// Refresh command
 func DoRefresh() {
-  // TODO: implement DoRefresh
+  DEBUGIT(1)
+  if StrCountWords(CmdStr) > 2 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "You may refresh only one thing at time."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  TmpStr = StrGetWord(CmdStr, 2)
+  if StrGetLength(TmpStr) == 0 {
+    // Player did not provide an target to be refreshed
+    pDnodeActor.PlayerOut += "Refresh what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  TmpStr = StrMakeLower(TmpStr)
+  if TmpStr == "commands" {
+    // Refresh commands array
+    CommandArrayLoad()
+    pDnodeActor.PlayerOut += "Commands have been refreshed."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  // Refresh target not valid
+  pDnodeActor.PlayerOut += "Refresh what??"
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoRemove() {
