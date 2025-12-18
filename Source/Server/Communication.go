@@ -5238,8 +5238,57 @@ func DoWhere() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Who command
 func DoWho() {
-  // TODO: implement DoWho
+  var DisplayName  string
+  var DisplayLevel string
+
+  DEBUGIT(1)
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += "&C"
+  pDnodeActor.PlayerOut += "Players online"
+  pDnodeActor.PlayerOut += "&N"
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += "--------------"
+  pDnodeActor.PlayerOut += "\r\n"
+  // List all players
+  SetpDnodeCursorFirst()
+  for !EndOfDnodeList() {
+    // Loop thru all connections
+    pDnodeOthers = GetDnode()
+    if pDnodeOthers.PlayerStatePlaying {
+      // Who are 'playing'
+      if pDnodeOthers.PlayerStateInvisible {
+        // Player is invisible, no show
+        SetpDnodeCursorNext()
+        continue
+      }
+      DisplayName = fmt.Sprintf("%-15s", pDnodeOthers.PlayerName)
+      DisplayLevel = fmt.Sprintf("%3d", pDnodeOthers.pPlayer.Level)
+      pDnodeActor.PlayerOut += DisplayName
+      pDnodeActor.PlayerOut += " "
+      pDnodeActor.PlayerOut += DisplayLevel
+      pDnodeActor.PlayerOut += " "
+      if pDnodeOthers.PlayerStateAfk {
+        // Player is AFK
+        pDnodeActor.PlayerOut += "&Y"
+        pDnodeActor.PlayerOut += "AFK "
+        pDnodeActor.PlayerOut += "&N"
+      } else {
+        // Player is not AFK
+        pDnodeActor.PlayerOut += "    "
+      }
+      pDnodeActor.PlayerOut += pDnodeOthers.pPlayer.Title
+      pDnodeActor.PlayerOut += "&N"
+      pDnodeActor.PlayerOut += "\r\n"
+    }
+    SetpDnodeCursorNext()
+  }
+  // Re-position pDnodeCursor
+  RepositionDnodeCursor()
+  // Create player prompt
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoWield() {
