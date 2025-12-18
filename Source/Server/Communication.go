@@ -4105,12 +4105,40 @@ func DoRestore(CmdStr string) {
   pDnodeTgt.PlayerOut += GetOutput(pDnodeTgt.pPlayer)
 }
 
+// RoomInfo command
 func DoRoomInfo() {
-  // TODO: implement DoRoomInfo
+  DEBUGIT(1)
+  TmpStr = StrGetWord(CmdStr, 2)
+  TmpStr = StrMakeLower(TmpStr)
+  if TmpStr == "on" {
+    pDnodeActor.pPlayer.RoomInfo = true
+    pDnodeActor.PlayerOut += "You will now see hidden room info.\r\n"
+    PlayerSave(pDnodeActor.pPlayer)
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if TmpStr == "off" {
+    pDnodeActor.pPlayer.RoomInfo = false
+    pDnodeActor.PlayerOut += "You will no longer see hidden room info.\r\n"
+    PlayerSave(pDnodeActor.pPlayer)
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pDnodeActor.PlayerOut += "Try on or off.\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Save command
 func DoSave() {
-  // TODO: implement DoSave
+  DEBUGIT(1)
+  PlayerSave(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += "Saved!"
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoSay() {
