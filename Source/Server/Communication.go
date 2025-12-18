@@ -3791,8 +3791,54 @@ func DoOneWhack() {
   }
 }
 
+// Password command
 func DoPassword() {
-  // TODO: implement DoPassword
+  var Password     string
+  var NewPassword1 string
+  var NewPassword2 string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) != 4 {
+    pDnodeActor.PlayerOut += "Password command requires: "
+    pDnodeActor.PlayerOut += "Password NewPassword NewPassword"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  Password = StrGetWord(CmdStr, 2)
+  NewPassword1 = StrGetWord(CmdStr, 3)
+  NewPassword2 = StrGetWord(CmdStr, 4)
+  if Password != pDnodeActor.pPlayer.Password {
+    pDnodeActor.PlayerOut += "Password does not match current password."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if NewPassword1 != NewPassword2 {
+    pDnodeActor.PlayerOut += "New passwords do not match."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*******************
+  //* Change password *
+  //*******************
+  pDnodeActor.pPlayer.Password = NewPassword1
+  PlayerSave(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += "Your password has been changed."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoPlayed() {
