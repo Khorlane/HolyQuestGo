@@ -5791,7 +5791,148 @@ func LogonWaitNewCharacter() {
 
 // Logon wait password
 func LogonWaitPassword() {
-	return
+  var AllMsg    string
+  var PlayerMsg string
+
+  if pDnodeActor.PlayerPassword == CmdStr {
+    // Password matches
+    if pDnodeActor.PlayerNewCharacter == "Y" {
+      // Password matches and a new player, get sex
+      pDnodeActor.PlayerStateWaitMaleFemale = true
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut +=  pDnodeActor.PlayerName
+      pDnodeActor.PlayerOut += ", remember your password."
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "You must know it log in again."
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "Sex of this character M-F?"
+      pDnodeActor.PlayerOut += "\r\n"
+    } else {
+      // Password matches and returning player, let them play
+      // Reconnecting?
+      SetpDnodeCursorFirst()
+      for !EndOfDnodeList() {
+        // Loop thru all connections
+        pDnodeOthers = GetDnode()
+        if pDnodeActor != pDnodeOthers {
+          // Check other connections
+          if pDnodeActor.PlayerName == pDnodeOthers.PlayerName {
+            // Reconnect character 
+            pDnodeActor.PlayerStateLoggingOn = false
+            pDnodeActor.PlayerStatePlaying = true
+            pDnodeActor.pPlayer = pDnodeOthers.pPlayer
+            pDnodeActor.pPlayer.SessionTime = GetTimeSeconds()
+            pDnodeActor.PlayerOut += "\r\n"
+            pDnodeActor.PlayerOut += "You take control of "
+            pDnodeActor.PlayerOut += pDnodeOthers.PlayerName
+            pDnodeActor.PlayerOut += "."
+            pDnodeActor.PlayerOut += "\r\n"
+            pDnodeActor.PlayerOut += "Reconnection successful."
+            pDnodeActor.PlayerOut += "\r\n"
+            CreatePrompt(pDnodeActor.pPlayer)
+            pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+            LogBuf  = "Reconnecting player "
+            LogBuf += pDnodeActor.PlayerName
+            LogIt(LogBuf)
+            PlayerSave(pDnodeActor.pPlayer)
+            // Clean up old connection
+            pDnodeOthers.PlayerStateBye = true
+            pDnodeOthers.PlayerStateReconnecting = true
+            pDnodeOthers.PlayerOut += "\r\n"
+            pDnodeOthers.PlayerOut += "&R"
+            pDnodeOthers.PlayerOut += "Disconnecting - multiple login dectected"
+            pDnodeOthers.PlayerOut += "&N"
+            pDnodeOthers.PlayerOut += "\r\n "
+          }
+        }
+        SetpDnodeCursorNext()
+      }
+      // Re-position pDnodeCursor
+      RepositionDnodeCursor()
+      if pDnodeActor.PlayerStateLoggingOn {
+        // Not reconnecting
+        DoMotd()
+        pDnodeActor.PlayerStateLoggingOn = false
+        pDnodeActor.PlayerStatePlaying = true
+        pDnodeActor.pPlayer.SessionTime = GetTimeSeconds()
+        PlayerMsg  = "\r\n"
+        PlayerMsg += "May your travels be safe."
+        PlayerMsg += "\r\n"
+        PlayerMsg += "\r\n"
+        AllMsg  = "\r\n"
+        AllMsg += pDnodeActor.PlayerName
+        AllMsg += " has entered the game."
+        AllMsg += "\r\n"
+        SendToAll(PlayerMsg, AllMsg)
+        ShowRoom(pDnodeActor)
+        LogBuf  = "Returning player "
+        LogBuf += pDnodeActor.PlayerName
+        LogIt(LogBuf)
+        PlayerSave(pDnodeActor.pPlayer)
+      }
+    }
+  } else {
+    // Password does not match
+    if pDnodeActor.PlayerNewCharacter == "Y" {
+      // New player
+      pDnodeActor.PlayerWrongPasswordCount++
+      pDnodeActor.PlayerStateWaitPassword = true
+      if pDnodeActor.PlayerWrongPasswordCount == 1 {
+        // First password entered
+        pDnodeActor.PlayerPassword = CmdStr
+        pDnodeActor.PlayerOut += "\r\n"
+        pDnodeActor.PlayerOut += "Retype Password:"
+        pDnodeActor.PlayerOut += "\r\n"
+      } else {
+        if pDnodeActor.PlayerWrongPasswordCount < 4 {
+          // Can't seem to type the same password ... doh!
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "Retyped Password does not match"
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "Try again"
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "Password?"
+          pDnodeActor.PlayerOut += "\r\n"
+        } else {
+          // Mis-matched password entered 3 times, boot them off!
+          pDnodeActor.PlayerStateBye = true
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "Wrong password entered 3 times"
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "You have been disconnected."
+          pDnodeActor.PlayerOut += "\r\n"
+        }
+      }
+    } else {
+      // Returning player
+      pDnodeActor.PlayerWrongPasswordCount++
+      if pDnodeActor.PlayerWrongPasswordCount < 3 {
+        // Tries < 3
+        pDnodeActor.PlayerStateWaitPassword = true
+        pDnodeActor.PlayerOut += "\r\n"
+        pDnodeActor.PlayerOut += "Wrong password."
+        pDnodeActor.PlayerOut += "\r\n"
+        pDnodeActor.PlayerOut += "\r\n"
+        pDnodeActor.PlayerOut += "Password?"
+        pDnodeActor.PlayerOut += "\r\n"
+      } else {
+        // Wrong password entered 3 times, log it, boot them off!
+        pDnodeActor.PlayerStateBye = true
+        pDnodeActor.PlayerOut += "\r\n"
+        pDnodeActor.PlayerOut += "Wrong password entered 3 times"
+        pDnodeActor.PlayerOut += "\r\n"
+        pDnodeActor.PlayerOut += "\r\n"
+        pDnodeActor.PlayerOut += "You have been disconnected"
+        pDnodeActor.PlayerOut += "\r\n"
+        LogBuf = "Password failure for "
+        LogBuf += pDnodeActor.PlayerName
+        LogIt(LogBuf)
+      }
+    }
+  }
 }
 
 // Reposition Dnode cursor
