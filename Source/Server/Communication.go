@@ -4038,8 +4038,71 @@ func DoRemove() {
   pObject = nil
 }
 
+// Restore command
 func DoRestore(CmdStr string) {
-  // TODO: implement DoRestore
+  var PlayerName     string
+  var TargetName     string
+  var TargetNameSave string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  PlayerName = pDnodeActor.PlayerName
+  TargetName = StrGetWord(CmdStr, 2)
+  TargetNameSave = TargetName
+  PlayerName = StrMakeLower(PlayerName)
+  TargetName = StrMakeLower(TargetName)
+  if StrGetLength(TargetName) < 1 {
+    // No target, assume self
+    TargetName = PlayerName
+  }
+  if TargetName == PlayerName {
+    // Admin is restore themself
+    pDnodeActor.PlayerOut += "You restore yourself!\r\n"
+    pDnodeActor.pPlayer.HitPoints = pDnodeActor.pPlayer.Level * PLAYER_HPT_PER_LEVEL
+    pDnodeActor.pPlayer.Hunger = 0
+    pDnodeActor.pPlayer.Thirst = 0
+    PlayerSave(pDnodeActor.pPlayer)
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pDnodeTgt = GetTargetDnode(TargetName)
+  if pDnodeTgt == nil {
+    // Tell player ... not found
+    pDnodeActor.PlayerOut += TargetNameSave
+    pDnodeActor.PlayerOut += " is not online.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  // Restore the player
+  pDnodeTgt.pPlayer.HitPoints = pDnodeTgt.pPlayer.Level * PLAYER_HPT_PER_LEVEL
+  pDnodeTgt.pPlayer.Hunger = 0
+  pDnodeTgt.pPlayer.Thirst = 0
+  PlayerSave(pDnodeTgt.pPlayer)
+  //****************************
+  //* Send the restore message *
+  //****************************
+  PlayerName = pDnodeActor.PlayerName
+  TargetName = pDnodeTgt.PlayerName
+  // Send restore message to player
+  pDnodeActor.PlayerOut += "You have restored "
+  pDnodeActor.PlayerOut += TargetName
+  pDnodeActor.PlayerOut += "."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  // Send restore message to target
+  pDnodeTgt.PlayerOut += "\r\n"
+  pDnodeTgt.PlayerOut += "&Y"
+  pDnodeTgt.PlayerOut += PlayerName
+  pDnodeTgt.PlayerOut += " has restored you!"
+  pDnodeTgt.PlayerOut += "&N"
+  pDnodeTgt.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeTgt.pPlayer)
+  pDnodeTgt.PlayerOut += GetOutput(pDnodeTgt.pPlayer)
 }
 
 func DoRoomInfo() {
