@@ -3599,8 +3599,39 @@ func DoLoad() {
   }
 }
 
+// Logon
 func DoLogon() {
-  // TODO: implement DoLogon
+  DEBUGIT(1)
+  if pDnodeActor.PlayerStateWaitNewCharacter {
+    // New character 'y-n' prompt
+    pDnodeActor.PlayerStateWaitNewCharacter = false
+    LogonWaitNewCharacter()
+    return
+  }
+  if pDnodeActor.PlayerStateWaitName {
+    // Name prompt
+    pDnodeActor.PlayerStateWaitName = false
+    LogonWaitName()
+    return
+  }
+  if pDnodeActor.PlayerStateWaitNameConfirmation {
+    // Name confirmation prompt
+    pDnodeActor.PlayerStateWaitNameConfirmation = false
+    LogonWaitNameConfirmation()
+    return
+  }
+  if pDnodeActor.PlayerStateWaitPassword {
+    // Password prompt
+    pDnodeActor.PlayerStateWaitPassword = false
+    LogonWaitPassword()
+    return
+  }
+  if pDnodeActor.PlayerStateWaitMaleFemale {
+    // Sex prompt
+    pDnodeActor.PlayerStateWaitMaleFemale = false
+    LogonWaitMaleFemale()
+    return
+  }
 }
 
 func DoLook(CmdStr string) {
