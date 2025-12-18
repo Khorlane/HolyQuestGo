@@ -4768,8 +4768,299 @@ func DoTitle() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Train command
 func DoTrain() {
-  // TODO: implement DoTrain
+  var IncreaseDecrease     int
+  var MinusSign            string
+  var SkillPointsUsed      int
+  var SkillPointsRemaining int
+  var UnTrainCost          string
+  var WeaponType           string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  // Get command words
+  WeaponType = StrGetWord(CmdStr, 2)
+  MinusSign = StrGetWord(CmdStr, 3)
+  UnTrainCost = StrGetWord(CmdStr, 4)
+  WeaponType = StrMakeLower(WeaponType)
+  // Calculate skill points used and remaining
+  SkillPointsUsed = 0
+  SkillPointsUsed += pDnodeActor.pPlayer.SkillAxe
+  SkillPointsUsed += pDnodeActor.pPlayer.SkillClub
+  SkillPointsUsed += pDnodeActor.pPlayer.SkillDagger
+  SkillPointsUsed += pDnodeActor.pPlayer.SkillHammer
+  SkillPointsUsed += pDnodeActor.pPlayer.SkillSpear
+  SkillPointsUsed += pDnodeActor.pPlayer.SkillStaff
+  SkillPointsUsed += pDnodeActor.pPlayer.SkillSword
+  SkillPointsRemaining = PLAYER_SKILL_PER_LEVEL*pDnodeActor.pPlayer.Level - SkillPointsUsed
+  // Do some more checking
+  if StrCountWords(CmdStr) > 4 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Train command syntax error, try'er again."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if WeaponType != "" {
+    // WeaponType specified
+    if StrIsNotWord(WeaponType, "axe club dagger hammer spear staff sword") {
+      // But it was the invalid
+      pDnodeActor.PlayerOut += "Please specify a valid weapon type."
+      pDnodeActor.PlayerOut += "\r\n"
+      return
+    } else {
+      // Player is trying to train, check skill points remaining
+      if SkillPointsRemaining == 0 && MinusSign == "" {
+        // No skill points available
+        pDnodeActor.PlayerOut += "Sorry, you have no skill points remaining."
+        pDnodeActor.PlayerOut += "\r\n"
+        CreatePrompt(pDnodeActor.pPlayer)
+        pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+        return
+      }
+    }
+  }
+  if MinusSign != "" {
+    // Third word was specified
+    if MinusSign != "-" {
+      // But it was not a minus sign
+      pDnodeActor.PlayerOut += "If third parameter is specified, it must be a minus sign."
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  if MinusSign == "-" {
+    // Player wishes to untrain a skill
+    if UnTrainCost == "" {
+      // But did not specify the cost
+      pDnodeActor.PlayerOut += "Untraining a skill will cost "
+      pDnodeActor.PlayerOut += UNTRAIN_COST
+      pDnodeActor.PlayerOut += " silver"
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "Specify this amount after the minus sign."
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    } else {
+      // Cost specified, but was it the correct cost?
+      if UnTrainCost != UNTRAIN_COST {
+        // Wrong cost
+        pDnodeActor.PlayerOut += "You must specify the correct amount! "
+        pDnodeActor.PlayerOut += UNTRAIN_COST
+        pDnodeActor.PlayerOut += " silver please."
+        pDnodeActor.PlayerOut += "\r\n"
+        CreatePrompt(pDnodeActor.pPlayer)
+        pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+        return
+      } else {
+        // Player has specified everything correctly for untrain, check money
+        if pDnodeActor.pPlayer.Silver < StrToInt(UNTRAIN_COST) {
+          // Not enough money
+          pDnodeActor.PlayerOut += "You do not have "
+          pDnodeActor.PlayerOut += UNTRAIN_COST
+          pDnodeActor.PlayerOut += " pieces of silver!"
+          pDnodeActor.PlayerOut += "\r\n"
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+          return
+        }
+        // Check skills
+        if WeaponType == "axe" && pDnodeActor.pPlayer.SkillAxe == 0 {
+          // No axe skill
+          pDnodeActor.PlayerOut += "You have no "
+          pDnodeActor.PlayerOut += WeaponType
+          pDnodeActor.PlayerOut += " skill!"
+          pDnodeActor.PlayerOut += "\r\n"
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+          return
+        }
+        if WeaponType == "club" && pDnodeActor.pPlayer.SkillClub == 0 {
+          // No club skill
+          pDnodeActor.PlayerOut += "You have no "
+          pDnodeActor.PlayerOut += WeaponType
+          pDnodeActor.PlayerOut += " skill!"
+          pDnodeActor.PlayerOut += "\r\n"
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+          return
+        }
+        if WeaponType == "dagger" && pDnodeActor.pPlayer.SkillDagger == 0 {
+          // No dagger skill
+          pDnodeActor.PlayerOut += "You have no "
+          pDnodeActor.PlayerOut += WeaponType
+          pDnodeActor.PlayerOut += " skill!"
+          pDnodeActor.PlayerOut += "\r\n"
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+          return
+        }
+        if WeaponType == "hammer" && pDnodeActor.pPlayer.SkillHammer == 0 {
+          // No hammer skill
+          pDnodeActor.PlayerOut += "You have no "
+          pDnodeActor.PlayerOut += WeaponType
+          pDnodeActor.PlayerOut += " skill!"
+          pDnodeActor.PlayerOut += "\r\n"
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+          return
+        }
+        if WeaponType == "spear" && pDnodeActor.pPlayer.SkillSpear == 0 {
+          // No spear skill
+          pDnodeActor.PlayerOut += "You have no "
+          pDnodeActor.PlayerOut += WeaponType
+          pDnodeActor.PlayerOut += " skill!"
+          pDnodeActor.PlayerOut += "\r\n"
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+          return
+        }
+        if WeaponType == "staff" && pDnodeActor.pPlayer.SkillStaff == 0 {
+          // No staff skill
+          pDnodeActor.PlayerOut += "You have no "
+          pDnodeActor.PlayerOut += WeaponType
+          pDnodeActor.PlayerOut += " skill!"
+          pDnodeActor.PlayerOut += "\r\n"
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+          return
+        }
+        if WeaponType == "sword" && pDnodeActor.pPlayer.SkillSword == 0 {
+          // No sword skill
+          pDnodeActor.PlayerOut += "You have no "
+          pDnodeActor.PlayerOut += WeaponType
+          pDnodeActor.PlayerOut += " skill!"
+          pDnodeActor.PlayerOut += "\r\n"
+          CreatePrompt(pDnodeActor.pPlayer)
+          pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+          return
+        }
+      }
+    }
+  }
+  if WeaponType == "" {
+    // Show player's skills summary
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "Skills Summary"
+    pDnodeActor.PlayerOut += "\r\n"
+    // Axe
+    pDnodeActor.PlayerOut += "Axe:    "
+    Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillAxe)
+    TmpStr = Buf
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += "\r\n"
+    // Club
+    pDnodeActor.PlayerOut += "Club:   "
+    Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillClub)
+    TmpStr = Buf
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += "\r\n"
+    // Dagger
+    pDnodeActor.PlayerOut += "Dagger: "
+    Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillDagger)
+    TmpStr = Buf
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += "\r\n"
+    // Hammer
+    pDnodeActor.PlayerOut += "Hammer: "
+    Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillHammer)
+    TmpStr = Buf
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += "\r\n"
+    // Spear
+    pDnodeActor.PlayerOut += "Spear:  "
+    Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillSpear)
+    TmpStr = Buf
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += "\r\n"
+    // Staff
+    pDnodeActor.PlayerOut += "Staff:  "
+    Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillStaff)
+    TmpStr = Buf
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += "\r\n"
+    // Sword
+    pDnodeActor.PlayerOut += "Sword:  "
+    Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillSword)
+    TmpStr = Buf
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += "\r\n"
+    // Skill points used
+    pDnodeActor.PlayerOut += "Skill points used:      "
+    Buf = fmt.Sprintf("%4d", SkillPointsUsed)
+    TmpStr = Buf
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += "\r\n"
+    // Skill points remaining
+    pDnodeActor.PlayerOut += "Skill points remaining: "
+    Buf = fmt.Sprintf("%4d", SkillPointsRemaining)
+    TmpStr = Buf
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += "\r\n"
+    // Prompt
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if MinusSign != "-" {
+    // Training a skill
+    IncreaseDecrease = +1
+  } else {
+    // UnTraining a skill
+    IncreaseDecrease = -1
+  }
+  // Ok, so train or untrain them already
+  if WeaponType == "axe" {
+    pDnodeActor.pPlayer.SkillAxe += IncreaseDecrease
+  } else if WeaponType == "club" {
+    pDnodeActor.pPlayer.SkillClub += IncreaseDecrease
+  } else if WeaponType == "dagger" {
+    pDnodeActor.pPlayer.SkillDagger += IncreaseDecrease
+  } else if WeaponType == "hammer" {
+    pDnodeActor.pPlayer.SkillHammer += IncreaseDecrease
+  } else if WeaponType == "spear" {
+    pDnodeActor.pPlayer.SkillSpear += IncreaseDecrease
+  } else if WeaponType == "staff" {
+    pDnodeActor.pPlayer.SkillStaff += IncreaseDecrease
+  } else if WeaponType == "sword" {
+    pDnodeActor.pPlayer.SkillSword += IncreaseDecrease
+  }
+  if MinusSign != "-" {
+    // Training
+    pDnodeActor.PlayerOut += "You have improved your "
+    pDnodeActor.PlayerOut += WeaponType
+    pDnodeActor.PlayerOut += " skill!"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  } else {
+    // UnTraining
+    pDnodeActor.PlayerOut += "Your "
+    pDnodeActor.PlayerOut += WeaponType
+    pDnodeActor.PlayerOut += " skill has decreased at a cost of "
+    pDnodeActor.PlayerOut += UNTRAIN_COST
+    pDnodeActor.PlayerOut += " silver."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    pDnodeActor.pPlayer.Silver -= StrToInt(UNTRAIN_COST)
+  }
+  PlayerSave(pDnodeActor.pPlayer)
 }
 
 func DoWake() {
