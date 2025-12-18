@@ -10,11 +10,12 @@
 package server
 
 import (
-  "bufio"
-  "fmt"
-  "os"
-  "syscall"
-  "time"
+	"bufio"
+	"fmt"
+	"math"
+	"os"
+	"syscall"
+	"time"
 )
 
 // Globals
@@ -6002,20 +6003,202 @@ func SockSend(arg string) {
 
 // Update player statistics that are 'tick' dependant
 func UpdatePlayerStats() {
+  var GainReducePct int
+  var HitPoints     int
+  var HitPointsGain int
+  var HitPointsMax  int
+  var HungerPct     int
+  var Level         int
+  var Position      string
+  var ThirstPct     int
+
+  HitPointsGain = 0
+  HitPoints     = pDnodeActor.pPlayer.HitPoints
+  Level         = pDnodeActor.pPlayer.Level
+  Position      = pDnodeActor.pPlayer.Position
+  HitPointsMax  = Level * PLAYER_HPT_PER_LEVEL
+  HungerPct     = pDnodeActor.pPlayer.Hunger
+  ThirstPct     = pDnodeActor.pPlayer.Thirst
+  GainReducePct = int(math.Floor(float64(HungerPct+ThirstPct) / (200.0 / float64(MGRP))))
+  if HitPoints < HitPointsMax {
+    // Hit points have fallen below maximun
+    if Position == "stand" {
+      // Additional hit points gained while standing
+      HitPointsGain = Level * HPT_GAIN_STAND
+    } else if Position == "sit" {
+      // Additional hit points gained while siting
+      HitPointsGain = Level * HPT_GAIN_SIT
+    } else if Position == "sleep" {
+      // Additional hit points gained while sleeping
+      HitPointsGain = Level * HPT_GAIN_SLEEP
+    }
+    HitPointsGain -= int(math.Ceil(float64(HitPointsGain) * (float64(GainReducePct) / 100.0)))
+    HitPoints += HitPointsGain
+    if HitPoints > HitPointsMax {
+      // Prevent hit points from exceeding the maximum
+      HitPoints = HitPointsMax
+    }
+    pDnodeActor.pPlayer.HitPoints = HitPoints
+  }
 }
 
 // Violence, as in ... WHACK 'em!
 func Violence() {
+  ViolencePlayer()
+  if pDnodeActor.PlayerStateFighting {
+    ViolenceMobile()
+  }
 }
 
 // Mobile's turn to do some damage
 func ViolenceMobile() {
-	return
+  var DamageToPlayer    int
+  var HealthPct         string
+  var HitPoints         int
+  var HitPointsMax      int
+  var i                 int
+  var MobileAttack      string
+  var MobileDamage      int
+  var MobileDesc1       string
+  var MobileId          string
+  var PAC               int
+  var PlayerBeenWhacked string
+
+  i = 0
+  i++
+  MobileId = GetMobPlayerMobileId(pDnodeActor.PlayerName, i)
+  for MobileId != "No more mobiles" {
+    // For each mob whacking the player
+    PAC               = pDnodeActor.pPlayer.ArmorClass
+    MobileAttack      = GetMobileAttack(MobileId)
+    MobileDamage      = GetMobileDamage(MobileId)
+    MobileDesc1       = GetMobileDesc1(MobileId)
+    DamageToPlayer    = CalcDamageToPlayer(MobileDamage, PAC)
+    PlayerBeenWhacked = WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer)
+    pDnodeActor.pPlayer.HitPoints -= DamageToPlayer
+    HitPoints = pDnodeActor.pPlayer.HitPoints
+    // Calculate health percentage
+    HitPointsMax = pDnodeActor.pPlayer.Level * PLAYER_HPT_PER_LEVEL
+    HealthPct = CalcHealthPct(HitPoints, HitPointsMax)
+    // Add heath pct to PlayerBeenWhacked
+    PlayerBeenWhacked = StrInsert(PlayerBeenWhacked, 0, " ")
+    PlayerBeenWhacked = StrInsert(PlayerBeenWhacked, 0, HealthPct)
+    pDnodeActor.PlayerOut += PlayerBeenWhacked
+    pDnodeActor.PlayerOut += "\r\n"
+    if HitPoints <= 0 {
+      // Player is dead, how sad
+      ViolencePlayerDied(MobileDesc1)
+      return
+    }
+    i++
+    MobileId = GetMobPlayerMobileId(pDnodeActor.PlayerName, i)
+  }
+  // Player is still alive!
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 // Mobile has died
 func ViolenceMobileDied(MobileBeenWhacked string, MobileDesc1 string, MobileId string) {
-	return
+  var DeadMsg              string
+  var ExpPoints            int
+  var GainLoose            string
+  var MobileExpPoints      int
+  var MobileExpPointsLevel string
+  var MobileIdCheck        string
+  var MobileLevel          int
+  var MobileLoot           string
+
+  MobileExpPointsLevel = MobileId
+  MobileExpPoints      = StrToInt(StrGetWord(MobileExpPointsLevel, 1))
+  MobileLevel          = StrToInt(StrGetWord(MobileExpPointsLevel, 2))
+  MobileLoot           = GetMobileLoot(MobileId)
+  // Send dead mob message to player
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += MobileBeenWhacked
+  // Let others in room know that the mobile is DEAD!
+  DeadMsg =  "&R"
+  DeadMsg += pDnodeActor.PlayerName
+  DeadMsg += " has vanquished "
+  DeadMsg += MobileDesc1
+  DeadMsg += "!"
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, DeadMsg)
+  // Calculate experience distribution
+  if pDnodeActor.pPlayer.pPlayerGrpMember[0] != nil {
+    // Player is in a group, award group experience
+    GrpExperience(MobileExpPoints, MobileLevel)
+  } else {
+    // Calculate adjusted experience
+    if MobileExpPoints >= 0 {
+      // Player gains xp
+      ExpPoints = CalcAdjustedExpPoints(pDnodeActor.pPlayer.Level, MobileLevel, MobileExpPoints)
+      GainLoose = "Gain"
+    } else {
+      // Player looses xp
+      ExpPoints = MobileExpPoints * pDnodeActor.pPlayer.Level
+      GainLoose = "Loose"
+    }
+    // Send experience message to player 
+    if ExpPoints >= 0 {
+      // Player gains xp
+      Buf = fmt.Sprintf("%d", ExpPoints)
+      TmpStr = Buf
+    } else {
+      // Player looses xp
+      Buf = fmt.Sprintf("%d", ExpPoints*-1)
+      TmpStr = Buf
+    }
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "&Y"
+    pDnodeActor.PlayerOut += "You "
+    pDnodeActor.PlayerOut += GainLoose
+    pDnodeActor.PlayerOut += " "
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += " points of Experience!"
+    pDnodeActor.PlayerOut += "&N"
+    pDnodeActor.PlayerOut += "\r\n"
+    // Gain some experience
+    GainExperience(pDnodeActor, ExpPoints)
+    // Save player
+    PlayerSave(pDnodeActor.pPlayer)
+    // Player prompt
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  }
+  // Fight done, clean up
+  DeletePlayerMob(pDnodeActor.PlayerName)
+  DeleteMobPlayer(pDnodeActor.PlayerName, MobileId)
+  DeleteMobStats(MobileId)
+  pDnodeActor.PlayerStateFighting = false
+  UpdateMobInWorld(MobileId, "remove")
+  //***************************************************
+  //* Stop other players who are whacking this mobile *
+  //***************************************************
+  SetpDnodeCursorFirst()
+  for !EndOfDnodeList() {
+    // Loop thru all connections
+    pDnodeOthers = GetDnode()
+    if pDnodeOthers.PlayerStateFighting {
+      // Players who are fighting
+      MobileIdCheck = GetPlayerMobMobileId(pDnodeOthers.PlayerName)
+      if MobileId == MobileIdCheck {
+        // The same mobile
+        DeletePlayerMob(pDnodeOthers.PlayerName)
+        DeleteMobPlayer(pDnodeOthers.PlayerName, MobileId)
+        pDnodeOthers.PlayerStateFighting = false
+      }
+    }
+    SetpDnodeCursorNext()
+  }
+  // Re-position pDnodeCursor
+  RepositionDnodeCursor()
+  //********************
+  // Hand out the loot *
+  //********************
+  ViolenceMobileLoot(MobileLoot)
+  ViolenceMobileMore()
 }
 
 // Hand out the loot
