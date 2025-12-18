@@ -3963,8 +3963,79 @@ func DoRefresh() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Remove command
 func DoRemove() {
-  // TODO: implement DoRemove
+  var ObjectName string
+  var RemoveMsg  string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) > 2 {
+    // Invalid command format, like 'remove shirt pants'
+    pDnodeActor.PlayerOut += "You may remove only one item at time."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  TmpStr = StrGetWord(CmdStr, 2)
+  if StrGetLength(TmpStr) == 0 {
+    // Player did not provide an object to be removed
+    pDnodeActor.PlayerOut += "Remove what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  // Get pointer to object
+  ObjectName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  pObject = nil
+  IsObjInPlayerEqu(TmpStr) // Sets pObject
+  if pObject == nil {
+    // Object not in equipment
+    pDnodeActor.PlayerOut += "You don't have a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += " equipped.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  // Decrease player's ArmorClass
+  pDnodeActor.pPlayer.ArmorClass -= pObject.ArmorValue
+  // Remove object from player's equipment
+  RemoveObjFromPlayerEqu(pObject.ObjectId)
+  // Send remove message to player
+  pDnodeActor.PlayerOut += "You remove "
+  pDnodeActor.PlayerOut += pObject.Desc1
+  pDnodeActor.PlayerOut += ".\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  // Send remove message to room
+  RemoveMsg = pDnodeActor.PlayerName
+  RemoveMsg += " removes "
+  RemoveMsg += pObject.Desc1
+  RemoveMsg += "."
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, RemoveMsg)
+  // Add object to player's inventory
+  AddObjToPlayerInv(pDnodeTgt, pObject.ObjectId)
+  TmpStr = pObject.Type
+  TmpStr = StrMakeLower(TmpStr)
+  if TmpStr == "weapon" {
+    // Now player has no weapon
+    pDnodeActor.pPlayer.WeaponDamage = PLAYER_DMG_HAND
+    pDnodeActor.pPlayer.WeaponDesc1 = "a pair of bare hands"
+    pDnodeActor.pPlayer.WeaponType = "Hand"
+  }
+  pObject = nil
 }
 
 func DoRestore(CmdStr string) {
