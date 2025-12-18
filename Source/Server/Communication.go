@@ -4320,8 +4320,147 @@ func DoSell() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Show command
 func DoShow() {
-  // TODO: implement DoShow
+  var CommandCheckResult string
+  var HelpFileName       string
+  var HelpText           string
+  var SocialFileName     string
+  var SocialText         string
+  var MudCmdChk          string
+  var ValCmdInfo         string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if StrCountWords(CmdStr) > 2 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "You may show only one thing at time."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  TmpStr = StrGetWord(CmdStr, 2)
+  if StrGetLength(TmpStr) == 0 {
+    // Player did not provide a target to be shown
+    pDnodeActor.PlayerOut += "Show what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  TmpStr = StrMakeLower(TmpStr)
+  if StrIsNotWord(TmpStr, "commands socials help") {
+    // Show target not valid
+    pDnodeActor.PlayerOut += "Show what??"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*****************
+  //* Show commands *
+  //*****************
+  if TmpStr == "commands" {
+    pDnodeActor.PlayerOut += "Commands"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "--------"
+    pDnodeActor.PlayerOut += "\r\n"
+    for _, ValidCmd := range ValidCmds {
+      // For each string in the ValidCmds slice
+      ValCmdInfo = ValidCmd
+      MudCmdChk = StrGetWord(ValCmdInfo, 1)
+      CommandCheckResult = CommandCheck(MudCmdChk)
+      if CommandCheckResult == "Ok" {
+        // Mud command is Ok for this player
+        pDnodeActor.PlayerOut += MudCmdChk
+        pDnodeActor.PlayerOut += "\r\n"
+      } else if StrGetWord(CommandCheckResult, 1) == "Level" {
+        // Mud command is Ok for this player, but level restricted
+        pDnodeActor.PlayerOut += MudCmdChk
+        pDnodeActor.PlayerOut += " acquired at level("
+        pDnodeActor.PlayerOut += StrGetWord(CommandCheckResult, 2)
+        pDnodeActor.PlayerOut += ")"
+        pDnodeActor.PlayerOut += "\r\n"
+      }
+    }
+  }
+  //*************
+  //* Show help *
+  //*************
+  if TmpStr == "help" {
+    pDnodeActor.PlayerOut += "Help Topics"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "-----------"
+    pDnodeActor.PlayerOut += "\r\n"
+    HelpFileName = HELP_DIR
+    HelpFileName += "Help.txt"
+    HelpFile, err := os.Open(HelpFileName)
+    if err != nil {
+      // Help file open failed
+      pDnodeActor.PlayerOut += "No help is available, you are on your own!"
+      pDnodeActor.PlayerOut += "\r\n"
+    } else {
+      // Help file is open
+      Scanner := bufio.NewScanner(HelpFile)
+      if Scanner.Scan() {
+        HelpText = Scanner.Text() // Skip first line
+      }
+      if Scanner.Scan() {
+        HelpText = Scanner.Text()
+      }
+      for HelpText != "End of Help" {
+        // Read the whole file
+        if StrLeft(HelpText, 5) == "Help:" {
+          // Found a help topic
+          pDnodeActor.PlayerOut += StrRight(HelpText, StrGetLength(HelpText)-5)
+          pDnodeActor.PlayerOut += "\r\n"
+        }
+        if !Scanner.Scan() {
+          break
+        }
+        HelpText = Scanner.Text()
+      }
+      HelpFile.Close()
+    }
+  }
+  //****************
+  //* Show socials *
+  //****************
+  if TmpStr == "socials" {
+    pDnodeActor.PlayerOut += "Socials"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "-------"
+    pDnodeActor.PlayerOut += "\r\n"
+    SocialFileName = SOCIAL_DIR
+    SocialFileName += "Social.txt"
+    SocialFile, err := os.Open(SocialFileName)
+    if err != nil {
+      // Social file open failed
+      pDnodeActor.PlayerOut += "No socials are available, how boring!"
+      pDnodeActor.PlayerOut += "\r\n"
+    } else {
+      // Social file is open
+      Scanner := bufio.NewScanner(SocialFile)
+      for Scanner.Scan() {
+        SocialText = Scanner.Text()
+        if SocialText == "End of Socials" {
+          break
+        }
+        if StrLeft(SocialText, 9) == "Social : " {
+          // Found a help topic
+          pDnodeActor.PlayerOut += StrRight(SocialText, StrGetLength(SocialText)-9)
+          pDnodeActor.PlayerOut += "\r\n"
+        }
+      }
+      SocialFile.Close()
+    }
+  }
+  // Prompt
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoSit() {
