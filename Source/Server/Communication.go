@@ -4580,8 +4580,13 @@ func DoStand() {
   SendToRoom(pDnodeActor.pPlayer.RoomId, StandMsg)
 }
 
+// Status command
 func DoStatus() {
-  // TODO: implement DoStatus
+  DEBUGIT(1)
+  ShowStatus(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoStop() {
