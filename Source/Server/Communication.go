@@ -2464,7 +2464,7 @@ func DoFollow(pDnode *Dnode, CmdStr1 string) {
 func DoGet() {
   var GetMsg string
   var ObjectName string
-	
+
   DEBUGIT(1)
   //********************
   //* Validate command *
@@ -2529,8 +2529,136 @@ func DoGet() {
   pObject = nil
 }
 
+// Give command
 func DoGive() {
-  // TODO: implement DoGive
+  var GiveMsg string
+  var ObjectName string
+  var PlayerName string
+  var TargetName string
+  var TargetNotHere bool
+	
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) < 2 {
+    // No object or target
+    pDnodeActor.PlayerOut += "Give what and to whom?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if StrCountWords(CmdStr) < 3 {
+    // No target
+    pDnodeActor.PlayerOut += "Give it to whom?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //****************************
+  //* Does player have object? *
+  //****************************
+  TmpStr = StrGetWord(CmdStr, 2)
+  ObjectName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  pObject = nil
+  IsObjInPlayerInv(TmpStr) // Sets pObject
+  if pObject == nil {
+    // Player does not have object
+    pDnodeActor.PlayerOut += "You don't have a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += " in your inventory.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //****************
+  //* Is target Ok *
+  //****************
+  TargetNotHere = false
+  TmpStr = StrGetWord(CmdStr, 3)
+  TargetName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  PlayerName = pDnodeActor.PlayerName
+  PlayerName = StrMakeLower(PlayerName)
+  if PlayerName == TmpStr {
+    // Player is trying to give something to themself
+    pDnodeActor.PlayerOut += "Giving something to youself is just plain silly!\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pDnodeTgt = GetTargetDnode(TmpStr)
+  if pDnodeTgt == nil {
+    // Target is not online and/or not in 'playing' state
+    TargetNotHere = true
+  } else {
+    // Target is online and playing
+    if pDnodeActor.pPlayer.RoomId != pDnodeTgt.pPlayer.RoomId {
+      // Target is not in the same room
+      TargetNotHere = true
+    }
+  }
+  if TargetNotHere {
+    // Tell player that target is not here
+    pDnodeActor.PlayerOut += TargetName
+    pDnodeActor.PlayerOut += " is not here.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if pDnodeTgt.pPlayer.Position == "sleep" {
+    // Tell player that target is sleeping
+    pDnodeActor.PlayerOut += pDnodeTgt.pPlayer.Name
+    pDnodeActor.PlayerOut += " is sleeping."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //******************
+  //* Send to player *
+  //******************
+  pDnodeActor.PlayerOut += "You give "
+  pDnodeActor.PlayerOut += pObject.Desc1
+  pDnodeActor.PlayerOut += " to "
+  pDnodeActor.PlayerOut += pDnodeTgt.pPlayer.Name
+  pDnodeActor.PlayerOut += ".\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  //******************
+  //* Send to target *
+  //******************
+  pDnodeTgt.PlayerOut += "\r\n"
+  pDnodeTgt.PlayerOut += pDnodeActor.pPlayer.Name
+  pDnodeTgt.PlayerOut += " gives you "
+  pDnodeTgt.PlayerOut += pObject.Desc1
+  pDnodeTgt.PlayerOut += ".\r\n"
+  CreatePrompt(pDnodeTgt.pPlayer)
+  pDnodeTgt.PlayerOut += GetOutput(pDnodeTgt.pPlayer)
+  //****************
+  //* Send to room *
+  //****************
+  GiveMsg = pDnodeActor.PlayerName
+  GiveMsg += " gives "
+  GiveMsg += pObject.Desc1
+  GiveMsg += " to "
+  GiveMsg += pDnodeTgt.pPlayer.Name
+  GiveMsg += "."
+  pDnodeSrc = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, GiveMsg)
+  //*****************************
+  //* Transfer object ownership *
+  //*****************************
+  RemoveObjFromPlayerInv(pObject.ObjectId, 1)
+  AddObjToPlayerInv(pDnodeTgt, pObject.ObjectId)
+  pObject = nil
 }
 
 func DoGo() {
