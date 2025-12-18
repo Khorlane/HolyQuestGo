@@ -3755,8 +3755,40 @@ func DoMotd() {
   }
 }
 
+// OneWhack command
 func DoOneWhack() {
-  // TODO: implement DoOneWhack
+  DEBUGIT(1)
+  TmpStr = StrGetWord(CmdStr, 2)
+  TmpStr = StrMakeLower(TmpStr)
+  if TmpStr == "on" {
+    // Turn OneWhack on
+    pDnodeActor.pPlayer.OneWhack = true
+    PlayerSave(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += "You will obliterate enemies with One Whack.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if TmpStr == "off" {
+    // Turn OneWhack off
+    pDnodeActor.pPlayer.OneWhack = false
+    PlayerSave(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += "You will now have to fight for you life.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if pDnodeActor.pPlayer.OneWhack {
+    // OneWhack is on
+    pDnodeActor.PlayerOut += "OneWhack is on.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  } else {
+    // OneWhack is off
+    pDnodeActor.PlayerOut += "OneWhack is off.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  }
 }
 
 func DoPassword() {
