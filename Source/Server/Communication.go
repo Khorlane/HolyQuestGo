@@ -4680,8 +4680,23 @@ func DoTell() {
   pDnodeTgt.PlayerOut += GetOutput(pDnodeTgt.pPlayer)
 }
 
+// Time command
 func DoTime() {
-  // TODO: implement DoTime
+  var DisplayCurrentTime string
+
+  DEBUGIT(1)
+  // Server time
+  DisplayCurrentTime = time.Now().Format("2006-01-02 15:04:05")
+  pDnodeActor.PlayerOut += "Current server time is: "
+  pDnodeActor.PlayerOut += DisplayCurrentTime
+  pDnodeActor.PlayerOut += "\r\n"
+  // Game time
+  pDnodeActor.PlayerOut += "Current game time is: "
+  pDnodeActor.PlayerOut += GetTime()
+  pDnodeActor.PlayerOut += "\r\n"
+  // Prompt
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoTitle() {
