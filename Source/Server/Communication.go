@@ -4589,8 +4589,22 @@ func DoStatus() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Stop command
 func DoStop() {
-  // TODO: implement DoStop
+  var GoGoGoFileName string
+  var StopItFileName string
+
+  DEBUGIT(1)
+  StateStopping = true
+  LogBuf = pDnodeActor.PlayerName
+  LogBuf += " issued the STOP command"
+  LogIt(LogBuf)
+  pDnodeActor.PlayerOut += "Stop command issued!\r\n"
+  GoGoGoFileName = CONTROL_DIR
+  GoGoGoFileName += "GoGoGo"
+  StopItFileName = CONTROL_DIR
+  StopItFileName += "StopIt"
+  Rename(GoGoGoFileName, StopItFileName)
 }
 
 func DoTell() {
