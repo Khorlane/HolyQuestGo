@@ -2664,7 +2664,7 @@ func DoGive() {
 // Go command
 func DoGo() {
   var MudCmdIsExit string
-	
+
   DEBUGIT(1)
   //********************
   //* Validate command *
@@ -2711,8 +2711,44 @@ func DoGo() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Goto command
 func DoGoTo() {
-  // TODO: implement DoGoTo
+  var GoToMsg string
+  var RoomId string
+	
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  RoomId = StrGetWord(CmdStr, 2)
+  if RoomId == "" {
+    pDnodeActor.PlayerOut += "A destination is needed.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if !IsRoom(RoomId) {
+    pDnodeActor.PlayerOut += "Go to where?\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*************
+  //* GoTo Room *
+  //*************
+  // Send GoTo departure message
+  GoToMsg = pDnodeActor.pPlayer.GoToDepart
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, GoToMsg)
+  // GoTo room
+  pDnodeActor.pPlayer.RoomId = RoomId
+  DoLook("")
+  // Send GoTo arrival message
+  GoToMsg = pDnodeActor.pPlayer.GoToArrive
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, GoToMsg)
 }
 
 func DoGoToArrive() {
