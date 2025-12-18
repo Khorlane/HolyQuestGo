@@ -6203,7 +6203,74 @@ func ViolenceMobileDied(MobileBeenWhacked string, MobileDesc1 string, MobileId s
 
 // Hand out the loot
 func ViolenceMobileLoot(Loot string) {
-	return
+  var pDnodeGrpMem       *Dnode
+  var pPlayerGrpLdr      *Player
+  var i                   int
+  var LootFlag            bool
+  var MobileLootFile     *os.File
+  var MobileLootFileName  string
+  var NoLoot              bool
+
+  MobileLootFileName  = LOOT_DIR
+  MobileLootFileName += Loot
+  MobileLootFileName += ".txt"
+  MobileLootFile, err := os.Open(MobileLootFileName)
+  if err != nil {
+    LogBuf = "Communication::ViolenceMobileLoot - Error opening mobile loot file, it may not exist"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  NoLoot = true
+  Scanner := bufio.NewScanner(MobileLootFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      break
+    }
+    LootFlag = ViolenceMobileLootHandOut(Stuff)
+    if LootFlag {
+      // Ok, player got some loot, so set NoLoot to false
+      NoLoot = false
+    }
+  }
+  MobileLootFile.Close()
+  if NoLoot {
+    // Player got no loot
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "&Y"
+    pDnodeActor.PlayerOut += "You didn't get any loot."
+    pDnodeActor.PlayerOut += "&N"
+  }
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  // If player is in a group, send other group member their prompt
+  pPlayerGrpLdr = pDnodeActor.pPlayer.pPlayerGrpMember[0]
+  if pPlayerGrpLdr != nil {
+    // Player is in a group
+    for i = 0; i < GRP_LIMIT; i++ {
+      // Loop thru leader's member list
+      if pPlayerGrpLdr.pPlayerGrpMember[i] != nil {
+        // Group member
+        if pPlayerGrpLdr.pPlayerGrpMember[i] != pDnodeActor.pPlayer {
+          // Group member that is not the member who got the loot
+          pDnodeGrpMem = GetTargetDnode(pPlayerGrpLdr.pPlayerGrpMember[i].Name)
+          if NoLoot {
+            // Player got no loot
+            pDnodeGrpMem.PlayerOut += "\r\n"
+            pDnodeGrpMem.PlayerOut += pDnodeActor.PlayerName
+            pDnodeGrpMem.PlayerOut += " didn't get any loot."
+          }
+          pDnodeGrpMem.PlayerOut += "\r\n"
+          CreatePrompt(pDnodeGrpMem.pPlayer)
+          pDnodeGrpMem.PlayerOut += GetOutput(pDnodeGrpMem.pPlayer)
+        }
+      } else {
+        // No more members to process
+        break
+      }
+    }
+  }
 }
 
 // Hand out the loot - for real this time
