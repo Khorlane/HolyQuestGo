@@ -2877,10 +2877,7 @@ func DoGoToDepart() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
-/***********************************************************
- * Group command                                           *
- ***********************************************************/
-
+ // Group command
 func DoGroup() {
   var (
     pDnodeGrpLdr    *Dnode // Group leader
@@ -3100,16 +3097,177 @@ func DoGroup() {
   pDnodeGrpLdr.PlayerOut += GetOutput(pDnodeGrpLdr.pPlayer)
 }
 
+// Gsay command
 func DoGsay() {
-  // TODO: implement DoGsay
+  var pDnodeGrpLdr *Dnode // Group leader
+  var pDnodeGrpMem *Dnode // Group members
+  var GsayMsg       string
+  var i             int
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if pDnodeActor.pPlayer.pPlayerGrpMember[0] == nil {
+    // Player is not in a group
+    pDnodeActor.PlayerOut += "You are not in a group.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  GsayMsg = StrGetWords(CmdStr, 2)
+  if StrGetLength(GsayMsg) < 1 {
+    // Player typed gsay but did not type a message
+    pDnodeActor.PlayerOut += "Are you trying to say something to the group?\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*****************
+  //* Send the gsay *
+  //*****************
+  pDnodeActor.PlayerOut += "&C"
+  pDnodeActor.PlayerOut += "You say to the group: "
+  pDnodeActor.PlayerOut += GsayMsg
+  pDnodeActor.PlayerOut += "&N"
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  // Get group leader
+  pDnodeGrpLdr = GetTargetDnode(pDnodeActor.pPlayer.pPlayerGrpMember[0].Name)
+  for i = 0; i < GRP_LIMIT; i++ {
+    // For each member of leader's group including the leader
+    if pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i] == nil {
+      // Done looping through group members
+      return
+    }
+    // Send gsay to other group members
+    pDnodeGrpMem = GetTargetDnode(pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i].Name)
+    if pDnodeActor == pDnodeGrpMem {
+      // Do not send gsay to originating player
+      continue
+    }
+    pDnodeGrpMem.PlayerOut += "\r\n"
+    pDnodeGrpMem.PlayerOut += "&C"
+    pDnodeGrpMem.PlayerOut += pDnodeActor.PlayerName
+    pDnodeGrpMem.PlayerOut += " says to the group: "
+    pDnodeGrpMem.PlayerOut += GsayMsg
+    pDnodeGrpMem.PlayerOut += "&N"
+    pDnodeGrpMem.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeGrpMem.pPlayer)
+    pDnodeGrpMem.PlayerOut += GetOutput(pDnodeGrpMem.pPlayer)
+  }
 }
 
+// Hail command
 func DoHail() {
-  // TODO: implement DoHail
+  var pMobile        *Mobile
+  var HailMsg         string
+  var MobileMsg       string
+  var PlayerName      string
+  var PlayerNameCheck string
+  var RoomId          string
+  var Target          string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) < 2 {
+    // No target
+    pDnodeActor.PlayerOut += "You need a target."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if StrCountWords(CmdStr) > 2 {
+    // Two many targets
+    pDnodeActor.PlayerOut += "Only one target at a time."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  PlayerName = pDnodeActor.PlayerName
+  RoomId = pDnodeActor.pPlayer.RoomId
+  PlayerNameCheck = PlayerName
+  PlayerNameCheck = StrMakeLower(PlayerNameCheck)
+  Target = StrGetWord(CmdStr, 2)
+  Target = StrMakeLower(Target)
+  if Target == PlayerNameCheck {
+    // Trying to kill self
+    pDnodeActor.PlayerOut += "Hailing yourself is just plain silly."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pMobile = IsMobInRoom(Target)
+  if pMobile == nil {
+    // Target mobile is not here
+    pDnodeActor.PlayerOut += "Try hailing an NPC that is in this room."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*****************
+  //* Send messages *
+  //*****************
+  // Send message to player
+  pDnodeActor.PlayerOut += "&W"
+  pDnodeActor.PlayerOut += "You hail "
+  pDnodeActor.PlayerOut += pMobile.Desc1
+  pDnodeActor.PlayerOut += "!"
+  pDnodeActor.PlayerOut += "&N"
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  // Send message to room
+  HailMsg = "&W"
+  HailMsg += PlayerName
+  HailMsg += " hails "
+  HailMsg += pMobile.Desc1
+  HailMsg += "."
+  HailMsg += "&N"
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(RoomId, HailMsg)
+  MobileMsg = MobTalk(pMobile)
+  // Stip last \r\n from message, SendToRoom adds a \r\n
+  MobileMsg = StrLeft(MobileMsg, StrGetLength(MobileMsg)-2)
+  pDnodeSrc = nil
+  pDnodeTgt = nil
+  SendToRoom(RoomId, MobileMsg)
+  pMobile = nil
 }
 
+// Help command
 func DoHelp() {
-  // TODO: implement DoHelp
+  DEBUGIT(1)
+  if IsHelp() {
+    // Help was found and sent to player
+    return
+  }
+  // No help entry found
+  CmdStr = "help notfound"
+  if IsHelp() {
+    // Help notfound entry was found and sent to player
+    return
+  }
+  // Ok, if we are here, then there really is no help
+  pDnodeActor.PlayerOut += "No help topic found.\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoInventory() {

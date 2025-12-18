@@ -66,14 +66,14 @@ var mobileFileName string
 var MobScanner = bufio.NewScanner(MobileFile)
 
 // Initialize a new Mobile instance
-func MobileConstructor(mobileId string) *Mobile {
-  mobile := &Mobile{}
-  OpenMobFile(mobileId)
+func MobileConstructor(MobileId string) *Mobile {
+  pMobile := &Mobile{}
+  OpenMobFile(MobileId)
   ParseMobStuff()
   CloseMobFile()
-  mobile.Hurt = false
-  mobile.MobNbr = ""
-  return mobile
+  pMobile.Hurt = false
+  pMobile.MobNbr = ""
+  return pMobile
 }
 
 // Add a mobile to a room
@@ -933,7 +933,7 @@ func GetNextMobNbr() {
 }
 
 // Generate a message for a mobile to say
-func MobTalk() string {
+func MobTalk(pMobile *Mobile) string {
   var (
     mobTalkFileName string
     mobileMsg       string

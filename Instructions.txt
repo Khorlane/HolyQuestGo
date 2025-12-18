@@ -9,3 +9,7 @@ Project: Converting code from cpp to Go
 - Always keep the same variable names and the same case
 - Avoid creating new variables
 - If a new variable is needed, name it using PascalCase
+- Convert any multi-line “flower box” function comment into a single // comment placed directly above the corresponding func line.
+- Keep multi-variable var declarations on separate lines (e.g., var x int then var y int), not grouped in a single var (x int, y int) block.
+- In consecutive single-line var declarations, pad with spaces so the type columns line up (e.g., var Foo int then var BarBaz string).
+- Put result in chat window, ready for me to copy
