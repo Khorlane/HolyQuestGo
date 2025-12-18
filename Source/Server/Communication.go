@@ -5291,8 +5291,95 @@ func DoWho() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Wield command
 func DoWield() {
-  // TODO: implement DoWield
+  var ObjectName  string
+  var WieldFailed bool
+  var WieldMsg    string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if StrCountWords(CmdStr) == 1 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Wield what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*************************
+  //* Get pointer to object *
+  //*************************
+  TmpStr = StrGetWord(CmdStr, 2)
+  ObjectName = TmpStr
+  TmpStr = StrMakeLower(TmpStr)
+  pObject = nil
+  IsObjInPlayerInv(TmpStr) // Sets pObject
+  if pObject == nil {
+    // Player does not have object in inventory
+    pDnodeActor.PlayerOut += "You don't have a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += ".\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*******************
+  //* Is it a weapon? *
+  //*******************
+  TmpStr = pObject.Type
+  TmpStr = StrMakeLower(TmpStr)
+  if TmpStr != "weapon" {
+    // Player is trying to wield something that is not a weapon
+    pDnodeActor.PlayerOut += "Try wielding a weapon."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //********************
+  //* Wield the weapon *
+  //********************
+  // Add object to player's equipment
+  WieldFailed = AddObjToPlayerEqu(pObject.WearPosition, pObject.ObjectId)
+  if WieldFailed {
+    // Already wielding a weapon
+    pDnodeActor.PlayerOut += "You are already wielding a weapon"
+    pDnodeActor.PlayerOut += ".\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    pObject = nil
+    return
+  }
+  // Remove object from player's inventory
+  RemoveObjFromPlayerInv(pObject.ObjectId, 1)
+  // Send messages
+  pDnodeActor.PlayerOut += "You wield "
+  pDnodeActor.PlayerOut += pObject.Desc1
+  pDnodeActor.PlayerOut += "."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  // Send wear message to room
+  WieldMsg = pDnodeActor.PlayerName
+  WieldMsg += " wields "
+  WieldMsg += pObject.Desc1
+  WieldMsg += "."
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, WieldMsg)
+  // Set player's weapon info
+  pDnodeActor.pPlayer.WeaponDamage = pObject.WeaponDamage
+  pDnodeActor.pPlayer.WeaponDesc1 = pObject.Desc1
+  pDnodeActor.pPlayer.WeaponType = pObject.WeaponType
+  PlayerSave(pDnodeActor.pPlayer)
+  pObject = nil
 }
 
 // Groups - Calculate group experience, if any
