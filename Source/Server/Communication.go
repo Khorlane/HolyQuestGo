@@ -5625,7 +5625,47 @@ func LogonGreeting() {
 
 // Logon wait male female
 func LogonWaitMaleFemale() {
-	return
+  var AllMsg    string
+  var PlayerMsg string
+
+  CmdStr = StrMakeUpper(CmdStr)
+  if !(StrFindOneOf(CmdStr, "MF") == 0 && StrGetLength(CmdStr) == 1) {
+    // Not M or F
+    pDnodeActor.PlayerStateWaitMaleFemale = true
+    pDnodeActor.PlayerOut += "You must enter a M or F."
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "Sex of this character M-F?"
+    pDnodeActor.PlayerOut += "\r\n"
+  } else {
+    // M or F entered, save them, let them play
+    DoMotd()
+    pDnodeActor.pPlayer = PlayerConstructor()
+    pDnodeActor.pPlayer.Name = pDnodeActor.PlayerName
+    pDnodeActor.pPlayer.Password = pDnodeActor.PlayerPassword
+    pDnodeActor.pPlayer.Sex = CmdStr
+    pDnodeActor.pPlayer.Born = GetTimeSeconds()
+    PlayerSave(pDnodeActor.pPlayer)
+    pDnodeActor.pPlayer.SessionTime = GetTimeSeconds()
+    pDnodeActor.PlayerStateLoggingOn = false
+    pDnodeActor.PlayerStatePlaying = true
+    PlayerSave(pDnodeActor.pPlayer)
+    PlayerMsg  = "\r\n"
+    PlayerMsg += "May your travels be safe."
+    PlayerMsg += "\r\n"
+    PlayerMsg += "\r\n"
+    AllMsg  = "\r\n"
+    AllMsg += "Please welcome new player "
+    AllMsg += pDnodeActor.PlayerName
+    AllMsg += "."
+    AllMsg += "\r\n"
+    SendToAll(PlayerMsg, AllMsg)
+    ShowRoom(pDnodeActor)
+    LogBuf  = "New player "
+    LogBuf += pDnodeActor.PlayerName
+    LogIt(LogBuf)
+    PlayerSave(pDnodeActor.pPlayer)
+  }
 }
 
 // Logon wait name
