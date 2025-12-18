@@ -5191,8 +5191,51 @@ func DoWear() {
   pObject = nil
 }
 
+// Where command
 func DoWhere() {
-  // TODO: implement DoWhere
+  var SearchId string
+
+  DEBUGIT(1)
+  if StrCountWords(CmdStr) != 2 {
+    // Invalid command format
+    pDnodeActor.PlayerOut += "Nothing given to search for!"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  SearchId = StrGetWord(CmdStr, 2)
+  SearchId = StrMakeLower(SearchId)
+  // Find Players
+  pDnodeTgt = GetTargetDnode(SearchId)
+  if pDnodeTgt != nil {
+    // Target is online and in 'playing' state
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += pDnodeTgt.PlayerName
+    pDnodeActor.PlayerOut += " is in "
+    pDnodeActor.PlayerOut += pDnodeTgt.pPlayer.RoomId
+    pDnodeActor.PlayerOut += "\r\n"
+  } else if IsMobValid(SearchId) != nil {
+    // Find Mobiles
+    WhereMob(SearchId)
+  } else {
+    pObject = nil
+    IsObject(SearchId) // Sets pObject
+    if pObject != nil {
+      // Find Objects
+      WhereObj(SearchId)
+    } else {
+      // Could not find it
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "No "
+      pDnodeActor.PlayerOut += SearchId
+      pDnodeActor.PlayerOut += " found."
+      pDnodeActor.PlayerOut += "\r\n"
+    }
+  }
+  // Prompt
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoWho() {
