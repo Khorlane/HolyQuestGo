@@ -5710,7 +5710,62 @@ func LogonWaitName() {
 
 // Logon wait name confirmation
 func LogonWaitNameConfirmation() {
-	return
+  CmdStr = StrMakeUpper(CmdStr)
+  if !(StrFindOneOf(CmdStr, "YN") == 0 && StrGetLength(CmdStr) == 1) {
+    // Not Y or N ... try again
+    pDnodeActor.PlayerStateWaitNameConfirmation = true
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "You must enter a Y or N."
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "You wish to be known as "
+    pDnodeActor.PlayerOut += pDnodeActor.PlayerName
+    pDnodeActor.PlayerOut += "? Y-N"
+    pDnodeActor.PlayerOut += "\r\n"
+  } else {
+    // Y or N entered
+    if CmdStr == "N" {
+      // N ... changed their mind ... try again
+      pDnodeActor.PlayerStateWaitName = true
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "Ok then, Try again."
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "Name?"
+      pDnodeActor.PlayerOut += "\r\n"
+    } else {
+      // Y entered ... they like the name
+      if !IsNameValid(pDnodeActor.PlayerName) {
+        // Name is invalid ... try again
+        pDnodeActor.PlayerStateWaitName = true
+        pDnodeActor.PlayerOut += pDnodeActor.PlayerName
+        pDnodeActor.PlayerOut += " is not an acceptable name in this realm\r\n"
+        pDnodeActor.PlayerOut += "\r\n"
+        pDnodeActor.PlayerOut += "Name?"
+        pDnodeActor.PlayerOut += "\r\n"
+      } else {
+        // Name is valid
+        if IsPlayer(pDnodeActor.PlayerName) {
+          // Name aleady used ... try again
+          pDnodeActor.PlayerStateWaitName = true
+          pDnodeActor.PlayerOut += pDnodeActor.PlayerName
+          pDnodeActor.PlayerOut += " belongs to an exiting character"
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "Try a different name"
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "Name?"
+          pDnodeActor.PlayerOut += "\r\n"
+        } else {
+          // New player with valid name that has not been used
+          pDnodeActor.PlayerStateWaitPassword = true
+          pDnodeActor.PlayerOut += "\r\n"
+          pDnodeActor.PlayerOut += "Password?"
+          pDnodeActor.PlayerOut += "\r\n"
+        }
+      }
+    }
+  }
 }
 
 // Logon wait new character
