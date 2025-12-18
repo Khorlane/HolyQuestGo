@@ -2817,7 +2817,7 @@ func DoGoToArrive() {
 // GoToDepart command
 func DoGoToDepart() {
   var GoToDepart string
-	
+
   DEBUGIT(1)
   TmpStr = StrGetWord(CmdStr, 2)
   TmpStr = StrMakeLower(TmpStr)
@@ -2877,9 +2877,227 @@ func DoGoToDepart() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+/***********************************************************
+ * Group command                                           *
+ ***********************************************************/
 
 func DoGroup() {
-  // TODO: implement DoGroup
+  var (
+    pDnodeGrpLdr    *Dnode // Group leader
+    i               int
+    j               int
+    GrpFull         bool
+    PlayerNameCheck string
+    TargetNameCheck string
+    TargetNameSave  string
+  )
+
+  DEBUGIT(1)
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  PlayerNameCheck = pDnodeActor.PlayerName
+  TargetNameCheck = StrGetWord(CmdStr, 2)
+  TargetNameSave = TargetNameCheck
+  PlayerNameCheck = StrMakeLower(PlayerNameCheck)
+  TargetNameCheck = StrMakeLower(TargetNameCheck)
+  //************************
+  //* Group with no target *
+  //************************
+  if StrGetLength(TargetNameCheck) < 1 {
+    // No target given
+    pDnodeActor.PlayerOut += "Group with whom?\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*************************
+  //* List members of group *
+  //*************************
+  if TargetNameCheck == "list" {
+    // List group
+    if pDnodeActor.pPlayer.pPlayerGrpMember[0] == nil {
+      // Player is not in a group
+      pDnodeActor.PlayerOut += "You are not in a group.\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+    // Player is in a group, show members
+    pDnodeActor.PlayerOut += pDnodeActor.pPlayer.pPlayerGrpMember[0].Name
+    pDnodeActor.PlayerOut += " \r\n"
+    j = StrGetLength(pDnodeActor.pPlayer.pPlayerGrpMember[0].Name)
+    for i = 1; i < j+1; i++ {
+      pDnodeActor.PlayerOut += "-"
+    }
+    for i = 1; i < GRP_LIMIT; i++ {
+      // List group members
+      if pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i] != nil {
+        pDnodeActor.PlayerOut += " \r\n"
+        pDnodeActor.PlayerOut += pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i].Name
+      }
+    }
+    pDnodeActor.PlayerOut += " \r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //***********************
+  //* Turning grouping on *
+  //***********************
+  if TargetNameCheck == "on" {
+    pDnodeActor.pPlayer.AllowGroup = true
+    pDnodeActor.PlayerOut += "You are now accepting requests to group.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //************************
+  //* Turning grouping off *
+  //************************
+  if TargetNameCheck == "off" {
+    pDnodeActor.pPlayer.AllowGroup = false
+    pDnodeActor.PlayerOut += "You are now rejecting requests to group.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*******************************
+  //* Player is leaving the group *
+  //*******************************
+  if TargetNameCheck == "none" {
+    if pDnodeActor.pPlayer.pPlayerGrpMember[0] == nil {
+      // Player is not in a group
+      pDnodeActor.PlayerOut += "You are not in a group.\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+    GrpLeave()
+    return
+  }
+  //*********************************************************
+  //* Trying to create a new group or trying to add members *
+  //*********************************************************
+  if TargetNameCheck == PlayerNameCheck {
+    // Trying to group with self
+    if pDnodeActor.pPlayer.pPlayerGrpMember[0] == nil {
+      // Player is not in a group
+      pDnodeActor.PlayerOut += "One is a lonely number, try grouping with another player.\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+    // Player is in a group
+    pDnodeActor.PlayerOut += "One is a lonely number, but wait, you are already in group.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pDnodeGrpLdr = GetTargetDnode(TargetNameCheck)
+  if pDnodeGrpLdr == nil {
+    // New group member ... not online
+    pDnodeActor.PlayerOut += TargetNameSave
+    pDnodeActor.PlayerOut += " is not online.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if pDnodeActor.pPlayer.pPlayerGrpMember[0] == pDnodeGrpLdr.pPlayer {
+    // Player is trying to group with their group's leader
+    pDnodeActor.PlayerOut += "You are already grouped with "
+    pDnodeActor.PlayerOut += pDnodeGrpLdr.PlayerName
+    pDnodeActor.PlayerOut += ", who is the leader.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if pDnodeActor.pPlayer.RoomId != pDnodeGrpLdr.pPlayer.RoomId {
+    // New group member is not in same room as leader
+    pDnodeActor.PlayerOut += pDnodeGrpLdr.PlayerName
+    pDnodeActor.PlayerOut += " is not here.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if pDnodeActor.pPlayer.pPlayerGrpMember[0] != nil {
+    // Player is in a group
+    if pDnodeActor.pPlayer != pDnodeActor.pPlayer.pPlayerGrpMember[0] {
+      // But is not the leader, only leader may add members
+      pDnodeActor.PlayerOut += "You are not the leader. Leader must add members.\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  if pDnodeGrpLdr.pPlayer.pPlayerGrpMember[0] != nil {
+    // New group member already in a group
+    pDnodeActor.PlayerOut += pDnodeGrpLdr.PlayerName
+    pDnodeActor.PlayerOut += " is already in a group.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  GrpFull = true
+  for i = 0; i < GRP_LIMIT; i++ {
+    // Is group full 
+    if pDnodeActor.pPlayer.pPlayerGrpMember[i] == nil {
+      // Found an empty member slot
+      j = i
+      GrpFull = false
+      break
+    }
+  }
+  if GrpFull {
+    // Group is full
+    pDnodeActor.PlayerOut += "Your group is full, maximum of "
+    Buf = fmt.Sprintf("%d", GRP_LIMIT)
+    TmpStr = Buf
+    TmpStr = StrTrimLeft(TmpStr)
+    TmpStr = StrTrimRight(TmpStr)
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += " members allowed.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if !pDnodeGrpLdr.pPlayer.AllowGroup {
+    // New group member is not accepting group requests
+    pDnodeActor.PlayerOut += pDnodeGrpLdr.PlayerName
+    pDnodeActor.PlayerOut += " is not accepting requests to group.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //***********************************
+  //* Ok, done checking ... group 'em *
+  //***********************************
+  if pDnodeActor.pPlayer.pPlayerGrpMember[0] == nil {
+    // Forming new group
+    pDnodeActor.pPlayer.pPlayerGrpMember[0] = pDnodeActor.pPlayer
+    pDnodeGrpLdr.pPlayer.pPlayerGrpMember[0] = pDnodeActor.pPlayer
+    pDnodeActor.pPlayer.pPlayerGrpMember[1] = pDnodeGrpLdr.pPlayer
+    pDnodeActor.PlayerOut += "You have formed a new group with "
+    pDnodeActor.PlayerOut += pDnodeGrpLdr.PlayerName
+    pDnodeActor.PlayerOut += " as your first member.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  } else {
+    // Adding a member to an existing group
+    pDnodeActor.pPlayer.pPlayerGrpMember[i] = pDnodeGrpLdr.pPlayer
+    pDnodeGrpLdr.pPlayer.pPlayerGrpMember[0] = pDnodeActor.pPlayer
+    pDnodeActor.PlayerOut += pDnodeGrpLdr.PlayerName
+    pDnodeActor.PlayerOut += " has been added to your group.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  }
+  pDnodeGrpLdr.PlayerOut += "\r\n"
+  pDnodeGrpLdr.PlayerOut += "You have joined a group, "
+  pDnodeGrpLdr.PlayerOut += pDnodeActor.PlayerName
+  pDnodeGrpLdr.PlayerOut += " is the leader.\r\n"
+  CreatePrompt(pDnodeGrpLdr.pPlayer)
+  pDnodeGrpLdr.PlayerOut += GetOutput(pDnodeGrpLdr.pPlayer)
 }
 
 func DoGsay() {
