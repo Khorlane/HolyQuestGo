@@ -4463,8 +4463,43 @@ func DoShow() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Sit command
 func DoSit() {
-  // TODO: implement DoSit
+  var SitMsg string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  if pDnodeActor.pPlayer.Position == "sit" {
+    // Player is already sitting
+    pDnodeActor.PlayerOut += "You are already sitting down."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //************
+  //* Sit down *
+  //************
+  pDnodeActor.pPlayer.Position = "sit"
+  PlayerSave(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += "You sit down."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  SitMsg = pDnodeActor.PlayerName + " sits down."
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, SitMsg)
 }
 
 func DoSleep() {
