@@ -2262,8 +2262,202 @@ func DoFlee() {
   CreateMobPlayer(Target, MobileIdSave)
 }
 
-func DoFollow(pDnode *Dnode, CmdStr string) {
-  // TODO: implement DoFollow
+// Follow command
+func DoFollow(pDnode *Dnode, CmdStr1 string) {
+  var pDnodeGrpLdr *Dnode
+  var pDnodeGrpMem *Dnode
+  var i int
+  var j int
+  var Target string
+  var TargetInGroup bool
+
+  DEBUGIT(1)
+  CmdStr = CmdStr1
+  i = 0
+  j = 0
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  Target = StrGetWord(CmdStr, 2)
+  TmpStr = Target
+  TmpStr = StrMakeLower(TmpStr)
+  if Target == "" {
+    // Follow with no target
+    pDnode.PlayerOut += "Who would you like to follow?\r\n"
+    CreatePrompt(pDnode.pPlayer)
+    pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+    return
+  }
+  //******************
+  //* Stop following *
+  //******************
+  if TmpStr == "none" {
+    // Player wants to stop following
+    if pDnode.pPlayer.pPlayerFollowers[0] == nil {
+      // Player is not following anyone
+      pDnode.PlayerOut += "Ok. But alas, you were not following anyone"
+      pDnode.PlayerOut += "\r\n"
+      CreatePrompt(pDnode.pPlayer)
+      pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+      return
+    }
+    for i = 1; i < GRP_LIMIT; i++ {
+      // Search thru player-being-followed's list of followers
+      if pDnode.pPlayer == pDnode.pPlayer.pPlayerFollowers[0].pPlayerFollowers[i] {
+        // Found player, set to null
+        pDnode.pPlayer.pPlayerFollowers[0].pPlayerFollowers[i] = nil
+        j = i
+        break
+      }
+    }
+    // Compact the list of followers, so new followers are at the end
+    for i = j; i < GRP_LIMIT-1; i++ {
+      pDnode.pPlayer.pPlayerFollowers[0].pPlayerFollowers[i] = pDnode.pPlayer.pPlayerFollowers[0].pPlayerFollowers[i+1]
+      pDnode.pPlayer.pPlayerFollowers[0].pPlayerFollowers[i+1] = nil
+    }
+    pDnode.PlayerOut += "You stop following "
+    pDnode.PlayerOut += pDnode.pPlayer.pPlayerFollowers[0].Name
+    pDnode.PlayerOut += ".\r\n"
+    CreatePrompt(pDnode.pPlayer)
+    pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+    pDnode.pPlayer.pPlayerFollowers[0] = nil
+    return
+  }
+  //******************
+  //* List followers *
+  //******************
+  if TmpStr == "list" {
+    if pDnode.pPlayer.pPlayerFollowers[0] == nil {
+      pDnode.PlayerOut += "You are not following anyone.\r\n"
+    } else {
+      pDnode.PlayerOut += "You are following "
+      pDnode.PlayerOut += pDnode.pPlayer.pPlayerFollowers[0].Name
+      pDnode.PlayerOut += ".\r\n"
+    }
+    for i = 1; i < GRP_LIMIT; i++ {
+      if pDnode.pPlayer.pPlayerFollowers[i] != nil {
+        if i == 1 {
+          pDnode.PlayerOut += "Followers\r\n"
+          pDnode.PlayerOut += "---------\r\n"
+        }
+        pDnode.PlayerOut += pDnode.pPlayer.pPlayerFollowers[i].Name
+        pDnode.PlayerOut += "\r\n"
+      }
+    }
+    CreatePrompt(pDnode.pPlayer)
+    pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+    return
+  }
+  //*******************************
+  //* Player is already following *
+  //*******************************
+  if pDnode.pPlayer.pPlayerFollowers[0] != nil {
+    pDnode.PlayerOut += "You are already following "
+    pDnode.PlayerOut += pDnode.pPlayer.pPlayerFollowers[0].Name
+    pDnode.PlayerOut += ".\r\n"
+    CreatePrompt(pDnode.pPlayer)
+    pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+    return
+  }
+  //******************
+  //* Target online? *
+  //******************
+  pDnodeTgt = GetTargetDnode(Target)
+  if pDnodeTgt == nil {
+    // Target not online
+    pDnode.PlayerOut += Target
+    pDnode.PlayerOut += " is not online.\r\n"
+    CreatePrompt(pDnode.pPlayer)
+    pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+    return
+  }
+  //***************************
+  //* Can not follow yourself *
+  //***************************
+  if pDnode == pDnodeTgt {
+    // Player trying to follow themself
+    pDnode.PlayerOut += "You can not follow yourself.\r\n"
+    CreatePrompt(pDnode.pPlayer)
+    pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+    return
+  }
+  //*************************************
+  //* Player and target must be grouped *
+  //*************************************
+  if pDnode.pPlayer.pPlayerGrpMember[0] == nil {
+    // Player is not in a group
+    pDnode.PlayerOut += "You must be in a group before you can follow."
+    pDnode.PlayerOut += "\r\n"
+    CreatePrompt(pDnode.pPlayer)
+    pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+    return
+  }
+  pDnodeGrpLdr = GetTargetDnode(pDnode.pPlayer.pPlayerGrpMember[0].Name)
+  TargetInGroup = false
+  for i = 0; i < GRP_LIMIT; i++ {
+    // For each member of leader's group including the leader
+    if pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i] == nil {
+      // Done looping through group members
+      break
+    }
+    // Get group member's dnode
+    pDnodeGrpMem = GetTargetDnode(pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i].Name)
+    if pDnodeGrpMem == pDnodeTgt {
+      // Target member found
+      TargetInGroup = true
+    }
+  }
+  if !TargetInGroup {
+    // Target is not grouped with player
+    pDnode.PlayerOut += Target
+    pDnode.PlayerOut += " is not in the group.\r\n"
+    CreatePrompt(pDnode.pPlayer)
+    pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+    return
+  }
+  //************************************
+  //* Player can not follow a follower *
+  //************************************
+  for i = 1; i < GRP_LIMIT; i++ {
+    if pDnodeTgt.pPlayer == pDnode.pPlayer.pPlayerFollowers[i] {
+      pDnode.PlayerOut += "Can not! "
+      pDnode.PlayerOut += pDnodeTgt.pPlayer.Name
+      pDnode.PlayerOut += " is following YOU.\r\n"
+      CreatePrompt(pDnode.pPlayer)
+      pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+      return
+    }
+  }
+  //***********************
+  //* Follow - make it so *
+  //***********************
+  // Message to player
+  pDnode.PlayerOut += "You begin to follow "
+  pDnode.PlayerOut += pDnodeTgt.PlayerName
+  pDnode.PlayerOut += ".\r\n"
+  CreatePrompt(pDnode.pPlayer)
+  pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+  // Message to player being followed
+  pDnodeTgt.PlayerOut += "\r\n"
+  pDnodeTgt.PlayerOut += pDnode.PlayerName
+  pDnodeTgt.PlayerOut += " begins to follow you."
+  pDnodeTgt.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeTgt.pPlayer)
+  pDnodeTgt.PlayerOut += GetOutput(pDnodeTgt.pPlayer)
+  // Make 'em follow
+  pDnode.pPlayer.pPlayerFollowers[0] = pDnodeTgt.pPlayer
+  for i = 1; i < GRP_LIMIT; i++ {
+    // Loop through target's list of followers to find an empty slot
+    if pDnodeTgt.pPlayer.pPlayerFollowers[i] == nil {
+      // Found a slot for the new follower
+      break
+    }
+  }
+  pDnodeTgt.pPlayer.pPlayerFollowers[i] = pDnode.pPlayer
 }
 
 func DoGet() {
