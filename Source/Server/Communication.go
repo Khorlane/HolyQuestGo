@@ -6388,7 +6388,107 @@ func ViolencePlayer() {
 
 // Player has died, sad but true
 func ViolencePlayerDied(MobileDesc1 string) {
-	return
+  var CandidateCount   int
+  var CandidateList    string
+  var CandidateTarget  int
+  var DeadMsg          string
+  var MobileId         string
+  var MobileIdSave     string
+  var RoomIdBeforeDying string
+  var Target           string
+
+  pDnodeActor.pPlayer.HitPoints = 0
+  // Tell player of their demise
+  pDnodeActor.PlayerOut += "&R"
+  pDnodeActor.PlayerOut += "You have been vanquished by"
+  pDnodeActor.PlayerOut += " "
+  pDnodeActor.PlayerOut += MobileDesc1
+  pDnodeActor.PlayerOut += "!!!"
+  pDnodeActor.PlayerOut += "\r\n"
+  // Loose experience?
+  if pDnodeActor.pPlayer.Level > PLAYER_LOOSES_EXP_LEVEL {
+    // Player is loosing some experience
+    pDnodeActor.pPlayer.Experience -= float64(GetRandomNumber(pDnodeActor.pPlayer.Level * 5 * MOB_EXP_PER_LEVEL))
+    if pDnodeActor.pPlayer.Experience < 0 {
+      // Stop experience from going negative
+      pDnodeActor.pPlayer.Experience = 0
+    }
+    pDnodeActor.PlayerOut += "&Y"
+    pDnodeActor.PlayerOut += "You lost some experience."
+    pDnodeActor.PlayerOut += "&N"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "\r\n"
+  } else {
+    // No experience was lost
+    Buf = fmt.Sprintf("%d", PLAYER_LOOSES_EXP_LEVEL)
+    TmpStr = Buf
+    pDnodeActor.PlayerOut += "&Y"
+    pDnodeActor.PlayerOut += "After level "
+    pDnodeActor.PlayerOut += TmpStr
+    pDnodeActor.PlayerOut += ", you will lose experience."
+    pDnodeActor.PlayerOut += "&N"
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "\r\n"
+  }
+  // Tell players in room of player's demise
+  DeadMsg  = "&R"
+  DeadMsg += pDnodeActor.PlayerName
+  DeadMsg += " has been vanquished by "
+  DeadMsg += MobileDesc1
+  DeadMsg += "!"
+  DeadMsg += "\r\n"
+  DeadMsg += pDnodeActor.PlayerName
+  DeadMsg += " has been taken to a safe place to recover."
+  DeadMsg += "&N"
+  pDnodeSrc = pDnodeActor
+  pDnodeTgt = pDnodeActor
+  SendToRoom(pDnodeActor.pPlayer.RoomId, DeadMsg)
+  RoomIdBeforeDying = pDnodeActor.pPlayer.RoomId
+  // Move player to a safe room, stop the fight
+  pDnodeActor.pPlayer.RoomId = SAFE_ROOM
+  ShowRoom(pDnodeActor)
+  pDnodeActor.PlayerStateFighting = false
+  // Get mobile id for mob that dead player was fighting
+  MobileIdSave = GetPlayerMobMobileId(pDnodeActor.PlayerName)
+  // Delete PlayerMob file
+  DeletePlayerMob(pDnodeActor.PlayerName)
+  //********************************************************
+  //* Delete fighting mobiles from MobPlayer file          *
+  //********************************************************
+  SetpDnodeCursorFirst()
+  for !EndOfDnodeList() {
+    // Loop thru all connections
+    pDnodeOthers = GetDnode()
+    if pDnodeOthers.PlayerStateFighting {
+      // Players who are fighting
+      if RoomIdBeforeDying == pDnodeOthers.pPlayer.RoomId {
+        // In the same room
+        MobileId = GetPlayerMobMobileId(pDnodeOthers.PlayerName)
+        DeleteMobPlayer(pDnodeActor.PlayerName, MobileId)
+        if MobileId == MobileIdSave {
+          // Add player to candidate list for MobileIdSave
+          CandidateList += pDnodeOthers.PlayerName
+          CandidateList += " "
+        }
+      }
+    }
+    SetpDnodeCursorNext()
+  }
+  // Re-position pDnodeCursor
+  RepositionDnodeCursor()
+  // Put mobiles that are not fighting back in room
+  PutMobBackInRoom(pDnodeActor.PlayerName, RoomIdBeforeDying)
+  // Player is gone, so delete MobPlayer completely
+  DeleteMobPlayer(pDnodeActor.PlayerName, "file")
+  // Select a new target for MobileIdSave
+  if StrGetLength(CandidateList) == 0 {
+    // MobileIdSave's target is still in room, nothing to do
+    return
+  }
+  CandidateCount  = StrCountWords(CandidateList)
+  CandidateTarget = GetRandomNumber(CandidateCount)
+  Target          = StrGetWord(CandidateList, CandidateTarget)
+  CreateMobPlayer(Target, MobileIdSave)
 }
 
 // Return current time in milliseconds
