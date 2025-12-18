@@ -46,7 +46,7 @@ var pCalendar =  &Calendar{
 func CalendarConstructor() {
   DEBUGIT(1)
   timer := time.Now().Unix()
-  pCalendar.TimeToAdvanceHour = timer + REAL_MINUTES_PER_HOUR*60
+  pCalendar.TimeToAdvanceHour = timer + int64(REAL_MINUTES_PER_HOUR*60)
   OpenCalendarFile()
   if CalendarFileIsOpen {
     GetStartTime()
@@ -70,7 +70,7 @@ func AdvanceTime() {
   if NowSec < pCalendar.TimeToAdvanceHour {
     return
   }
-  pCalendar.TimeToAdvanceHour = NowSec + REAL_MINUTES_PER_HOUR*60
+  pCalendar.TimeToAdvanceHour = NowSec + int64(REAL_MINUTES_PER_HOUR*60)
   pCalendar.Hour++
   if pCalendar.Hour > HOURS_PER_DAY {
     pCalendar.Day++

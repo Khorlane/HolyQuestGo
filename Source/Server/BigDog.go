@@ -60,7 +60,7 @@ func BigDog() {
   InitDescriptor()
   CalendarConstructor()
   for StateRunning {
-    time.Sleep(MILLI_SECONDS_TO_SLEEP * time.Millisecond)
+    time.Sleep(time.Duration(MILLI_SECONDS_TO_SLEEP) * time.Millisecond)
     AdvanceTime()
     if !StateStopping && FileExist(stopItFileName) {
       StateStopping = true
