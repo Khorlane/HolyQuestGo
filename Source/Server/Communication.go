@@ -2536,7 +2536,7 @@ func DoGive() {
   var PlayerName string
   var TargetName string
   var TargetNotHere bool
-	
+
   DEBUGIT(1)
   //********************
   //* Validate command *
@@ -2661,8 +2661,54 @@ func DoGive() {
   pObject = nil
 }
 
+// Go command
 func DoGo() {
-  // TODO: implement DoGo
+  var MudCmdIsExit string
+	
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  if pDnodeActor.pPlayer.Position == "sit" {
+    // Player is sitting
+    pDnodeActor.PlayerOut += "You must be standing before you can move."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  TmpStr = StrGetWord(CmdStr, 2)
+  if TmpStr == "" {
+    // No direction given
+    pDnodeActor.PlayerOut += "Aimless wandering is not allowed.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //***************
+  //* Try to move *
+  //***************
+  MudCmdIsExit = "go"
+  var sMudCmdIsExit string
+  sMudCmdIsExit = MudCmdIsExit
+  if IsExit(sMudCmdIsExit) {
+    // Player has been moved
+    return
+  }
+  //********************************
+  //* Direction given is not valid *
+  //********************************
+  pDnodeActor.PlayerOut += "Go where?\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoGoTo() {
