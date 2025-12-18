@@ -6340,7 +6340,14 @@ func ViolenceMobileLootHandOut(Loot string) bool {
 
 // More mobiles to fight?
 func ViolenceMobileMore() {
-	return
+  var MobileId string
+
+  MobileId = GetMobPlayerMobileId(pDnodeActor.PlayerName, 1)
+  if MobileId == "No more mobiles" {
+    return
+  }
+  CreatePlayerMob(pDnodeActor.pPlayer.Name, MobileId)
+  pDnodeActor.PlayerStateFighting = true
 }
 
 // Player's turn to do some damage
