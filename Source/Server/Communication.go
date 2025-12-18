@@ -4607,8 +4607,77 @@ func DoStop() {
   Rename(GoGoGoFileName, StopItFileName)
 }
 
+// Tell command
 func DoTell() {
-  // TODO: implement DoTell
+  var PlayerName     string
+  var TargetName     string
+  var TargetNameSave string
+  var TellMsg        string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  PlayerName = pDnodeActor.PlayerName
+  TargetName = StrGetWord(CmdStr, 2)
+  TargetNameSave = TargetName
+  PlayerName = StrMakeLower(PlayerName)
+  TargetName = StrMakeLower(TargetName)
+  if TargetName == PlayerName {
+    pDnodeActor.PlayerOut += "Seems silly to tell yourself something!\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  if StrGetLength(TargetName) < 1 {
+    pDnodeActor.PlayerOut += "Tell who?\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  TellMsg = StrGetWords(CmdStr, 3)
+  if StrGetLength(TellMsg) < 1 {
+    pDnodeActor.PlayerOut += "Um, tell "
+    pDnodeActor.PlayerOut += TargetNameSave
+    pDnodeActor.PlayerOut += " what?"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pDnodeTgt = GetTargetDnode(TargetName)
+  if pDnodeTgt == nil {
+    // Tell player ... not found
+    pDnodeActor.PlayerOut += TargetNameSave
+    pDnodeActor.PlayerOut += " is not online.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  //*****************
+  //* Send the tell *
+  //*****************
+  PlayerName = pDnodeActor.PlayerName
+  TargetName = pDnodeTgt.PlayerName
+  // Send tell message to player
+  pDnodeActor.PlayerOut += "&M"
+  pDnodeActor.PlayerOut += "You tell "
+  pDnodeActor.PlayerOut += TargetName
+  pDnodeActor.PlayerOut += ": "
+  pDnodeActor.PlayerOut += TellMsg
+  pDnodeActor.PlayerOut += "&N"
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+  // Send tell message to target
+  pDnodeTgt.PlayerOut += "&M"
+  pDnodeTgt.PlayerOut += "\r\n"
+  pDnodeTgt.PlayerOut += PlayerName
+  pDnodeTgt.PlayerOut += " tells you: "
+  pDnodeTgt.PlayerOut += TellMsg
+  pDnodeTgt.PlayerOut += "&N"
+  pDnodeTgt.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeTgt.pPlayer)
+  pDnodeTgt.PlayerOut += GetOutput(pDnodeTgt.pPlayer)
 }
 
 func DoTime() {
