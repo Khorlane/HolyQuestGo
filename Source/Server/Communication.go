@@ -1366,7 +1366,7 @@ func DoBuy() {
   // Add object to player's inventory
   AddObjToPlayerInv(pDnodeActor, ObjectId)
   // Player receives some money
-  SetMoney('-', Cost, "Silver")
+  SetMoney(pDnodeActor.pPlayer,'-', Cost, "Silver")
   // Send messages
   Buf = fmt.Sprintf("%d", Cost)
   TmpStr = Buf
@@ -4190,8 +4190,134 @@ func DoSay() {
   SendToRoom(pDnodeActor.pPlayer.RoomId, TmpStr)
 }
 
+// Sell command
 func DoSell() {
-  // TODO: implement DoSell
+  var Cost         int
+  var Desc1        string
+  var InvCountInt  int
+  var InvCountStr  string
+  var ObjectId     string
+  var ObjectName   string
+  var RoomId       string
+  var SellCountInt int
+  var SellCountStr string
+
+  DEBUGIT(1)
+  //********************
+  //* Validate command *
+  //********************
+  if IsSleeping() {
+    // Player is sleeping, send msg, command is not done
+    return
+  }
+  if IsFighting() {
+    // Player is fighting, send msg, command is not done
+    return
+  }
+  RoomId = pDnodeActor.pPlayer.RoomId
+  if !IsShop(RoomId) {
+    // Room is not a shop
+    pDnodeActor.PlayerOut += "Find a shop."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  ObjectName = StrGetWord(CmdStr, 2)
+  if ObjectName == "" {
+    // No object given
+    pDnodeActor.PlayerOut += "Sell what?"
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pObject = nil
+  IsObjInPlayerInv(ObjectName) // Sets pObject
+  if pObject == nil {
+    // Player doesn't have object
+    pDnodeActor.PlayerOut += "You don't have a(n) "
+    pDnodeActor.PlayerOut += ObjectName
+    pDnodeActor.PlayerOut += " in your inventory."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  ObjectId = pObject.ObjectId
+  Desc1 = pObject.Desc1
+  Cost = pObject.Cost
+  InvCountStr = pObject.Count
+  pObject = nil
+  IsShopObj(RoomId, ObjectName) // Sets pObject
+  if pObject == nil {
+    // Player cannot sell object to this shop
+    pDnodeActor.PlayerOut += "That item cannot be sold here."
+    pDnodeActor.PlayerOut += "\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  pObject = nil
+  //********************
+  //* Check sell count *
+  //********************
+  InvCountInt  = StrToInt(InvCountStr)
+  SellCountStr = StrGetWord(CmdStr, 3)
+  SellCountStr = StrMakeLower(SellCountStr) // In case player typed 'all'
+  if SellCountStr == "" {
+    // Player did not specify a sell count
+    SellCountInt = 1
+  } else {
+    // Player might be selling more than 1 item
+    if SellCountStr == "all" {
+      // Player is selling all items
+      SellCountInt = InvCountInt
+    } else {
+      // Compare player InvCount against SellCountInt
+      SellCountInt = StrToInt(SellCountStr)
+      if SellCountInt <= 0 {
+        // Player entered a negative or zero amount to sell
+        pDnodeActor.PlayerOut += "You cannot sell less that 1 item"
+        pDnodeActor.PlayerOut += "\r\n"
+        CreatePrompt(pDnodeActor.pPlayer)
+        pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+        return
+      } else if SellCountInt > InvCountInt {
+        // Player is trying sell more than they have
+        pDnodeActor.PlayerOut += "You don't have that many "
+        pDnodeActor.PlayerOut += ObjectName
+        pDnodeActor.PlayerOut += "s"
+        pDnodeActor.PlayerOut += "\r\n"
+        CreatePrompt(pDnodeActor.pPlayer)
+        pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+        return
+      }
+    }
+  }
+  //*******************
+  //* Sell the object *
+  //*******************
+  // Remove object from player's inventory
+  RemoveObjFromPlayerInv(ObjectId, SellCountInt)
+  // Player receives some money
+  Cost = Cost * SellCountInt
+  SetMoney(pDnodeActor.pPlayer,'+', Cost, "Silver")
+  // Send messages
+  Buf = fmt.Sprintf("%d", SellCountInt)
+  TmpStr = Buf
+  TmpStr = "(" + TmpStr + ") "
+  pDnodeActor.PlayerOut += TmpStr
+  pDnodeActor.PlayerOut += "You sell "
+  pDnodeActor.PlayerOut += Desc1
+  pDnodeActor.PlayerOut += " for "
+  Buf = fmt.Sprintf("%d", Cost)
+  TmpStr = Buf
+  pDnodeActor.PlayerOut += TmpStr
+  pDnodeActor.PlayerOut += " piece(s) of silver."
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoShow() {

@@ -397,7 +397,7 @@ func PlayerSave(pPlayer *Player) {
 }
 
 // Manipulate player money
-func SetMoney(PlusMinus byte, Amount int, Metal string) {
+func SetMoney(pPlayer *Player, PlusMinus byte, Amount int, Metal string) {
 	return
 }
 
