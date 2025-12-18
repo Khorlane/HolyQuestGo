@@ -125,10 +125,10 @@ func Remove(file1 string) error {
 }
 
 // Return the number of seconds since the epoch
-func GetTimeSeconds() int {
+func GetTimeSeconds() int64 {
   now := time.Now()
   epoch := now.Unix()
-  return int(epoch)
+  return epoch
 }
 
 // Print a message to stdout

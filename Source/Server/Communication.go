@@ -3841,8 +3841,58 @@ func DoPassword() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Played command
 func DoPlayed() {
-  // TODO: implement DoPlayed
+  var Days          int64
+  var Hours         int64
+  var Minutes       int64
+  var Seconds       int64
+  var n             int64
+  var BirthDay      string
+  var PlayerAge     string
+  var TimePlayed    string
+  var BornSec       int64
+  var NowSec        int64
+  var PlayerAgeSec  int64
+  var TimePlayedSec int64
+
+  DEBUGIT(1)
+  PlayerSave(pDnodeActor.pPlayer) // Save() updates TimePlayed
+  NowSec = time.Now().Unix()
+  BornSec = pDnodeActor.pPlayer.Born
+  PlayerAgeSec = NowSec - BornSec
+  TimePlayedSec = pDnodeActor.pPlayer.TimePlayed
+  // Birthday
+  BirthDay = time.Unix(BornSec, 0).Format(time.ANSIC)
+  // Age
+  n = PlayerAgeSec
+  Days = n / (24 * 3600)
+  n = n % (24 * 3600)
+  Hours = n / 3600
+  n %= 3600
+  Minutes = n / 60
+  n %= 60
+  Seconds = n
+  PlayerAge = fmt.Sprintf("Your age: %d days, %d hours, %d minutes, %d seconds", Days, Hours, Minutes, Seconds)
+  // TimePlayed
+  n = TimePlayedSec
+  Days = n / (24 * 3600)
+  n = n % (24 * 3600)
+  Hours = n / 3600
+  n %= 3600
+  Minutes = n / 60
+  n %= 60
+  Seconds = n
+  TimePlayed = fmt.Sprintf("You've played: %d days, %d hours, %d minutes, %d seconds", Days, Hours, Minutes, Seconds)
+  pDnodeActor.PlayerOut += PlayerAge
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += TimePlayed
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += "Your birthday is: "
+  pDnodeActor.PlayerOut += BirthDay
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func DoQuit() {

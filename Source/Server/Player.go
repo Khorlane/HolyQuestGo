@@ -25,7 +25,7 @@ type Player struct {
   // Public variables
   pPlayerGrpMember [GRP_LIMIT]*Player
   pPlayerFollowers [GRP_LIMIT]*Player
-  SessionTime      int
+  SessionTime      int64
   RoomIdBeforeMove string
 
   // Private variables
@@ -45,7 +45,7 @@ type Player struct {
   AllowAssist       bool
   AllowGroup        bool
   ArmorClass        int
-  Born              int
+  Born              int64
   Color             bool
   Experience        float64
   GoToArrive        string
@@ -70,7 +70,7 @@ type Player struct {
   SkillStaff        int
   SkillSword        int
   Thirst            int
-  TimePlayed        int
+  TimePlayed        int64
   Title             string
   WeaponDamage      int
   WeaponDesc1       string
