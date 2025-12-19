@@ -441,7 +441,69 @@ func IsObjInPlayerEqu(ObjectName string) {
 
 // Is object in player's inventory?
 func IsObjInPlayerInv(ObjectName string) {
-  // TODO: implement function logic
+  var NamesCheck         string
+  var ObjectId           string
+  var ObjectIdCheck      string
+  var ObjectNameCheck    string
+  var PlayerObjFileName  string
+  var PlayerObjFile     *os.File
+  var Scanner           *bufio.Scanner
+  var err                error
+
+  _ = ObjectIdCheck
+  _ = ObjectNameCheck
+
+  // Open PlayerObj file
+  PlayerObjFileName = PLAYER_OBJ_DIR + pDnodeActor.PlayerName + ".txt"
+  // Try matching using ObjectId
+  PlayerObjFile, err = os.Open(PlayerObjFileName)
+  if err != nil {
+    // Player has no objects
+    pObject = nil
+    return
+  }
+  ObjectName = StrMakeLower(ObjectName)
+  Scanner = bufio.NewScanner(PlayerObjFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    ObjectId = StrGetWord(Stuff, 2)
+    if ObjectName == ObjectId {
+      ObjectConstructor()
+      pObject.Count = StrGetWord(Stuff, 1)
+      return
+    }
+  }
+  PlayerObjFile.Close()
+  // No match found, try getting match using 'names'
+  PlayerObjFile, err = os.Open(PlayerObjFileName)
+  if err != nil {
+    // Player has no objects
+    pObject = nil
+    return
+  }
+  Scanner = bufio.NewScanner(PlayerObjFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    ObjectId = StrGetWord(Stuff, 2)
+    ObjectConstructor()
+    pObject.Count = StrGetWord(Stuff, 1)
+    NamesCheck = pObject.Names
+    NamesCheck = StrMakeLower(NamesCheck)
+    if StrIsWord(ObjectName, NamesCheck) {
+      return
+    } else {
+      pObject = nil
+    }
+  }
+  PlayerObjFile.Close()
+  // Object not found in player's inventory
+  return
 }
 
 // Is object in room?
