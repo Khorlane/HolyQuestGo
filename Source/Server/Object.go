@@ -1014,7 +1014,58 @@ func WhereObjPlayerEqu(ObjectIdSearch string) {
 
 // Where is object in PlayerObj
 func WhereObjPlayerObj(ObjectIdSearch string) {
-  // TODO: implement function logic
+  var FileName           string
+  var ObjectId           string
+  var PlayerObjFileName  string
+  var PlayerObjFile     *os.File
+  var PlayerName         string
+  var DirEntries         []os.DirEntry
+  var Scanner           *bufio.Scanner
+  var err                error
+
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += "Objects in player inventory"
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += "---------------------------"
+  pDnodeActor.PlayerOut += "\r\n"
+  DirEntries, err = os.ReadDir(PLAYER_OBJ_DIR)
+  if err != nil {
+    LogBuf = "Object::WhereObjPlayerObj - Change directory to PLAYER_OBJ_DIR failed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  for _, entry := range DirEntries {
+    if entry.IsDir() {
+      continue
+    }
+    FileName = entry.Name()
+    // Open PlayerObj file
+    PlayerObjFileName = PLAYER_OBJ_DIR + FileName
+    PlayerObjFile, err = os.Open(PlayerObjFileName)
+    if err != nil {
+      // File does not exist - Very bad!
+      LogBuf = "Object::WhereObjPlayerObj - Open PlayerObj file failed"
+      LogIt(LogBuf)
+      os.Exit(1)
+    }
+    PlayerName = StrLeft(FileName, StrGetLength(FileName)-4)
+    Scanner = bufio.NewScanner(PlayerObjFile)
+    for Scanner.Scan() {
+      Stuff = Scanner.Text()
+      if Stuff == "" {
+        continue
+      }
+      ObjectId = StrGetWord(Stuff, 2)
+      if ObjectId == ObjectIdSearch {
+        pDnodeActor.PlayerOut += PlayerName
+        pDnodeActor.PlayerOut += " "
+        pDnodeActor.PlayerOut += Stuff
+        pDnodeActor.PlayerOut += "&N"
+        pDnodeActor.PlayerOut += "\r\n"
+      }
+    }
+    PlayerObjFile.Close()
+  }
 }
 
 // Where is object in RoomObj
