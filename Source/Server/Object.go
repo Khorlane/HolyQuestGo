@@ -92,8 +92,85 @@ func ObjectConstructor() {
 
 // Add an object to player's equipment
 func AddObjToPlayerEqu(WearPosition string, ObjectId string) bool {
-  // TODO: implement function logic
-  return false
+  var NewPlayerEquFile      bool
+  var ObjectIdAdded         bool
+  var PlayerEquFileName     string
+  var PlayerEquFileNameTmp  string
+  var PlayerEquFile        *os.File
+  var PlayerEquFileTmp     *os.File
+  var WearPositionCheck     string
+  var WearWieldFailed       bool
+  var err                   error
+
+  WearWieldFailed = false
+  ObjectId = StrMakeLower(ObjectId)
+  // Open PlayerEqu file
+  PlayerEquFileName = PLAYER_EQU_DIR + pDnodeActor.PlayerName + ".txt"
+  NewPlayerEquFile = false
+  PlayerEquFile, err = os.Open(PlayerEquFileName)
+  if err != nil {
+    NewPlayerEquFile = true
+  }
+  // Open temp PlayerEqu file
+  PlayerEquFileNameTmp = PLAYER_EQU_DIR + pDnodeActor.PlayerName + ".tmp.txt"
+  PlayerEquFileTmp, err = os.Create(PlayerEquFileNameTmp)
+  if err != nil {
+    LogBuf = "Object::AddObjToPlayerEqu - Open PlayerEqu temp file failed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  WearPosition = TranslateWord(WearPosition)
+  if NewPlayerEquFile {
+    // New player equipment file, write the object and return
+    ObjectId = WearPosition + " " + ObjectId
+    PlayerEquFileTmp.WriteString(ObjectId + "\n")
+    PlayerEquFileTmp.Close()
+    os.Rename(PlayerEquFileNameTmp, PlayerEquFileName)
+    return WearWieldFailed
+  }
+  defer PlayerEquFile.Close()
+  // Write temp PlayerEqu file
+  ObjectIdAdded = false
+  Scanner := bufio.NewScanner(PlayerEquFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    if ObjectIdAdded {
+      // New object has been written, just write the rest of the objects
+      PlayerEquFileTmp.WriteString(Stuff + "\n")
+      continue
+    }
+    WearPositionCheck = StrGetWord(Stuff, 1)
+    if WearPosition < WearPositionCheck {
+      // Add new object in alphabetical order by translated WearPosition
+      ObjectId = WearPosition + " " + ObjectId
+      PlayerEquFileTmp.WriteString(ObjectId + "\n")
+      ObjectIdAdded = true
+      PlayerEquFileTmp.WriteString(Stuff + "\n")
+      continue
+    }
+    if WearPosition == WearPositionCheck {
+      // Already wearing an object in that position
+      WearWieldFailed = true
+      ObjectIdAdded = true // Not really added
+      PlayerEquFileTmp.WriteString(Stuff + "\n")
+      continue
+    }
+    // None of the above conditions satisfied, just write it
+    PlayerEquFileTmp.WriteString(Stuff + "\n")
+  }
+  if !ObjectIdAdded {
+    // New object is alphabetically last
+    ObjectId = WearPosition + " " + ObjectId
+    PlayerEquFileTmp.WriteString(ObjectId + "\n")
+    ObjectIdAdded = true
+  }
+  PlayerEquFileTmp.Close()
+  os.Remove(PlayerEquFileName)
+  os.Rename(PlayerEquFileNameTmp, PlayerEquFileName)
+  return WearWieldFailed
 }
 
 // Add an object to player's inventory
