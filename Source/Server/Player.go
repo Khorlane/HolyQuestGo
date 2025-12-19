@@ -139,8 +139,18 @@ func PlayerDestructor(pPlayer *Player) {
 
 // Calculate adjusted experience points
 func CalcAdjustedExpPoints(PlayerLevel int, MobileLevel int, ExpPoints int) int {
-  // Implement the logic for calculating adjusted experience points here.
-  return 0
+  var PctOfExpPoints    int
+  var AdjustedExpPoints int
+
+  PctOfExpPoints = 100 - (PlayerLevel-MobileLevel-2)*20
+  if PctOfExpPoints < 1 {
+    PctOfExpPoints = 0
+  }
+  if PctOfExpPoints > 100 {
+    PctOfExpPoints = 100
+  }
+  AdjustedExpPoints = (ExpPoints*PctOfExpPoints + 99) / 100
+  return AdjustedExpPoints
 }
 
 // Calculate experience needed to obtain the next level
