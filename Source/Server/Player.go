@@ -325,7 +325,24 @@ func Eat(pPlayer *Player, Percent int) {
 
 // Player gains some experience
 func GainExperience(pDnode *Dnode, ExperienceToBeGained int) {
-  return
+  var LevelExperience float64
+
+  pDnode.pPlayer.Experience += float64(ExperienceToBeGained)
+  LevelExperience = CalcLevelExperience(pDnode.pPlayer.Level + 1)
+  if pDnode.pPlayer.Experience >= LevelExperience {
+    // Player has enough experience to gain a level
+    pDnode.PlayerOut += "&Y"
+    pDnode.PlayerOut += "You gain a LEVEL!!!"
+    pDnode.PlayerOut += "&N"
+    pDnode.PlayerOut += "\r\n"
+    pDnode.pPlayer.Level++
+    LogBuf  = pDnode.PlayerName
+    LogBuf += " has gained level "
+    TmpStr = fmt.Sprintf("%d", pDnode.pPlayer.Level)
+    LogBuf += TmpStr
+    LogBuf += "!"
+    LogIt(LogBuf)
+  }
 }
 
 // Return the current output string for the player
