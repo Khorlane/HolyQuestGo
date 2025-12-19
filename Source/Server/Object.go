@@ -443,15 +443,10 @@ func IsObjInPlayerEqu(ObjectName string) {
 func IsObjInPlayerInv(ObjectName string) {
   var NamesCheck         string
   var ObjectId           string
-  var ObjectIdCheck      string
-  var ObjectNameCheck    string
   var PlayerObjFileName  string
   var PlayerObjFile     *os.File
   var Scanner           *bufio.Scanner
   var err                error
-
-  _ = ObjectIdCheck
-  _ = ObjectNameCheck
 
   // Open PlayerObj file
   PlayerObjFileName = PLAYER_OBJ_DIR + pDnodeActor.PlayerName + ".txt"
