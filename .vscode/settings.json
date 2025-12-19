@@ -11,12 +11,18 @@
   "task.allowAutomaticTasks": "on",
 
   // Formatting and editor behavior
+  "go.formatTool": "goimports",
+  "go.formatFlags": [
+    "-tabs=false",
+    "-tabwidth=2"
+  ],
   "[go]": {
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
-    "editor.formatOnSave": false,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "never"
-    }
+    // run goimports to add missing imports, but keep spaces (no tabs)
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": [
+      "source.organizeImports"
+    ]
   }
 }

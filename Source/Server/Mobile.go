@@ -12,6 +12,7 @@ package server
 import (
   "bufio"
   "fmt"
+  "io"
   "os"
   "strconv"
   "strings"
@@ -78,15 +79,13 @@ func MobileConstructor(MobileId string) *Mobile {
 
 // Add a mobile to a room
 func AddMobToRoom(RoomId, MobileId string) {
-  var (
-    BytesInFile        int
-    NewRoomMobFile     bool
-    MobCount           int
-    MobileIdAdded      bool
-    MobileIdCheck      string
-    RoomMobFileName    string
-    RoomMobTmpFileName string
-  )
+  var BytesInFile        int
+  var NewRoomMobFile     bool
+  var MobCount           int
+  var MobileIdAdded      bool
+  var MobileIdCheck      string
+  var RoomMobFileName    string
+  var RoomMobTmpFileName string
 
   UpdateMobInWorld(MobileId, "add")
   MobileId = strings.ToLower(MobileId)
@@ -100,13 +99,13 @@ func AddMobToRoom(RoomId, MobileId string) {
   // Open temp RoomMob file
   if RoomId == "" {
     LogIt("AddMobToRoom - RoomId is blank")
-    return
+    os.Exit(1)
   }
   RoomMobTmpFileName = ROOM_MOB_DIR + RoomId + ".tmp.txt"
   RoomMobTmpFile, err := os.Create(RoomMobTmpFileName)
   if err != nil {
     LogIt("AddMobToRoom - Open RoomMob temp file failed")
-    return
+    os.Exit(1)
   }
   defer RoomMobTmpFile.Close()
   if NewRoomMobFile {
@@ -162,7 +161,7 @@ func AddMobToRoom(RoomId, MobileId string) {
     // If the file is empty, delete it and abort ... it should never be empty
     os.Remove(RoomMobTmpFileName)
     LogIt("AddMobToRoom - RoomMob file size is not > 0!!")
-    return
+    os.Exit(1)
   }
 }
 
@@ -194,8 +193,8 @@ func CreateMobPlayer(PlayerName, MobileId string) {
   // Check if file exists
   MobPlayerFile, err := os.OpenFile(MobPlayerFileName, os.O_RDWR|os.O_CREATE, 0666)
   if err != nil {
-    LogIt("CreateMobPlayer - Open MobPlayer file failed")
-    return
+    LogIt("CreateMobPlayer - Open MobPlayer file failed 1")
+    os.Exit(1)
   }
   defer MobPlayerFile.Close()
   FileInfo, _ := MobPlayerFile.Stat()
@@ -203,7 +202,7 @@ func CreateMobPlayer(PlayerName, MobileId string) {
     NewFile = false
   }
   if !NewFile {
-    MobPlayerFile.Seek(0, os.SEEK_END)
+    MobPlayerFile.Seek(0, io.SeekEnd)
     MobPlayerFile.WriteString("\r\n")
   }
   MobPlayerFile.WriteString(MobileId + "\n")
@@ -215,7 +214,7 @@ func CreateMobStatsFileWrite(Directory, MobileIdForFight, Stuff string) {
   MobStatsFile, err := os.Create(MobStatsFileName)
   if err != nil {
     LogIt("CreateMobStatsFileWrite - Open for " + Directory + " " + MobileIdForFight + " failed.")
-    return
+    os.Exit(1)
   }
   defer MobStatsFile.Close()
   MobStatsFile.WriteString(Stuff + "\n")
@@ -227,7 +226,7 @@ func CreatePlayerMob(PlayerName, MobileId string) {
   PlayerMobFile, err := os.Create(PlayerMobFileName)
   if err != nil {
     LogIt("CreatePlayerMob - Open PlayerMob file failed")
-    return
+    os.Exit(1)
   }
   defer PlayerMobFile.Close()
   PlayerMobFile.WriteString(MobileId + "\n")
@@ -254,7 +253,7 @@ func DeleteMobPlayer(PlayerName, MobileId string) {
   MobPlayerFileTmp, err := os.Create(MobPlayerFileNameTmp)
   if err != nil {
     LogIt("DeleteMobPlayer - Open MobPlayer temp file failed")
-    return
+    os.Exit(1)
   }
   defer MobPlayerFileTmp.Close()
   // Write temp MobPlayer file
@@ -330,76 +329,74 @@ func DeletePlayerMob(PlayerName string) {
 
 // Check if a mobile is in the room by its name
 func IsMobInRoom(mobileName string) *Mobile {
-  var (
-    pMobile         *Mobile
-    namesCheck       string
-    mobileHurt       bool
-    mobileId         string
-    mobNbr           string
-    positionOfDot    int
-    roomMobFile     *os.File
-    roomMobFileName  string
-    stuff            string
-  )
+  var pMobile         *Mobile
+  var NamesCheck       string
+  var MobileHurt       bool
+  var MobileId         string
+  var MobNbr           string
+  var PositionOfDot    int
+  var RoomMobFile     *os.File
+  var RoomMobFileName  string
+  var Stuff            string
 
   // Open RoomMob file
-  roomMobFileName = ROOM_MOB_DIR + pDnodeActor.pPlayer.RoomId + ".txt"
+  RoomMobFileName = ROOM_MOB_DIR + pDnodeActor.pPlayer.RoomId + ".txt"
   // Try matching using MobileId
-  roomMobFile, err := os.Open(roomMobFileName)
+  RoomMobFile, err := os.Open(RoomMobFileName)
   if err != nil {
     // Room has no mobiles
     return nil
   }
-  defer roomMobFile.Close()
-  scanner := bufio.NewScanner(roomMobFile)
+  defer RoomMobFile.Close()
+  scanner := bufio.NewScanner(RoomMobFile)
   for scanner.Scan() {
-    stuff = scanner.Text()
-    if stuff == "" {
+    Stuff = scanner.Text()
+    if Stuff == "" {
       continue
     }
-    mobileId = StrGetWord(stuff, 2)
-    if mobileId == mobileName {
+    MobileId = StrGetWord(Stuff, 2)
+    if MobileId == mobileName {
       // This mobile is a match
-      positionOfDot = StrFindFirstChar(mobileId, '.')
-      mobileHurt = false
-      if positionOfDot > 1 {
+      PositionOfDot = StrFindFirstChar(MobileId, '.')
+      MobileHurt = false
+      if PositionOfDot > 1 {
         // Mobile is hurt but not fighting
-        mobileHurt = true
-        mobNbr = StrRight(mobileId, StrGetLength(mobileId)-positionOfDot-1)
-        mobileId = StrLeft(mobileId, positionOfDot)
+        MobileHurt = true
+        MobNbr = StrRight(MobileId, StrGetLength(MobileId)-PositionOfDot-1)
+        MobileId = StrLeft(MobileId, PositionOfDot)
       }
-      pMobile = &Mobile{MobileId: mobileId, Hurt: mobileHurt, MobNbr: mobNbr}
+      pMobile = &Mobile{MobileId: MobileId, Hurt: MobileHurt, MobNbr: MobNbr}
       return pMobile
     }
   }
   // No match found, try getting match using 'names'
-  roomMobFile.Seek(0, 0) // Reset file pointer
-  scanner = bufio.NewScanner(roomMobFile)
+  RoomMobFile.Seek(0, 0) // Reset file pointer
+  scanner = bufio.NewScanner(RoomMobFile)
   for scanner.Scan() {
-    stuff = scanner.Text()
-    if stuff == "" {
+    Stuff = scanner.Text()
+    if Stuff == "" {
       continue
     }
-   mobileId = StrGetWord(stuff, 2)
-    positionOfDot = StrFindFirstChar(mobileId, '.')
-    mobileHurt = false
-    if positionOfDot > 1 {
+   MobileId = StrGetWord(Stuff, 2)
+    PositionOfDot = StrFindFirstChar(MobileId, '.')
+    MobileHurt = false
+    if PositionOfDot > 1 {
       // Mobile is hurt but not fighting
-      mobileHurt = true
-      mobNbr = StrRight(mobileId, StrGetLength(mobileId)-positionOfDot-1)
-      mobileId = StrLeft(mobileId, positionOfDot)
+      MobileHurt = true
+      MobNbr = StrRight(MobileId, StrGetLength(MobileId)-PositionOfDot-1)
+      MobileId = StrLeft(MobileId, PositionOfDot)
     }
-    pMobile = &Mobile{MobileId: mobileId, Hurt: mobileHurt, MobNbr: mobNbr}
+    pMobile = &Mobile{MobileId: MobileId, Hurt: MobileHurt, MobNbr: MobNbr}
     if pMobile.Hurt {
       // Mobile is hurt
-      if mobNbr == mobileName {
+      if MobNbr == mobileName {
         // Kill nnn was entered, where nnn is the MobNbr
         return pMobile
       }
     }
-    namesCheck = pMobile.Names
-    namesCheck = StrMakeLower(namesCheck)
-    if StrIsWord(mobileName, namesCheck) {
+    NamesCheck = pMobile.Names
+    NamesCheck = StrMakeLower(NamesCheck)
+    if StrIsWord(mobileName, NamesCheck) {
       // This mobile is a match
       return pMobile
     }
@@ -456,10 +453,8 @@ func IsMobileIdInRoom(RoomId, MobileId string) bool {
 
 // Check if a mobile is valid by its ID
 func IsMobValid(mobileId string) *Mobile {
-  var (
-    pMobile       *Mobile
-    mobileFileName string
-  )
+  var pMobile       *Mobile
+  var mobileFileName string
 
   mobileFileName = MOBILES_DIR + mobileId + ".txt"
   if FileExist(mobileFileName) {
@@ -472,14 +467,12 @@ func IsMobValid(mobileId string) *Mobile {
 
 // Put a mobile back in the room
 func PutMobBackInRoom(PlayerName, RoomIdBeforeFleeing string) {
-  var (
-    MobHitPointsLeft          string
-    MobHitPointsTotal         string
-    MobileId                  string
-    MobPlayerFileName         string
-    MobStatsHitPointsFileName string
-    PositionOfDot             int
-  )
+   var MobHitPointsLeft          string
+   var MobHitPointsTotal         string
+   var MobileId                  string
+   var MobPlayerFileName         string
+   var MobStatsHitPointsFileName string
+   var PositionOfDot             int
 
   // Open MobPlayer file
   MobPlayerFileName = MOB_PLAYER_DIR + PlayerName + ".txt"
@@ -500,13 +493,12 @@ func PutMobBackInRoom(PlayerName, RoomIdBeforeFleeing string) {
     if err != nil {
       LogBuf = "Mobile::PutMobBackInRoom - Open MobStatsHitPointsFile file failed (read)"
       LogIt(LogBuf)
-      os.Exit(1) // Equivalent to _endthread in C++
+      os.Exit(1)
     }
     ScannerStats := bufio.NewScanner(MobStatsHitPointsFile)
     ScannerStats.Scan()
     Stuff = ScannerStats.Text()
     MobStatsHitPointsFile.Close()
-
     MobHitPointsTotal = StrGetWord(Stuff, 1)
     MobHitPointsLeft = StrGetWord(Stuff, 2)
     if MobHitPointsTotal == MobHitPointsLeft {
@@ -527,14 +519,12 @@ func PutMobBackInRoom(PlayerName, RoomIdBeforeFleeing string) {
 
 // Remove a mobile from room
 func RemoveMobFromRoom(RoomId, MobileId string) {
-  var (
-    BytesInFile        int64
-    MobileIdRemoved    bool
-    MobileIdCheck      string
-    MobCount           int
-    RoomMobFileName    string
-    RoomMobTmpFileName string
-  )
+  var BytesInFile int64
+  var MobileIdRemoved bool
+  var MobileIdCheck string
+  var MobCount int
+  var RoomMobFileName string
+  var RoomMobTmpFileName string
 
   UpdateMobInWorld(MobileId, "remove")
   MobileId = StrMakeLower(MobileId)
@@ -544,7 +534,7 @@ func RemoveMobFromRoom(RoomId, MobileId string) {
   if err != nil {
     LogBuf = "Mobile::RemoveMobFromRoom - Open RoomMob file failed"
     LogIt(LogBuf)
-    os.Exit(1) // Equivalent to _endthread in C++
+    os.Exit(1)
   }
   defer RoomMobFile.Close()
   // Open temp RoomMob file
@@ -612,19 +602,17 @@ func RemoveMobFromRoom(RoomId, MobileId string) {
 
 // Show room mobiles
 func ShowMobsInRoom(pDnode *Dnode) {
-  var (
-    pMobile             *Mobile
-    i, j                 int
-    MobileCount          string
-    MobileHurt           bool
-    MobileId             string
-    MobileIdsToBeRemoved string
-    MobileIdHurt         string
-    MobNbr               string
-    PositionOfDot        int
-    RemoveMobCount       int
-    RoomMobFileName      string
-  )
+  var pMobile              *Mobile
+  var i, j                  int
+  var MobileCount           string
+  var MobileHurt            bool
+  var MobileId              string
+  var MobileIdsToBeRemoved  string
+  var MobileIdHurt          string
+  var MobNbr                string
+  var PositionOfDot         int
+  var RemoveMobCount        int
+  var RoomMobFileName       string
 
   // Open RoomMob file
   RoomMobFileName = ROOM_MOB_DIR + pDnode.pPlayer.RoomId + ".txt"
@@ -680,82 +668,78 @@ func ShowMobsInRoom(pDnode *Dnode) {
 
 // Handle the logic for a mobile attacking a player
 func MobAttacks(pMobile *Mobile) string {
-  var (
-    killMsg             string
-    mobileId            string
-    mobileIdToBeRemoved string
-    phraseAll           string
-    phrasePlayer        string
-    playerName          string
-    roomId              string
-  )
+  var KillMsg             string
+  var MobileId            string
+  var MobileIdToBeRemoved string
+  var PhraseAll           string
+  var PhrasePlayer        string
+  var PlayerName          string
+  var RoomId              string
 
-  playerName = pDnodeActor.PlayerName
-  roomId = pDnodeActor.pPlayer.RoomId
+  PlayerName = pDnodeActor.PlayerName
+  RoomId = pDnodeActor.pPlayer.RoomId
   // Determine appropriate phrase
   if !pDnodeActor.PlayerStateFighting {
     // Phrases for starting a fight
-    phrasePlayer = " starts a fight with you!"
-    phraseAll = " starts a fight with "
+    PhrasePlayer = " starts a fight with you!"
+    PhraseAll = " starts a fight with "
   } else {
     // Phrases for mob attacking a player already fighting
-    phrasePlayer = " attacks you!"
-    phraseAll = " attacks "
+    PhrasePlayer = " attacks you!"
+    PhraseAll = " attacks "
   }
   // Send message to player
   pDnodeActor.PlayerOut += "\r\n"
   pDnodeActor.PlayerOut += "&R"
   pDnodeActor.PlayerOut += pMobile.Desc1
-  pDnodeActor.PlayerOut += phrasePlayer
+  pDnodeActor.PlayerOut += PhrasePlayer
   pDnodeActor.PlayerOut += "&N"
   pDnodeActor.PlayerOut += "\r\n"
   CreatePrompt(pDnodeActor.pPlayer)
   pDnodeActor.PlayerOut += pDnodeActor.pPlayer.Output
   // Send message to room
-  killMsg = "&R"
-  killMsg += pMobile.Desc1
-  killMsg += phraseAll
-  killMsg += playerName
-  killMsg += "!"
-  killMsg += "&N"
+  KillMsg = "&R"
+  KillMsg += pMobile.Desc1
+  KillMsg += PhraseAll
+  KillMsg += PlayerName
+  KillMsg += "!"
+  KillMsg += "&N"
   pDnodeSrc = pDnodeActor
   pDnodeTgt = pDnodeActor
-  SendToRoom(roomId, killMsg)
+  SendToRoom(RoomId, KillMsg)
   // Start a fight
   if !pMobile.Hurt {
     // Mobile not hurt
     GetNextMobNbr()
-    CreateMobStatsFile(roomId)
-    mobileId = pMobile.MobileId
-    mobileIdToBeRemoved = mobileId
-    mobileId = pMobile.MobileId + "." + pMobile.MobNbr
+    CreateMobStatsFile(RoomId)
+    MobileId = pMobile.MobileId
+    MobileIdToBeRemoved = MobileId
+    MobileId = pMobile.MobileId + "." + pMobile.MobNbr
   } else {
     // Mobile is hurt
-    mobileId = pMobile.MobileId + "." + pMobile.MobNbr
-    mobileIdToBeRemoved = mobileId
+    MobileId = pMobile.MobileId + "." + pMobile.MobNbr
+    MobileIdToBeRemoved = MobileId
   }
   if !pDnodeActor.PlayerStateFighting {
     // Set player and mobile to fight
-    CreatePlayerMob(playerName, mobileId)
-    CreateMobPlayer(playerName, mobileId)
+    CreatePlayerMob(PlayerName, MobileId)
+    CreateMobPlayer(PlayerName, MobileId)
     pDnodeActor.PlayerStateFighting = true
   } else {
     // Player is fighting, this mob is an 'add'
-    CreateMobPlayer(playerName, mobileId)
+    CreateMobPlayer(PlayerName, MobileId)
   }
-  return mobileIdToBeRemoved
+  return MobileIdToBeRemoved
 }
 
 // Search all rooms for a specific mobile        
 func WhereMob(mobileIdSearch string) {
-  var (
-    fileName        string
-    mobileHurt      bool
-    mobileId        string
-    positionOfDot   int
-    roomMobFileName string
-    roomName        string
-  )
+  var FileName        string
+  var MobileHurt      bool
+  var MobileId        string
+  var PositionOfDot   int
+  var RoomMobFileName string
+  var RoomName        string
 
   pDnodeActor.PlayerOut += "\r\n"
   pDnodeActor.PlayerOut += "Mobiles"
@@ -765,44 +749,44 @@ func WhereMob(mobileIdSearch string) {
   if ChgDir(ROOM_MOB_DIR) != nil {
     logBuf := "Mobile::WhereMob - Change directory to ROOM_MOB_DIR failed"
     LogIt(logBuf)
-    return
+    os.Exit(1)
   }
   entries, err := os.ReadDir("./")
   if err != nil {
     logBuf := "Mobile::WhereMob - Failed to read ROOM_MOB_DIR"
     LogIt(logBuf)
-    return
+    os.Exit(1)
   }
   for _, entry := range entries {
     if entry.IsDir() {
       continue
     }
-    fileName = entry.Name()
-    roomMobFileName = fileName
+    FileName = entry.Name()
+    RoomMobFileName = FileName
 
-    fileContent, err := os.ReadFile(roomMobFileName)
+    fileContent, err := os.ReadFile(RoomMobFileName)
     if err != nil {
       logBuf := "Mobile::WhereMob - Open RoomMob file failed"
       LogIt(logBuf)
-      return
+      os.Exit(1)
     }
-    roomName = StrLeft(fileName, StrGetLength(fileName)-4)
+    RoomName = StrLeft(FileName, StrGetLength(FileName)-4)
     lines := strings.Split(string(fileContent), "\n")
     for _, line := range lines {
       if line == "" {
         continue
       }
-      mobileId = StrGetWord(line, 2)
-      positionOfDot = strings.Index(mobileId, ".")
-      mobileHurt = false
+      MobileId = StrGetWord(line, 2)
+      PositionOfDot = strings.Index(MobileId, ".")
+      MobileHurt = false
 
-      if positionOfDot > 1 {
-        mobileHurt = true
-        mobileId = StrLeft(mobileId, positionOfDot)
+      if PositionOfDot > 1 {
+        MobileHurt = true
+        MobileId = StrLeft(MobileId, PositionOfDot)
       }
-      if mobileId == mobileIdSearch {
-        pDnodeActor.PlayerOut += roomName + " "
-        if mobileHurt {
+      if MobileId == mobileIdSearch {
+        pDnodeActor.PlayerOut += RoomName + " "
+        if MobileHurt {
           pDnodeActor.PlayerOut += "&R"
         }
         pDnodeActor.PlayerOut += line + "&N\r\n"
@@ -812,6 +796,7 @@ func WhereMob(mobileIdSearch string) {
   if ChgDir(HomeDir) != nil {
     logBuf := "Mobile::WhereMob - Change directory to HomeDir failed"
     LogIt(logBuf)
+    os.Exit(1)
   }
 }
 
@@ -910,7 +895,7 @@ func GetNextMobNbr() {
   NextMobNbrFile, err := os.Open(NextMobNbrFileName)
   if err != nil {
     LogIt("GetNextMobNbr - Open NextMobileNumber file failed (read)")
-    return
+    os.Exit(1)
   }
   Scanner := bufio.NewScanner(NextMobNbrFile)
   Scanner.Scan()
@@ -924,7 +909,7 @@ func GetNextMobNbr() {
   NextMobNbrFile, err = os.Create(NextMobNbrFileName)
   if err != nil {
     LogIt("GetNextMobNbr - Open NextMobileNumber file failed (write)")
-    return
+    os.Exit(1)
   }
   defer NextMobNbrFile.Close()
   NextMobNbrFile.WriteString(NextMobNbrString + "\n")
@@ -934,63 +919,62 @@ func GetNextMobNbr() {
 
 // Generate a message for a mobile to say
 func MobTalk(pMobile *Mobile) string {
-  var (
-    mobTalkFileName string
-    mobileMsg       string
-    msgCount        int
-    rndMsgNbr       int
-  )
+  var MobTalkFileName string
+  var MobileMsg       string
+  var MsgCount        int
+  var RndMsgNbr       int
 
   // Open and read message file
-  mobTalkFileName = TALK_DIR + Talk + ".txt"
-  mobTalkFile, err := os.Open(mobTalkFileName)
+  MobTalkFileName = TALK_DIR + Talk + ".txt"
+  mobTalkFile, err := os.Open(MobTalkFileName)
   if err != nil {
     if Talk != "None" {
       // Log failure to open file
-      LogBuf = "Mobile::MobTalk - Failed to open " + mobTalkFileName
+      LogBuf = "Mobile::MobTalk - Failed to open " + MobTalkFileName
       LogIt(LogBuf)
+      os.Exit(1)
     }
     return "You are ignored.\r\n"
   }
   defer mobTalkFile.Close()
   // Mobile is going to talk
-  mobileMsg = "&W" + StrMakeFirstUpper(Desc1) + " says:" + "&N" + "\r\n"
+  MobileMsg = "&W" + StrMakeFirstUpper(Desc1) + " says:" + "&N" + "\r\n"
   // Select random message number
   scanner := bufio.NewScanner(mobTalkFile)
   scanner.Scan()
-  stuff := scanner.Text()
-  msgCount, _ = strconv.Atoi(StrGetWord(stuff, 4))
-  rndMsgNbr = GetRandomNumber(msgCount)
+  Stuff := scanner.Text()
+  MsgCount, _ = strconv.Atoi(StrGetWord(Stuff, 4))
+  RndMsgNbr = GetRandomNumber(MsgCount)
   // Search for selected message number
   scanner.Scan()
-  stuff = scanner.Text()
+  Stuff = scanner.Text()
   for {
-    msgNumber, err := strconv.Atoi(StrGetWord(stuff, 2))
-    if err != nil || msgNumber == rndMsgNbr {
+    msgNumber, err := strconv.Atoi(StrGetWord(Stuff, 2))
+    if err != nil || msgNumber == RndMsgNbr {
       break
     }
     if !scanner.Scan() {
       // End of file and message was not found
-      LogBuf = fmt.Sprintf("Mobile::MobTalk - Failed to find message %d %s", rndMsgNbr, mobTalkFileName)
+      LogBuf = fmt.Sprintf("Mobile::MobTalk - Failed to find message %d %s", RndMsgNbr, MobTalkFileName)
       LogIt(LogBuf)
       return "You are ignored.\r\n"
     }
-    stuff = scanner.Text()
+    Stuff = scanner.Text()
   }
   // Message found
   scanner.Scan()
-  stuff = scanner.Text()
-  for stuff != "End of Message" {
+  Stuff = scanner.Text()
+  for Stuff != "End of Message" {
     if !scanner.Scan() {
       // End of file and normal end of message not found
-      LogBuf = fmt.Sprintf("Mobile::MobTalk - Unexpected end of file reading message %d %s", rndMsgNbr, mobTalkFileName)
+      LogBuf = fmt.Sprintf("Mobile::MobTalk - Unexpected end of file reading message %d %s", RndMsgNbr, MobTalkFileName)
       LogIt(LogBuf)
       return "You are ignored.\r\n"
     }
-    mobileMsg += stuff + "\r\n"
-    stuff = scanner.Text()
+    MobileMsg += Stuff + "\r\n"
+    Stuff = scanner.Text()
   }
-  return mobileMsg
+  return MobileMsg
 }
 
 // Close the mobile file
@@ -1005,7 +989,7 @@ func OpenMobFile(mobileId string) {
   if err != nil {
     LogBuf = "Mobile::OpenFile - Mobile does not exist!"
     LogIt(LogBuf)
-    os.Exit(1) // Equivalent to _endthread in C++
+    os.Exit(1)
   }
   MobileFile = file
 }
