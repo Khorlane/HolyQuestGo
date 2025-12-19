@@ -254,7 +254,7 @@ func MakeMobilesMove() {
 
 // Build file containing RoomMob file list
 func MakeMobilesMove1() {
-  RoomMobListFileName := CONTROL_DIR + "RoomMobList.txt"
+  RoomMobListFileName  := CONTROL_DIR + "RoomMobList.txt"
   RoomMobListFile, err := os.Create(RoomMobListFileName)
   if err != nil {
     LogIt("MakeMobilesMove1 - Create RoomMobList file failed")
@@ -304,10 +304,10 @@ func MakeMobilesMove1() {
 
 // Build file containing mobiles to be moved
 func MakeMobilesMove2() {
-  RoomMobListFileName := CONTROL_DIR + "RoomMobList.txt"
+  RoomMobListFileName     := CONTROL_DIR + "RoomMobList.txt"
   RoomMobListTempFileName := CONTROL_DIR + "RoomMobListTemp.txt"
-  RoomMobMoveFileName := CONTROL_DIR + "RoomMobMove.txt"
-  RoomMobListFile, err := os.Open(RoomMobListFileName)
+  RoomMobMoveFileName     := CONTROL_DIR + "RoomMobMove.txt"
+  RoomMobListFile, err    := os.Open(RoomMobListFileName)
   if err != nil {
     LogIt("MakeMobilesMove2 - Open RoomMobList file failed")
     os.Exit(1)
@@ -363,12 +363,17 @@ func MakeMobilesMove2() {
 
 // Yep, believe it or not, this makes the mobs move
 func MakeMobilesMove3() {
-  var (
-    ArriveMsg, ExitToRoomId, LeaveMsg, MobileDesc1, MobileId, RoomId string
-    MobMoveNotCompleted                                              bool
-    RoomMobMoveFileName, RoomMobMoveTempFileName                     string
-    TimerStart, TimerStop                                            time.Time
-  )
+  var ArriveMsg               string
+  var ExitToRoomId            string
+  var LeaveMsg                string
+  var MobileDesc1             string
+  var MobileId                string
+  var RoomId                  string
+  var MobMoveNotCompleted     bool
+  var RoomMobMoveFileName     string
+  var RoomMobMoveTempFileName string
+  var TimerStart              time.Time
+  var TimerStop               time.Time
 
   MobMoveNotCompleted = false
   RoomMobMoveFileName = CONTROL_DIR + "RoomMobMove.txt"
@@ -441,9 +446,9 @@ func MakeMobilesMove3() {
 
 // Spawn a mobile so players have something to whack!
 func SpawnMobile(MobileId, RoomId string) {
-  var (
-    LogMessage, MobileAction, SpawnMsg string
-  )
+  var LogMessage   string
+  var MobileAction string
+  var SpawnMsg     string
 
   //********************
   //* Spawn the mobile *
