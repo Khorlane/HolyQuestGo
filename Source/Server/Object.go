@@ -375,7 +375,68 @@ func CalcPlayerArmorClass() int {
 
 // Is object in player's equipment?
 func IsObjInPlayerEqu(ObjectName string) {
-  // TODO: implement function logic
+  var NamesCheck         string
+  var ObjectId           string
+  var ObjectIdCheck      string
+  var ObjectNameCheck    string
+  var PlayerEquFileName  string
+  var PlayerEquFile     *os.File
+  var Scanner           *bufio.Scanner
+  var err                error
+
+  _ = ObjectIdCheck
+  _ = ObjectNameCheck
+
+  // Open PlayerEqu file
+  PlayerEquFileName = PLAYER_EQU_DIR + pDnodeActor.PlayerName + ".txt"
+  // Try matching using ObjectId
+  PlayerEquFile, err = os.Open(PlayerEquFileName)
+  if err != nil {
+    // Player has no objects
+    pObject = nil
+    return
+  }
+  ObjectName = StrMakeLower(ObjectName)
+  Scanner = bufio.NewScanner(PlayerEquFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    ObjectId = StrGetWord(Stuff, 2)
+    if ObjectName == ObjectId {
+      ObjectConstructor()
+      return
+    }
+  }
+  PlayerEquFile.Close()
+  // No match found, try getting match using 'names'
+  PlayerEquFile, err = os.Open(PlayerEquFileName)
+  if err != nil {
+    // Player has no objects
+    pObject = nil
+    return
+  }
+  Scanner = bufio.NewScanner(PlayerEquFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    ObjectId = StrGetWord(Stuff, 2)
+    ObjectConstructor()
+    NamesCheck = pObject.Names
+    NamesCheck = StrMakeLower(NamesCheck)
+    if StrIsWord(ObjectName, NamesCheck) {
+      return
+    } else {
+      pObject = nil
+    }
+  }
+  PlayerEquFile.Close()
+  // Object not found in player's inventory
+  pObject = nil
+  return
 }
 
 // Is object in player's inventory?
