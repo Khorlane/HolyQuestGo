@@ -220,8 +220,33 @@ func IsExit(MudCmdIsExit string) bool {
   }
 }
 
+// Is this a valid room?
 func IsRoom(RoomId string) bool {
-  return false
+  var RoomFileName string
+
+  RoomFileName = ROOMS_DIR
+  RoomFileName += RoomId
+  RoomFileName += ".txt"
+  f, err := os.Open(RoomFileName)
+  if err != nil {
+    return false
+  }
+  scanner := bufio.NewScanner(f)
+  if !scanner.Scan() {
+    f.Close()
+    return false
+  }
+  Stuff = scanner.Text()
+  f.Close()
+  if StrLeft(Stuff, 7) != "RoomId:" {
+    LogIt("Room::IsRoom - RoomId: not found")
+    os.Exit(1)
+  }
+  Stuff = StrGetWord(Stuff, 2)
+  if Stuff != RoomId {
+    return false
+  }
+  return true
 }
 
 func IsRoomType(RoomId string, RoomType string) bool {
