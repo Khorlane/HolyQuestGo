@@ -731,9 +731,106 @@ func ShowMoney(pPlayer *Player) {
   pPlayer.Output = "Silver: " + TmpStr + "\r\n"
 }
 
-// Show player status
 func ShowStatus(pPlayer *Player) {
-  return
+  var Exp1 string
+  var Exp2 string
+
+  pPlayer.Output = "\r\n"
+  // Name
+  pPlayer.Output += "Name:         "
+  pPlayer.Output += pPlayer.Name
+  pPlayer.Output += "\r\n"
+  // Sex
+  pPlayer.Output += "Sex:          "
+  pPlayer.Output += pPlayer.Sex
+  pPlayer.Output += "\r\n"
+  // Level
+  TmpStr = fmt.Sprintf("%d", pPlayer.Level)
+  pPlayer.Output += "Level:        "
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "\r\n"
+  // Hit Points
+  pPlayer.Output += "Hit Points:   "
+  TmpStr = fmt.Sprintf("%d", pPlayer.HitPoints)
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "/"
+  TmpStr = fmt.Sprintf("%d", pPlayer.Level*PLAYER_HPT_PER_LEVEL)
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "\r\n"
+  // Current Experience and Experience needed for next level
+  TmpStr = fmt.Sprintf("%15.0f", pPlayer.Experience)
+  TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'))
+  Exp1 = FormatCommas(TmpStr)
+
+  TmpStr = fmt.Sprintf("%15.0f", CalcLevelExperience(pPlayer.Level+1))
+  TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'))
+  Exp2 = FormatCommas(TmpStr)
+  for StrGetLength(Exp1) < StrGetLength(Exp2) {
+    Exp1 = StrInsertChar(Exp1, 0, ' ')
+  }
+  pPlayer.Output += "Experience:   "
+  pPlayer.Output += Exp1
+  pPlayer.Output += "\r\n"
+  pPlayer.Output += "Next level:   "
+  pPlayer.Output += Exp2
+  pPlayer.Output += "\r\n"
+  // Armor Class
+  TmpStr = fmt.Sprintf("%d", pPlayer.ArmorClass)
+  pPlayer.Output += "Armor Class:  "
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "\r\n"
+  // Color
+  if pPlayer.Color {
+    TmpStr = "On"
+  } else {
+    TmpStr = "Off"
+  }
+  pPlayer.Output += "Color:        "
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "\r\n"
+  // AllowGroup
+  if pPlayer.AllowGroup {
+    TmpStr = "On"
+  } else {
+    TmpStr = "Off"
+  }
+  pPlayer.Output += "Allow Group:  "
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "\r\n"
+  // AllowAssist
+  if pPlayer.AllowAssist {
+    TmpStr = "On"
+  } else {
+    TmpStr = "Off"
+  }
+  pPlayer.Output += "Allow Assist: "
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "\r\n"
+  // Position
+  pPlayer.Output += "Position:     "
+  TmpStr = pPlayer.Position
+  StrReplace(&TmpStr, "s", "S")
+  if TmpStr == "Sit" {
+    TmpStr += "t"
+  }
+  TmpStr += "ing"
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "\r\n"
+  // Silver
+  TmpStr = fmt.Sprintf("%d", pPlayer.Silver)
+  pPlayer.Output += "Silver:       "
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "\r\n"
+  // Hunger
+  TmpStr = fmt.Sprintf("%d", pPlayer.Hunger)
+  pPlayer.Output += "Hunger:       "
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "\r\n"
+  // Thirst
+  TmpStr = fmt.Sprintf("%d", pPlayer.Thirst)
+  pPlayer.Output += "Thirst:       "
+  pPlayer.Output += TmpStr
+  pPlayer.Output += "\r\n"
 }
 
 // Close player file
