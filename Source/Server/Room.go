@@ -336,8 +336,22 @@ func MoveFollowers(pDnode *Dnode, ExitToRoomId string) {
   }
 }
 
+// Go command - move the player
 func MovePlayer(pDnode *Dnode, ExitToRoomId string) {
-  // TODO: Implement MovePlayer logic
+  var MoveMsg string
+
+  pDnodeSrc = pDnode
+  pDnodeTgt = pDnode
+  if MudCmd != "flee" {
+    MoveMsg = pDnode.PlayerName + " leaves."
+    SendToRoom(pDnode.pPlayer.RoomId, MoveMsg)
+  }
+  pDnode.pPlayer.RoomIdBeforeMove = pDnode.pPlayer.RoomId
+  pDnode.pPlayer.RoomId = ExitToRoomId
+  // Osi("Rooms", ExitToRoomId) TODO: Remove debug line
+  PlayerSave(pDnode.pPlayer)
+  MoveMsg = pDnode.PlayerName + " arrives."
+  SendToRoom(pDnode.pPlayer.RoomId, MoveMsg)
 }
 
 // Open Room file
