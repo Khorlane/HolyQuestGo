@@ -369,8 +369,33 @@ func OpenRoomFile(pDnode *Dnode) bool {
   return true
 }
 
+// Show the room description to the player
 func ShowRoomDesc(pDnode *Dnode) {
-  // TODO: Implement ShowRoomDesc logic
+  // RoomDesc
+  Scanner := bufio.NewScanner(RoomFile)
+  if !Scanner.Scan() {
+    LogIt("Room::ShowRoomDesc - RoomDesc: not found")
+    os.Exit(1) // _endthread()
+  }
+  Stuff = Scanner.Text()
+  if StrLeft(Stuff, 9) != "RoomDesc:" {
+    LogIt("Room::ShowRoomDesc - RoomDesc: not found")
+    os.Exit(1)
+  }
+  // Room Description
+  if !Scanner.Scan() {
+    LogIt("Room::ShowRoomDesc - RoomDesc: not found")
+    os.Exit(1)
+  }
+  Stuff = Scanner.Text()
+  for Stuff != "End of RoomDesc" {
+    pDnode.PlayerOut += Stuff
+    pDnode.PlayerOut += "\r\n"
+    if !Scanner.Scan() {
+      break
+    }
+    Stuff = Scanner.Text()
+  }
 }
 
 func ShowRoomExitDesc() {
