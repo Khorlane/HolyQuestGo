@@ -346,7 +346,30 @@ func AddObjToRoom(RoomId string, ObjectId string) {
 
 // Calculate player armor class
 func CalcPlayerArmorClass() int {
-  var ArmorClass int
+  var ArmorClass        int
+  var PlayerEquFile    *os.File
+  var PlayerEquFileName string
+  var err               error
+
+  ArmorClass = 0
+  // Open PlayerObj file
+  PlayerEquFileName = PLAYER_EQU_DIR + pDnodeActor.PlayerName + ".txt"
+  PlayerEquFile, err = os.Open(PlayerEquFileName)
+  if err != nil {
+    // No player equipment
+    return ArmorClass
+  }
+  defer PlayerEquFile.Close()
+  Scanner := bufio.NewScanner(PlayerEquFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    ObjectId = StrGetWord(Stuff, 2)
+    ObjectConstructor()
+    ArmorClass += pObject.ArmorValue
+  }
   return ArmorClass
 }
 
