@@ -14,6 +14,7 @@ import (
   "fmt"
   "os"
   "strings"
+  "math"  
 )
 
 var PlayerFile   *os.File
@@ -165,10 +166,14 @@ func CalcLevelExperience(Level int) float64 {
   return TotalExp
 }
 
-// Calculate additional experience points based on level and base experience.
+// Calculate additional experience points based on level and base experience
 func CalcLevelExperienceAdd(Level int, BaseExp float64) float64 {
-  // Implement the logic for calculating additional experience points here.
-  return 0.0
+  var AddExp   float64
+  var LogLevel float64
+
+  LogLevel = math.Log10(float64(Level) + 20)
+  AddExp   = math.Pow(BaseExp, LogLevel) * (float64(Level) / 10000.0)
+  return AddExp
 }
 
 // Calculate the base experience points for a given level.
