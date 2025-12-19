@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-	//Server.BigDog()
+	server.AppTestCode()
 	server.BigDog()
 }

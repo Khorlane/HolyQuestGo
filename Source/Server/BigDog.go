@@ -19,12 +19,10 @@ import (
 
 // BigDog is the main entry point for the OMugs server
 func BigDog() {
-  var (
-    EventTick        int
-    goGoGoFileName   string
-    MobHealTick      int
-    stopItFileName   string
-  )
+  var EventTick      int
+  var goGoGoFileName string
+  var MobHealTick    int
+  var stopItFileName string
 
   PrintIt("OMugs Starting")
   HomeDir = GetHomeDir()
@@ -99,10 +97,11 @@ func BigDog() {
   CloseLogFile()
 }
 
+// Put one shot test code here, great for debugging. Always runs first
 func AppTestCode() {
 }
 
-// ChgDir changes the current working directory
+// Change the current working directory
 func ChgDir(Dir string) error {
   return os.Chdir(Dir)
 }
@@ -113,7 +112,7 @@ func FileExist(Name string) bool {
   return !os.IsNotExist(err)
 }
 
-// Rename renames a file
+// Rename a file
 func Rename(file1, file2 string) error {
   return os.Rename(file1, file2)
 }
@@ -244,10 +243,9 @@ func StrGetLength(Str1 string) int {
 
 // Get a specific word from a string
 func StrGetWord(Str1 string, WordNbr int) string {
-  var (
-    Word string
-    i    int
-  )
+  var Word string
+  var i    int
+  
   iss := strings.Fields(Str1)
   for _, Word = range iss {
     i++
