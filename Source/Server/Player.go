@@ -288,7 +288,39 @@ func Drink(pPlayer *Player, Percent int) {
 
 // Player eat
 func Eat(pPlayer *Player, Percent int) {
-  return
+  pPlayer.Hunger -= Percent
+  if pPlayer.Hunger <= 0 {
+    // Not hungry
+    pPlayer.Hunger = 0
+    pPlayer.Output  = "You are no longer hungry, not even a little bit."
+    pPlayer.Output += "\r\n"
+    return
+  } else if pPlayer.Hunger < 20 {
+    // A little bit hungry
+    pPlayer.Output  = "You are a little bit hungry."
+    pPlayer.Output += "\r\n"
+    return
+  } else if pPlayer.Hunger < 40 {
+    // Stomach growling
+    pPlayer.Output  = "Your stomach is growling."
+    pPlayer.Output += "\r\n"
+    return
+  } else if pPlayer.Hunger < 60 {
+    // Hungry
+    pPlayer.Output  = "You are hungry."
+    pPlayer.Output += "\r\n"
+    return
+  } else if pPlayer.Hunger < 80 {
+    // Eat a horse
+    pPlayer.Output  = "You could eat a horse!"
+    pPlayer.Output += "\r\n"
+    return
+  } else if pPlayer.Hunger < 100 {
+    // Extreme hunger
+    pPlayer.Output  = "You are extremely hungry!!!"
+    pPlayer.Output += "\r\n"
+    return
+  }
 }
 
 // Player gains some experience
