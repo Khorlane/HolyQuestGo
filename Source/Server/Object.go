@@ -564,7 +564,16 @@ func IsObjInRoom(ObjectName string) {
 
 // Is this a valid object?
 func IsObject(ObjectId string) {
-  // TODO: implement function logic
+  var ObjectFileName string
+
+  ObjectFileName = OBJECTS_DIR + ObjectId + ".txt"
+  if FileExist(ObjectFileName) {
+    pObject = &Object{ObjectId: ObjectId}
+    return
+  } else {
+    pObject = nil
+    return
+  }
 }
 
 // Remove an object from player's equipment
