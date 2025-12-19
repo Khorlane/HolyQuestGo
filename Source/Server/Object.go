@@ -578,15 +578,15 @@ func IsObject(ObjectId string) {
 
 // Remove an object from player's equipment
 func RemoveObjFromPlayerEqu(ObjectId string) {
-  var BytesInFile          int64
-  var ObjectIdRemoved      bool
-  var ObjectIdCheck        string
-  var PlayerEquFileName    string
-  var PlayerEquFileNameTmp string
-  var PlayerEquFile       *os.File
-  var PlayerEquFileTmp    *os.File
-  var FileInfo             os.FileInfo
-  var err                  error
+  var BytesInFile           int64
+  var ObjectIdRemoved       bool
+  var ObjectIdCheck         string
+  var PlayerEquFileName     string
+  var PlayerEquFileNameTmp  string
+  var PlayerEquFile        *os.File
+  var PlayerEquFileTmp     *os.File
+  var FileInfo              os.FileInfo
+  var err                   error
 
   ObjectId = StrMakeLower(ObjectId)
   // Open PlayerEqu file
@@ -735,16 +735,16 @@ func RemoveObjFromPlayerInv(ObjectId string, Count int) {
 
 // Remove an object from room
 func RemoveObjFromRoom(ObjectId string) {
-  var BytesInFile          int64
-  var ObjectIdRemoved      bool
-  var ObjectIdCheck        string
-  var ObjCount             int
-  var RoomObjFileName      string
-  var RoomObjFileNameTmp   string
-  var RoomObjFile         *os.File
-  var RoomObjFileTmp      *os.File
-  var FileInfo             os.FileInfo
-  var err                  error
+  var BytesInFile         int64
+  var ObjectIdRemoved     bool
+  var ObjectIdCheck       string
+  var ObjCount            int
+  var RoomObjFileName     string
+  var RoomObjFileNameTmp  string
+  var RoomObjFile        *os.File
+  var RoomObjFileTmp     *os.File
+  var FileInfo            os.FileInfo
+  var err                 error
 
   ObjectId = StrMakeLower(ObjectId)
   // Open RoomObj file
@@ -817,7 +817,58 @@ func RemoveObjFromRoom(ObjectId string) {
 
 // Show player equipment
 func ShowPlayerEqu(pDnodeTgt1 *Dnode) {
-  // TODO: implement function logic
+  var PlayerEquFile     *os.File
+  var PlayerEquFileName  string
+  var WearPosition       string
+  var Scanner           *bufio.Scanner
+  var err                error
+
+  pDnodeTgt = pDnodeTgt1
+  // Open PlayerEqu file
+  PlayerEquFileName = PLAYER_EQU_DIR + pDnodeTgt.PlayerName + ".txt"
+  PlayerEquFile, err = os.Open(PlayerEquFileName)
+  if err != nil {
+    // No player equipment
+    if pDnodeActor == pDnodeTgt {
+      // Player is checking their own equipment
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += "You have no equipment!\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeTgt.pPlayer)
+      return
+    } else {
+      // A player is looking at another player
+      pDnodeActor.PlayerOut += "\r\n"
+      pDnodeActor.PlayerOut += pDnodeTgt.PlayerName
+      pDnodeActor.PlayerOut += " has no equipment!"
+      pDnodeActor.PlayerOut += "\r\n"
+      CreatePrompt(pDnodeActor.pPlayer)
+      pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+      return
+    }
+  }
+  defer PlayerEquFile.Close()
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += "Equipment\r\n"
+  pDnodeActor.PlayerOut += "---------\r\n"
+  Scanner = bufio.NewScanner(PlayerEquFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    WearPosition = StrGetWord(Stuff, 1)
+    WearPosition = TranslateWord(WearPosition)
+    ObjectId = StrGetWord(Stuff, 2)
+    ObjectConstructor()
+    pDnodeActor.PlayerOut += WearPosition
+    pDnodeActor.PlayerOut += pObject.Desc1
+    pDnodeActor.PlayerOut += "\r\n"
+    pObject = nil
+  }
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 // Show player inventory
