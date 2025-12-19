@@ -883,27 +883,110 @@ func PlayerWriteLine(Stuff string) {
     PlayerFile.Sync()
   }
 }
+
 // Check whether or not player has been in the current room
-func PlayerRoomHasNotBeenHere() bool {
-  return false
+func PlayerRoomHasNotBeenHere(pPlayer *Player) bool {
+  var Char       byte
+  var CharPos    int
+  var CharStr    string
+  var RoomNbr    int
+  var RoomNbrStr string
+
+  if len(pPlayer.PlayerRoomVector) == 0 {
+    PlayerRoomStringRead(pPlayer)
+  }
+  // Get RoomNbr from RoomId
+  CharPos = StrGetLength(pPlayer.RoomId) - 1
+  Char = StrGetAt(pPlayer.RoomId, CharPos)
+  for Char >= '0' && Char <= '9' {
+    CharStr = ""
+    CharStr = CharStr + string(Char)
+    RoomNbrStr = StrInsert(RoomNbrStr, 0, CharStr)
+    CharPos--
+    Char = StrGetAt(pPlayer.RoomId, CharPos)
+  }
+  RoomNbr = StrToInt(RoomNbrStr)
+  // Has player been here?
+  pPlayer.PlayerRoomCharPos = int(math.Ceil(float64(RoomNbr)/8.0)) - 1
+  pPlayer.PlayerRoomBitPos = RoomNbr - (pPlayer.PlayerRoomCharPos*8) - 1
+  pPlayer.PlayerRoomChar = pPlayer.PlayerRoomVector[pPlayer.PlayerRoomCharPos]
+  PlayerRoomCharToBitsConvert(pPlayer)
+
+  if pPlayer.PlayerRoomBits[pPlayer.PlayerRoomBitPos] {
+    // Player has been here
+    return false
+  } else {
+    // Player has not been here
+    pPlayer.PlayerRoomBits[pPlayer.PlayerRoomBitPos] = true
+    PlayerRoomBitsToCharConvert(pPlayer)
+    pPlayer.PlayerRoomVector[pPlayer.PlayerRoomCharPos] = pPlayer.PlayerRoomChar
+    PlayerRoomStringWrite(pPlayer)
+    return true
+  }
 }
 
-// Convert from PlayerRoom char to PlayerRoom bits
-func PlayerRoomCharToBitsConvert() {
-  return
+// Convert from PlayerRoom char to PlayerRoom bits 
+func PlayerRoomCharToBitsConvert(pPlayer *Player) {
+  var BitPos    int
+  var Char      int
+  var Remainder int
+
+  Char = int(pPlayer.PlayerRoomChar)
+  for i := 0; i < len(pPlayer.PlayerRoomBits); i++ {
+    pPlayer.PlayerRoomBits[i] = false
+  }
+  for BitPos = 7; BitPos >= 0; BitPos-- {
+    Remainder = int(Char) - int(math.Pow(2, float64(BitPos)))
+    if Remainder > -1 {
+      pPlayer.PlayerRoomBits[BitPos] = true
+      Char = Remainder
+    }
+  }
 }
 
 // Convert from PlayerRoom bits to PlayerRoom char
-func PlayerRoomBitsToCharConvert() {
-  return
+func PlayerRoomBitsToCharConvert(pPlayer *Player) {
+  var BitPos int
+  var Char   int
+
+  Char = 0
+  for BitPos = 7; BitPos >= 0; BitPos-- {
+    if pPlayer.PlayerRoomBits[BitPos] {
+      Char += int(math.Pow(2, float64(BitPos)))
+    }
+  }
+  pPlayer.PlayerRoomChar = byte(Char)
 }
 
 // Read PlayerRoomVector from disk
-func PlayerRoomStringRead() {
-  return
+func PlayerRoomStringRead(pPlayer *Player) {
+  var PlayerRoomString string
+  var BitsetFileName string
+
+  BitsetFileName = PLAYER_ROOM_DIR
+  BitsetFileName += pPlayer.Name
+  BitsetFileName += ".txt"
+
+  if !FileExist(BitsetFileName) {
+    for pPlayer.PlayerRoomCharPos = 0; pPlayer.PlayerRoomCharPos < MAX_ROOMS_CHAR; pPlayer.PlayerRoomCharPos++ {
+      pPlayer.PlayerRoomVector = append(pPlayer.PlayerRoomVector, byte(0x00))
+    }
+    PlayerRoomStringWrite(pPlayer)
+    return
+  }
+
+  pPlayer.PlayerRoomVector = []byte{}
+  Data, _ := os.ReadFile(BitsetFileName)
+  PlayerRoomString = string(Data)
+  pPlayer.PlayerRoomVector = []byte(PlayerRoomString)
 }
 
 // Write PlayerRoomVector to disk
-func PlayerRoomStringWrite() {
-  return
+func PlayerRoomStringWrite(pPlayer *Player) {
+  var BitsetFileName string
+
+  BitsetFileName = PLAYER_ROOM_DIR
+  BitsetFileName += pPlayer.Name
+  BitsetFileName += ".txt"
+  _ = os.WriteFile(BitsetFileName, pPlayer.PlayerRoomVector, 0o644)
 }
