@@ -314,8 +314,26 @@ func CloseRoomFile() {
   }
 }
 
+// Move followers
 func MoveFollowers(pDnode *Dnode, ExitToRoomId string) {
-  // TODO: Implement MoveFollowers logic
+  var pDnodeGrpMem *Dnode
+  var i int
+
+  for i = 1; i < GRP_LIMIT; i++ {
+    if pDnode.pPlayer.pPlayerFollowers[i] == nil {
+      return
+    }
+    pDnodeGrpMem = GetTargetDnode(pDnode.pPlayer.pPlayerFollowers[i].Name)
+    if pDnodeGrpMem == nil {
+      continue
+    }
+    if pDnode.pPlayer.RoomIdBeforeMove != pDnodeGrpMem.pPlayer.RoomId {
+      continue
+    }
+    MovePlayer(pDnodeGrpMem, ExitToRoomId)
+    ShowRoom(pDnodeGrpMem)
+    MoveFollowers(pDnodeGrpMem, ExitToRoomId)
+  }
 }
 
 func MovePlayer(pDnode *Dnode, ExitToRoomId string) {
