@@ -88,8 +88,44 @@ func GetRoomName(RoomId string) string {
   return RoomName
 }
 
+// Get the list of exits that mobiles are allowed to use
 func GetValidMobRoomExits(RoomId string) string {
-  return ""
+  var ExitToRoomId  string
+  var RoomFileName  string
+  var ValidMobExits string
+
+  RoomFileName = ROOMS_DIR
+  RoomFileName += RoomId
+  RoomFileName += ".txt"
+  f, err := os.Open(RoomFileName)
+  if err != nil {
+    LogIt("Room::GetValidMobRoomExits - Room does not exist")
+    os.Exit(1) // _endthread()
+  }
+
+  ValidMobExits = ""
+  Stuff = "Not Done"
+  Scanner := bufio.NewScanner(f)
+  for Stuff != "End of Exits" {
+    if !Scanner.Scan() {
+      break
+    }
+    Stuff = Scanner.Text()
+    if StrLeft(Stuff, 13) == "ExitToRoomId:" {
+      ExitToRoomId = StrGetWord(Stuff, 2)
+      if ExitToRoomId == "VineyardPath382" {
+        //Success = 100;
+        _ = 0
+      }
+      if !IsRoomType(ExitToRoomId, "NoNPC") {
+        ValidMobExits += ExitToRoomId
+        ValidMobExits += " "
+      }
+    }
+  }
+  ValidMobExits = StrTrimRight(ValidMobExits)
+  f.Close()
+  return ValidMobExits
 }
 
 func IsExit(MudCmdIsExit string) bool {
