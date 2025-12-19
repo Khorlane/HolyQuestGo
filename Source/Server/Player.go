@@ -727,7 +727,8 @@ func SetMoney(pPlayer *Player, PlusMinus byte, Amount int, Metal string) {
 
 // Show player money
 func ShowMoney(pPlayer *Player) {
-  return
+  TmpStr = fmt.Sprintf("%d", pPlayer.Silver)
+  pPlayer.Output = "Silver: " + TmpStr + "\r\n"
 }
 
 // Show player status
