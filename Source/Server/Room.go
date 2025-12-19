@@ -14,8 +14,8 @@ import (
   "os"
 )
 
-var RoomFile *os.File
-var Scanner  *bufio.Scanner
+var RoomFile    *os.File
+var RoomScanner *bufio.Scanner
 
 // Get RoomId
 func GetRoomId(RoomId string) string {
@@ -367,63 +367,63 @@ func OpenRoomFile(pDnode *Dnode) bool {
     return false
   }
   RoomFile = f
-  Scanner = bufio.NewScanner(RoomFile)
+  RoomScanner = bufio.NewScanner(RoomFile)
   return true
 }
 
 // Show the room description to the player
 func ShowRoomDesc(pDnode *Dnode) {
   // RoomDesc
-  if !Scanner.Scan() {
+  if !RoomScanner.Scan() {
     LogIt("Room::ShowRoomDesc - RoomDesc: not found")
     os.Exit(1) // _endthread()
   }
-  Stuff = Scanner.Text()
+  Stuff = RoomScanner.Text()
   if StrLeft(Stuff, 9) != "RoomDesc:" {
     LogIt("Room::ShowRoomDesc - RoomDesc: not found")
     os.Exit(1)
   }
   // Room Description
-  if !Scanner.Scan() {
+  if !RoomScanner.Scan() {
     LogIt("Room::ShowRoomDesc - RoomDesc: not found")
     os.Exit(1)
   }
-  Stuff = Scanner.Text()
+  Stuff = RoomScanner.Text()
   for Stuff != "End of RoomDesc" {
     pDnode.PlayerOut += Stuff
     pDnode.PlayerOut += "\r\n"
-    if !Scanner.Scan() {
+    if !RoomScanner.Scan() {
       break
     }
-    Stuff = Scanner.Text()
+    Stuff = RoomScanner.Text()
   }
 }
 
 // Show exit description to player
 func ShowRoomExitDesc() {
   // ExitDesc
-  if !Scanner.Scan() {
+  if !RoomScanner.Scan() {
     LogIt("Room::ShowRoomExitDesc - ExitDesc: not found")
     os.Exit(1) // _endthread()
   }
-  Stuff = Scanner.Text()
+  Stuff = RoomScanner.Text()
   if StrLeft(Stuff, 9) != "ExitDesc:" {
     LogIt("Room::ShowRoomExitDesc - ExitDesc: not found")
     os.Exit(1)
   }
   // Exit Description
-  if !Scanner.Scan() {
+  if !RoomScanner.Scan() {
     LogIt("Room::ShowRoomExitDesc - ExitDesc: not found")
     os.Exit(1)
   }
-  Stuff = Scanner.Text()
+  Stuff = RoomScanner.Text()
   for StrLeft(Stuff, 13) != "ExitToRoomId:" {
     pDnodeActor.PlayerOut += Stuff
     pDnodeActor.PlayerOut += "\r\n"
-    if !Scanner.Scan() {
+    if !RoomScanner.Scan() {
       break
     }
-    Stuff = Scanner.Text()
+    Stuff = RoomScanner.Text()
   }
   CreatePrompt(pDnodeActor.pPlayer)
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
@@ -438,10 +438,10 @@ func ShowRoomExits(pDnode *Dnode) {
   pDnode.PlayerOut += "Exits:"
   Stuff = "Not Done"
   for Stuff != "End of Exits" {
-    if !Scanner.Scan() {
+    if !RoomScanner.Scan() {
       break
     }
-    Stuff = Scanner.Text()
+    Stuff = RoomScanner.Text()
     if StrLeft(Stuff, 9) == "ExitName:" {
       NoExits = false
       Stuff = StrGetWord(Stuff, 2)
@@ -463,11 +463,11 @@ func ShowRoomName(pDnode *Dnode) {
   var RoomName string
 
   // RoomId
-  if !Scanner.Scan() {
+  if !RoomScanner.Scan() {
     LogIt("Room::ShowRoomName - RoomId: not found")
     os.Exit(1) // _endthread()
   }
-  Stuff = Scanner.Text()
+  Stuff = RoomScanner.Text()
   if StrLeft(Stuff, 7) != "RoomId:" {
     LogIt("Room::ShowRoomName - RoomId: not found")
     os.Exit(1)
@@ -478,33 +478,33 @@ func ShowRoomName(pDnode *Dnode) {
     os.Exit(1)
   }
   // RoomType
-  if !Scanner.Scan() {
+  if !RoomScanner.Scan() {
     LogIt("Room::ShowRoomName - RoomType: not found")
     os.Exit(1)
   }
-  Stuff = Scanner.Text()
+  Stuff = RoomScanner.Text()
   if StrLeft(Stuff, 9) != "RoomType:" {
     LogIt("Room::ShowRoomName - RoomType: not found")
     os.Exit(1)
   }
   RoomType = StrGetWords(Stuff, 2)
   // Terrain
-  if !Scanner.Scan() {
+  if !RoomScanner.Scan() {
     LogIt("Room::ShowRoomName - Terrain: not found")
     os.Exit(1)
   }
-  Stuff = Scanner.Text()
+  Stuff = RoomScanner.Text()
   if StrLeft(Stuff, 8) != "Terrain:" {
     LogIt("Room::ShowRoomName - Terrain: not found")
     os.Exit(1)
   }
   Terrain = StrGetWord(Stuff, 2)
   // RoomName
-  if !Scanner.Scan() {
+  if !RoomScanner.Scan() {
     LogIt("Room::ShowRoomName - RoomName: not found")
     os.Exit(1)
   }
-  Stuff = Scanner.Text()
+  Stuff = RoomScanner.Text()
   if StrLeft(Stuff, 9) != "RoomName:" {
     LogIt("Room::ShowRoomName - RoomName: not found")
     os.Exit(1)
