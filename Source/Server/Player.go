@@ -188,9 +188,16 @@ func CalcLevelExperienceBase(Level int) float64 {
   return float64(Level*PLAYER_EXP_PER_LEVEL) + CalcLevelExperienceBase(Level-1)
 }
 
-//Is this a valid Player? 
+// Is this a valid Player?
 func IsPlayer(PlayerName string) bool {
-  return false
+  var PlayerFileName string
+
+  PlayerFileName = PLAYER_DIR + PlayerName + ".txt"
+  if FileExist(PlayerFileName) {
+    return true
+  } else {
+    return false
+  }
 }
 
 // Return player count
