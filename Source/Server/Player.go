@@ -351,8 +351,27 @@ func GetOutput(pPlayer *Player) string {
 }
 
 // Get skill for current weapon
-func GetWeaponSkill() int {
-  return 0
+func (pPlayer *Player) GetWeaponSkill() int {
+  var WeaponSkill int
+
+  WeaponSkill = 0
+  pPlayer.WeaponType = StrMakeLower(pPlayer.WeaponType)
+  if pPlayer.WeaponType == "axe" {
+    WeaponSkill = pPlayer.SkillAxe
+  } else if pPlayer.WeaponType == "club" {
+    WeaponSkill = pPlayer.SkillClub
+  } else if pPlayer.WeaponType == "dagger" {
+    WeaponSkill = pPlayer.SkillDagger
+  } else if pPlayer.WeaponType == "hammer" {
+    WeaponSkill = pPlayer.SkillHammer
+  } else if pPlayer.WeaponType == "Spear" {
+    WeaponSkill = pPlayer.SkillSpear
+  } else if pPlayer.WeaponType == "Staff" {
+    WeaponSkill = pPlayer.SkillStaff
+  } else if pPlayer.WeaponType == "Sword" {
+    WeaponSkill = pPlayer.SkillSword
+  }
+  return WeaponSkill
 }
 
 // Parse player stuff
