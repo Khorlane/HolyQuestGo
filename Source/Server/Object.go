@@ -345,15 +345,15 @@ func AddObjToRoom(RoomId string, ObjectId string) {
 }
 
 // Calculate player armor class
-func CalcPlayerArmorClass() int {
-  var ArmorClass        int
-  var PlayerEquFile    *os.File
-  var PlayerEquFileName string
-  var err               error
+func CalcPlayerArmorClass(pPlayer *Player) int {
+  var ArmorClass         int
+  var PlayerEquFile     *os.File
+  var PlayerEquFileName  string
+  var err                error
 
   ArmorClass = 0
   // Open PlayerObj file
-  PlayerEquFileName = PLAYER_EQU_DIR + pDnodeActor.PlayerName + ".txt"
+  PlayerEquFileName = PLAYER_EQU_DIR + pPlayer.Name + ".txt"
   PlayerEquFile, err = os.Open(PlayerEquFileName)
   if err != nil {
     // No player equipment

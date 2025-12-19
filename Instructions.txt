@@ -1,5 +1,9 @@
 Project: Converting code from cpp to Go
+- DO NOT APPLY the changes
+- Put the conversion result in chat window, ready for me to copy
 - Strive for line by line conversion
+- All functions are free, no methods
+- Do not move the Close for files, no defer
 - Do not change the case of anything
 - Retain spacing within each line
 - Retain comments
@@ -17,4 +21,3 @@ Project: Converting code from cpp to Go
 - Pattern: pDnodeActor->pPlayer->GetOutput()    becomes: GetOutput(pDnodeActor.pPlayer)
 - Pattern: InvCountInt = stoi(InvCountStr)      becomes: InvCountInt = StrToInt(InvCountStr)
 - Pattern: _endthread()                         becomes: os.Exit(1)
-- DO NOT APPLY the changes, just put result in chat window, ready for me to copy

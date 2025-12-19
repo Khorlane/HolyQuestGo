@@ -5702,7 +5702,7 @@ func LogonWaitName() {
         pDnodeActor.PlayerOut += "\r\n"
         pDnodeActor.pPlayer = PlayerConstructor()
         pDnodeActor.pPlayer.Name = pDnodeActor.PlayerName
-        ParsePlayerStuff()
+        ParsePlayerStuff(pDnodeActor.pPlayer)
         pDnodeActor.PlayerPassword = pDnodeActor.pPlayer.Password
       }
     }
@@ -6362,7 +6362,7 @@ func ViolencePlayer() {
   var WeaponSkill int
   var WeaponType string
 
-  WeaponSkill = GetWeaponSkill()
+  WeaponSkill = GetWeaponSkill(pDnodeActor.pPlayer)
   WeaponType = pDnodeActor.pPlayer.WeaponType
   MaxDamageToMobile = pDnodeActor.pPlayer.WeaponDamage
   MobileId = GetPlayerMobMobileId(pDnodeActor.PlayerName)

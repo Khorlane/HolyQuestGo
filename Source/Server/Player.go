@@ -351,7 +351,7 @@ func GetOutput(pPlayer *Player) string {
 }
 
 // Get skill for current weapon
-func (pPlayer *Player) GetWeaponSkill() int {
+func GetWeaponSkill(pPlayer *Player) int {
   var WeaponSkill int
 
   WeaponSkill = 0
@@ -375,8 +375,162 @@ func (pPlayer *Player) GetWeaponSkill() int {
 }
 
 // Parse player stuff
-func ParsePlayerStuff() {
-  return
+func ParsePlayerStuff(pPlayer *Player) {
+  var Amount int
+  var Name   string
+
+  Name = pPlayer.Name
+  if !OpenPlayerFile(Name, "Read") {
+    LogBuf = "Player::Save - Error opening player file for read, Players directory may not exist"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  PlayerReadLine()
+  for Stuff != "" {
+    if StrLeft(Stuff, 5) == "Name:" {
+      TmpStr = ""
+    } else if StrLeft(Stuff, 9) == "Password:" {
+      pPlayer.Password = StrRight(Stuff, StrGetLength(Stuff)-9)
+    } else if StrLeft(Stuff, 6) == "Admin:" {
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff)-6)
+      TmpStr = StrMakeLower(TmpStr)
+      if TmpStr == "yes" {
+        pPlayer.Admin = true
+      } else {
+        pPlayer.Admin = false
+      }
+    } else if StrLeft(Stuff, 4) == "AFK:" {
+      TmpStr = ""
+    } else if StrLeft(Stuff, 12) == "AllowAssist:" {
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff)-12)
+      TmpStr = StrMakeLower(TmpStr)
+      if TmpStr == "yes" {
+        pPlayer.AllowAssist = true
+      } else {
+        pPlayer.AllowAssist = false
+      }
+    } else if StrLeft(Stuff, 11) == "AllowGroup:" {
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff)-11)
+      TmpStr = StrMakeLower(TmpStr)
+      if TmpStr == "yes" {
+        pPlayer.AllowGroup = true
+      } else {
+        pPlayer.AllowGroup = false
+      }
+    } else if StrLeft(Stuff, 11) == "ArmorClass:" {
+      pPlayer.ArmorClass = CalcPlayerArmorClass(pPlayer)
+    } else if StrLeft(Stuff, 5) == "Born:" {
+      pPlayer.Born = int64(StrToInt(StrRight(Stuff, StrGetLength(Stuff)-5)))
+    } else if StrLeft(Stuff, 6) == "Color:" {
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff)-6)
+      TmpStr = StrMakeLower(TmpStr)
+      if TmpStr == "yes" {
+        pPlayer.Color = true
+      } else {
+        pPlayer.Color = false
+      }
+    } else if StrLeft(Stuff, 11) == "Experience:" {
+      pPlayer.Experience = float64(StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11)))
+    } else if StrLeft(Stuff, 11) == "GoToArrive:" {
+      pPlayer.GoToArrive = StrRight(Stuff, StrGetLength(Stuff)-11)
+      if pPlayer.Admin {
+        if pPlayer.GoToArrive == "" {
+          pPlayer.GoToArrive = "arrives!"
+        }
+      }
+    } else if StrLeft(Stuff, 11) == "GoToDepart:" {
+      pPlayer.GoToDepart = StrRight(Stuff, StrGetLength(Stuff)-11)
+      if pPlayer.Admin {
+        if pPlayer.GoToDepart == "" {
+          pPlayer.GoToDepart = "leaves!"
+        }
+      }
+    } else if StrLeft(Stuff, 10) == "HitPoints:" {
+      pPlayer.HitPoints = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-10))
+    } else if StrLeft(Stuff, 7) == "Hunger:" {
+      pPlayer.Hunger = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-7))
+    } else if StrLeft(Stuff, 10) == "Invisible:" {
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff)-10)
+      TmpStr = StrMakeLower(TmpStr)
+      if TmpStr == "yes" {
+        pPlayer.Invisible = true
+        pDnodeActor.PlayerStateInvisible = true
+      } else {
+        pPlayer.Invisible = false
+        pDnodeActor.PlayerStateInvisible = false
+      }
+    } else if StrLeft(Stuff, 6) == "Level:" {
+      pPlayer.Level = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-6))
+    } else if StrLeft(Stuff, 11) == "MovePoints:" {
+      pPlayer.MovePoints = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11))
+    } else if StrLeft(Stuff, 9) == "OneWhack:" {
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff)-9)
+      TmpStr = StrMakeLower(TmpStr)
+      if TmpStr == "yes" {
+        pPlayer.OneWhack = true
+      } else {
+        pPlayer.OneWhack = false
+      }
+    } else if StrLeft(Stuff, 7) == "Online:" {
+      TmpStr = ""
+    } else if StrLeft(Stuff, 9) == "Position:" {
+      pPlayer.Position = StrRight(Stuff, StrGetLength(Stuff)-9)
+    } else if StrLeft(Stuff, 7) == "RoomId:" {
+      pPlayer.RoomId = StrRight(Stuff, StrGetLength(Stuff)-7)
+    } else if StrLeft(Stuff, 9) == "RoomInfo:" {
+      TmpStr = StrRight(Stuff, StrGetLength(Stuff)-9)
+      TmpStr = StrMakeLower(TmpStr)
+      if TmpStr == "yes" {
+        pPlayer.RoomInfo = true
+      } else {
+        pPlayer.RoomInfo = false
+      }
+    } else if StrLeft(Stuff, 4) == "Sex:" {
+      pPlayer.Sex = StrRight(Stuff, StrGetLength(Stuff)-4)
+      pPlayer.Sex = StrMakeUpper(pPlayer.Sex)
+    } else if StrLeft(Stuff, 7) == "Silver:" {
+      Amount = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-7))
+      SetMoney(pPlayer, '+', Amount, "Silver")
+    } else if StrLeft(Stuff, 9) == "SkillAxe:" {
+      pPlayer.SkillAxe = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-9))
+    } else if StrLeft(Stuff, 10) == "SkillClub:" {
+      pPlayer.SkillClub = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-10))
+    } else if StrLeft(Stuff, 12) == "SkillDagger:" {
+      pPlayer.SkillDagger = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-12))
+    } else if StrLeft(Stuff, 12) == "SkillHammer:" {
+      pPlayer.SkillHammer = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-12))
+    } else if StrLeft(Stuff, 11) == "SkillSpear:" {
+      pPlayer.SkillSpear = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11))
+    } else if StrLeft(Stuff, 11) == "SkillStaff:" {
+      pPlayer.SkillStaff = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11))
+    } else if StrLeft(Stuff, 11) == "SkillSword:" {
+      pPlayer.SkillSword = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11))
+    } else if StrLeft(Stuff, 7) == "Thirst:" {
+      pPlayer.Thirst = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-7))
+    } else if StrLeft(Stuff, 11) == "TimePlayed:" {
+      pPlayer.TimePlayed = int64(StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11)))
+    } else if StrLeft(Stuff, 6) == "Title:" {
+      pPlayer.Title = StrRight(Stuff, StrGetLength(Stuff)-6)
+    } else if StrLeft(Stuff, 13) == "WeaponDamage:" {
+      pPlayer.WeaponDamage = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-13))
+    } else if StrLeft(Stuff, 12) == "WeaponDesc1:" {
+      pPlayer.WeaponDesc1 = StrRight(Stuff, StrGetLength(Stuff)-12)
+    } else if StrLeft(Stuff, 11) == "WeaponType:" {
+      pPlayer.WeaponType = StrRight(Stuff, StrGetLength(Stuff)-11)
+      pPlayer.WeaponType = StrMakeLower(pPlayer.WeaponType)
+    } else {
+      LogBuf = Name
+      LogBuf += " has an unidentified player file field"
+      LogIt(LogBuf)
+      LogBuf = Stuff
+      LogIt(LogBuf)
+    }
+    if pPlayer.WeaponType == "hand" {
+      pPlayer.WeaponDamage = PLAYER_DMG_HAND
+    }
+    PlayerReadLine()
+  }
+  PlayerCloseFile()
 }
 
 // Save player stuff
