@@ -455,6 +455,80 @@ func ShowRoomExits(pDnode *Dnode) {
   pDnode.PlayerOut += "&N"
 }
 
+// Show the room name to the player
 func ShowRoomName(pDnode *Dnode) {
-  // TODO: Implement ShowRoomName logic
+  var RoomId   string
+  var RoomType string
+  var Terrain  string
+  var RoomName string
+
+  // RoomId
+  if !Scanner.Scan() {
+    LogIt("Room::ShowRoomName - RoomId: not found")
+    os.Exit(1) // _endthread()
+  }
+  Stuff = Scanner.Text()
+  if StrLeft(Stuff, 7) != "RoomId:" {
+    LogIt("Room::ShowRoomName - RoomId: not found")
+    os.Exit(1)
+  }
+  RoomId = StrGetWord(Stuff, 2)
+  if RoomId != pDnode.pPlayer.RoomId {
+    LogIt("Room::ShowRoomName - RoomId mis-match")
+    os.Exit(1)
+  }
+  // RoomType
+  if !Scanner.Scan() {
+    LogIt("Room::ShowRoomName - RoomType: not found")
+    os.Exit(1)
+  }
+  Stuff = Scanner.Text()
+  if StrLeft(Stuff, 9) != "RoomType:" {
+    LogIt("Room::ShowRoomName - RoomType: not found")
+    os.Exit(1)
+  }
+  RoomType = StrGetWords(Stuff, 2)
+  // Terrain
+  if !Scanner.Scan() {
+    LogIt("Room::ShowRoomName - Terrain: not found")
+    os.Exit(1)
+  }
+  Stuff = Scanner.Text()
+  if StrLeft(Stuff, 8) != "Terrain:" {
+    LogIt("Room::ShowRoomName - Terrain: not found")
+    os.Exit(1)
+  }
+  Terrain = StrGetWord(Stuff, 2)
+  // RoomName
+  if !Scanner.Scan() {
+    LogIt("Room::ShowRoomName - RoomName: not found")
+    os.Exit(1)
+  }
+  Stuff = Scanner.Text()
+  if StrLeft(Stuff, 9) != "RoomName:" {
+    LogIt("Room::ShowRoomName - RoomName: not found")
+    os.Exit(1)
+  }
+  RoomName = StrGetWords(Stuff, 2)
+  RoomName = StrTrimLeft(RoomName)
+  RoomName = StrTrimRight(RoomName)
+  // Build player output
+  pDnode.PlayerOut += "\r\n"
+  pDnode.PlayerOut += "&C"
+  pDnode.PlayerOut += RoomName
+  pDnode.PlayerOut += "&N"
+  if pDnode.pPlayer.RoomInfo {
+    pDnode.PlayerOut += "&M"
+    pDnode.PlayerOut += " ["
+    pDnode.PlayerOut += "&N"
+    pDnode.PlayerOut += RoomId
+    pDnode.PlayerOut += " "
+    pDnode.PlayerOut += Terrain
+    pDnode.PlayerOut += " "
+    pDnode.PlayerOut += RoomType
+    pDnode.PlayerOut += "&M"
+    pDnode.PlayerOut += "]"
+    pDnode.PlayerOut += "&N"
+  }
+  pDnode.PlayerOut += "\r\n"
 }
