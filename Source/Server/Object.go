@@ -1169,7 +1169,17 @@ func CloseObjectFile() {
 
 // Open Object file
 func OpenObjectFile(ObjectId string) {
-  // TODO: implement function logic
+  var ObjectFileName  string
+  var err             error
+
+  ObjectFileName = OBJECTS_DIR + ObjectId + ".txt"
+  ObjectFile, err = os.Open(ObjectFileName)
+  if err != nil {
+    LogBuf = "Object::OpenFile - Object does not exist!"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  ObjScanner = bufio.NewScanner(ObjectFile)
 }
 
 // Parse object stuff
