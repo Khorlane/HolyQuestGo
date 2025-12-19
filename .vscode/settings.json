@@ -1,0 +1,14 @@
+{
+  // Go tooling
+  "go.useLanguageServer": true,
+  "gopls": {
+    "vulncheck": "Imports"
+  },
+
+  // Formatting and editor behavior
+  "[go]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  }
+}
