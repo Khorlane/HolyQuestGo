@@ -653,7 +653,84 @@ func RemoveObjFromPlayerEqu(ObjectId string) {
 
 // Remove an object from player's inventory
 func RemoveObjFromPlayerInv(ObjectId string, Count int) {
-  // TODO: implement function logic
+  var BytesInFile           int64
+  var ObjectIdRemoved       bool
+  var ObjectIdCheck         string
+  var ObjCount              int
+  var PlayerObjFileName     string
+  var PlayerObjFileNameTmp  string
+  var PlayerObjFile        *os.File
+  var PlayerObjFileTmp     *os.File
+  var FileInfo              os.FileInfo
+  var err                   error
+
+  ObjectId = StrMakeLower(ObjectId)
+  // Open PlayerObj file
+  PlayerObjFileName = PLAYER_OBJ_DIR + pDnodeActor.PlayerName + ".txt"
+  PlayerObjFile, err = os.Open(PlayerObjFileName)
+  if err != nil {
+    LogBuf = "Object::RemoveObjFromPlayerInv - Open PlayerObj file failed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  defer PlayerObjFile.Close()
+  // Open temp PlayerObj file
+  PlayerObjFileNameTmp = PLAYER_OBJ_DIR + pDnodeActor.PlayerName + ".tmp.txt"
+  PlayerObjFileTmp, err = os.Create(PlayerObjFileNameTmp)
+  if err != nil {
+    LogBuf = "Object::RemoveObjFromPlayerInv - Open PlayerObj temp file failed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  // Write temp PlayerObj file
+  ObjectIdRemoved = false
+  Scanner := bufio.NewScanner(PlayerObjFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    if ObjectIdRemoved {
+      // Object has been removed, just write the rest of the objects
+      PlayerObjFileTmp.WriteString(Stuff + "\n")
+      continue
+    }
+    ObjectIdCheck = StrGetWord(Stuff, 2)
+    if ObjectId == ObjectIdCheck {
+      // Found it, subtract 'count' from ObjCount
+      ObjCount = StrToInt(StrGetWord(Stuff, 1))
+      ObjCount -= Count
+      ObjectIdRemoved = true
+      if ObjCount > 0 {
+        ObjectId = strconv.Itoa(ObjCount) + " " + ObjectId
+        PlayerObjFileTmp.WriteString(ObjectId + "\n")
+      }
+      continue
+    }
+    // None of the above conditions satisfied, just write it
+    PlayerObjFileTmp.WriteString(Stuff + "\n")
+  }
+  if !ObjectIdRemoved {
+    // Object not removed, this is definitely BAD!
+    LogBuf = "Object::RemoveObjFromPlayerInv - Object not removed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  FileInfo, err = PlayerObjFileTmp.Stat()
+  if err == nil {
+    BytesInFile = FileInfo.Size()
+  } else {
+    BytesInFile = 0
+  }
+  PlayerObjFileTmp.Close()
+  os.Remove(PlayerObjFileName)
+  if BytesInFile > 0 {
+    // If the file is not empty, rename it
+    os.Rename(PlayerObjFileNameTmp, PlayerObjFileName)
+  } else {
+    // If the file is empty, delete it
+    os.Remove(PlayerObjFileNameTmp)
+  }
 }
 
 // Remove an object from room
