@@ -9,8 +9,37 @@
 
 package server
 
+import (
+  "bufio"
+  "os"
+)
+
+// Get RoomId
 func GetRoomId(RoomId string) string {
-  return ""
+  var RoomFileName string
+
+  RoomFileName = ROOMS_DIR
+  RoomFileName += RoomId
+  RoomFileName += ".txt"
+  f, err := os.Open(RoomFileName)
+  if err != nil {
+    LogIt("Room::GetRoomId - Room does not exist")
+    os.Exit(1) // _endthread()
+  }
+  defer f.Close()
+
+  scanner := bufio.NewScanner(f)
+  if !scanner.Scan() {
+    LogIt("Room::GetRoomId - RoomId: not found")
+    os.Exit(1)
+  }
+  Stuff = scanner.Text()
+  if StrLeft(Stuff, 7) != "RoomId:" {
+    LogIt("Room::GetRoomId - RoomId: not found")
+    os.Exit(1)
+  }
+  RoomId = StrGetWord(Stuff, 2)
+  return RoomId
 }
 
 func GetRoomName(RoomId string) string {
