@@ -155,8 +155,14 @@ func CalcAdjustedExpPoints(PlayerLevel int, MobileLevel int, ExpPoints int) int 
 
 // Calculate experience needed to obtain the next level
 func CalcLevelExperience(Level int) float64 {
-  var Experience float64
-  return Experience
+  var AddExp   float64
+  var BaseExp  float64
+  var TotalExp float64
+
+  BaseExp = CalcLevelExperienceBase(Level)
+  AddExp  = CalcLevelExperienceAdd(Level, BaseExp)
+  TotalExp = BaseExp + AddExp
+  return TotalExp
 }
 
 // Calculate additional experience points based on level and base experience.
