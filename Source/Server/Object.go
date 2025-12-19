@@ -1138,7 +1138,6 @@ func ExamineObj(ObjectId string) {
     LogIt(LogBuf)
     os.Exit(1)
   }
-  defer CloseObjectFile()
   ObjScanner = bufio.NewScanner(ObjectFile)
   Stuff = ""
   for Stuff != "Desc3:" {
@@ -1160,6 +1159,7 @@ func ExamineObj(ObjectId string) {
     Stuff = ObjScanner.Text()
   }
   pDnodeActor.PlayerOut += "&N"
+  CloseObjectFile()
 }
 
 // Close object file
