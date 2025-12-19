@@ -949,7 +949,7 @@ func ShowObjsInRoom(pDnode *Dnode) {
   }
 }
 
-// Find an object wherever it is
+// Find an object where ever it is
 func WhereObj(ObjectIdSearch string) {
   WhereObjPlayerEqu(ObjectIdSearch)
   WhereObjPlayerObj(ObjectIdSearch)
