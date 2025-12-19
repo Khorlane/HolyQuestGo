@@ -176,9 +176,16 @@ func CalcLevelExperienceAdd(Level int, BaseExp float64) float64 {
   return AddExp
 }
 
-// Calculate the base experience points for a given level.
+// Calculate the base experience points for a given level
 func CalcLevelExperienceBase(Level int) float64 {
-  return 0.0
+  // Recursive
+  // Assuming PLAYER_EXP_PER_LEVEL = 1000
+  // experience needed to get to level 5 is:
+  // 14000 = 5 * 1000 + 4 * 1000 + 3 * 1000 + 2 * 1000
+  if Level < 2 {
+    return 0
+  }
+  return float64(Level*PLAYER_EXP_PER_LEVEL) + CalcLevelExperienceBase(Level-1)
 }
 
 //Is this a valid Player? 
