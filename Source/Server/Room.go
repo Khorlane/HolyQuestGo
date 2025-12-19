@@ -100,9 +100,8 @@ func GetValidMobRoomExits(RoomId string) string {
   f, err := os.Open(RoomFileName)
   if err != nil {
     LogIt("Room::GetValidMobRoomExits - Room does not exist")
-    os.Exit(1) // _endthread()
+    os.Exit(1)
   }
-
   ValidMobExits = ""
   Stuff = "Not Done"
   Scanner := bufio.NewScanner(f)
