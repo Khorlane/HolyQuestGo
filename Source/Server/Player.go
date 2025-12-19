@@ -716,7 +716,13 @@ func PlayerSave(pPlayer *Player) {
 
 // Manipulate player money
 func SetMoney(pPlayer *Player, PlusMinus byte, Amount int, Metal string) {
-  return
+  if PlusMinus == '-' {
+    Amount = Amount * -1
+  }
+
+  if Metal == "Silver" {
+    pPlayer.Silver = pPlayer.Silver + Amount
+  }
 }
 
 // Show player money
