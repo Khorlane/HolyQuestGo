@@ -15,112 +15,134 @@ import (
   "os"
 )
 
-// Is a room a valid shop?
+// Is a valid shop?
 func IsShop(RoomId string) bool {
-  ShopFileName := SHOPS_DIR + RoomId + ".txt"
-  return FileExist(ShopFileName)
-}
+  var ShopFileName string
 
-// IsShopObject checks if a shop buys and sells a specific object.
-func IsShopObj(RoomId string, ObjectName string) bool {
-  ShopFileName := SHOPS_DIR + RoomId + ".txt"
-  ShopFile, err := os.Open(ShopFileName)
-  if err != nil {
-    // No such file, but there should be one. This is bad!
-    LogIt("Shop::IsShopObject - Shop does not exist")
-    return false
+  ShopFileName = SHOPS_DIR
+  ShopFileName += RoomId
+  ShopFileName += ".txt"
+  if FileExist(ShopFileName) {
+    return true
   }
-  defer ShopFile.Close()
-  scanner := bufio.NewScanner(ShopFile)
-  for scanner.Scan() {
-    Stuff := scanner.Text()
-    Stuff = StrTrimLeft(Stuff)
-    Stuff = StrTrimRight(Stuff)
-    Stuff = StrMakeLower(Stuff)
-    if StrGetWord(Stuff, 1) == "item:" {
-      ObjectId := StrGetWord(Stuff, 2)
-      ObjectName = StrMakeLower(ObjectName)
-      if ObjectName == ObjectId {
-        // Found a match
-        return true
-      }
-    }
-  }
-  if err := scanner.Err(); err != nil {
-    LogIt("Shop::IsShopObject - Error reading shop file")
-    return false
-  }
-  // Object not found in shop item list
-  ShopFile.Close()
-  //***************************************************
-  //* No match found, try getting match using 'names' *
-  //***************************************************
-  ShopFile, err = os.Open(ShopFileName)
-  if err != nil {
-    // No such file, but there should be one. This is bad!
-    LogIt("Shop::IsShopObject - Shop does not exist")
-    return false
-  }
-  defer ShopFile.Close()
-  scanner = bufio.NewScanner(ShopFile)
-  for scanner.Scan() {
-    Stuff := scanner.Text()
-    Stuff = StrTrimLeft(Stuff)
-    Stuff = StrTrimRight(Stuff)
-    Stuff = StrMakeLower(Stuff)
-    if StrGetWord(Stuff, 1) == "item:" {
-      ObjectId := StrGetWord(Stuff, 2)
-      NamesCheck := pObject.Names
-      NamesCheck = StrMakeLower(NamesCheck)
-      if StrFind(NamesCheck, ObjectName) != -1 {
-        // Match, Object found in this shop
-        return true
-      } else {
-        LogBuf = ObjectId + " is an invalid shop item - Shop::IsShopObject"
-        LogIt(LogBuf)
-      }
-    }
-  }
-  if err := scanner.Err(); err != nil {
-    LogIt("Shop::IsShopObject - Error reading shop file")
-    return false
-  }
-  // No match found, Object is not buyable from this shop
   return false
 }
 
-// List the items available for buying and selling in the shop
-func ListObjects(RoomId string, PlayerOut *string) {
-  var (
-    i             int
-    j             int
-    ObjectId      string
-    ShopFileName  string
-    ShopFile     *os.File
-    ShopText      string
-  )
+// Is this shop buying and selling this object?
+func IsShopObj(RoomId string, ObjectName string) {
+  var NamesCheck string
+  var ObjectId string
+  var Result int
+  var ShopFileName string
+  var ShopFile *os.File
 
-  ShopFileName = SHOPS_DIR + RoomId + ".txt"
+  ShopFileName = SHOPS_DIR
+  ShopFileName += RoomId
+  ShopFileName += ".txt"
   ShopFile, err := os.Open(ShopFileName)
   if err != nil {
-    // No such file???, But there should be, This is bad!
-    LogIt("Shop::ListObjects - Shop does not exist")
-    return
+    LogIt("Shop::IsShopObj - Shop does not exist")
+    os.Exit(1) // _endthread()
   }
-  defer ShopFile.Close()
   scanner := bufio.NewScanner(ShopFile)
-  // Shop welcome message
   if scanner.Scan() {
     Stuff = scanner.Text()
+  }
+  for Stuff != "End of Items" {
+    Stuff = StrTrimLeft(Stuff)
+    Stuff = StrTrimRight(Stuff)
+    Stuff = StrMakeLower(Stuff)
+    if StrGetWord(Stuff, 1) == "item:" {
+      ObjectId = StrGetWord(Stuff, 2)
+      ObjectName = StrMakeLower(ObjectName)
+      if ObjectName == ObjectId {
+        IsObject(ObjectId)
+        if pObject != nil {
+          ShopFile.Close()
+          return
+        } else {
+          LogBuf := ObjectId + " is an invalid shop item - Shop::IsShopObj"
+          LogIt(LogBuf)
+          pObject = nil
+          ShopFile.Close()
+          return
+        }
+      }
+    }
+    if !scanner.Scan() {
+      break
+    }
+    Stuff = scanner.Text()
+  }
+  ShopFile.Close()
+  ShopFile, err = os.Open(ShopFileName)
+  if err != nil {
+    LogIt("Shop::IsShopObj - Shop does not exist")
+    os.Exit(1)
+  }
+  scanner = bufio.NewScanner(ShopFile)
+  if scanner.Scan() {
+    Stuff = scanner.Text()
+  }
+  for Stuff != "End of Items" {
+    Stuff = StrTrimLeft(Stuff)
+    Stuff = StrTrimRight(Stuff)
+    Stuff = StrMakeLower(Stuff)
+    if StrGetWord(Stuff, 1) == "item:" {
+      ObjectId = StrGetWord(Stuff, 2)
+      IsObject(ObjectId)
+      if pObject != nil {
+        NamesCheck = pObject.Names
+        NamesCheck = StrMakeLower(NamesCheck)
+        Result = StrFind(NamesCheck, ObjectName)
+        if Result != -1 {
+          ShopFile.Close()
+          return
+        } else {
+          pObject = nil
+        }
+      } else {
+        LogBuf := ObjectId + " is an invalid shop item - Shop::IsShopObj"
+        LogIt(LogBuf)
+        pObject = nil
+      }
+    }
+    if !scanner.Scan() {
+      break
+    }
+    Stuff = scanner.Text()
+  }
+  ShopFile.Close()
+}
+
+// List objects that can be bought and sold
+func ListObjects(pDnodeActor *Dnode) {
+  var i int
+  var j int
+  var ObjectId string
+  var ShopFileName string
+  var ShopFile *os.File
+  var ShopText string
+
+  ShopFileName = SHOPS_DIR
+  ShopFileName += pDnodeActor.pPlayer.RoomId
+  ShopFileName += ".txt"
+  f, err := os.Open(ShopFileName)
+  if err != nil {
+    LogIt("Shop::ListObjects - Shop does not exist")
+    os.Exit(1)
+  }
+  ShopFile = f
+  Scanner := bufio.NewScanner(ShopFile)
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
   }
   pDnodeActor.PlayerOut += "\r\n"
   pDnodeActor.PlayerOut += "&W"
   pDnodeActor.PlayerOut += Stuff
   pDnodeActor.PlayerOut += "&N"
   pDnodeActor.PlayerOut += "\r\n"
-  // Headings
   pDnodeActor.PlayerOut += "\r\n"
-  // Line one
   Buf = fmt.Sprintf("%-45s", "Items you may buy and sell")
   ShopText = Buf
   pDnodeActor.PlayerOut += ShopText
@@ -129,7 +151,6 @@ func ListObjects(RoomId string, PlayerOut *string) {
   ShopText = Buf
   pDnodeActor.PlayerOut += ShopText
   pDnodeActor.PlayerOut += "\r\n"
-  // Line two
   Buf = fmt.Sprintf("%-45s", " ")
   ShopText = Buf
   StrReplace(&ShopText, " ", "-")
@@ -140,22 +161,21 @@ func ListObjects(RoomId string, PlayerOut *string) {
   StrReplace(&ShopText, " ", "-")
   pDnodeActor.PlayerOut += ShopText
   pDnodeActor.PlayerOut += "\r\n"
-  // List items for trade
-  for scanner.Scan() {
-    Stuff = scanner.Text()
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
+  }
+  for Stuff != "End of Items" {
     Stuff = StrTrimLeft(Stuff)
     Stuff = StrTrimRight(Stuff)
     Stuff = StrMakeLower(Stuff)
-    if Stuff == "End of Items" {
-      break
-    }
     if StrGetWord(Stuff, 1) == "item:" {
       ObjectId = StrGetWord(Stuff, 2)
-      // Assuming IsObject returns (*Object, bool)
+      pObject = nil
       IsObject(ObjectId)
       if pObject != nil {
-        ShopText = fmt.Sprintf("%-45s", pObject.Desc1)
-        TmpStr := ShopText
+        Buf = fmt.Sprintf("%-45s", pObject.Desc1)
+        ShopText = Buf
+        TmpStr = ShopText
         i = StrCountChar(TmpStr, '&')
         i = i * 2
         for j = 1; j <= i; j++ {
@@ -163,14 +183,20 @@ func ListObjects(RoomId string, PlayerOut *string) {
         }
         pDnodeActor.PlayerOut += ShopText
         pDnodeActor.PlayerOut += " "
-        ShopText = fmt.Sprintf("%6d", pObject.Cost)
+        Buf = fmt.Sprintf("%6d", pObject.Cost)
+        ShopText = Buf
         pDnodeActor.PlayerOut += ShopText
         pDnodeActor.PlayerOut += "\r\n"
-        // No need to delete in Go, GC handles it
+        pObject = nil
       } else {
-        LogBuf := ObjectId + " is an invalid shop item - Shop::ListObjects"
+        LogBuf = ObjectId + " is an invalid shop item - Shop::ListObjects"
         LogIt(LogBuf)
       }
     }
+    if !Scanner.Scan() {
+      break
+    }
+    Stuff = Scanner.Text()
   }
+  ShopFile.Close()
 }

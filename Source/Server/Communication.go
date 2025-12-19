@@ -3506,7 +3506,7 @@ func DoList() {
     pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
     return
   }
-  ListObjects(pDnodeActor.pPlayer.RoomId, &pDnodeActor.PlayerOut)
+  ListObjects(pDnodeActor)
   CreatePrompt(pDnodeActor.pPlayer)
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
