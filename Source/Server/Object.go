@@ -12,6 +12,7 @@ package server
 import (
   "bufio"
   "os"
+  "strconv"
 )
 
 var ObjectFile     *os.File
@@ -175,7 +176,85 @@ func AddObjToPlayerEqu(WearPosition string, ObjectId string) bool {
 
 // Add an object to player's inventory
 func AddObjToPlayerInv(pDnodeTgt1 *Dnode, ObjectId string) {
-  // TODO: implement function logic
+  var NewPlayerObjFile      bool
+  var ObjectIdAdded         bool
+  var ObjectIdCheck         string
+  var ObjCount              int
+  var PlayerObjFileName     string
+  var PlayerObjFileNameTmp  string
+  var PlayerObjFile        *os.File
+  var PlayerObjFileTmp     *os.File
+  var err                   error
+
+  pDnodeTgt = pDnodeTgt1
+  ObjectId = StrMakeLower(ObjectId)
+  // Open PlayerObj file
+  PlayerObjFileName = PLAYER_OBJ_DIR + pDnodeTgt.PlayerName + ".txt"
+  NewPlayerObjFile = false
+  PlayerObjFile, err = os.Open(PlayerObjFileName)
+  if err != nil {
+    NewPlayerObjFile = true
+  }
+  // Open temp PlayerObj file
+  PlayerObjFileNameTmp = PLAYER_OBJ_DIR + pDnodeTgt.PlayerName + ".tmp.txt"
+  PlayerObjFileTmp, err = os.Create(PlayerObjFileNameTmp)
+  if err != nil {
+    LogBuf = "Object::AddObjToPlayerInv - Open PlayerObj temp file failed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  if NewPlayerObjFile {
+    // New player inventory file, write the object and return
+    ObjectId = "1 " + ObjectId
+    PlayerObjFileTmp.WriteString(ObjectId + "\n")
+    PlayerObjFileTmp.Close()
+    os.Rename(PlayerObjFileNameTmp, PlayerObjFileName)
+    return
+  }
+  defer PlayerObjFile.Close()
+  // Write temp PlayerObj file
+  ObjectIdAdded = false
+  Scanner := bufio.NewScanner(PlayerObjFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    if ObjectIdAdded {
+      // New object has been written, just write the rest of the objects
+      PlayerObjFileTmp.WriteString(Stuff + "\n")
+      continue
+    }
+    ObjectIdCheck = StrGetWord(Stuff, 2)
+    if ObjectId < ObjectIdCheck {
+      // Add new object in alphabetical order
+      ObjectId = "1 " + ObjectId
+      PlayerObjFileTmp.WriteString(ObjectId + "\n")
+      ObjectIdAdded = true
+      PlayerObjFileTmp.WriteString(Stuff + "\n")
+      continue
+    }
+    if ObjectId == ObjectIdCheck {
+      // Existing object same as new object, add 1 to count
+      ObjCount = StrToInt(StrGetWord(Stuff, 1))
+      ObjCount++
+      ObjectId = strconv.Itoa(ObjCount) + " " + ObjectId
+      PlayerObjFileTmp.WriteString(ObjectId + "\n")
+      ObjectIdAdded = true
+      continue
+    }
+    // None of the above conditions satisfied, just write it
+    PlayerObjFileTmp.WriteString(Stuff + "\n")
+  }
+  if !ObjectIdAdded {
+    // New object is alphabetically last
+    ObjectId = "1 " + ObjectId
+    PlayerObjFileTmp.WriteString(ObjectId + "\n")
+    ObjectIdAdded = true
+  }
+  PlayerObjFileTmp.Close()
+  os.Remove(PlayerObjFileName)
+  os.Rename(PlayerObjFileNameTmp, PlayerObjFileName)
 }
 
 // Add an object to room
