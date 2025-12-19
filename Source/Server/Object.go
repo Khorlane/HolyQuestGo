@@ -1128,7 +1128,38 @@ func WhereObjRoomObj(ObjectIdSearch string) {
 
 // Examine object
 func ExamineObj(ObjectId string) {
-  // TODO: implement function logic
+  var ObjectFileName  string
+  var err             error
+
+  ObjectFileName = OBJECTS_DIR + ObjectId + ".txt"
+  ObjectFile, err = os.Open(ObjectFileName)
+  if err != nil {
+    LogBuf = "Object::ExamineObj - Open object file failed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  defer CloseObjectFile()
+  ObjScanner = bufio.NewScanner(ObjectFile)
+  Stuff = ""
+  for Stuff != "Desc3:" {
+    if !ObjScanner.Scan() {
+      break
+    }
+    Stuff = ObjScanner.Text()
+  }
+  // Object Description 3
+  if ObjScanner.Scan() {
+    Stuff = ObjScanner.Text()
+  }
+  for Stuff != "End Desc3" {
+    pDnodeActor.PlayerOut += Stuff
+    pDnodeActor.PlayerOut += "\r\n"
+    if !ObjScanner.Scan() {
+      break
+    }
+    Stuff = ObjScanner.Text()
+  }
+  pDnodeActor.PlayerOut += "&N"
 }
 
 // Close object file
