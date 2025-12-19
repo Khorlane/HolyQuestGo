@@ -249,8 +249,44 @@ func IsRoom(RoomId string) bool {
   return true
 }
 
+// Is the room type valid?
 func IsRoomType(RoomId string, RoomType string) bool {
-  return false
+  var RoomFileName string
+
+  RoomFileName = ROOMS_DIR
+  RoomFileName += RoomId
+  RoomFileName += ".txt"
+  f, err := os.Open(RoomFileName)
+  if err != nil {
+    LogIt("Room::IsRoomType - Room does not exist")
+    os.Exit(1) // _endthread()
+  }
+  scanner := bufio.NewScanner(f)
+  if !scanner.Scan() {
+    f.Close()
+    LogIt("Room::IsRoomType - RoomType: not found")
+    os.Exit(1)
+  }
+  Stuff = scanner.Text()
+  if !scanner.Scan() {
+    f.Close()
+    LogIt("Room::IsRoomType - RoomType: not found")
+    os.Exit(1)
+  }
+  Stuff = scanner.Text()
+  if StrLeft(Stuff, 9) != "RoomType:" {
+    f.Close()
+    LogIt("Room::IsRoomType - RoomType: not found")
+    os.Exit(1)
+  }
+  Stuff = StrGetWords(Stuff, 2)
+  Stuff = StrTrimLeft(Stuff)
+  Stuff = StrTrimRight(Stuff)
+  f.Close()
+  if StrIsNotWord(RoomType, Stuff) {
+    return false
+  }
+  return true
 }
 
 func ShowRoom(pDnode *Dnode) {
