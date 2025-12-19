@@ -259,7 +259,89 @@ func AddObjToPlayerInv(pDnodeTgt1 *Dnode, ObjectId string) {
 
 // Add an object to room
 func AddObjToRoom(RoomId string, ObjectId string) {
-  // TODO: implement function logic
+  var NewRoomObjFile      bool
+  var ObjectIdAdded       bool
+  var ObjectIdCheck       string
+  var ObjCount            int
+  var RoomObjFileName     string
+  var RoomObjFileNameTmp  string
+  var RoomObjFile        *os.File
+  var RoomObjFileTmp     *os.File
+  var err                 error
+
+  ObjectId = StrMakeLower(ObjectId)
+  // Open RoomObj file
+  RoomObjFileName = ROOM_OBJ_DIR + RoomId + ".txt"
+  NewRoomObjFile = false
+  RoomObjFile, err = os.Open(RoomObjFileName)
+  if err != nil {
+    NewRoomObjFile = true
+  }
+  // Open temp RoomObj file
+  RoomObjFileNameTmp = ROOM_OBJ_DIR + RoomId + ".tmp.txt"
+  RoomObjFileTmp, err = os.Create(RoomObjFileNameTmp)
+  if err != nil {
+    LogBuf = "Object::AddObjToRoom - Open RoomObj temp file failed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  if NewRoomObjFile {
+    // New room object file, write the object and return
+    ObjectId = "1 " + ObjectId
+    RoomObjFileTmp.WriteString(ObjectId + "\n")
+    RoomObjFileTmp.Close()
+    err = os.Rename(RoomObjFileNameTmp, RoomObjFileName)
+    if err != nil {
+      LogBuf = "Object::AddObjToRoom - Rename RoomObj temp file failed"
+      LogIt(LogBuf)
+      os.Exit(1)
+    }
+    return
+  }
+  defer RoomObjFile.Close()
+  // Write temp RoomObj file
+  ObjectIdAdded = false
+  Scanner := bufio.NewScanner(RoomObjFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    if ObjectIdAdded {
+      // New object has been written, just write the rest of the objects
+      RoomObjFileTmp.WriteString(Stuff + "\n")
+      continue
+    }
+    ObjectIdCheck = StrGetWord(Stuff, 2)
+    if ObjectId < ObjectIdCheck {
+      // Add new object in alphabetical order
+      ObjectId = "1 " + ObjectId
+      RoomObjFileTmp.WriteString(ObjectId + "\n")
+      ObjectIdAdded = true
+      RoomObjFileTmp.WriteString(Stuff + "\n")
+      continue
+    }
+    if ObjectId == ObjectIdCheck {
+      // Existing object same as new object, add 1 to count
+      ObjCount = StrToInt(StrGetWord(Stuff, 1))
+      ObjCount++
+      ObjectId = strconv.Itoa(ObjCount) + " " + ObjectId
+      RoomObjFileTmp.WriteString(ObjectId + "\n")
+      ObjectIdAdded = true
+      continue
+    }
+    // None of the above conditions satisfied, just write it
+    RoomObjFileTmp.WriteString(Stuff + "\n")
+  }
+  if !ObjectIdAdded {
+    // New object is alphabetically last
+    ObjectId = "1 " + ObjectId
+    RoomObjFileTmp.WriteString(ObjectId + "\n")
+    ObjectIdAdded = true
+  }
+  RoomObjFileTmp.Close()
+  os.Remove(RoomObjFileName)
+  os.Rename(RoomObjFileNameTmp, RoomObjFileName)
 }
 
 // Calculate player armor class
