@@ -5,6 +5,11 @@
     "vulncheck": "Imports"
   },
 
+  // Reduce approval prompts
+  "go.toolsManagement.autoUpdate": true,
+  "task.confirmRun": false,
+  "task.allowAutomaticTasks": "on",
+
   // Formatting and editor behavior
   "[go]": {
     "editor.insertSpaces": true,

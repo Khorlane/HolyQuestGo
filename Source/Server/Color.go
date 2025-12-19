@@ -52,23 +52,23 @@ package server
 //***********************************************************
 
 // Define color codes
-const NORMAL    = "\x1B[0;m"   // &N
-const BBLACK    = "\x1B[1;30m" // &K
-const BRED      = "\x1B[1;31m" // &R
-const BGREEN    = "\x1B[1;32m" // &G
-const BYELLOW   = "\x1B[1;33m" // &Y
-const BBLUE     = "\x1B[1;34m" // &B
-const BMAGENTA  = "\x1B[1;35m" // &M
-const BCYAN     = "\x1B[1;36m" // &C
-const BWHITE    = "\x1B[1;37m" // &W
+const NORMAL        string = "\x1B[0;m"   // &N
+const BBLACK        string = "\x1B[1;30m" // &K
+const BRED          string = "\x1B[1;31m" // &R
+const BGREEN        string = "\x1B[1;32m" // &G
+const BYELLOW       string = "\x1B[1;33m" // &Y
+const BBLUE         string = "\x1B[1;34m" // &B
+const BMAGENTA      string = "\x1B[1;35m" // &M
+const BCYAN         string = "\x1B[1;36m" // &C
+const BWHITE        string = "\x1B[1;37m" // &W
 
 // Color constants
-const Normal        = NORMAL
-const BrightBlack   = BBLACK
-const BrightRed     = BRED
-const BrightGreen   = BGREEN
-const BrightYellow  = BYELLOW
-const BrightBlue    = BBLUE
-const BrightMagenta = BMAGENTA
-const BrightCyan    = BCYAN
-const BrightWhite   = BWHITE
+const Normal        string = NORMAL
+const BrightBlack   string = BBLACK
+const BrightRed     string = BRED
+const BrightGreen   string = BGREEN
+const BrightYellow  string = BYELLOW
+const BrightBlue    string = BBLUE
+const BrightMagenta string = BMAGENTA
+const BrightCyan    string = BCYAN
+const BrightWhite   string = BWHITE

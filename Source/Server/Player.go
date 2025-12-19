@@ -10,10 +10,10 @@
 package server
 
 import (
-	"bufio"
-	"fmt"
-	"os"
-	"strings"
+  "bufio"
+  "fmt"
+  "os"
+  "strings"
 )
 
 var PlayerFile   *os.File
@@ -139,8 +139,8 @@ func PlayerDestructor(pPlayer *Player) {
 
 // Calculate adjusted experience points
 func CalcAdjustedExpPoints(PlayerLevel int, MobileLevel int, ExpPoints int) int {
-	// Implement the logic for calculating adjusted experience points here.
-	return 0
+  // Implement the logic for calculating adjusted experience points here.
+  return 0
 }
 
 // Calculate experience needed to obtain the next level
@@ -151,28 +151,28 @@ func CalcLevelExperience(Level int) float64 {
 
 // Calculate additional experience points based on level and base experience.
 func CalcLevelExperienceAdd(Level int, BaseExp float64) float64 {
-	// Implement the logic for calculating additional experience points here.
-	return 0.0
+  // Implement the logic for calculating additional experience points here.
+  return 0.0
 }
 
 // Calculate the base experience points for a given level.
 func CalcLevelExperienceBase(Level int) float64 {
-	return 0.0
+  return 0.0
 }
 
 //Is this a valid Player? 
 func IsPlayer(PlayerName string) bool {
-	return false
+  return false
 }
 
 // Return player count
 func GetCount() int {
-	return PlayerCount
+  return PlayerCount
 }
 
 // Validate player name
 func IsNameValid(Name string) bool {
-	return false
+  return false
 }
 
 // Create player prompt
@@ -187,17 +187,17 @@ func CreatePrompt(pPlayer *Player) {
 
 // Player drink
 func Drink(pPlayer *Player, Percent int) {
-	return
+  return
 }
 
 // Player eat
 func Eat(pPlayer *Player, Percent int) {
-	return
+  return
 }
 
 // Player gains some experience
 func GainExperience(pDnode *Dnode, ExperienceToBeGained int) {
-	return
+  return
 }
 
 // Return the current output string for the player
@@ -207,12 +207,12 @@ func GetOutput(pPlayer *Player) string {
 
 // Get skill for current weapon
 func GetWeaponSkill() int {
-	return 0
+  return 0
 }
 
 // Parse player stuff
 func ParsePlayerStuff() {
-	return
+  return
 }
 
 // Save player stuff
@@ -398,17 +398,17 @@ func PlayerSave(pPlayer *Player) {
 
 // Manipulate player money
 func SetMoney(pPlayer *Player, PlusMinus byte, Amount int, Metal string) {
-	return
+  return
 }
 
 // Show player money
 func ShowMoney(pPlayer *Player) {
-	return
+  return
 }
 
 // Show player status
 func ShowStatus(pPlayer *Player) {
-	return
+  return
 }
 
 // Close player file
@@ -463,25 +463,25 @@ func PlayerWriteLine(Stuff string) {
 }
 // Check whether or not player has been in the current room
 func PlayerRoomHasNotBeenHere() bool {
-	return false
+  return false
 }
 
 // Convert from PlayerRoom char to PlayerRoom bits
 func PlayerRoomCharToBitsConvert() {
-	return
+  return
 }
 
 // Convert from PlayerRoom bits to PlayerRoom char
 func PlayerRoomBitsToCharConvert() {
-	return
+  return
 }
 
 // Read PlayerRoomVector from disk
 func PlayerRoomStringRead() {
-	return
+  return
 }
 
 // Write PlayerRoomVector to disk
 func PlayerRoomStringWrite() {
-	return
+  return
 }

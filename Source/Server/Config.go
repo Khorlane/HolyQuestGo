@@ -19,7 +19,7 @@ const (
   VERSION                 string  = "2025.12.18"
 
   // Debugging level
-  DEBUG_LVL               int     = 1 		// 0 to turn off, 1 or more to turn on
+  DEBUG_LVL               int     = 1     // 0 to turn off, 1 or more to turn on
 
   // Game mechanics constants
   MAC                     float64 = 300.0 // Maximum Armor Class
