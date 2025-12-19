@@ -251,7 +251,39 @@ func CreatePrompt(pPlayer *Player) {
 
 // Player drink
 func Drink(pPlayer *Player, Percent int) {
-  return
+  pPlayer.Thirst -= Percent
+  if pPlayer.Thirst <= 0 {
+    // Not thirsty
+    pPlayer.Thirst = 0
+    pPlayer.Output  = "You are no longer thirsty, not even a little bit."
+    pPlayer.Output += "\r\n"
+    return
+  } else if pPlayer.Thirst < 20 {
+    // A little bit thirsty
+    pPlayer.Output  = "You are a little bit thirsty."
+    pPlayer.Output += "\r\n"
+    return
+  } else if pPlayer.Thirst < 40 {
+    // Lip balm
+    pPlayer.Output  = "You need some lip balm."
+    pPlayer.Output += "\r\n"
+    return
+  } else if pPlayer.Thirst < 60 {
+    // Thirsty
+    pPlayer.Output  = "You are thirsty."
+    pPlayer.Output += "\r\n"
+    return
+  } else if pPlayer.Thirst < 80 {
+    // Parched
+    pPlayer.Output  = "Your throat is parched!"
+    pPlayer.Output += "\r\n"
+    return
+  } else if pPlayer.Thirst < 100 {
+    // Extreme thirst
+    pPlayer.Output  = "You are extremely thirsty!!!"
+    pPlayer.Output += "\r\n"
+    return
+  }
 }
 
 // Player eat
