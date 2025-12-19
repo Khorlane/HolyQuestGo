@@ -42,8 +42,50 @@ func GetRoomId(RoomId string) string {
   return RoomId
 }
 
+// Get RoomName
 func GetRoomName(RoomId string) string {
-  return ""
+  var RoomFileName string
+  var RoomName     string
+
+  RoomFileName = ROOMS_DIR
+  RoomFileName += RoomId
+  RoomFileName += ".txt"
+  f, err := os.Open(RoomFileName)
+  if err != nil {
+    LogIt("Room::GetRoomName - Room does not exist")
+    os.Exit(1) // _endthread()
+  }
+
+  scanner := bufio.NewScanner(f)
+  if !scanner.Scan() {
+    LogIt("Room::GetRoomName - RoomName: not found")
+    os.Exit(1)
+  }
+  Stuff = scanner.Text()
+  if !scanner.Scan() {
+    LogIt("Room::GetRoomName - RoomName: not found")
+    os.Exit(1)
+  }
+  Stuff = scanner.Text()
+  if !scanner.Scan() {
+    LogIt("Room::GetRoomName - RoomName: not found")
+    os.Exit(1)
+  }
+  Stuff = scanner.Text()
+  if !scanner.Scan() {
+    LogIt("Room::GetRoomName - RoomName: not found")
+    os.Exit(1)
+  }
+  Stuff = scanner.Text()
+  if StrLeft(Stuff, 9) != "RoomName:" {
+    LogIt("Room::GetRoomName - RoomName: not found")
+    os.Exit(1)
+  }
+  RoomName = StrGetWords(Stuff, 2)
+  RoomName = StrTrimLeft(RoomName)
+  RoomName = StrTrimRight(RoomName)
+  f.Close()
+  return RoomName
 }
 
 func GetValidMobRoomExits(RoomId string) string {

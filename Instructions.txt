@@ -3,7 +3,8 @@ Project: Converting code from cpp to Go
 - Put the conversion result in chat window, ready for me to copy
 - Strive for line by line conversion
 - All functions are free, no methods
-- Do not move the Close for files, no defer
+- Do not move the Close for FileExist
+- Do not use defer
 - Do not change the case of anything
 - Retain spacing within each line
 - Retain comments
