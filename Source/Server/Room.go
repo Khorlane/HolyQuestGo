@@ -289,8 +289,22 @@ func IsRoomType(RoomId string, RoomType string) bool {
   return true
 }
 
+// Show the room to the player
 func ShowRoom(pDnode *Dnode) {
-  // TODO: Implement ShowRoom logic
+  if !OpenRoomFile(pDnode) {
+    LogIt("Room::ShowRoom - Room does not exist")
+    os.Exit(1) // _endthread()
+  }
+  ShowRoomName(pDnode)
+  ShowRoomDesc(pDnode)
+  ShowRoomExits(pDnode)
+  CloseRoomFile()
+  ShowPlayersInRoom(pDnode)
+  ShowObjsInRoom(pDnode)
+  ShowMobsInRoom(pDnode)
+  pDnode.PlayerOut += "\r\n"
+  CreatePrompt(pDnode.pPlayer)
+  pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
 }
 
 // Close Room file
