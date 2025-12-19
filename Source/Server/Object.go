@@ -914,7 +914,39 @@ func ShowPlayerInv() {
 
 // Show objects in room
 func ShowObjsInRoom(pDnode *Dnode) {
-  // TODO: implement function logic
+  var ObjectCount      string
+  var RoomObjFile     *os.File
+  var RoomObjFileName  string
+  var Scanner         *bufio.Scanner
+  var err              error
+
+  // Open RoomObj file
+  RoomObjFileName = ROOM_OBJ_DIR + pDnode.pPlayer.RoomId + ".txt"
+  RoomObjFile, err = os.Open(RoomObjFileName)
+  if err != nil {
+    // No objects in room to display
+    return
+  }
+  defer RoomObjFile.Close()
+  Scanner = bufio.NewScanner(RoomObjFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    // For each object in the room
+    ObjectCount = StrGetWord(Stuff, 1)
+    ObjectId = StrGetWord(Stuff, 2)
+    ObjectConstructor()
+    pObject.Type = StrMakeLower(pObject.Type)
+    pDnode.PlayerOut += "\r\n"
+    if pObject.Type != "notake" {
+      // Should be only 1 NoTake type object in a room, like signs or statues
+      pDnode.PlayerOut += "(" + ObjectCount + ") "
+    }
+    pDnode.PlayerOut += pObject.Desc2
+    pObject = nil
+  }
 }
 
 // Find an object wherever it is
