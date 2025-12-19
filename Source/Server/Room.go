@@ -15,6 +15,7 @@ import (
 )
 
 var RoomFile *os.File
+var Scanner  *bufio.Scanner
 
 // Get RoomId
 func GetRoomId(RoomId string) string {
@@ -366,13 +367,13 @@ func OpenRoomFile(pDnode *Dnode) bool {
     return false
   }
   RoomFile = f
+  Scanner = bufio.NewScanner(RoomFile)
   return true
 }
 
 // Show the room description to the player
 func ShowRoomDesc(pDnode *Dnode) {
   // RoomDesc
-  Scanner := bufio.NewScanner(RoomFile)
   if !Scanner.Scan() {
     LogIt("Room::ShowRoomDesc - RoomDesc: not found")
     os.Exit(1) // _endthread()
@@ -398,8 +399,34 @@ func ShowRoomDesc(pDnode *Dnode) {
   }
 }
 
+// Show exit description to player
 func ShowRoomExitDesc() {
-  // TODO: Implement ShowRoomExitDesc logic
+  // ExitDesc
+  if !Scanner.Scan() {
+    LogIt("Room::ShowRoomExitDesc - ExitDesc: not found")
+    os.Exit(1) // _endthread()
+  }
+  Stuff = Scanner.Text()
+  if StrLeft(Stuff, 9) != "ExitDesc:" {
+    LogIt("Room::ShowRoomExitDesc - ExitDesc: not found")
+    os.Exit(1)
+  }
+  // Exit Description
+  if !Scanner.Scan() {
+    LogIt("Room::ShowRoomExitDesc - ExitDesc: not found")
+    os.Exit(1)
+  }
+  Stuff = Scanner.Text()
+  for StrLeft(Stuff, 13) != "ExitToRoomId:" {
+    pDnodeActor.PlayerOut += Stuff
+    pDnodeActor.PlayerOut += "\r\n"
+    if !Scanner.Scan() {
+      break
+    }
+    Stuff = Scanner.Text()
+  }
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 func ShowRoomExits(pDnode *Dnode) {
