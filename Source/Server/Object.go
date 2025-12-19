@@ -501,9 +501,65 @@ func IsObjInPlayerInv(ObjectName string) {
   return
 }
 
-// Is object in room?
+// Is object in room
 func IsObjInRoom(ObjectName string) {
-  // TODO: implement function logic
+  var NamesCheck       string
+  var ObjectId         string
+  var RoomObjFileName  string
+  var RoomObjFile     *os.File
+  var Scanner         *bufio.Scanner
+  var err              error
+
+  // Open RoomObj file
+  RoomObjFileName = ROOM_OBJ_DIR + pDnodeActor.pPlayer.RoomId + ".txt"
+  // Try matching using ObjectId
+  RoomObjFile, err = os.Open(RoomObjFileName)
+  if err != nil {
+    // Room has no objects
+    pObject = nil
+    return
+  }
+  ObjectName = StrMakeLower(ObjectName)
+  Scanner = bufio.NewScanner(RoomObjFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    ObjectId = StrGetWord(Stuff, 2)
+    if ObjectName == ObjectId {
+      ObjectConstructor()
+      return
+    }
+  }
+  RoomObjFile.Close()
+  // No match found, try getting match using 'names'
+  RoomObjFile, err = os.Open(RoomObjFileName)
+  if err != nil {
+    // Room has no objects
+    pObject = nil
+    return
+  }
+  Scanner = bufio.NewScanner(RoomObjFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    ObjectId = StrGetWord(Stuff, 2)
+    ObjectConstructor()
+    NamesCheck = pObject.Names
+    NamesCheck = StrMakeLower(NamesCheck)
+    if StrIsWord(ObjectName, NamesCheck) {
+      return
+    } else {
+      pObject = nil
+    }
+  }
+  RoomObjFile.Close()
+  // Object not found in room
+  pObject = nil
+  return
 }
 
 // Is this a valid object?
