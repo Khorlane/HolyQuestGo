@@ -578,7 +578,77 @@ func IsObject(ObjectId string) {
 
 // Remove an object from player's equipment
 func RemoveObjFromPlayerEqu(ObjectId string) {
-  // TODO: implement function logic
+  var BytesInFile          int64
+  var ObjectIdRemoved      bool
+  var ObjectIdCheck        string
+  var PlayerEquFileName    string
+  var PlayerEquFileNameTmp string
+  var PlayerEquFile       *os.File
+  var PlayerEquFileTmp    *os.File
+  var FileInfo             os.FileInfo
+  var err                  error
+
+  ObjectId = StrMakeLower(ObjectId)
+  // Open PlayerEqu file
+  PlayerEquFileName = PLAYER_EQU_DIR + pDnodeActor.PlayerName + ".txt"
+  PlayerEquFile, err = os.Open(PlayerEquFileName)
+  if err != nil {
+    LogBuf = "Object::RemoveObjFromPlayerEqu - Open PlayerEqu file failed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  defer PlayerEquFile.Close()
+  // Open temp PlayerEqu file
+  PlayerEquFileNameTmp = PLAYER_EQU_DIR + pDnodeActor.PlayerName + ".tmp.txt"
+  PlayerEquFileTmp, err = os.Create(PlayerEquFileNameTmp)
+  if err != nil {
+    LogBuf = "Object::RemoveObjFromPlayerEqu - Open PlayerEqu temp file failed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  // Write temp PlayerEqu file
+  ObjectIdRemoved = false
+  Scanner := bufio.NewScanner(PlayerEquFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    if ObjectIdRemoved {
+      // Object has been removed, just write the rest of the objects
+      PlayerEquFileTmp.WriteString(Stuff + "\n")
+      continue
+    }
+    ObjectIdCheck = StrGetWord(Stuff, 2)
+    if ObjectId == ObjectIdCheck {
+      // Found it, skipping it will remove it from the file
+      ObjectIdRemoved = true
+      continue
+    }
+    // None of the above conditions satisfied, just write it
+    PlayerEquFileTmp.WriteString(Stuff + "\n")
+  }
+  if !ObjectIdRemoved {
+    // Object not removed, this is definitely BAD!
+    LogBuf = "Object::RemoveObjFromPlayerEqu - Object not removed"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  FileInfo, err = PlayerEquFileTmp.Stat()
+  if err == nil {
+    BytesInFile = FileInfo.Size()
+  } else {
+    BytesInFile = 0
+  }
+  PlayerEquFileTmp.Close()
+  os.Remove(PlayerEquFileName)
+  if BytesInFile > 0 {
+    // If the file is not empty, rename it
+    os.Rename(PlayerEquFileNameTmp, PlayerEquFileName)
+  } else {
+    // If the file is empty, delete it
+    os.Remove(PlayerEquFileNameTmp)
+  }
 }
 
 // Remove an object from player's inventory
