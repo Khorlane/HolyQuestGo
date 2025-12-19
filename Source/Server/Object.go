@@ -1184,7 +1184,50 @@ func OpenObjectFile(ObjectId string) {
 
 // Parse object stuff
 func ParseObjectStuff() {
-  // TODO: implement function logic
+  ReadObjLine()
+  for Stuff != "" {
+    if StrLeft(Stuff, 9) == "ObjectId:" {
+      pObject.ObjectId     = StrRight(Stuff, StrGetLength(Stuff)-9)
+      pObject.ObjectId     = StrTrimLeft(pObject.ObjectId)
+    } else if StrLeft(Stuff, 6) == "Names:" {
+      pObject.Names        = StrRight(Stuff, StrGetLength(Stuff)-6)
+      pObject.Names        = StrTrimLeft(pObject.Names)
+    } else if StrLeft(Stuff, 6) == "Desc1:" {
+      pObject.Desc1        = StrRight(Stuff, StrGetLength(Stuff)-6)
+      pObject.Desc1        = StrTrimLeft(pObject.Desc1)
+    } else if StrLeft(Stuff, 6) == "Desc2:" {
+      pObject.Desc2        = StrRight(Stuff, StrGetLength(Stuff)-6)
+      pObject.Desc2        = StrTrimLeft(pObject.Desc2)
+    } else if StrLeft(Stuff, 6) == "Desc3:" {
+      // Desc3 can be multi-line and is dealt with in 'ExamineObj'
+    } else if StrLeft(Stuff, 7) == "Weight:" {
+      pObject.Weight       = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-7))
+    } else if StrLeft(Stuff, 5) == "Cost:" {
+      pObject.Cost         = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-5))
+    } else if StrLeft(Stuff, 5) == "Type:" {
+      pObject.Type         = StrRight(Stuff, StrGetLength(Stuff)-5)
+      pObject.Type         = StrTrimLeft(pObject.Type)
+    } else if StrLeft(Stuff, 11) == "ArmorValue:" {
+      pObject.ArmorValue   = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11))
+    } else if StrLeft(Stuff, 10) == "ArmorWear:" {
+      pObject.ArmorWear    = StrRight(Stuff, StrGetLength(Stuff)-10)
+      pObject.ArmorWear    = StrTrimLeft(pObject.ArmorWear)
+      pObject.WearPosition = pObject.ArmorWear
+      pObject.WearPosition = StrMakeLower(pObject.WearPosition)
+    } else if StrLeft(Stuff, 11) == "WeaponType:" {
+      pObject.WeaponType = StrRight(Stuff, StrGetLength(Stuff)-11)
+      pObject.WeaponType   = StrTrimLeft(pObject.WeaponType)
+      pObject.ArmorWear    = "wielded"
+      pObject.WearPosition = "wielded"
+    } else if StrLeft(Stuff, 13) == "WeaponDamage:" {
+      pObject.WeaponDamage = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-13))
+    } else if StrLeft(Stuff, 8) == "FoodPct:" {
+      pObject.FoodPct = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-8))
+    } else if StrLeft(Stuff, 9) == "DrinkPct:" {
+      pObject.DrinkPct     = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-9))
+    }
+    ReadObjLine()
+  }
 }
 
 // Read a line from the object file
