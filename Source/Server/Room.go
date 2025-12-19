@@ -429,8 +429,30 @@ func ShowRoomExitDesc() {
   pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
+// Show the room exits to the player
 func ShowRoomExits(pDnode *Dnode) {
-  // TODO: Implement ShowRoomExits logic
+  var NoExits bool
+
+  NoExits = true
+  pDnode.PlayerOut += "&C"
+  pDnode.PlayerOut += "Exits:"
+  Stuff = "Not Done"
+  for Stuff != "End of Exits" {
+    if !Scanner.Scan() {
+      break
+    }
+    Stuff = Scanner.Text()
+    if StrLeft(Stuff, 9) == "ExitName:" {
+      NoExits = false
+      Stuff = StrGetWord(Stuff, 2)
+      pDnode.PlayerOut += " "
+      pDnode.PlayerOut += Stuff
+    }
+  }
+  if NoExits {
+    pDnode.PlayerOut += " None"
+  }
+  pDnode.PlayerOut += "&N"
 }
 
 func ShowRoomName(pDnode *Dnode) {
