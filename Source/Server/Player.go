@@ -207,6 +207,35 @@ func GetCount() int {
 
 // Validate player name
 func IsNameValid(Name string) bool {
+  var NameIn              string
+  var ValidNameFile      *os.File
+  var ValidNamesFileName  string
+  var err                 error
+
+  ValidNamesFileName = VALID_NAMES_DIR + "ValidNames.txt"
+  ValidNameFile, err = os.Open(ValidNamesFileName)
+  if err != nil {
+    LogBuf = "Player::IsNameValid - Error opening valid name file, it may not exist"
+    LogIt(LogBuf)
+    os.Exit(1)
+  }
+  defer ValidNameFile.Close()
+  Name = StrMakeLower(Name)
+  Scanner := bufio.NewScanner(ValidNameFile)
+  if Scanner.Scan() {
+    NameIn = Scanner.Text()
+    NameIn = StrMakeLower(NameIn)
+  }
+  for NameIn != "" {
+    if Name == NameIn {
+      return true
+    }
+    if !Scanner.Scan() {
+      break
+    }
+    NameIn = Scanner.Text()
+    NameIn = StrMakeLower(NameIn)
+  }
   return false
 }
 
