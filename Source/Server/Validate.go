@@ -14,7 +14,7 @@ import (
   "os"
 )
 
-// LogValErr logs a validation error message with a file name.
+// Log Validation Error
 func LogValErr(Message string, FileName string) {
   if StrGetLength(Message) > 50 {
     // Message is too long, chop it off
@@ -32,7 +32,7 @@ func LogValErr(Message string, FileName string) {
   ValErr = true
 }
 
-// ValidateIt performs validation based on the specified type.
+// ValidateIt
 func ValidateIt(ValidationType string) bool {
   ValErr = false
   ValidationType = StrMakeLower(ValidationType)
@@ -61,7 +61,7 @@ func ValidateIt(ValidationType string) bool {
   return ValErr
 }
 
-// ValidateAll performs all validation checks.
+// Validate all 
 func ValidateAll() {
   ValidateLibraryLoot()
   ValidateLibraryMobiles()
@@ -76,7 +76,7 @@ func ValidateAll() {
   ValidateRunningRoomObj()
 }
 
-// ValidateLibraryLoot validates the library loot.
+// Validate LibraryLoot 
 func ValidateLibraryLoot() {
   var FileName     string
   var LineCount    int
@@ -139,7 +139,7 @@ func ValidateLibraryLoot() {
   LogIt(LogBuf)
 }
 
-// ValidateLibraryMobiles validates the library mobiles.
+// Validate LibraryMobiles
 func ValidateLibraryMobiles() {
   var FieldName      string
   var FieldValue     string
@@ -210,7 +210,7 @@ func ValidateLibraryMobiles() {
   LogIt(LogBuf)
 }
 
-// ValidateLibraryObjects validates the library objects.
+// Validate LibraryObjects
 func ValidateLibraryObjects() {
   var FieldName      string
   var FieldValue     string
@@ -281,7 +281,7 @@ func ValidateLibraryObjects() {
   LogIt(LogBuf)
 }
 
-// ValidateLibraryRooms validates the library rooms.
+// Validate LibraryRooms
 func ValidateLibraryRooms() {
   var FieldName    string
   var FieldValue   string
@@ -352,7 +352,7 @@ func ValidateLibraryRooms() {
   LogIt(LogBuf)
 }
 
-// ValidateLibraryShops validates the library shops.
+// Validate LibraryShops
 func ValidateLibraryShops() {
   var FieldName    string
   var FieldValue   string
@@ -421,7 +421,7 @@ func ValidateLibraryShops() {
   LogIt(LogBuf)
 }
 
-// ValidateLibraryWorldMobiles validates the library world mobiles.
+// Validate LibraryWorldMobiles
 func ValidateLibraryWorldMobiles() {
   var FieldName           string
   var FieldValue          string
@@ -507,7 +507,7 @@ func ValidateLibraryWorldMobiles() {
   LogIt(LogBuf)
 }
 
-// ValidateRunningPlayers validates the running players.
+// Validate RunningPlayers
 func ValidateRunningPlayers() {
   var FieldName      string
   var FieldValue     string
@@ -596,7 +596,7 @@ func ValidateRunningPlayers() {
   LogIt(LogBuf)
 }
 
-// ValidateRunningPlayersPlayerEqu validates the equipment of running players.
+// Validate RunningPlayersPlayerEqu
 func ValidateRunningPlayersPlayerEqu() {
   var FileName          string
   var LineCount         int
@@ -675,7 +675,7 @@ func ValidateRunningPlayersPlayerEqu() {
   LogIt(LogBuf)
 }
 
-// ValidateRunningPlayersPlayerObj validates the objects of running players.
+// Validate RunningPlayersPlayerObj
 func ValidateRunningPlayersPlayerObj() {
   var FileName          string
   var LineCount         int
@@ -739,7 +739,7 @@ func ValidateRunningPlayersPlayerObj() {
   LogIt(LogBuf)
 }
 
-// ValidateRunningRoomMob validates the mobiles in running rooms.
+// Validate ValidateRunningRoomMob
 func ValidateRunningRoomMob() {
   var FileName         string
   var LineCount        int
@@ -825,7 +825,7 @@ func ValidateRunningRoomMob() {
   LogIt(LogBuf)
 }
 
-// ValidateRunningRoomObj validates the objects in running rooms.
+// Validate ValidateRunningRoomObj
 func ValidateRunningRoomObj() {
   var FileName         string
   var LineCount        int
