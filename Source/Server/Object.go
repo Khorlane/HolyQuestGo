@@ -873,7 +873,43 @@ func ShowPlayerEqu(pDnodeTgt1 *Dnode) {
 
 // Show player inventory
 func ShowPlayerInv() {
-  // TODO: implement function logic
+  var ObjectCount        string
+  var PlayerObjFile     *os.File
+  var PlayerObjFileName  string
+  var Scanner           *bufio.Scanner
+  var err                error
+
+  // Open PlayerObj file
+  PlayerObjFileName = PLAYER_OBJ_DIR + pDnodeActor.PlayerName + ".txt"
+  PlayerObjFile, err = os.Open(PlayerObjFileName)
+  if err != nil {
+    pDnodeActor.PlayerOut += "\r\n"
+    pDnodeActor.PlayerOut += "It is sad, but you have nothing in your inventory.\r\n"
+    CreatePrompt(pDnodeActor.pPlayer)
+    pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+    return
+  }
+  defer PlayerObjFile.Close()
+  pDnodeActor.PlayerOut += "\r\n"
+  pDnodeActor.PlayerOut += "Inventory\r\n"
+  pDnodeActor.PlayerOut += "---------\r\n"
+  Scanner = bufio.NewScanner(PlayerObjFile)
+  for Scanner.Scan() {
+    Stuff = Scanner.Text()
+    if Stuff == "" {
+      continue
+    }
+    ObjectCount = StrGetWord(Stuff, 1)
+    ObjectId = StrGetWord(Stuff, 2)
+    ObjectConstructor()
+    pDnodeActor.PlayerOut += "(" + ObjectCount + ") "
+    pDnodeActor.PlayerOut += pObject.Desc1
+    pDnodeActor.PlayerOut += "\r\n"
+    pObject = nil
+  }
+  pDnodeActor.PlayerOut += "\r\n"
+  CreatePrompt(pDnodeActor.pPlayer)
+  pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
 
 // Show objects in room
