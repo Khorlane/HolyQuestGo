@@ -240,7 +240,7 @@ func SockClosePort(Port int) {
 func SockOpenPort(Port int) {
 	DEBUGIT(1)
 	addr := fmt.Sprintf(":%d", Port)
-	ln, err := net.Listen("tcp4", addr)
+		ln, err := net.Listen("tcp", addr)
 	if err != nil {
 		Buf = err.Error()
 		LogBuf = "Communication::SockOpenPort - Error: initializing socket: " + Buf
