@@ -30,6 +30,10 @@ From the project root:
 del HolyQuestGo.exe
 go build -o HolyQuestGo.exe
 ./HolyQuestGo
+
+or
+
+del HolyQuestGo.exe;go build -o HolyQuestGo.exe;./HolyQuestGo
 ```
 
 ---

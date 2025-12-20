@@ -5915,7 +5915,7 @@ func RepositionDnodeCursor() {
 
 // New connection
 func SockNewConnection() {
-	DEBUGIT(1)
+	DEBUGIT(5)
 	if ListenSocket == nil {
 		return
 	}
