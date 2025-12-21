@@ -652,8 +652,8 @@ complete sentence including the appropriate punctuation and
 capitalization.
 
 Desc3  
-The description displayed when a player looks at the NPC by typing 'look
-`<mobile>`. Desc3 can be multi-line and will be displayed to the player
+The description displayed when a player looks at the NPC by typing `look <mobile>`.
+Desc3 can be multi-line and will be displayed to the player
 'as is' including blank lines and spaces.
 
 End of Mobile Desc3  
