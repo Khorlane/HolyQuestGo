@@ -66,7 +66,6 @@ func CreateSpawnMobileEvents() {
 			return nil
 		}
 		// Check MaxInWorld against actual 'in world' count
-		WorldMobileFileName = WORLD_MOBILES_DIR + WorldMobileFileName
 		WorldMobileFile, _ = os.Open(WorldMobileFileName)
 		if WorldMobileFile == nil {
 			LogIt("CreateSpawnMobileEvents - Open World Mobile file failed: " + WorldMobileFileName)
