@@ -1,3 +1,6 @@
+# OMugs – Online Multi-User Game Server
+# Administration Guide
+
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -118,18 +121,16 @@
     - [Damage Reduction Percentage calculation](#damage-reduction-percentage-calculation)
     - [Combat example](#combat-example)
 
-  
-Copyright Notice
+# License
 
-All rights reserved. Author: Stephen L Bryant
-(stevebryant@holyquest.org)
+This is free and unencumbered software released into the public domain.
 
-This document and its contents are proprietary to Stephen L Bryant. The
-information in this document, including any associated software program
-is considered a trade secret and may not be reproduced, disclosed or
-distributed in any manner without the written consent of the owner.
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
 
-OMugs Copyright © 2004 by Stephen L Bryant
+For more information, please refer to <http://unlicense.org/>
 
 Author  
 Stephen L Bryant  
@@ -137,9 +138,9 @@ Stephen L Bryant
 Revision 1.0 April    22, 2001  
 Revision 1.1 December  4, 2002  
 Revision 1.2 October  23, 2003  
-Revision 1.3 December 20, 2025
+Revision 1.3 December 22, 2025
 
-Last Updated March 5, 2004
+Revision tracking after December 22, 2025 is maintained via git.
 
 # Introduction
 

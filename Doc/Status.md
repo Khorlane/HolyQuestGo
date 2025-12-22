@@ -1,54 +1,41 @@
-Table of Contents
+# OMugs – Online Multi-User Game Server
+# Project Status
 
-[1 Introduction [4](#introduction)](#introduction)
+## Table of Contents
 
-[2 Server Components Completed
-[5](#server-components-completed)](#server-components-completed)
+- [License](#license)
+- [Introduction](#introduction)
+- [Server Components Completed](#server-components-completed)
+- [OMugs Source Code and Headers](#omugs-source-code-and-headers)
+	- [Server cpp files](#server-cpp-files)
+	- [Server header files](#server-header-files)
+	- [Osi cpp files](#osi-cpp-files)
+	- [Osi header files](#osi-header-files)
+	- [Tools cpp files](#tools-cpp-files)
+	- [Tools header files](#tools-header-files)
+	- [WinApp cpp files](#winapp-cpp-files)
+	- [WinApp header files](#winapp-header-files)
+- [Summary](#summary)
 
-[3 OMugs Source Code and Headers
-[7](#omugs-source-code-and-headers)](#omugs-source-code-and-headers)
+# License
 
-[3.1 Server cpp files [7](#server-cpp-files)](#server-cpp-files)
+This is free and unencumbered software released into the public domain.
 
-[3.2 Server header files
-[8](#server-header-files)](#server-header-files)
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
 
-[3.3 Tools cpp files [8](#osi-cpp-files)](#osi-cpp-files)
+For more information, please refer to <http://unlicense.org/>
 
-[3.4 Tools header files [8](#tools-header-files)](#tools-header-files)
-
-[3.5 WinApp cpp files [9](#winapp-cpp-files)](#winapp-cpp-files)
-
-[3.6 WinApp header files
-[9](#winapp-header-files)](#winapp-header-files)
-
-[3.7 Utility cpp files [9](#osi-cpp-files)](#osi-cpp-files)
-
-[3.8 Utility header files [9](#osi-header-files)](#osi-header-files)
-
-[3.9 Summary [10](#summary)](#summary)
-
-Copyright Notice
-
-All rights reserved. Author: Stephen L Bryant
-(stevebryant@holyquest.org)
-
-This document and its contents are proprietary to Stephen L Bryant. The
-information in this document, including any associated software program
-is considered a trade secret and may not be reproduced, disclosed or
-distributed in any manner without the written consent of the owner.
-
-OMugs Copyright © 2004 by Stephen L Bryant
-
-Credits
-
+Author  
 Stephen L Bryant
 
-Revision 1.0, April 22, 2001
+Revision 1.0 April    22, 2001
+Revision 1.1 December  4, 2002
+Revision 1.2 December 22, 2025
 
-Revision 1.1, December 4, 2002
-
-Last Updated, June 17, 2004
+Revision tracking after December 22, 2025 is maintained via git.
 
 # Introduction
 

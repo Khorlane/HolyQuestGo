@@ -1,110 +1,70 @@
-Table of Contents
+# OMugs – Online Multi-User Game Server
+# Coding Guide
 
-[1 Introduction [4](#introduction)](#introduction)
+## Table of Contents
 
-[2 Code Overview [5](#code-overview)](#code-overview)
+- [Introduction](#introduction)
+- [Code Overview](#code-overview)
+	- [Style](#style)
+	- [Organization](#organization)
+	- [Communications](#communications)
+	- [Variables](#variables)
+	- [Classes](#classes)
+- [Coding Conventions](#coding-conventions)
+	- [Variable Names](#variable-names)
+	- [!Terse](#terse)
+	- [Functions](#functions)
+	- [Class Template](#class-template)
+- [The Codebase](#the-codebase)
+	- [BigDog](#bigdog)
+	- [OpenPort(int port)](#openportint-port)
+	- [InitDescriptor](#initdescriptor)
+	- [CheckForNewConnections](#checkfornewconnections)
+	- [NewConnection](#newconnection)
+	- [Dnode(int SocketHandle)](#dnodeint-sockethandle)
+	- [SockRecv](#sockrecv)
+	- [SockSend](#socksend)
+	- [CommandParse](#commandparse)
+	- [pDnodeActor](#pdnodeactor)
+	- [SendToRoom](#sendtoroom)
+- [Fighting](#fighting)
+	- [Directories](#directories)
+	- [Files](#files)
+	- [Pseudo Code](#pseudo-code)
+- [Armor Class](#armor-class)
+	- [Definitions](#definitions)
+	- [Damage To Player](#damage-to-player)
+- [How To Add A New Command](#how-to-add-a-new-command)
+	- [Command Design](#command-design)
+	- [Command Table](#command-table)
+	- [Define Function](#define-function)
+	- [Command Parsing](#command-parsing)
+	- [Message and Prompt](#message-and-prompt)
+	- [Do Something](#do-something)
+- [Osi – OMugs Script Interpreter](#osi--omugs-script-interpreter)
+	- [Major Components](#major-components)
+	- [Front End](#front-end)
+	- [Back End](#back-end)
 
-[2.1 Style [5](#style)](#style)
+# License
 
-[2.2 Organization [5](#organization)](#organization)
+This is free and unencumbered software released into the public domain.
 
-[2.3 Communications [5](#communications)](#communications)
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
 
-[2.4 Variables [6](#variables)](#variables)
+For more information, please refer to <http://unlicense.org/>
 
-[2.5 Classes [6](#classes)](#classes)
-
-[3 Coding Conventions [7](#coding-conventions)](#coding-conventions)
-
-[3.1 Variable Names [7](#variable-names)](#variable-names)
-
-[3.2 !Terse [7](#terse)](#terse)
-
-[3.3 Functions [8](#functions)](#functions)
-
-[3.4 Class Template [9](#class-template)](#class-template)
-
-[4 The Codebase [10](#the-codebase)](#the-codebase)
-
-[4.1 BigDog [11](#bigdog)](#bigdog)
-
-[4.2 OpenPort(int port) [11](#openportint-port)](#openportint-port)
-
-[4.3 InitDescriptor [12](#initdescriptor)](#initdescriptor)
-
-[4.4 CheckForNewConnections
-[12](#checkfornewconnections)](#checkfornewconnections)
-
-[4.5 NewConnection [12](#newconnection)](#newconnection)
-
-[4.6 Dnode(int SocketHandle)
-[13](#dnodeint-sockethandle)](#dnodeint-sockethandle)
-
-[4.7 RecvIt [13](#sockrecv)](#sockrecv)
-
-[4.8 SendIt [13](#socksend)](#socksend)
-
-[4.9 CommandParse [14](#commandparse)](#commandparse)
-
-[4.10 pDnodeActor [15](#_Toc60467258)](#_Toc60467258)
-
-[4.11 SendToRoom [15](#sendtoroom)](#sendtoroom)
-
-[5 Fighting [17](#fighting)](#fighting)
-
-[5.1 Directories [17](#directories)](#directories)
-
-[5.2 Files [17](#files)](#files)
-
-[5.3 Pseudo Code [18](#pseudo-code)](#pseudo-code)
-
-[6 Armor Class [20](#armor-class)](#armor-class)
-
-[6.1 Definitions [20](#definitions)](#definitions)
-
-[6.2 Damage To Player [20](#damage-to-player)](#damage-to-player)
-
-[7 How To Add A New Command
-[21](#how-to-add-a-new-command)](#how-to-add-a-new-command)
-
-[7.1 Command Design [21](#command-design)](#command-design)
-
-[7.2 Command Table [21](#command-table)](#command-table)
-
-[7.3 Define Function [22](#define-function)](#define-function)
-
-[7.4 Command Parsing [23](#command-parsing)](#command-parsing)
-
-[7.5 Message and Prompt [23](#message-and-prompt)](#message-and-prompt)
-
-[7.6 Do Something [23](#do-something)](#do-something)
-
-[8 Osi – OMugs Script Interpreter
-[26](#osi-omugs-script-interpreter)](#osi-omugs-script-interpreter)
-
-[8.1 Major Components [26](#major-components)](#major-components)
-
-[8.2 Front End [26](#front-end)](#front-end)
-
-Copyright Notice
-
-All rights reserved. Author: Stephen L Bryant
-(stevebryant@holyquest.org)
-
-This document and its contents are proprietary to Stephen L Bryant. The
-information in this document, including any associated software program
-is considered a trade secret and may not be reproduced, disclosed or
-distributed in any manner without the written consent of the owner.
-
-OMugs Copyright © 2004 by Stephen L Bryant
-
-Credits
-
+Author  
 Stephen L Bryant
 
-Revision 1.0, April 22, 2001
+Revision 1.0 April 22, 2001
+Revision 1.1 December 4, 2002
+Revision 1.2 December 22, 2025
 
-Revision 1.1, December 4, 2002
+Revision tracking after December 22, 2025 is maintained via git.
 
 # Introduction
 

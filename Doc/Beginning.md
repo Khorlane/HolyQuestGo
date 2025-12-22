@@ -1,54 +1,41 @@
-Table of Contents
+# OMugs – Online Multi-User Game Server
+# Project Beginning
 
-[OMugs Project Beginning [1](#_Toc26861679)](#_Toc26861679)
+## Table of Contents
 
-[Copyright Notice [3](#_Toc26861680)](#_Toc26861680)
+- [License](#license)
+- [Introduction](#introduction)
+- [Origin](#origin)
+	- [CircleMUD](#circlemud)
+	- [HolyQuest](#holyquest)
+	- [World Editor](#world-editor)
+	- [zMUD](#zmud)
+	- [Licensing](#licensing)
+- [Desire](#desire)
+- [OMugs](#omugs)
+	- [Definition](#definition)
+	- [Combat Support](#combat-support)
+	- [Socializing](#socializing)
+- [Conclusion](#conclusion)
 
-[Credits [3](#_Toc507737867)](#_Toc507737867)
+# License
 
-[1 Introduction [4](#introduction)](#introduction)
+This is free and unencumbered software released into the public domain.
 
-[2 Origin [5](#origin)](#origin)
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
 
-[2.1 CircleMUD [5](#circlemud)](#circlemud)
+For more information, please refer to <http://unlicense.org/>
 
-[2.2 HolyQuest [5](#holyquest)](#holyquest)
+Author  
+Stephen L Bryant 
 
-[2.3 World Editor [6](#world-editor)](#world-editor)
+Revision 1.0 December  5, 2002
+Revision 1.1 December 22, 2025
 
-[2.4 zMUD [6](#zmud)](#zmud)
-
-[2.5 Licensing [6](#licensing)](#licensing)
-
-[3 Desire [7](#desire)](#desire)
-
-[4 OMugs [8](#omugs)](#omugs)
-
-[4.1 Definition [8](#definition)](#definition)
-
-[4.2 Combat Support [9](#combat-support)](#combat-support)
-
-[4.3 Socializing [9](#socializing)](#socializing)
-
-[5 Conclusion [10](#conclusion)](#conclusion)
-
-Copyright Notice
-
-All rights reserved. Author: Stephen L Bryant
-(stevebryant@holyquest.org)
-
-This document and its contents are proprietary to Stephen L Bryant. The
-information in this document, including any associated software program
-is considered a trade secret and may not be reproduced, disclosed or
-distributed in any manner without the written consent of the owner.
-
-OMugs Copyright © 2004 by Stephen L Bryant
-
-<span id="_Toc507737867" class="anchor"></span>Credits
-
-Stephen L Bryant
-
-Revision 1.0, December 5, 2002
+Revision tracking after December 22, 2025 is maintained via git.
 
 # Introduction
 
