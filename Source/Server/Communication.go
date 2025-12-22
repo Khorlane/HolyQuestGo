@@ -5917,9 +5917,10 @@ func RepositionDnodeCursor() {
 func SockNewConnection() {
 	DEBUGIT(5)
 	if ListenSocket == nil {
-		return
+    LogIt("Communication::SockNewConnection - Error: ListenSocket is nil")
+    os.Exit(1)
 	}
-	_ = ListenSocket.SetDeadline(time.Now())
+  _ = ListenSocket.SetDeadline(time.Now().Add(100 * time.Millisecond))
 	conn, err := ListenSocket.Accept()
 	if err != nil {
 		if ne, ok := err.(net.Error); ok && ne.Timeout() {
@@ -5928,13 +5929,14 @@ func SockNewConnection() {
 		Buf = err.Error()
 		LogBuf = "Communication::SockNewConnection - Error: accept: " + Buf
 		LogIt(LogBuf)
-		return
+    os.Exit(1)
 	}
+  LogIt("Communication::SockNewConnection - Accepted new connection")
 	tcpConn, ok := conn.(*net.TCPConn)
 	if !ok {
 		conn.Close()
 		LogIt("Communication::SockNewConnection - Error: non-TCP connection")
-		return
+    os.Exit(1)
 	}
 	IpAddress := tcpConn.RemoteAddr().String()
 	if host, _, errHost := net.SplitHostPort(IpAddress); errHost == nil {
