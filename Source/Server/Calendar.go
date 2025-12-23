@@ -65,7 +65,7 @@ func CalendarDestructor() {
 
 // Advances the in-game time by one hour
 func AdvanceTime() {
-  DEBUGIT(5)
+  DEBUGIT(6)
   NowSec := time.Now().Unix()
   if NowSec < pCalendar.TimeToAdvanceHour {
     return

@@ -86,7 +86,7 @@ func PlayerConstructor() *Player {
     pPlayerFollowers:  [GRP_LIMIT]*Player{},
     SessionTime:       0,
     RoomIdBeforeMove:  "",
-    pDnode:            nil,
+    pDnode:            pDnodeActor,
     Output:            "",
     PlayerRoomBitPos:  0,
     PlayerRoomBits:    [8]bool{},
@@ -379,6 +379,7 @@ func ParsePlayerStuff(pPlayer *Player) {
   var Amount int
   var Name   string
 
+  DEBUGIT(1)
   Name = pPlayer.Name
   if !OpenPlayerFile(Name, "Read") {
     LogBuf = "Player::Save - Error opening player file for read, Players directory may not exist"
@@ -535,6 +536,7 @@ func ParsePlayerStuff(pPlayer *Player) {
 
 // Save player stuff
 func PlayerSave(pPlayer *Player) {
+  DEBUGIT(1)
   if !OpenPlayerFile(pPlayer.Name, "Write") {
     LogBuf = "Player::Save - Error opening player file for write, Players directory may not exist"
     LogIt(LogBuf)
@@ -867,6 +869,7 @@ func OpenPlayerFile(Name string, Mode string) bool {
 
 // Read a line from player file
 func PlayerReadLine() {
+  DEBUGIT(5)
   line, err := PlayerReader.ReadString('\n')
   if err != nil {
     Stuff = ""

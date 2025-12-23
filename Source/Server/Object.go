@@ -10,14 +10,15 @@
 package server
 
 import (
-  "bufio"
-  "os"
-  "strconv"
+	"bufio"
+	"os"
+	"strconv"
 )
 
 var ObjectFile     *os.File
 var ObjectFileName  string
 var ObjectId        string
+var pObject        *Object
 
 // Object represents a single instance of an object in the game.
 type Object struct {
@@ -41,54 +42,36 @@ type Object struct {
   Weight            int
 }
 
-// Global instance of Object
-var pObject = &Object{
-  ObjectId:          "",
-  ArmorValue:        0,
-  ArmorWear:         "",
-  ContainerCapacity: 0,
-  Cost:              0,
-  Count:             "1",
-  Desc1:             "",
-  Desc2:             "",
-  Desc3:             "",
-  DrinkPct:          0,
-  FoodPct:           0,
-  LightHours:        0,
-  Names:             "",
-  Type:              "",
-  WeaponType:        "",
-  WeaponDamage:      0,
-  WearPosition:      "",
-  Weight:            0,
-}
-
 var ObjScanner = bufio.NewScanner(ObjectFile)
 
 // Create a new object
 func ObjectConstructor() {
-  // Init object structure
-  pObject.ArmorValue        = 0;
-  pObject.ArmorWear         = "";
-  pObject.ContainerCapacity = 0;
-  pObject.Cost              = 0;
-  pObject.Count             = "1";
-  pObject.Desc1             = "";
-  pObject.Desc2             = "";
-  pObject.Desc3             = "";
-  pObject.DrinkPct          = 0;
-  pObject.FoodPct           = 0;
-  pObject.LightHours        = 0;
-  pObject.Names             = "";
-  pObject.Type              = "";
-  pObject.WeaponType        = "";
-  pObject.WeaponDamage      = 0;
-  pObject.WearPosition      = "";
-  pObject.Weight            = 0;
+  DEBUGIT(5)
+  // Create a new Object instance and assign to pObject
+  pObject = &Object{
+    ObjectId:          "",
+    ArmorValue:        0,
+    ArmorWear:         "",
+    ContainerCapacity: 0,
+    Cost:              0,
+    Count:             "1",
+    Desc1:             "",
+    Desc2:             "",
+    Desc3:             "",
+    DrinkPct:          0,
+    FoodPct:           0,
+    LightHours:        0,
+    Names:             "",
+    Type:              "",
+    WeaponType:        "",
+    WeaponDamage:      0,
+    WearPosition:      "",
+    Weight:            0,
+  }
   // Populate object structure
-  OpenObjectFile(ObjectId);
-  ParseObjectStuff();
-  CloseObjectFile();
+  OpenObjectFile(ObjectId)
+  ParseObjectStuff()
+  CloseObjectFile()
 }
 
 // Add an object to player's equipment
@@ -103,6 +86,7 @@ func AddObjToPlayerEqu(WearPosition string, ObjectId string) bool {
   var WearWieldFailed       bool
   var err                   error
 
+  DEBUGIT(5)
   WearWieldFailed = false
   ObjectId = StrMakeLower(ObjectId)
   // Open PlayerEqu file
@@ -186,6 +170,7 @@ func AddObjToPlayerInv(pDnodeTgt1 *Dnode, ObjectId string) {
   var PlayerObjFileTmp     *os.File
   var err                   error
 
+  DEBUGIT(5)
   pDnodeTgt = pDnodeTgt1
   ObjectId = StrMakeLower(ObjectId)
   // Open PlayerObj file
@@ -269,6 +254,7 @@ func AddObjToRoom(RoomId string, ObjectId string) {
   var RoomObjFileTmp     *os.File
   var err                 error
 
+  DEBUGIT(5)
   ObjectId = StrMakeLower(ObjectId)
   // Open RoomObj file
   RoomObjFileName = ROOM_OBJ_DIR + RoomId + ".txt"
@@ -351,8 +337,9 @@ func CalcPlayerArmorClass(pPlayer *Player) int {
   var PlayerEquFileName  string
   var err                error
 
+  DEBUGIT(5)
   ArmorClass = 0
-  // Open PlayerObj file
+  // Open PlayerEqu file
   PlayerEquFileName = PLAYER_EQU_DIR + pPlayer.Name + ".txt"
   PlayerEquFile, err = os.Open(PlayerEquFileName)
   if err != nil {
@@ -364,11 +351,12 @@ func CalcPlayerArmorClass(pPlayer *Player) int {
   for Scanner.Scan() {
     Stuff = Scanner.Text()
     if Stuff == "" {
-      continue
+      break
     }
     ObjectId = StrGetWord(Stuff, 2)
     ObjectConstructor()
     ArmorClass += pObject.ArmorValue
+    pObject = nil
   }
   return ArmorClass
 }
@@ -377,16 +365,12 @@ func CalcPlayerArmorClass(pPlayer *Player) int {
 func IsObjInPlayerEqu(ObjectName string) {
   var NamesCheck         string
   var ObjectId           string
-  var ObjectIdCheck      string
-  var ObjectNameCheck    string
   var PlayerEquFileName  string
   var PlayerEquFile     *os.File
   var Scanner           *bufio.Scanner
   var err                error
 
-  _ = ObjectIdCheck
-  _ = ObjectNameCheck
-
+  DEBUGIT(5)
   // Open PlayerEqu file
   PlayerEquFileName = PLAYER_EQU_DIR + pDnodeActor.PlayerName + ".txt"
   // Try matching using ObjectId
@@ -448,6 +432,7 @@ func IsObjInPlayerInv(ObjectName string) {
   var Scanner           *bufio.Scanner
   var err                error
 
+  DEBUGIT(5)
   // Open PlayerObj file
   PlayerObjFileName = PLAYER_OBJ_DIR + pDnodeActor.PlayerName + ".txt"
   // Try matching using ObjectId
@@ -510,6 +495,7 @@ func IsObjInRoom(ObjectName string) {
   var Scanner         *bufio.Scanner
   var err              error
 
+  DEBUGIT(5)
   // Open RoomObj file
   RoomObjFileName = ROOM_OBJ_DIR + pDnodeActor.pPlayer.RoomId + ".txt"
   // Try matching using ObjectId
@@ -566,6 +552,7 @@ func IsObjInRoom(ObjectName string) {
 func IsObject(ObjectId string) {
   var ObjectFileName string
 
+  DEBUGIT(5)
   ObjectFileName = OBJECTS_DIR + ObjectId + ".txt"
   if FileExist(ObjectFileName) {
     pObject = &Object{ObjectId: ObjectId}
@@ -588,6 +575,7 @@ func RemoveObjFromPlayerEqu(ObjectId string) {
   var FileInfo              os.FileInfo
   var err                   error
 
+  DEBUGIT(5)
   ObjectId = StrMakeLower(ObjectId)
   // Open PlayerEqu file
   PlayerEquFileName = PLAYER_EQU_DIR + pDnodeActor.PlayerName + ".txt"
@@ -664,6 +652,7 @@ func RemoveObjFromPlayerInv(ObjectId string, Count int) {
   var FileInfo              os.FileInfo
   var err                   error
 
+  DEBUGIT(5)
   ObjectId = StrMakeLower(ObjectId)
   // Open PlayerObj file
   PlayerObjFileName = PLAYER_OBJ_DIR + pDnodeActor.PlayerName + ".txt"
@@ -746,6 +735,7 @@ func RemoveObjFromRoom(ObjectId string) {
   var FileInfo            os.FileInfo
   var err                 error
 
+  DEBUGIT(5)
   ObjectId = StrMakeLower(ObjectId)
   // Open RoomObj file
   RoomObjFileName = ROOM_OBJ_DIR + pDnodeActor.pPlayer.RoomId + ".txt"
@@ -823,6 +813,7 @@ func ShowPlayerEqu(pDnodeTgt1 *Dnode) {
   var Scanner           *bufio.Scanner
   var err                error
 
+  DEBUGIT(5)
   pDnodeTgt = pDnodeTgt1
   // Open PlayerEqu file
   PlayerEquFileName = PLAYER_EQU_DIR + pDnodeTgt.PlayerName + ".txt"
@@ -879,6 +870,7 @@ func ShowPlayerInv() {
   var Scanner           *bufio.Scanner
   var err                error
 
+  DEBUGIT(5)
   // Open PlayerObj file
   PlayerObjFileName = PLAYER_OBJ_DIR + pDnodeActor.PlayerName + ".txt"
   PlayerObjFile, err = os.Open(PlayerObjFileName)
@@ -920,6 +912,7 @@ func ShowObjsInRoom(pDnode *Dnode) {
   var Scanner         *bufio.Scanner
   var err              error
 
+  DEBUGIT(5)
   // Open RoomObj file
   RoomObjFileName = ROOM_OBJ_DIR + pDnode.pPlayer.RoomId + ".txt"
   RoomObjFile, err = os.Open(RoomObjFileName)
@@ -951,6 +944,7 @@ func ShowObjsInRoom(pDnode *Dnode) {
 
 // Find an object where ever it is
 func WhereObj(ObjectIdSearch string) {
+  DEBUGIT(5)
   WhereObjPlayerEqu(ObjectIdSearch)
   WhereObjPlayerObj(ObjectIdSearch)
   WhereObjRoomObj(ObjectIdSearch)
@@ -967,6 +961,7 @@ func WhereObjPlayerEqu(ObjectIdSearch string) {
   var Scanner           *bufio.Scanner
   var err                error
 
+  DEBUGIT(5)
   pDnodeActor.PlayerOut += "\r\n"
   pDnodeActor.PlayerOut += "Objects in player equipment"
   pDnodeActor.PlayerOut += "\r\n"
@@ -1023,6 +1018,7 @@ func WhereObjPlayerObj(ObjectIdSearch string) {
   var Scanner           *bufio.Scanner
   var err                error
 
+  DEBUGIT(5)
   pDnodeActor.PlayerOut += "\r\n"
   pDnodeActor.PlayerOut += "Objects in player inventory"
   pDnodeActor.PlayerOut += "\r\n"
@@ -1079,6 +1075,7 @@ func WhereObjRoomObj(ObjectIdSearch string) {
   var Scanner         *bufio.Scanner
   var err              error
 
+  DEBUGIT(5)
   pDnodeActor.PlayerOut += "\r\n"
   pDnodeActor.PlayerOut += "Objects in rooms"
   pDnodeActor.PlayerOut += "\r\n"
@@ -1131,6 +1128,7 @@ func ExamineObj(ObjectId string) {
   var ObjectFileName  string
   var err             error
 
+  DEBUGIT(5)
   ObjectFileName = OBJECTS_DIR + ObjectId + ".txt"
   ObjectFile, err = os.Open(ObjectFileName)
   if err != nil {
@@ -1164,6 +1162,7 @@ func ExamineObj(ObjectId string) {
 
 // Close object file
 func CloseObjectFile() {
+  DEBUGIT(5)
   ObjectFile.Close()
 }
 
@@ -1172,6 +1171,7 @@ func OpenObjectFile(ObjectId string) {
   var ObjectFileName  string
   var err             error
 
+  DEBUGIT(5)
   ObjectFileName = OBJECTS_DIR + ObjectId + ".txt"
   ObjectFile, err = os.Open(ObjectFileName)
   if err != nil {
@@ -1184,6 +1184,7 @@ func OpenObjectFile(ObjectId string) {
 
 // Parse object stuff
 func ParseObjectStuff() {
+  DEBUGIT(5)
   ReadObjLine()
   for Stuff != "" {
     if StrLeft(Stuff, 9) == "ObjectId:" {
@@ -1232,6 +1233,8 @@ func ParseObjectStuff() {
 
 // Read a line from the object file
 func ReadObjLine() {
+  DEBUGIT(5)
+  Stuff = ""
   if ObjScanner.Scan() {
     Stuff = ObjScanner.Text()
     Stuff = StrTrimLeft(Stuff)

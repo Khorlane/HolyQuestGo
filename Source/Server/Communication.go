@@ -215,7 +215,7 @@ func ShowPlayersInRoom(pDnode *Dnode) {
 
 // Check for new connections
 func SockCheckForNewConnections() {
-	DEBUGIT(5)
+	DEBUGIT(6)
 	SockNewConnection()
 }
 
@@ -266,7 +266,7 @@ func SockRecv() {
 	var ConnectionCount int
 	var DnodeFdSave string
 
-	DEBUGIT(5)
+	DEBUGIT(6)
 	SetpDnodeCursorFirst()
 	for !EndOfDnodeList() {
 		pDnodeActor = GetDnode()
@@ -288,7 +288,7 @@ func SockRecv() {
 		// Receive / exception handling via non-blocking recv
 		if pDnodeActor.DnodeFd != nil {
 			buf := make([]byte, MAX_INPUT_LENGTH)
-			_ = pDnodeActor.DnodeFd.SetReadDeadline(time.Now())
+			_ = pDnodeActor.DnodeFd.SetReadDeadline(time.Now().Add(100 * time.Millisecond))
 			n, err := pDnodeActor.DnodeFd.Read(buf)
 			if err != nil {
 				if ne, ok := err.(net.Error); ok && ne.Timeout() {
@@ -5561,9 +5561,10 @@ func GrpLeaveMember() {
 
 // Logon greeting
 func LogonGreeting() {
-	var GreetingFile *os.File
-	var GreetingFileName string
+	var GreetingFile     *os.File
+	var GreetingFileName  string
 
+  DEBUGIT(1)
 	// Read greeting file
 	GreetingFileName = GREETING_DIR
 	GreetingFileName += "Greeting"
@@ -5915,7 +5916,7 @@ func RepositionDnodeCursor() {
 
 // New connection
 func SockNewConnection() {
-	DEBUGIT(5)
+	DEBUGIT(6)
 	if ListenSocket == nil {
     LogIt("Communication::SockNewConnection - Error: ListenSocket is nil")
     os.Exit(1)
@@ -5956,7 +5957,7 @@ func SockNewConnection() {
 
 // Send message
 func SockSend(arg string) {
-	DEBUGIT(5)
+	DEBUGIT(6)
 	if arg == "" {
 		return
 	}
@@ -5964,7 +5965,7 @@ func SockSend(arg string) {
 		return
 	}
 	buf := []byte(arg)
-	_ = pDnodeActor.DnodeFd.SetWriteDeadline(time.Now())
+	_ = pDnodeActor.DnodeFd.SetWriteDeadline(time.Now().Add(100 * time.Millisecond))
 	n, err := pDnodeActor.DnodeFd.Write(buf)
 	if err != nil {
 		if ne, ok := err.(net.Error); ok && ne.Timeout() {
