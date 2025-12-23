@@ -38,8 +38,8 @@ Revision tracking after December 22, 2025 is maintained via git.
 
 # Introduction
 
-This document's purpose is to document the progress of the OMugs
-project. Most of the components listed are also game commands,
+This historical document's purpose is to document the early progress of 
+the OMugs project. Most of the components listed are also game commands,
 exceptions are components like 'logon players', which refer to the code
 that handles a player's from initial connection state to the 'ready to
 play' state.
