@@ -10,11 +10,11 @@
 package server
 
 import (
-  "fmt"
-  "os"
-  "strconv"
-  "strings"
-  "time"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+	"time"
 )
 
 // BigDog is the main entry point for the OMugs server
@@ -213,7 +213,11 @@ func StrFindAfterPos(HayStack, Needle string, Pos int) int {
 
 // Find the first occurrence of a character in a string
 func StrFindFirstChar(str1 string, c rune) int {
-  return strings.IndexRune(str1, c)
+  idx := strings.IndexRune(str1, c)
+  if idx == -1 {
+    return 0
+  }
+  return idx
 }
 
 // Find one of the characters specified in Needle in the HayStack
@@ -371,7 +375,7 @@ func StrLeft(Str1 string, Length int) string {
     return Str1
   }
   return Str1[:Length]
-}
+} // TODO: This breaks when I do the status command
 
 // Make the first letter of a string lowercase
 func StrMakeFirstLower(Str1 string) string {
