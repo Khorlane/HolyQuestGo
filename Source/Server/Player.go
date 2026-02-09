@@ -356,19 +356,20 @@ func GetWeaponSkill(pPlayer *Player) int {
 
   WeaponSkill = 0
   pPlayer.WeaponType = StrMakeLower(pPlayer.WeaponType)
-  if pPlayer.WeaponType == "axe" {
+  switch (pPlayer.WeaponType) {
+  case "axe":
     WeaponSkill = pPlayer.SkillAxe
-  } else if pPlayer.WeaponType == "club" {
+  case "club":
     WeaponSkill = pPlayer.SkillClub
-  } else if pPlayer.WeaponType == "dagger" {
+  case "dagger":
     WeaponSkill = pPlayer.SkillDagger
-  } else if pPlayer.WeaponType == "hammer" {
+  case "hammer":
     WeaponSkill = pPlayer.SkillHammer
-  } else if pPlayer.WeaponType == "Spear" {
+  case "spear":
     WeaponSkill = pPlayer.SkillSpear
-  } else if pPlayer.WeaponType == "Staff" {
+  case "staff":
     WeaponSkill = pPlayer.SkillStaff
-  } else if pPlayer.WeaponType == "Sword" {
+  case "sword":
     WeaponSkill = pPlayer.SkillSword
   }
   return WeaponSkill
