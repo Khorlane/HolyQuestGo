@@ -1,13 +1,33 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
+  "folders": [
+    {
+      "path": "C:/Projects/HolyQuestGo"
+    }
   ],
   "settings": {
-    "files.associations": {
-      "string": "cpp",
-      "istream": "cpp"
-    }
+    // --- Go tooling ---
+    "go.useLanguageServer": true,
+    "go.languageServerExperimentalFeatures": {
+      "diagnostics": true,
+      "documentLink": true
+    },
+    "go.toolsManagement.autoUpdate": true,
+
+    // --- Formatting & hygiene ---
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+
+    // --- Search & indexing ---
+    "search.exclude": {
+      "**/bin": true,
+      "**/dist": true,
+      "**/.git": true
+    },
+
+    // --- Safety ---
+    "security.workspace.trust.enabled": true
   }
 }
