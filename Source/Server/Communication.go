@@ -4991,19 +4991,20 @@ func DoTrain() {
 		IncreaseDecrease = -1
 	}
 	// Ok, so train or untrain them already
-	if WeaponType == "axe" {
+	switch (WeaponType) {
+	case "axe":
 		pDnodeActor.pPlayer.SkillAxe += IncreaseDecrease
-	} else if WeaponType == "club" {
+	case "club":
 		pDnodeActor.pPlayer.SkillClub += IncreaseDecrease
-	} else if WeaponType == "dagger" {
+	case "dagger":
 		pDnodeActor.pPlayer.SkillDagger += IncreaseDecrease
-	} else if WeaponType == "hammer" {
+	case "hammer":
 		pDnodeActor.pPlayer.SkillHammer += IncreaseDecrease
-	} else if WeaponType == "spear" {
+	case "spear":
 		pDnodeActor.pPlayer.SkillSpear += IncreaseDecrease
-	} else if WeaponType == "staff" {
+	case "staff":
 		pDnodeActor.pPlayer.SkillStaff += IncreaseDecrease
-	} else if WeaponType == "sword" {
+	case "sword":
 		pDnodeActor.pPlayer.SkillSword += IncreaseDecrease
 	}
 	if MinusSign != "-" {
