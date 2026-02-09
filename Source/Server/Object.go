@@ -420,7 +420,6 @@ func IsObjInPlayerEqu(ObjectName string) {
   PlayerEquFile.Close()
   // Object not found in player's inventory
   pObject = nil
-  return
 }
 
 // Is object in player's inventory?
@@ -483,7 +482,6 @@ func IsObjInPlayerInv(ObjectName string) {
   }
   PlayerObjFile.Close()
   // Object not found in player's inventory
-  return
 }
 
 // Is object in room
@@ -545,7 +543,6 @@ func IsObjInRoom(ObjectName string) {
   RoomObjFile.Close()
   // Object not found in room
   pObject = nil
-  return
 }
 
 // Is this a valid object?
