@@ -6004,13 +6004,14 @@ func UpdatePlayerStats() {
 	GainReducePct = int(math.Floor(float64(HungerPct+ThirstPct) / (200.0 / float64(MGRP))))
 	if HitPoints < HitPointsMax {
 		// Hit points have fallen below maximun
-		if Position == "stand" {
+		switch Position {
+    case "stand":
 			// Additional hit points gained while standing
 			HitPointsGain = Level * HPT_GAIN_STAND
-		} else if Position == "sit" {
+		case "sit":
 			// Additional hit points gained while siting
 			HitPointsGain = Level * HPT_GAIN_SIT
-		} else if Position == "sleep" {
+		case "sleep":
 			// Additional hit points gained while sleeping
 			HitPointsGain = Level * HPT_GAIN_SLEEP
 		}
