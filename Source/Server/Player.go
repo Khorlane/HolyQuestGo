@@ -844,7 +844,8 @@ func PlayerCloseFile() {
 // Open player file
 func OpenPlayerFile(Name string, Mode string) bool {
   PlayerFileName := PLAYER_DIR + Name + ".txt"
-  if Mode == "Read" {
+  switch Mode {
+  case "Read":
     f, err := os.Open(PlayerFileName)
     if err != nil {
       return false
@@ -852,7 +853,7 @@ func OpenPlayerFile(Name string, Mode string) bool {
     PlayerFile = f
     PlayerReader = bufio.NewReader(PlayerFile)
     return true
-  } else if Mode == "Write" {
+  case "Write":
     f, err := os.Create(PlayerFileName)
     if err != nil {
       return false
@@ -860,7 +861,7 @@ func OpenPlayerFile(Name string, Mode string) bool {
     PlayerFile = f
     PlayerReader = bufio.NewReader(PlayerFile)
     return true
-  } else {
+  default:
     LogBuf = "Player::OpenFile - Mode is not 'Read' or 'Write'"
     LogIt(LogBuf)
     os.Exit(1)
