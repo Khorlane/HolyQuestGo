@@ -79,7 +79,7 @@ func MobileConstructor(MobileId string) *Mobile {
 
 // Add a mobile to a room
 func AddMobToRoom(RoomId, MobileId string) {
-  var BytesInFile        int
+  var BytesInFile        int64
   var NewRoomMobFile     bool
   var MobCount           int
   var MobileIdAdded      bool
@@ -93,9 +93,13 @@ func AddMobToRoom(RoomId, MobileId string) {
   RoomMobFileName = ROOM_MOB_DIR + RoomId + ".txt"
   RoomMobFile, err := os.Open(RoomMobFileName)
   if err != nil {
-    NewRoomMobFile = true
+    if os.IsNotExist(err) {
+      NewRoomMobFile = true
+    } else {
+      LogIt("AddMobToRoom - Open RoomMobFile failed: " + err.Error())
+      os.Exit(1)
+    }
   }
-  defer RoomMobFile.Close()
   // Open temp RoomMob file
   if RoomId == "" {
     LogIt("AddMobToRoom - RoomId is blank")
@@ -107,11 +111,11 @@ func AddMobToRoom(RoomId, MobileId string) {
     LogIt("AddMobToRoom - Open RoomMob temp file failed")
     os.Exit(1)
   }
-  defer RoomMobTmpFile.Close()
   if NewRoomMobFile {
     // New room mobile file, write the mobile and return
     TmpStr := "1 " + MobileId + "\n"
     RoomMobTmpFile.WriteString(TmpStr)
+    RoomMobTmpFile.Close()
     os.Rename(RoomMobTmpFileName, RoomMobFileName)
     return
   }
@@ -150,10 +154,15 @@ func AddMobToRoom(RoomId, MobileId string) {
     TmpStr := "1 " + MobileId + "\n"
     RoomMobTmpFile.WriteString(TmpStr)
   }
-  BytesInFile = StrGetLength(RoomMobTmpFileName) // TODO - steve - What is this doing?
   RoomMobFile.Close()
+  FileInfo, err := RoomMobTmpFile.Stat()
   RoomMobTmpFile.Close()
   os.Remove(RoomMobFileName)
+  if err == nil {
+    BytesInFile = FileInfo.Size()
+  } else {
+    BytesInFile = 0
+  }
   if BytesInFile > 0 {
     // If the file is not empty, rename it
     os.Rename(RoomMobTmpFileName, RoomMobFileName)
@@ -732,7 +741,7 @@ func MobAttacks(pMobile *Mobile) string {
   return MobileIdToBeRemoved
 }
 
-// Search all rooms for a specific mobile        
+// Search all rooms for a specific mobile
 func WhereMob(mobileIdSearch string) {
   var FileName        string
   var MobileHurt      bool

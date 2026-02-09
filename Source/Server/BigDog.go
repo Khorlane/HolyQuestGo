@@ -375,7 +375,7 @@ func StrLeft(Str1 string, Length int) string {
     return Str1
   }
   return Str1[:Length]
-} // TODO: This breaks when I do the status command
+}
 
 // Make the first letter of a string lowercase
 func StrMakeFirstLower(Str1 string) string {
