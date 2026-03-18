@@ -1,0 +1,62 @@
+Chat Resume Context
+
+Project root:
+- C:\Projects\HolyQuestGo
+
+Primary files discussed:
+- Instructions.txt
+- Source\Server\BigDog.go
+
+What this chat focused on:
+- Refining Instructions.txt so its rules are grouped clearly and interpreted consistently.
+- Reviewing BigDog.go against the updated Go Code Style Rules.
+
+Current structure of Instructions.txt:
+- Go Code Style Rules
+- C++ to Go Conversion Rules
+
+Key decisions made:
+- Process-only instructions were removed from the style/conversion discussion and treated separately.
+- Rules about preserving original function names, variable names, and comments belong under C++ to Go Conversion Rules.
+- "Avoid creating new variables" was clarified to account for identifiers that may actually be globals.
+- If a new variable is unavoidable during conversion, it should use PascalCase.
+- The "flower box" comment rule stays under Go Code Style Rules because it describes output code shape.
+- The old spacing rule was too broad and was replaced.
+
+Current Go Code Style Rules intent:
+- Free functions only, no methods.
+- No defer.
+- Do not change case.
+- Preserve intentional alignment and visual spacing.
+- Allow normal compact expression formatting where spacing is not serving structure or readability.
+- Always indent 2 spaces.
+- Never use tabs, except in formatter-controlled import blocks if the IDE reintroduces them.
+- Convert multi-line "flower box" function comments into a single // comment directly above the corresponding func line.
+- Keep multi-variable var declarations on separate lines.
+- Align types in consecutive single-line var declarations when practical.
+
+Current C++ to Go Conversion Rules intent:
+- Strive for line-by-line conversion.
+- Preserve original function names and case.
+- Preserve original variable names and case.
+- Preserve existing comments.
+- If direct preservation of comments no longer makes sense after conversion, adapt wording and placement so the comment still accurately describes the Go code.
+- Avoid creating new variables; an apparently undefined identifier may be a global.
+- If a new variable is unavoidable, name it using PascalCase.
+- Do not move the Close for FileExist.
+- Preserve project-specific conversion patterns such as:
+  - pDnodeActor->pPlayer->Save() => PlayerSave(pDnodeActor.pPlayer)
+  - pDnodeActor->pPlayer->CreatePrompt() => CreatePrompt(pDnodeActor.pPlayer)
+  - pDnodeActor->pPlayer->GetOutput() => GetOutput(pDnodeActor.pPlayer)
+  - stoi(...) => StrToInt(...)
+  - _endthread() => os.Exit(1)
+
+Specific conclusion about BigDog.go:
+- On the latest pass, BigDog.go was considered broadly compliant with the updated Go Code Style Rules.
+- The import block uses tabs, but that is acceptable under the explicit formatter-controlled import-block exception.
+- Compact expressions like x+1 and y-x-1 are now considered acceptable under the revised spacing rule.
+
+Preference for future discussion:
+- Keep design discussions brief.
+- When reviewing a file against the rules, do not enumerate every observation if there are many; summarize only the highest-signal items.
+- Use plain-text file paths and line numbers in responses rather than markdown file links, because the links opened as web pages in this environment.
