@@ -27,68 +27,91 @@ func BigDog() {
   PrintIt("OMugs Starting")
   HomeDir = GetHomeDir()
   if err := ChgDir(HomeDir); err != nil {
+    // Change directory failed
     PrintIt("BigDog() - Change directory to HomeDir failed")
     os.Exit(1)
   }
+  // Set Go Stop, force Go status
   stopItFileName = CONTROL_DIR + "StopIt"
   goGoGoFileName = CONTROL_DIR + "GoGoGo"
   if FileExist(stopItFileName) {
+    // If StopIt file exists, Rename it to GoGoGo
     if err := Rename(stopItFileName, goGoGoFileName); err != nil {
       PrintIt("BigDog() - Rename of 'StopIt' to 'GoGoGo' failed!")
       os.Exit(1)
     }
   }
+  // Log game startup
   OpenLogFile()
   LogBuf = "OMugs version " + VERSION + " has started"
   LogIt(LogBuf)
   LogBuf = "Home directory is " + HomeDir
   LogIt(LogBuf)
+  // Initialize
   EventTick = EVENT_TICK
   MobHealTick      = 0
   StateConnections = true
   StateRunning     = true
   StateStopping    = false
+  PACMN = 1.0 / MAC * MDRP / 100.0
   if ValErr := ValidateIt("All"); ValErr {
+    // Validation failed
     LogBuf = "OMugs has stopped"
     LogIt(LogBuf)
     CloseLogFile()
     return
   }
+  // Validation was ok, so open port, init, play on
   SockOpenPort(PORT_NBR)
   InitDescriptor()
   CalendarConstructor()
   for StateRunning {
-    time.Sleep(time.Duration(MILLI_SECONDS_TO_SLEEP) * time.Millisecond)
+    // Game runs until it is stopped
+    Sleep(MILLI_SECONDS_TO_SLEEP)
     AdvanceTime()
-    if !StateStopping && FileExist(stopItFileName) {
-      StateStopping = true
-      LogBuf = "Game is stopping"
-      LogIt(LogBuf)
+    if !StateStopping {
+      // Game is not stopping, but should it be?
+      if FileExist(stopItFileName) {
+        // StopIt file was found, Stop the game
+        StateStopping = true
+        LogBuf = "Game is stopping"
+        LogIt(LogBuf)
+      }
     }
     if !StateStopping {
+      // No new connections after stop command
       SockCheckForNewConnections()
       if StateConnections && DnodeCount == 1 {
+        // No players connected
         LogBuf = "No Connections - going to sleep"
         LogIt(LogBuf)
         StateConnections = false
       }
     }
     if StateConnections {
+      // One or more players are connected
       SockRecv()
       EventTick++
       if EventTick >= EVENT_TICK {
+        // Time to process events
         EventTick = 0
         Events()
       }
       MobHealTick++
       if MobHealTick >= MOB_HEAL_TICK {
+        // Time to heal mobs
         MobHealTick = 0
         HealMobiles()
       }
-    } else if StateStopping {
-      StateRunning = false
+    } else {
+      // No connections
+      if StateStopping {
+        // Game is stopping
+        StateRunning = false
+      }
     }
   }
+  // Game has stopped so clean up
   ClearDescriptor()
   SockClosePort(PORT_NBR)
   CalendarDestructor()

@@ -86,7 +86,7 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-070 - 03/18/26 - Document OMugs to HolyQuestGo file mapping (commit: 321ae3d)
 - [x] HQ-071 - 03/18/26 - Reformat ToDo history and add Features backlog file (commit: pending)
 - [x] HQ-072 - 03/18/26 - Align Social.go with Social.cpp (commit: pending)
-- [ ] HQ-073 - 03/18/26 - Align BigDog.go with BigDog.cpp
+- [x] HQ-073 - 03/18/26 - Align BigDog.go with BigDog.cpp (commit: pending)
 - [ ] HQ-074 - 03/18/26 - Align Calendar.go with Calendar.cpp
 - [ ] HQ-075 - 03/18/26 - Align Color.go with Color.h
 - [ ] HQ-076 - 03/18/26 - Align Communication.go with Communication.cpp
