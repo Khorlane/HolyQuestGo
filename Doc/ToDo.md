@@ -90,10 +90,10 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-074 - 03/18/26 - Align Calendar.go with Calendar.cpp (commit: 3697ef6)
 - [x] HQ-075 - 03/18/26 - Align Color.go with Color.h (commit: f10f908)
 - [ ] HQ-076 - 03/18/26 - Align Communication.go with Communication.cpp
-- [x] HQ-077 - 03/18/26 - Align Config.go with Config.h (commit: pending)
+- [x] HQ-077 - 03/18/26 - Align Config.go with Config.h (commit: f78104a)
 - [ ] HQ-078 - 03/18/26 - Align Descriptor.go with Descriptor.cpp
 - [ ] HQ-079 - 03/18/26 - Align Dnode.go with Dnode.cpp
-- [ ] HQ-080 - 03/18/26 - Align Help.go with Help.cpp
+- [x] HQ-080 - 03/18/26 - Align Help.go with Help.cpp (commit: pending)
 - [ ] HQ-081 - 03/18/26 - Align Log.go with Log.cpp
 - [ ] HQ-082 - 03/18/26 - Align Mobile.go with Mobile.cpp
 - [ ] HQ-083 - 03/18/26 - Align Object.go with Object.cpp

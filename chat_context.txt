@@ -90,7 +90,8 @@ Key interpretation decisions:
 - The old spacing rule was too broad and was replaced.
 
 Commit and todo workflow:
-- When the user says "commit our work", create the commit with an appropriate commit message.
+- When the user says "close HQ-xxx", treat that as the trigger to create the commit for that work item with an appropriate commit message.
+- The older phrase "commit our work" can be interpreted the same way, but "close HQ-xxx" is now the preferred trigger.
 - Check Doc\ToDo.md for a matching todo.
 - If a matching todo does not exist, create one.
 - Completed work items in Doc\ToDo.md should be marked done.
