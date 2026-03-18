@@ -15,6 +15,10 @@ Reference C++ source:
 - For the purposes of this project, ignore C:\OMugs\Source\Osi and C:\OMugs\Source\WinApp
 - Treat C:\OMugs\Source\Tools\Validate.cpp / Validate.h as the counterpart for Source\Server\Validate.go
 
+Project workflow files:
+- C:\Projects\HolyQuestGo\Doc\ToDo.md is the done-history file
+- C:\Projects\HolyQuestGo\Doc\Features.md is the active backlog / todo file
+
 Primary files discussed:
 - chat_context.txt
 - Doc\FileMap.md
@@ -60,6 +64,14 @@ Key interpretation decisions:
 - If a new variable is unavoidable during conversion, it should use PascalCase.
 - The "flower box" comment rule stays under Go Code Style Rules because it describes output code shape.
 - The old spacing rule was too broad and was replaced.
+
+Commit and todo workflow:
+- When the user says "commit our work", create the commit with an appropriate commit message.
+- Check Doc\ToDo.md for a matching todo.
+- If a matching todo does not exist, create one.
+- Completed work items in Doc\ToDo.md should be marked done.
+- If the real commit hash is not yet available at todo-creation time, use "(commit: pending)".
+- Fill in pending commit hashes later during a housekeeping/doc pass rather than amending commits by default.
 
 Current status:
 - The recent chat focused on refining the instructions so the rules are grouped clearly and interpreted consistently.
