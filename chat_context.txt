@@ -11,9 +11,13 @@ Project root:
 
 Reference C++ source:
 - When referring to C++ or cpp code, look in C:\OMugs\Source\Server
+- For OMugs-to-HolyQuestGo file mapping, see C:\Projects\HolyQuestGo\Doc\FileMap.md
+- For the purposes of this project, ignore C:\OMugs\Source\Osi and C:\OMugs\Source\WinApp
+- Treat C:\OMugs\Source\Tools\Validate.cpp / Validate.h as the counterpart for Source\Server\Validate.go
 
 Primary files discussed:
 - chat_context.txt
+- Doc\FileMap.md
 - Source\Server\BigDog.go
 - Source\Server\Room.go
 
