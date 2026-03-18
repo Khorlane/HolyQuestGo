@@ -47,8 +47,14 @@ func CalendarConstructor() {
   DEBUGIT(1)
   timer := time.Now().Unix()
   pCalendar.TimeToAdvanceHour = timer + int64(REAL_MINUTES_PER_HOUR*60)
+  pCalendar.Year      = 1
+  pCalendar.Month     = 1
+  pCalendar.Day       = 1
+  pCalendar.Hour      = 1
+  pCalendar.DayOfWeek = 1
   OpenCalendarFile()
   if CalendarFileIsOpen {
+    // Get start time
     GetStartTime()
   }
   LoadDayNamesArray()
@@ -65,9 +71,10 @@ func CalendarDestructor() {
 
 // Advances the in-game time by one hour
 func AdvanceTime() {
-  DEBUGIT(6)
+  DEBUGIT(5)
   NowSec := time.Now().Unix()
   if NowSec < pCalendar.TimeToAdvanceHour {
+    // Not time to advance the hour
     return
   }
   pCalendar.TimeToAdvanceHour = NowSec + int64(REAL_MINUTES_PER_HOUR*60)
@@ -95,17 +102,26 @@ func AdvanceTime() {
 func GetTime() string {
   DEBUGIT(1)
   FormattedDateTime := ""
+
   Stuff := pCalendar.DayNames[pCalendar.DayOfWeek-1]
-  FormattedDateTime += Stuff + ", "
+  FormattedDateTime += Stuff
+  FormattedDateTime += ", "
+
   Stuff = pCalendar.MonthNames[pCalendar.Month-1]
-  FormattedDateTime += Stuff + " "
+  FormattedDateTime += Stuff
+  FormattedDateTime += " "
+
   Stuff = pCalendar.DayOfMonth[pCalendar.Day-1]
-  FormattedDateTime += Stuff + ", "
+  FormattedDateTime += Stuff
+  FormattedDateTime += ", "
+
   Buffer := fmt.Sprintf("%d ", pCalendar.Year)
   Stuff = Buffer
   FormattedDateTime += Stuff
+
   Stuff = pCalendar.HourNames[pCalendar.Hour-1]
   FormattedDateTime += Stuff
+
   return FormattedDateTime
 }
 // Closes the calendar file
@@ -119,16 +135,10 @@ func CloseCalendarFile() {
 // Retrieves the start time from the calendar file
 func GetStartTime() {
   DEBUGIT(1)
-  if CalendarFile == nil {
-    LogBuf = "Calendar::GetStartTime - Calendar file handle is nil"
-    LogIt(LogBuf)
-    return
-  }
   scanner := bufio.NewScanner(CalendarFile)
   stuff := ""
-  if scanner.Scan() {
-    stuff = scanner.Text()
-  }
+  scanner.Scan()
+  stuff = scanner.Text()
   CloseCalendarFile()
   pCalendar.Year      = StrToInt(StrGetWord(stuff, 1))
   pCalendar.Month     = StrToInt(StrGetWord(stuff, 2))
@@ -136,26 +146,31 @@ func GetStartTime() {
   pCalendar.Hour      = StrToInt(StrGetWord(stuff, 4))
   pCalendar.DayOfWeek = StrToInt(StrGetWord(stuff, 5))
   if pCalendar.Year <= 0 {
+    // Invalid year
     pCalendar.Year = 1
     LogBuf = "Calendar::GetStartTime - Year forced to 1"
     LogIt(LogBuf)
   }
   if pCalendar.Month <= 0 {
+    // Invalid month
     pCalendar.Month = 1
     LogBuf = "Calendar::GetStartTime - Month forced to 1"
     LogIt(LogBuf)
   }
   if pCalendar.Day <= 0 {
+    // Invalid day
     pCalendar.Day = 1
     LogBuf = "Calendar::GetStartTime - Day forced to 1"
     LogIt(LogBuf)
   }
   if pCalendar.Hour <= 0 {
+    // Invalid hour
     pCalendar.Hour = 1
     LogBuf = "Calendar::GetStartTime - Hour forced to 1"
     LogIt(LogBuf)
   }
   if pCalendar.DayOfWeek <= 0 {
+    // Invalid day of week
     pCalendar.Hour = 1
     LogBuf = "Calendar::GetStartTime - Day of Week forced to 1"
     LogIt(LogBuf)
@@ -171,11 +186,15 @@ func GetStartTime() {
 
 // Opens the calendar file for reading
 func OpenCalendarFile() {
+  var CalendarFileName string
+
   DEBUGIT(1)
   CalendarFileIsOpen = false
-  CalendarFileName := CONTROL_DIR + "Calendar.txt"
+  CalendarFileName = CONTROL_DIR
+  CalendarFileName += "Calendar.txt"
   CalendarFileInp, err := os.Open(CalendarFileName)
   if err != nil {
+    // Calendar file does not exist
     LogBuf = "Calendar file not found."
     LogIt(LogBuf)
     LogBuf = "Forcing start date to Year: 1 Month: 1 Day: 1 Hour: 1 Day of Week: 1"
@@ -183,109 +202,141 @@ func OpenCalendarFile() {
     return
   }
   CalendarFile = CalendarFileInp
+  // Open was successful
   CalendarFileIsOpen = true
 }
 
 // Loads the day names from a file into the DayNames array
 func LoadDayNamesArray() {
+  var DayNamesFileName string
+
   DEBUGIT(1)
-  filename := DAY_NAMES_DIR + "DayNames.txt"
-  file, err := os.Open(filename)
+  DayNamesFileName = DAY_NAMES_DIR
+  DayNamesFileName += "DayNames.txt"
+  file, err := os.Open(DayNamesFileName)
   if err != nil {
-    LogBuf = "LoadDayNamesArray - DayNames file not found."
+    // Open failed
+    LogBuf = "Calendar::LoadDayNamesArray - Open Day Names file failed (read)"
     LogIt(LogBuf)
     return
   }
-  defer file.Close()
   pCalendar.DayNames = nil
   scanner := bufio.NewScanner(file)
+  scanner.Scan()
+  Stuff = scanner.Text()
   for scanner.Scan() {
-    line := scanner.Text()
-    if line != "" {
-      pCalendar.DayNames = append(pCalendar.DayNames, line)
-    }
+    // Read all day names
+    pCalendar.DayNames = append(pCalendar.DayNames, Stuff)
+    Stuff = scanner.Text()
   }
+  pCalendar.DayNames = append(pCalendar.DayNames, Stuff)
+  file.Close()
+  LogBuf = "DayNames array loaded"
+  LogIt(LogBuf)
 }
 
 // Loads the day of month names from a file into the DayOfMonth array
 func LoadDayOfMonthArray() {
+  var DayOfMonthFileName string
+
   DEBUGIT(1)
-  filename := DAY_OF_MONTH_DIR + "DayOfMonth.txt"
-  file, err := os.Open(filename)
+  DayOfMonthFileName = DAY_OF_MONTH_DIR
+  DayOfMonthFileName += "DayOfMonth.txt"
+  file, err := os.Open(DayOfMonthFileName)
   if err != nil {
-    LogBuf = "LoadDayOfMonthArray - DayOfMonth file not found."
+    // Open failed
+    LogBuf = "Calendar::LoadDayOfMonthArray - Open Day Of Month file failed (read)"
     LogIt(LogBuf)
     return
   }
-  defer file.Close()
   pCalendar.DayOfMonth = nil
   scanner := bufio.NewScanner(file)
+  scanner.Scan()
+  Stuff = scanner.Text()
   for scanner.Scan() {
-    line := scanner.Text()
-    if line != "" {
-      pCalendar.DayOfMonth = append(pCalendar.DayOfMonth, line)
-    }
+    // Read all day of month
+    pCalendar.DayOfMonth = append(pCalendar.DayOfMonth, Stuff)
+    Stuff = scanner.Text()
   }
+  pCalendar.DayOfMonth = append(pCalendar.DayOfMonth, Stuff)
+  file.Close()
+  LogBuf = "DayOfMonth array loaded"
+  LogIt(LogBuf)
 }
 
 // Loads the hour names from a file into the HourNames array
 func LoadHourNamesArray() {
+  var HourNamesFileName string
+
   DEBUGIT(1)
-  filename := HOUR_NAMES_DIR + "HourNames.txt"
-  file, err := os.Open(filename)
+  HourNamesFileName = HOUR_NAMES_DIR
+  HourNamesFileName += "HourNames.txt"
+  file, err := os.Open(HourNamesFileName)
   if err != nil {
-    LogBuf = "LoadHourNamesArray - HourNames file not found."
+    // Open failed
+    LogBuf = "Calendar::LoadHourNamesArray - Open Hour Names file failed (read)"
     LogIt(LogBuf)
     return
   }
-  defer file.Close()
   pCalendar.HourNames = nil
   scanner := bufio.NewScanner(file)
+  scanner.Scan()
+  Stuff = scanner.Text()
   for scanner.Scan() {
-    line := scanner.Text()
-    if line != "" {
-      pCalendar.HourNames = append(pCalendar.HourNames, line)
-    }
+    // Read all hour names
+    pCalendar.HourNames = append(pCalendar.HourNames, Stuff)
+    Stuff = scanner.Text()
   }
+  pCalendar.HourNames = append(pCalendar.HourNames, Stuff)
+  file.Close()
+  LogBuf = "HourNames array loaded"
+  LogIt(LogBuf)
 }
 
 // Loads the month names from a file into the MonthNames array
 func LoadMonthNamesArray() {
+  var MonthNamesFileName string
+
   DEBUGIT(1)
-  filename := MONTH_NAMES_DIR + "MonthNames.txt"
-  file, err := os.Open(filename)
+  MonthNamesFileName = MONTH_NAMES_DIR
+  MonthNamesFileName += "MonthNames.txt"
+  file, err := os.Open(MonthNamesFileName)
   if err != nil {
-    LogBuf = "LoadMonthNamesArray - MonthNames file not found."
+    // Open failed
+    LogBuf = "Calendar::LoadMonthNamesArray - Open Month Names file failed (read)"
     LogIt(LogBuf)
     return
   }
-  defer file.Close()
   pCalendar.MonthNames = nil
   scanner := bufio.NewScanner(file)
+  scanner.Scan()
+  Stuff = scanner.Text()
   for scanner.Scan() {
-    line := scanner.Text()
-    if line != "" {
-      pCalendar.MonthNames = append(pCalendar.MonthNames, line)
-    }
+    // Read all month names
+    pCalendar.MonthNames = append(pCalendar.MonthNames, Stuff)
+    Stuff = scanner.Text()
   }
+  pCalendar.MonthNames = append(pCalendar.MonthNames, Stuff)
+  file.Close()
+  LogBuf = "MonthNames array loaded"
+  LogIt(LogBuf)
 }
 
 // Saves the current in-game time to the calendar file
 func SaveTime() {
+  var CalendarFileName string
+
   DEBUGIT(1)
-  filename := CONTROL_DIR + "Calendar.txt"
-  file, err := os.Create(filename)
+  CalendarFileName = CONTROL_DIR
+  CalendarFileName += "Calendar.txt"
+  file, err := os.Create(CalendarFileName)
   if err != nil {
+    // Open failed
     LogBuf = "Calendar::SaveTime - Open calendar file - Failed"
     LogIt(LogBuf)
     return
   }
-  defer file.Close()
   buffer := fmt.Sprintf("%d %d %d %d %d", pCalendar.Year, pCalendar.Month, pCalendar.Day, pCalendar.Hour, pCalendar.DayOfWeek)
-  _, err = file.WriteString(buffer)
-  if err != nil {
-    LogBuf = "Calendar::SaveTime - Error writing to calendar file: " + err.Error()
-    LogIt(LogBuf)
-    return
-  }
+  file.WriteString(buffer)
+  file.Close()
 }
