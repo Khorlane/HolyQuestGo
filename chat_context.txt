@@ -1,10 +1,16 @@
 Chat Resume Context
 
+Purpose:
+- This file exists to preserve continuity across chat sessions so project conventions, decisions, exceptions, and current context do not need to be re-explained after closing and reopening the project.
+
 Project:
 - Converting code from cpp to Go
 
 Project root:
 - C:\Projects\HolyQuestGo
+
+Reference C++ source:
+- When referring to C++ or cpp code, look in C:\OMugs\Source\Server
 
 Primary files discussed:
 - chat_context.txt
@@ -27,9 +33,12 @@ Go Code Style Rules
 C++ to Go Conversion Rules
 - Strive for line by line conversion
 - Always preserve original function names and case
+- If converting class methods to free functions would cause a package-level name collision, use the smallest clear prefix needed to avoid the collision (for example, OpenRoomFile, CloseRoomFile)
 - Always preserve original variable names and case
-- Preserve existing comments
-- If direct preservation would no longer make sense after conversion, adapt the comment's wording and placement so it still accurately describes the Go code
+- Preserve existing comments from the C++ source during conversion
+- Do not omit, collapse, or silently rewrite C++ comments unless direct preservation would no longer make sense in Go
+- If a comment must be adapted, keep its original intent, placement, and level of specificity as closely as possible so it still accurately describes the Go code
+- After converting a function, verify that each meaningful C++ comment still appears in the Go version, either verbatim or appropriately adapted
 - Avoid creating new variables; an apparently undefined identifier may be a global
 - If a new variable is unavoidable, name it using PascalCase
 - Do not move the Close for FileExist
