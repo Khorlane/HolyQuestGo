@@ -177,8 +177,8 @@ func CheckSpawnMobileEvents() {
 		var Stuff string
 		for fmt.Fscanln(file, &Stuff); Stuff != ""; fmt.Fscanln(file, &Stuff) {
 			MobileID := strings.Fields(Stuff)[0]
-			RoomID := strings.Fields(Stuff)[1]
-			SpawnMobile(MobileID, RoomID)
+			RoomId := strings.Fields(Stuff)[1]
+			SpawnMobile(MobileID, RoomId)
 		}
 		file.Close()
 		if err := os.Remove(EventFilePath); err != nil {
@@ -223,14 +223,14 @@ func HealMobiles() {
 		if HealMobilesFightCheck("MobPlayer", MobileID) || HealMobilesFightCheck("PlayerMob", MobileID) {
 			return nil
 		}
-		RoomID := GetMobileRoom(MobileID)
-		RemoveMobFromRoom(RoomID, MobileID)
+		RoomId := GetMobileRoom(MobileID)
+		RemoveMobFromRoom(RoomId, MobileID)
 		DeleteMobStats(MobileID)
 		PositionOfDot := strings.Index(MobileID, ".")
 		if PositionOfDot > 0 {
 			MobileID = MobileID[:PositionOfDot]
 		}
-		AddMobToRoom(RoomID, MobileID)
+		AddMobToRoom(RoomId, MobileID)
 		return nil
 	})
 	if err != nil {
@@ -380,6 +380,8 @@ func MakeMobilesMove1() {
 
 // Build file containing mobiles to be moved
 func MakeMobilesMove2() {
+  //var RoomId string
+
 	RoomMobListFileName := CONTROL_DIR + "RoomMobList.txt"
 	RoomMobListTempFileName := CONTROL_DIR + "RoomMobListTemp.txt"
 	RoomMobMoveFileName := CONTROL_DIR + "RoomMobMove.txt"
@@ -410,7 +412,7 @@ func MakeMobilesMove2() {
 			RoomMobListTempFile.WriteString(RoomMobFileName + "\n")
 			continue
 		}
-		RoomID = strings.TrimSuffix(RoomMobFileName, filepath.Ext(RoomMobFileName))
+		//RoomId = strings.TrimSuffix(RoomMobFileName, filepath.Ext(RoomMobFileName))
 		RoomMobFilePath := ROOM_MOB_DIR + RoomMobFileName
 		RoomMobFile, err := os.Open(RoomMobFilePath)
 		if err != nil {
