@@ -15,6 +15,7 @@ Reference C++ source:
 Primary files discussed:
 - chat_context.txt
 - Source\Server\BigDog.go
+- Source\Server\Room.go
 
 Persistent instructions:
 
@@ -62,6 +63,9 @@ Current status:
 - On the latest pass, BigDog.go was considered broadly compliant with the updated Go Code Style Rules.
 - The import block uses tabs, but that is acceptable under the explicit formatter-controlled import-block exception.
 - Compact expressions like x+1 and y-x-1 are acceptable under the revised spacing rule.
+- Room.go was compared function-by-function against C:\OMugs\Source\Server\Room.cpp.
+- Room.go currently has corresponding coverage for all Room.cpp functions; no room functions are missing in Go.
+- Recent Room.go passes focused on bringing functions closer to the C++ source in structure, shared file usage, and preserved comments.
 
 Preference for future discussion:
 - Keep design discussions brief.
