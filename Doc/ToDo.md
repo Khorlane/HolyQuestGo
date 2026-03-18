@@ -88,9 +88,9 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-072 - 03/18/26 - Align Social.go with Social.cpp (commit: 712c95d)
 - [x] HQ-073 - 03/18/26 - Align BigDog.go with BigDog.cpp (commit: a15cbc8)
 - [x] HQ-074 - 03/18/26 - Align Calendar.go with Calendar.cpp (commit: 3697ef6)
-- [x] HQ-075 - 03/18/26 - Align Color.go with Color.h (commit: pending)
+- [x] HQ-075 - 03/18/26 - Align Color.go with Color.h (commit: f10f908)
 - [ ] HQ-076 - 03/18/26 - Align Communication.go with Communication.cpp
-- [ ] HQ-077 - 03/18/26 - Align Config.go with Config.h
+- [x] HQ-077 - 03/18/26 - Align Config.go with Config.h (commit: pending)
 - [ ] HQ-078 - 03/18/26 - Align Descriptor.go with Descriptor.cpp
 - [ ] HQ-079 - 03/18/26 - Align Dnode.go with Dnode.cpp
 - [ ] HQ-080 - 03/18/26 - Align Help.go with Help.cpp

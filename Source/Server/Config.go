@@ -129,7 +129,6 @@ var (
   LogBuf                  string
   MudCmd                  string
   PACMN                   float64 // Percent Armor Class Magic Number
-  RoomID                  string
   ScriptFileName          string
   StateConnections        bool
   StateRunning            bool
@@ -139,10 +138,10 @@ var (
   ValErr                  bool
 )
 
-// DebugIt logs a message if the debug level is greater than or equal to the specified level.
+// DEBUGIT logs a message if the debug level is greater than or equal to the specified level.
 func DEBUGIT(level int) {
   if DEBUG_LVL >= level {
-    pc, _, _, _ := runtime.Caller(1) // Get the caller's program counter
+    pc, _, _, _ := runtime.Caller(1)
     functionName := runtime.FuncForPC(pc).Name()
     LogIt(functionName)
   }

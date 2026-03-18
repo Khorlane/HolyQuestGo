@@ -20,6 +20,10 @@ Project workflow files:
 - C:\Projects\HolyQuestGo\Doc\Features.md is the active backlog / todo file
 
 Project knowledge:
+- In OMugs C++, DEBUGIT is a macro in Config.h; Go's DEBUGIT(level int) function is a language-driven replacement for that macro and should not be treated as a mismatch.
+- VERSION is expected to differ between OMugs C++ and HolyQuestGo and should not be treated as a Config alignment failure.
+- CharCodeMap[128] in C++ Config.h is used by the Osi scanner/token code and should not be treated as a required Config.go alignment item while Osi is out of project scope.
+- Buf[256] in C++ Config.h is a reusable temporary formatting buffer; Go's Buf string serves the same role and should be treated as a language-driven type adaptation, not a Config alignment failure.
 - ChgDir is an original BigDog.cpp utility function and should not be treated as a Go-only addition.
 - C++ ChgDir wraps fs::current_path(...), while Go ChgDir wraps os.Chdir(...); this is a library/API adaptation, not a semantic mismatch.
 - In BigDog startup, Go's GetHomeDir() call exists to supply HomeDir before ChgDir(HomeDir); this should be treated as a startup adaptation, not a BigDog alignment failure.
