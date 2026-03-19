@@ -11,109 +11,171 @@ package server
 
 import (
   "bufio"
-  "log"
+  "math"
   "math/rand"
   "os"
-  "strings"
 )
 
 // Calculate a percentage
-func CalcPct(dividend, divisor int) int {
-  x := float64(dividend)
-  y := float64(divisor)
-  z := x / y * 100.0
+func CalcPct(Dividend int, Divisor int) int {
+  var x float64
+  var y float64
+  var z float64
+
+  x = float64(Dividend)
+  y = float64(Divisor)
+  z = x / y * 100.0
   return int(z)
 }
 
-// Insert commas into a numeric string
-func FormatCommas(input string) string {
-  x := len(input)
+// Insert commas into a nueric string
+func FormatCommas(String string) string {
+  var i int // For loop control
+  var j int // Insert comma position
+  var x int // Original string length
+  var y int // Number of commas to be inserted
+  var z int // Remainder after dividing by 3
+
+  x = StrGetLength(String)
   if x < 4 {
-    return input
+    // No commas needed
+    return String
   }
-  y := x / 3
-  z := x % 3
+  y = x / 3
+  z = x % 3
   if z == 0 {
+    // String length is evenly divisable by 3
     y--
   }
-  j := x - 3
-  for i := y; i > 0; i-- {
-    input = input[:j] + "," + input[j:]
-    j -= 3
+  j = x - 3
+  for i = y; i > 0; i-- {
+    // Insert the commas
+    String = StrInsert(String, j, ",")
+    j = j - 3
   }
-  return input
+  return String
 }
 
 // Get home directory
 func GetHomeDir() string {
-  homeDirFileName := "HomeDir.txt"
-  file, err := os.Open(homeDirFileName)
+  var HomeDirFile     *os.File
+  var HomeDirFileName  string
+  var Buffer           string
+
+  // Read HomeDir file - must be in same dir as OMugs.exe
+  HomeDirFileName = "HomeDir"
+  HomeDirFileName += ".txt"
+  var err error
+  HomeDirFile, err = os.Open(HomeDirFileName)
   if err != nil {
-    log.Fatalf("GetHomeDir - Open HomeDir file failed: %v", err)
+    LogIt("Utility::GetHomeDir - Open HomeDir file failed (read)")
+    os.Exit(1)
   }
-  defer file.Close()
-  scanner := bufio.NewScanner(file)
+  scanner := bufio.NewScanner(HomeDirFile)
   if scanner.Scan() {
-    return scanner.Text()
+    Buffer = scanner.Text()
   }
-  return ""
+  HomeDir = Buffer
+  HomeDirFile.Close()
+  return HomeDir
 }
 
 // Get a random number between 1 and Limit
 func GetRandomNumber(Limit int) int {
-  return rand.Intn(Limit) + 1
+  var RandomNumber1 int
+  var RandomNumber2 int
+  var RandomNumber3 int
+
+  RandomNumber1 = rand.Int()
+  RandomNumber2 = int((math.MaxInt32 / Limit))
+  RandomNumber3 = int(RandomNumber1 / RandomNumber2) + 1
+  if RandomNumber3 > Limit {
+    RandomNumber3 = Limit
+  }
+  return RandomNumber3
 }
 
 // Get a SQL statement
-func GetSqlStmt(sqlStmtId string) string {
-  sqlStmtFileName := SQL_DIR + sqlStmtId + ".txt"
-  file, err := os.Open(sqlStmtFileName)
+func GetSqlStmt(SqlStmtId string) string {
+  //var RipOutMoreSpaces int
+  var SqlStmt string
+  var SqlStmtFile *os.File
+  var SqlStmtFileName string
+
+  //RipOutMoreSpaces = 0
+  // Read mobile stats Desc1 file
+  SqlStmtFileName = SQL_DIR
+  SqlStmtFileName += SqlStmtId
+  SqlStmtFileName += ".txt"
+  var err error
+  SqlStmtFile, err = os.Open(SqlStmtFileName)
   if err != nil {
-    log.Fatalf("GetSqlStmt - Open SqlStmt file failed: %v", err)
+    LogIt("Utility::GetSqlStmt - Open SqlStmt file failed")
+    os.Exit(1)
   }
-  defer file.Close()
-  scanner := bufio.NewScanner(file)
-  var sqlStmt strings.Builder
-  for scanner.Scan() {
-    sqlStmt.WriteString(scanner.Text() + " ")
+  scanner := bufio.NewScanner(SqlStmtFile)
+  if scanner.Scan() {
+    Stuff = scanner.Text()
+  } else {
+    Stuff = ""
   }
-  return strings.TrimSpace(sqlStmt.String())
+  for Stuff != "" {
+    // Read SQL statement
+    SqlStmt += Stuff
+    SqlStmt += " "
+    if scanner.Scan() {
+      Stuff = scanner.Text()
+    } else {
+      Stuff = ""
+    }
+  }
+  SqlStmtFile.Close()
+  SqlStmt = StrSqueeze(SqlStmt)
+  return SqlStmt
 }
 
+// Substitute $thingies to more meaningful pronouns
 func PronounSubstitute(MsgText string) string {
-  var PronounHeShe string
-  var PronounHimHer string
-  var PronounHisHers string
+  var PronounHeShe          string
+  var PronounHimHer         string
+  var PronounHisHers        string
   var PronounHimselfHerself string
 
   if pDnodeSrc.pPlayer.Sex == "M" {
+    // Set male player pronouns
     PronounHeShe          = "he"
     PronounHimHer         = "him"
     PronounHisHers        = "his"
     PronounHimselfHerself = "himself"
   } else {
+    // Set female player pronouns
     PronounHeShe          = "she"
     PronounHimHer         = "her"
-    PronounHisHers        = "her"
+    PronounHisHers        = "her" // was 'hers' but I think it should 'her'???
     PronounHimselfHerself = "herself"
   }
+  // Make the player substitutions
   StrReplace(&MsgText, "$P",               pDnodeSrc.PlayerName)
   StrReplace(&MsgText, "$pHeShe",          PronounHeShe)
   StrReplace(&MsgText, "$pHimHer",         PronounHimHer)
   StrReplace(&MsgText, "$pHisHers",        PronounHisHers)
   StrReplace(&MsgText, "$pHimselfHerself", PronounHimselfHerself)
   if pDnodeTgt != nil {
+    // There is a valid target
     if pDnodeTgt.pPlayer.Sex == "M" {
+      // Set male target pronouns
       PronounHeShe          = "he"
       PronounHimHer         = "him"
       PronounHisHers        = "his"
       PronounHimselfHerself = "himself"
     } else {
+      // Set female target pronouns
       PronounHeShe          = "she"
       PronounHimHer         = "her"
-      PronounHisHers        = "her"
+      PronounHisHers        = "her" // was 'hers' but I think it should 'her'???
       PronounHimselfHerself = "herself"
     }
+    // Make the target substitutions
     StrReplace(&MsgText, "$T",               pDnodeTgt.PlayerName)
     StrReplace(&MsgText, "$tHeShe",          PronounHeShe)
     StrReplace(&MsgText, "$tHimHer",         PronounHimHer)
@@ -123,6 +185,7 @@ func PronounSubstitute(MsgText string) string {
   return MsgText
 }
 
+// Translate a word
 func TranslateWord(Word string) string {
   if Word == "n"            { return "go north" }
   if Word == "s"            { return "go south" }
