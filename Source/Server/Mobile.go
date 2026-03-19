@@ -65,45 +65,45 @@ var MobScanner *bufio.Scanner
 func MobileConstructor(MobileIdParm string) *Mobile {
   var pMobile *Mobile
 
-  Action = ""
-  Armor = 0
-  Attack = ""
-  Damage = 0
-  Desc1 = ""
-  Desc2 = ""
-  Desc3 = ""
+  Action    = ""
+  Armor     = 0
+  Attack    = ""
+  Damage    = 0
+  Desc1     = ""
+  Desc2     = ""
+  Desc3     = ""
   ExpPoints = 0
-  Faction = ""
+  Faction   = ""
   HitPoints = 0
-  Hurt = false
-  Level = 0
-  Loot = ""
-  MobileId = ""
-  MobNbr = ""
-  Names = ""
+  Hurt      = false
+  Level     = 0
+  Loot      = ""
+  MobileId  = ""
+  MobNbr    = ""
+  Names     = ""
   Talk = ""
   OpenMobFile(MobileIdParm)
   ParseMobStuff()
   CloseMobFile()
   pMobile = &Mobile{}
-  pMobile.Action = Action
-  pMobile.Armor = Armor
-  pMobile.Attack = Attack
-  pMobile.Damage = Damage
-  pMobile.Desc1 = Desc1
-  pMobile.Desc2 = Desc2
-  pMobile.Desc3 = Desc3
-  pMobile.ExpPoints = ExpPoints
-  pMobile.Faction = Faction
-  pMobile.HitPoints = HitPoints
-  pMobile.Level = Level
-  pMobile.Loot = Loot
-  pMobile.MobileId = MobileId
-  pMobile.Names = Names
-  pMobile.Talk = Talk
+  pMobile.Action     = Action
+  pMobile.Armor      = Armor
+  pMobile.Attack     = Attack
+  pMobile.Damage     = Damage
+  pMobile.Desc1      = Desc1
+  pMobile.Desc2      = Desc2
+  pMobile.Desc3      = Desc3
+  pMobile.ExpPoints  = ExpPoints
+  pMobile.Faction    = Faction
+  pMobile.HitPoints  = HitPoints
+  pMobile.Level      = Level
+  pMobile.Loot       = Loot
+  pMobile.MobileId   = MobileId
+  pMobile.Names      = Names
+  pMobile.Talk       = Talk
   pMobile.MobileFile = MobileFile
-  pMobile.Hurt = false
-  pMobile.MobNbr = ""
+  pMobile.Hurt       = false
+  pMobile.MobNbr     = ""
   return pMobile
 }
 
@@ -122,7 +122,7 @@ func AddMobToRoom(RoomId, MobileId string) {
   UpdateMobInWorld(MobileId, "add")
   MobileId = StrMakeLower(MobileId)
   // Open RoomMob file
-  RoomMobFileName = ROOM_MOB_DIR
+  RoomMobFileName  = ROOM_MOB_DIR
   RoomMobFileName += RoomId
   RoomMobFileName += ".txt"
   NewRoomMobFile = false
@@ -131,7 +131,7 @@ func AddMobToRoom(RoomId, MobileId string) {
     NewRoomMobFile = true
   }
   // Open temp RoomMob file
-  RoomMobTmpFileName = ROOM_MOB_DIR
+  RoomMobTmpFileName  = ROOM_MOB_DIR
   RoomMobTmpFileName += RoomId
   if RoomId == "" {
     LogBuf = "Mobile::AddMobToRoom - RoomId is blank"
@@ -188,7 +188,7 @@ func AddMobToRoom(RoomId, MobileId string) {
       MobCount = StrToInt(StrGetWord(Stuff, 1))
       MobCount++
       Buf = fmt.Sprintf("%d", MobCount)
-      TmpStr = Buf
+      TmpStr  = Buf
       TmpStr += " "
       TmpStr += MobileId
       TmpStr += "\n"
@@ -206,7 +206,7 @@ func AddMobToRoom(RoomId, MobileId string) {
   }
   if !MobileIdAdded {
     // New mobile goes at the end
-    TmpStr = "1 "
+    TmpStr  = "1 "
     TmpStr += MobileId
     TmpStr += "\n"
     RoomMobTmpFile.WriteString(TmpStr)
@@ -230,12 +230,12 @@ func AddMobToRoom(RoomId, MobileId string) {
 
 // Count the number of a specific mobile in the world
 func CountMob(MobileId string) int {
-  var MobInWorldCount int
-  var MobInWorldFile *os.File
-  var MobInWorldFileName string
+  var MobInWorldCount     int
+  var MobInWorldFile     *os.File
+  var MobInWorldFileName  string
 
   // Open Mobile InWorld file
-  MobInWorldFileName = CONTROL_MOB_INWORLD_DIR
+  MobInWorldFileName  = CONTROL_MOB_INWORLD_DIR
   MobInWorldFileName += MobileId
   MobInWorldFileName += ".txt"
   MobInWorldFile, err := os.Open(MobInWorldFileName)
@@ -255,12 +255,12 @@ func CountMob(MobileId string) int {
 
 // Create a mobile player file
 func CreateMobPlayer(PlayerName, MobileId string) {
-  var NewFile bool
-  var MobPlayerFile *os.File
-  var MobPlayerFileName string
+  var NewFile            bool
+  var MobPlayerFile     *os.File
+  var MobPlayerFileName  string
 
   NewFile = true
-  MobPlayerFileName = MOB_PLAYER_DIR
+  MobPlayerFileName  = MOB_PLAYER_DIR
   MobPlayerFileName += PlayerName
   MobPlayerFileName += ".txt"
   MobPlayerFile, err := os.Open(MobPlayerFileName)
@@ -295,12 +295,12 @@ func CreateMobPlayer(PlayerName, MobileId string) {
 
 // Write to a mobile statistics file
 func CreateMobStatsFileWrite(Directory, MobileIdForFight, Stuff string) {
-  var AfxMessage string
-  var MobStatsFile *os.File
-  var MobStatsFileName string
+  var AfxMessage        string
+  var MobStatsFile     *os.File
+  var MobStatsFileName  string
 
   _ = AfxMessage
-  MobStatsFileName = Directory
+  MobStatsFileName  = Directory
   MobStatsFileName += MobileIdForFight
   MobStatsFileName += ".txt"
   MobStatsFile, err := os.Create(MobStatsFileName)
@@ -316,10 +316,10 @@ func CreateMobStatsFileWrite(Directory, MobileIdForFight, Stuff string) {
 
 // Create a player-mob relationship file
 func CreatePlayerMob(PlayerName, MobileId string) {
-  var PlayerMobFile *os.File
-  var PlayerMobFileName string
+  var PlayerMobFile     *os.File
+  var PlayerMobFileName  string
 
-  PlayerMobFileName = PLAYER_MOB_DIR
+  PlayerMobFileName  = PLAYER_MOB_DIR
   PlayerMobFileName += PlayerName
   PlayerMobFileName += ".txt"
   PlayerMobFile, err := os.Create(PlayerMobFileName)
@@ -334,13 +334,13 @@ func CreatePlayerMob(PlayerName, MobileId string) {
 
 // Delete a player-mob relationship file
 func DeleteMobPlayer(PlayerName, MobileId string) {
-  var BytesInFile int64
-  var MobileIdDeleted bool
-  var MobileIdCheck string
-  var MobPlayerFileName string
-  var MobPlayerFileNameTmp string
-  var MobPlayerFile *os.File
-  var MobPlayerFileTmp *os.File
+  var BytesInFile           int64
+  var MobileIdDeleted       bool
+  var MobileIdCheck         string
+  var MobPlayerFileName     string
+  var MobPlayerFileNameTmp  string
+  var MobPlayerFile        *os.File
+  var MobPlayerFileTmp     *os.File
 
   MobileId = StrMakeLower(MobileId)
   // Open MobPlayer file
@@ -415,32 +415,32 @@ func DeleteMobPlayer(PlayerName, MobileId string) {
 
 // Delete mobile statistics files
 func DeleteMobStats(MobileId string) {
-  var MobStatsFileName string
+  var MobStatsFileName  string
   var PlayerMobFileName string
 
   _ = PlayerMobFileName
   // Delete 'MobStats' Armor file
-  MobStatsFileName = MOB_STATS_ARM_DIR
+  MobStatsFileName  = MOB_STATS_ARM_DIR
   MobStatsFileName += MobileId
   MobStatsFileName += ".txt"
   Remove(MobStatsFileName)
   // Delete 'MobStats' Attack file
-  MobStatsFileName = MOB_STATS_ATK_DIR
+  MobStatsFileName  = MOB_STATS_ATK_DIR
   MobStatsFileName += MobileId
   MobStatsFileName += ".txt"
   Remove(MobStatsFileName)
   // Delete 'MobStats' Damage file
-  MobStatsFileName = MOB_STATS_DMG_DIR
+  MobStatsFileName  = MOB_STATS_DMG_DIR
   MobStatsFileName += MobileId
   MobStatsFileName += ".txt"
   Remove(MobStatsFileName)
   // Delete 'MobStats' Desc1 file
-  MobStatsFileName = MOB_STATS_DSC_DIR
+  MobStatsFileName  = MOB_STATS_DSC_DIR
   MobStatsFileName += MobileId
   MobStatsFileName += ".txt"
   Remove(MobStatsFileName)
   // Delete 'MobStats' ExpPoints file
-  MobStatsFileName = MOB_STATS_EXP_DIR
+  MobStatsFileName  = MOB_STATS_EXP_DIR
   MobStatsFileName += MobileId
   MobStatsFileName += ".txt"
   Remove(MobStatsFileName)
@@ -450,12 +450,12 @@ func DeleteMobStats(MobileId string) {
   MobStatsFileName += ".txt"
   Remove(MobStatsFileName)
   // Delete 'MobStats' Loot file
-  MobStatsFileName = MOB_STATS_LOOT_DIR
+  MobStatsFileName  = MOB_STATS_LOOT_DIR
   MobStatsFileName += MobileId
   MobStatsFileName += ".txt"
   Remove(MobStatsFileName)
   // Delete 'MobStats' Room file
-  MobStatsFileName = MOB_STATS_ROOM_DIR
+  MobStatsFileName  = MOB_STATS_ROOM_DIR
   MobStatsFileName += MobileId
   MobStatsFileName += ".txt"
   Remove(MobStatsFileName)
@@ -463,12 +463,12 @@ func DeleteMobStats(MobileId string) {
 
 // Delete player-mob relationship file
 func DeletePlayerMob(PlayerName string) {
-  var MobStatsFileName string
+  var MobStatsFileName  string
   var PlayerMobFileName string
 
   _ = MobStatsFileName
   // Delete 'PlayerMob' file
-  PlayerMobFileName = PLAYER_MOB_DIR
+  PlayerMobFileName  = PLAYER_MOB_DIR
   PlayerMobFileName += PlayerName
   PlayerMobFileName += ".txt"
   Remove(PlayerMobFileName)
@@ -476,24 +476,24 @@ func DeletePlayerMob(PlayerName string) {
 
 // Check if a mobile is in the room by its name
 func IsMobInRoom(mobileName string) *Mobile {
-  var pMobile *Mobile
-  var NamesCheck string
-  var MobileHurt bool
-  var MobileId string
-  var MobileIdCheck string
-  var MobileIdHurt string
-  var MobileNameCheck string
-  var MobNbr string
-  var PositionOfDot int
-  var RoomMobFile *os.File
-  var RoomMobFileName string
+  var pMobile         *Mobile
+  var NamesCheck       string
+  var MobileHurt       bool
+  var MobileId         string
+  var MobileIdCheck    string
+  var MobileIdHurt     string
+  var MobileNameCheck  string
+  var MobNbr           string
+  var PositionOfDot    int
+  var RoomMobFile     *os.File
+  var RoomMobFileName  string
 
   _ = MobileIdCheck
   _ = MobileIdHurt
   _ = MobileNameCheck
 
   // Open RoomMob file
-  RoomMobFileName = ROOM_MOB_DIR
+  RoomMobFileName  = ROOM_MOB_DIR
   RoomMobFileName += pDnodeActor.pPlayer.RoomId
   RoomMobFileName += ".txt"
   //*******************************
@@ -523,8 +523,8 @@ func IsMobInRoom(mobileName string) *Mobile {
         MobNbr = StrRight(MobileId, StrGetLength(MobileId)-PositionOfDot-1)
         MobileId = StrLeft(MobileId, PositionOfDot)
       }
-      pMobile = MobileConstructor(MobileId)
-      pMobile.Hurt = MobileHurt
+      pMobile        = MobileConstructor(MobileId)
+      pMobile.Hurt   = MobileHurt
       pMobile.MobNbr = MobNbr
       return pMobile
     }
@@ -546,18 +546,18 @@ func IsMobInRoom(mobileName string) *Mobile {
   Stuff = scanner.Text()
   for Stuff != "" {
     // Process each mobile in the room
-    MobileId = StrGetWord(Stuff, 2)
+    MobileId      = StrGetWord(Stuff, 2)
     PositionOfDot = StrFindFirstChar(MobileId, '.')
-    MobileHurt = false
+    MobileHurt     = false
     if PositionOfDot > 1 {
       // Mobile is hurt but not fighting
-      MobileHurt = true
+      MobileHurt   = true
       MobileIdHurt = MobileId
-      MobNbr = StrRight(MobileId, StrGetLength(MobileId)-PositionOfDot-1)
-      MobileId = StrLeft(MobileId, PositionOfDot)
+      MobNbr       = StrRight(MobileId, StrGetLength(MobileId)-PositionOfDot-1)
+      MobileId     = StrLeft(MobileId, PositionOfDot)
     }
-    pMobile = MobileConstructor(MobileId)
-    pMobile.Hurt = MobileHurt
+    pMobile        = MobileConstructor(MobileId)
+    pMobile.Hurt   = MobileHurt
     pMobile.MobNbr = MobNbr
     if pMobile.Hurt {
       // Mobile is hurt
@@ -586,17 +586,17 @@ func IsMobInRoom(mobileName string) *Mobile {
 
 // Get the first description of a mobile
 func GetMobDesc1(MobileId string) string {
-  var Desc1 string
-  var MobileFile *os.File
-  var MobileFileName string
-  var PositionOfDot int
+  var Desc1           string
+  var MobileFile     *os.File
+  var MobileFileName  string
+  var PositionOfDot   int
 
   PositionOfDot = StrFindFirstChar(MobileId, '.')
   if PositionOfDot > 1 {
     // Mobile is hurt but not fighting
     MobileId = StrLeft(MobileId, PositionOfDot)
   }
-  MobileFileName = MOBILES_DIR
+  MobileFileName  = MOBILES_DIR
   MobileFileName += MobileId
   MobileFileName += ".txt"
   MobileFile, err := os.Open(MobileFileName)
@@ -619,9 +619,9 @@ func GetMobDesc1(MobileId string) string {
 
 // Check if a mobile ID is in a room
 func IsMobileIdInRoom(RoomId, MobileId string) bool {
-  var MobileIdCheck string
-  var RoomMobFile *os.File
-  var RoomMobFileName string
+  var MobileIdCheck    string
+  var RoomMobFile     *os.File
+  var RoomMobFileName  string
 
   // Open RoomMob file
   RoomMobFileName = ROOM_MOB_DIR
@@ -653,9 +653,9 @@ func IsMobileIdInRoom(RoomId, MobileId string) bool {
 
 // Check if a mobile is valid by its ID
 func IsMobValid(mobileId string) *Mobile {
-  var pMobile *Mobile
-  var MobileFileName string
-  var MobileFile *os.File
+  var pMobile        *Mobile
+  var MobileFileName  string
+  var MobileFile     *os.File
 
   _ = MobileFile
 
@@ -672,17 +672,17 @@ func IsMobValid(mobileId string) *Mobile {
 
 // Put a mobile back in the room
 func PutMobBackInRoom(PlayerName, RoomIdBeforeFleeing string) {
-  var MobHitPointsLeft string
-  var MobHitPointsTotal string
-  var MobileId string
-  var MobPlayerFile *os.File
-  var MobPlayerFileName string
-  var MobStatsHitPointsFile *os.File
-  var MobStatsHitPointsFileName string
-  var PositionOfDot int
+  var MobHitPointsLeft           string
+  var MobHitPointsTotal          string
+  var MobileId                   string
+  var MobPlayerFile             *os.File
+  var MobPlayerFileName          string
+  var MobStatsHitPointsFile     *os.File
+  var MobStatsHitPointsFileName  string
+  var PositionOfDot              int
 
   // Open MobPlayer file
-  MobPlayerFileName = MOB_PLAYER_DIR
+  MobPlayerFileName  = MOB_PLAYER_DIR
   MobPlayerFileName += PlayerName
   MobPlayerFileName += ".txt"
   MobPlayerFile, err := os.Open(MobPlayerFileName)
@@ -732,19 +732,19 @@ func PutMobBackInRoom(PlayerName, RoomIdBeforeFleeing string) {
 
 // Remove a mobile from room
 func RemoveMobFromRoom(RoomId, MobileId string) {
-  var BytesInFile int64
-  var MobileIdRemoved bool
-  var MobileIdCheck string
-  var MobCount int
-  var RoomMobFile *os.File
-  var RoomMobFileName string
-  var RoomMobTmpFile *os.File
-  var RoomMobTmpFileName string
+  var BytesInFile         int64
+  var MobileIdRemoved     bool
+  var MobileIdCheck       string
+  var MobCount            int
+  var RoomMobFile        *os.File
+  var RoomMobFileName     string
+  var RoomMobTmpFile     *os.File
+  var RoomMobTmpFileName  string
 
   UpdateMobInWorld(MobileId, "remove")
   MobileId = StrMakeLower(MobileId)
   // Open RoomMob file
-  RoomMobFileName = ROOM_MOB_DIR
+  RoomMobFileName  = ROOM_MOB_DIR
   RoomMobFileName += RoomId
   RoomMobFileName += ".txt"
   RoomMobFile, err := os.Open(RoomMobFileName)
@@ -754,7 +754,7 @@ func RemoveMobFromRoom(RoomId, MobileId string) {
     os.Exit(1)
   }
   // Open temp RoomMob file
-  RoomMobTmpFileName = ROOM_MOB_DIR
+  RoomMobTmpFileName  = ROOM_MOB_DIR
   RoomMobTmpFileName += RoomId
   if RoomId == "" {
     LogBuf = "RoomId is blank 2"
@@ -831,21 +831,21 @@ func RemoveMobFromRoom(RoomId, MobileId string) {
 
 // Show room mobiles
 func ShowMobsInRoom(pDnode *Dnode) {
-  var pMobile *Mobile
-  var i, j int
-  var MobileCount string
-  var MobileHurt bool
-  var MobileId string
-  var MobileIdsToBeRemoved string
-  var MobileIdHurt string
-  var MobNbr string
-  var PositionOfDot int
-  var RemoveMobCount int
-  var RoomMobFile *os.File
-  var RoomMobFileName string
+  var pMobile              *Mobile
+  var i, j                  int
+  var MobileCount           string
+  var MobileHurt            bool
+  var MobileId              string
+  var MobileIdsToBeRemoved  string
+  var MobileIdHurt          string
+  var MobNbr                string
+  var PositionOfDot         int
+  var RemoveMobCount        int
+  var RoomMobFile          *os.File
+  var RoomMobFileName       string
 
   // Open RoomMob file
-  RoomMobFileName = ROOM_MOB_DIR
+  RoomMobFileName  = ROOM_MOB_DIR
   RoomMobFileName += pDnode.pPlayer.RoomId
   RoomMobFileName += ".txt"
   RoomMobFile, err := os.Open(RoomMobFileName)
@@ -857,20 +857,20 @@ func ShowMobsInRoom(pDnode *Dnode) {
   Scanner.Scan()
   Stuff = Scanner.Text()
   for Stuff != "" {
-    MobileCount = StrGetWord(Stuff, 1)
-    MobileId = StrGetWord(Stuff, 2)
+    MobileCount   = StrGetWord(Stuff, 1)
+    MobileId      = StrGetWord(Stuff, 2)
     PositionOfDot = StrFindFirstChar(MobileId, '.')
-    MobileHurt = false
+    MobileHurt    = false
     MobNbr = ""
     if PositionOfDot > 1 {
       // Mobile is hurt but not fighting
-      MobileHurt = true
+      MobileHurt   = true
       MobileIdHurt = MobileId
-      MobNbr = StrRight(MobileId, StrGetLength(MobileId)-PositionOfDot-1)
-      MobileId = StrLeft(MobileId, PositionOfDot)
+      MobNbr       = StrRight(MobileId, StrGetLength(MobileId)-PositionOfDot-1)
+      MobileId     = StrLeft(MobileId, PositionOfDot)
     }
     pMobile = MobileConstructor(MobileId)
-    pMobile.Hurt = MobileHurt
+    pMobile.Hurt   = MobileHurt
     pMobile.MobNbr = MobNbr
     if MobileHurt {
       // Mobile is hurt
@@ -919,13 +919,13 @@ func ShowMobsInRoom(pDnode *Dnode) {
 
 // Handle the logic for a mobile attacking a player
 func MobAttacks(pMobile *Mobile) string {
-  var KillMsg string
-  var MobileId string
+  var KillMsg             string
+  var MobileId            string
   var MobileIdToBeRemoved string
-  var PhraseAll string
-  var PhrasePlayer string
-  var PlayerName string
-  var RoomId string
+  var PhraseAll           string
+  var PhrasePlayer        string
+  var PlayerName          string
+  var RoomId              string
 
   PlayerName = pDnodeActor.PlayerName
   RoomId     = pDnodeActor.pPlayer.RoomId
@@ -936,11 +936,11 @@ func MobAttacks(pMobile *Mobile) string {
   if !pDnodeActor.PlayerStateFighting {
     // Phrases for starting a fight
     PhrasePlayer = " starts a fight with you!"
-    PhraseAll = " starts a fight with "
+    PhraseAll    = " starts a fight with "
   } else {
     // Phrases for mob attacking a player already fighting
     PhrasePlayer = " attacks you!"
-    PhraseAll = " attacks "
+    PhraseAll    = " attacks "
   }
   // Send message to player
   pDnodeActor.PlayerOut += "\r\n"
@@ -991,13 +991,13 @@ func MobAttacks(pMobile *Mobile) string {
 
 // Search all rooms for a specific mobile
 func WhereMob(mobileIdSearch string) {
-  var FileName string
-  var MobileHurt bool
-  var MobileId string
-  var PositionOfDot int
-  var RoomMobFile *os.File
-  var RoomMobFileName string
-  var RoomName string
+  var FileName         string
+  var MobileHurt       bool
+  var MobileId         string
+  var PositionOfDot    int
+  var RoomMobFile     *os.File
+  var RoomMobFileName  string
+  var RoomName         string
 
   pDnodeActor.PlayerOut += "\r\n"
   pDnodeActor.PlayerOut += "Mobiles"
@@ -1065,10 +1065,10 @@ func WhereMob(mobileIdSearch string) {
 
 // Update the count of a mobile in the world
 func UpdateMobInWorld(mobileId string, addRemove string) {
-  var MobInWorldCount int
-  var MobInWorldFile *os.File
-  var MobInWorldFileName string
-  var PositionOfDot int
+  var MobInWorldCount     int
+  var MobInWorldFile     *os.File
+  var MobInWorldFileName  string
+  var PositionOfDot       int
 
   MobInWorldCount = 0
   PositionOfDot = StrFindFirstChar(mobileId, '.')
@@ -1170,14 +1170,14 @@ func ExamineMob(MobileId string) {
 
 // Get the next mobile number
 func GetNextMobNbr() {
-  var NextMobNbr string
-  var NextMobNbrFile *os.File
-  var NextMobNbrFileName string
-  var NextMobNbrInteger int
-  var NextMobNbrString string
+  var NextMobNbr          string
+  var NextMobNbrFile     *os.File
+  var NextMobNbrFileName  string
+  var NextMobNbrInteger   int
+  var NextMobNbrString    string
 
   // Read next mobile number file
-  NextMobNbrFileName = CONTROL_DIR
+  NextMobNbrFileName  = CONTROL_DIR
   NextMobNbrFileName += "NextMobileNumber"
   NextMobNbrFileName += ".txt"
   NextMobNbrFile, err := os.Open(NextMobNbrFileName)
@@ -1213,11 +1213,11 @@ func GetNextMobNbr() {
 
 // Generate a message for a mobile to say
 func MobTalk(pMobile *Mobile) string {
-  var MobTalkFile *os.File
-  var MobTalkFileName string
-  var MobileMsg string
-  var MsgCount int
-  var RndMsgNbr int
+  var MobTalkFile     *os.File
+  var MobTalkFileName  string
+  var MobileMsg        string
+  var MsgCount         int
+  var RndMsgNbr        int
 
   _ = pMobile
 
@@ -1225,7 +1225,7 @@ func MobTalk(pMobile *Mobile) string {
   //* Open and read message file *
   //******************************
   // Open and read message file
-  MobTalkFileName = TALK_DIR
+  MobTalkFileName  = TALK_DIR
   MobTalkFileName += Talk
   MobTalkFileName += ".txt"
   MobTalkFile, err := os.Open(MobTalkFileName)

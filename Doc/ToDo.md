@@ -95,7 +95,8 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-079 - 03/19/26 - Align Dnode.go with Dnode.cpp (commit: 3e51a6c)
 - [x] HQ-080 - 03/18/26 - Align Help.go with Help.cpp (commit: 3c7aabd)
 - [x] HQ-081 - 03/18/26 - Align Log.go with Log.cpp (commit: 13bd13b)
-- [x] HQ-082 - 03/19/26 - Align Mobile.go with Mobile.cpp (commit: pending)
+- [x] HQ-082 - 03/19/26 - Align Mobile.go with Mobile.cpp (commit: 18f9c96)
+- [x] HQ-095 - 03/19/26 - Cosmetic cleanup in Mobile.go (commit: pending)
 - [ ] HQ-083 - 03/18/26 - Align Object.go with Object.cpp
 - [ ] HQ-084 - 03/18/26 - Align Player.go with Player.cpp
 - [x] HQ-085 - 03/18/26 - Align Utility.go with Utility.cpp (commit: c6a653c)
