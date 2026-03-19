@@ -92,7 +92,7 @@ For more information, please refer to <http://unlicense.org/>
 - [ ] HQ-076 - 03/18/26 - Align Communication.go with Communication.cpp
 - [x] HQ-077 - 03/18/26 - Align Config.go with Config.h (commit: f78104a)
 - [ ] HQ-078 - 03/18/26 - Align Descriptor.go with Descriptor.cpp
-- [ ] HQ-079 - 03/18/26 - Align Dnode.go with Dnode.cpp
+- [x] HQ-079 - 03/18/26 - Align Dnode.go with Dnode.cpp (commit: pending)
 - [x] HQ-080 - 03/18/26 - Align Help.go with Help.cpp (commit: 3c7aabd)
 - [x] HQ-081 - 03/18/26 - Align Log.go with Log.cpp (commit: 13bd13b)
 - [ ] HQ-082 - 03/18/26 - Align Mobile.go with Mobile.cpp
