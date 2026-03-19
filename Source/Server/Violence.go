@@ -129,10 +129,10 @@ func GetMobileAttack(MobileId string) string {
 
 // Get mobile Damage
 func GetMobileDamage(MobileId string) int {
-  var MobileDamage           int
-  var MobStatsDamageFile    *os.File
-  var MobStatsDamageFileName string
-  var err                    error
+  var MobileDamage            int
+  var MobStatsDamageFile     *os.File
+  var MobStatsDamageFileName  string
+  var err                     error
 
   // Read mobile stats Damage file
   MobStatsDamageFileName = MOB_STATS_DMG_DIR
@@ -188,8 +188,8 @@ func GetMobileDesc1(MobileId string) string {
 // Get mobile Experience Points
 func GetMobileExpPointsLevel(MobileId string) string {
   var MobStatsExpPointsFile     *os.File
-  var MobStatsExpPointsFileName string
-  var err                       error
+  var MobStatsExpPointsFileName  string
+  var err                        error
 
   // Read mobile stats ExpPoints and Level file
   MobStatsExpPointsFileName = MOB_STATS_EXP_DIR
@@ -215,9 +215,9 @@ func GetMobileExpPointsLevel(MobileId string) string {
 // Get mobile Hit Points
 func GetMobileHitPoints(MobileId string) string {
   var MobStatsHitPointsFile     *os.File
-  var MobStatsHitPointsFileName string
-  var MobHitPoints              string
-  var err                       error
+  var MobStatsHitPointsFileName  string
+  var MobHitPoints               string
+  var err                        error
 
   // Read mobile stats hit points file
   MobStatsHitPointsFileName = MOB_STATS_HPT_DIR
@@ -332,10 +332,10 @@ func GetMobPlayerMobileId(PlayerName string, i int) string {
 
 // Get PlayerMob MobileId
 func GetPlayerMobMobileId(PlayerName string) string {
-  var MobileId          string
-  var PlayerMobFile    *os.File
-  var PlayerMobFileName string
-  var err               error
+  var MobileId           string
+  var PlayerMobFile     *os.File
+  var PlayerMobFileName  string
+  var err                error
 
   PlayerMobFileName = PLAYER_MOB_DIR
   PlayerMobFileName += PlayerName
