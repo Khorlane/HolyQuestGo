@@ -109,3 +109,6 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-093 - 03/19/26 - Clarify commit and todo workflow in chat_context.txt (commit: 57bc461)
 - [x] HQ-094 - 03/19/26 - Add todo date workflow rules and reconcile done dates from commit history (commit: d48f69b)
 - [x] HQ-095 - 03/19/26 - Cosmetic cleanup in Mobile.go (commit: 4cf85b3)
+- [ ] HQ-096 - 03/19/26 - Clean up unreachable code in Violence.go
+- [ ] HQ-097 - 03/19/26 - Clean up redundant return statements in Object.go
+- [ ] HQ-098 - 03/19/26 - Evaluate tagged switch on Mode in Player.go OpenPlayerFile()
