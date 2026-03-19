@@ -96,8 +96,8 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-080 - 03/18/26 - Align Help.go with Help.cpp (commit: 3c7aabd)
 - [x] HQ-081 - 03/18/26 - Align Log.go with Log.cpp (commit: 13bd13b)
 - [x] HQ-082 - 03/19/26 - Align Mobile.go with Mobile.cpp (commit: 18f9c96)
-- [x] HQ-095 - 03/19/26 - Cosmetic cleanup in Mobile.go (commit: pending)
-- [ ] HQ-083 - 03/18/26 - Align Object.go with Object.cpp
+- [x] HQ-095 - 03/19/26 - Cosmetic cleanup in Mobile.go (commit: 4cf85b3)
+- [x] HQ-083 - 03/19/26 - Align Object.go with Object.cpp (commit: pending)
 - [ ] HQ-084 - 03/18/26 - Align Player.go with Player.cpp
 - [x] HQ-085 - 03/18/26 - Align Utility.go with Utility.cpp (commit: c6a653c)
 - [x] HQ-086 - 03/18/26 - Align Validate.go with Tools\\Validate.cpp (commit: 8e0f766)
