@@ -12,6 +12,7 @@ package server
 import (
 	"bufio"
 	"os"
+	"path/filepath"
 )
 
 // Log Validation Error
@@ -135,9 +136,7 @@ func ValidateLibraryLoot() {
       //************
       //* ObjectId *
       //************
-      ObjectIdFileName = OBJECTS_DIR
-      ObjectIdFileName += ObjectId
-      ObjectIdFileName += ".txt"
+      ObjectIdFileName = filepath.Join(HomeDir, OBJECTS_DIR, ObjectId+".txt")
       if !FileExist(ObjectIdFileName) {
         // ObjectId file not found
         Message = "Object file"

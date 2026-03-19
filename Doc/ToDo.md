@@ -99,7 +99,9 @@ For more information, please refer to <http://unlicense.org/>
 - [ ] HQ-083 - 03/18/26 - Align Object.go with Object.cpp
 - [ ] HQ-084 - 03/18/26 - Align Player.go with Player.cpp
 - [x] HQ-085 - 03/18/26 - Align Utility.go with Utility.cpp (commit: c6a653c)
-- [x] HQ-086 - 03/18/26 - Align Validate.go with Tools\\Validate.cpp (commit: pending)
+- [x] HQ-086 - 03/18/26 - Align Validate.go with Tools\\Validate.cpp (commit: 8e0f766)
 - [ ] HQ-087 - 03/18/26 - Align Violence.go with Violence.cpp
 - [x] HQ-088 - 03/18/26 - Temporary fix to World.go to remove compile error (commit: aba50ca)
 - [ ] HQ-089 - 03/18/26 - Align World.go with World.cpp
+- [x] HQ-090 - 03/18/26 - Fix ValErr - Object file 'BearHide' not found -------------------> Bear.txt (commit: pending)
+- [ ] HQ-091 - 03/18/26 - Apply strategy used to correct HQ-090 correct similar issues in Validate.go
