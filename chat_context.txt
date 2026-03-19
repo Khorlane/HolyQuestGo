@@ -37,6 +37,12 @@ Project knowledge:
 - C++ explicit random seeding with srand(...) does not require a direct equivalent in modern Go and should not be treated as a BigDog alignment failure.
 - PACMN exists in Go Config/Violence code and should be initialized during BigDog startup to match C++ behavior.
 - Validate.go maps to OMugs Tools\Validate.cpp / Validate.h rather than OMugs Server.
+- Validate.go was originally a loose/sloppy Go-idiomatic port and was then substantially re-converted to follow Tools\Validate.cpp much more closely, one function at a time.
+- In Validate.go, the combination of ChgDir(...) plus relative directory constants like OBJECTS_DIR / ROOMS_DIR / MOBILES_DIR / LOOT_DIR can produce wrong effective paths in Go when the current working directory has already moved into a library subdirectory.
+- For Validate.go path bugs, prefer local fixes inside the validator being debugged rather than changing Config.go directory constants.
+- ValidateLibraryLoot was fixed by anchoring its ObjectId file lookup to HomeDir with filepath.Join(HomeDir, OBJECTS_DIR, ObjectId + ".txt") while leaving the rest of the validator flow intact.
+- The ChgDir/HomeDir behavior itself was confirmed to be working correctly in ValidateLibraryLoot: after ChgDir(HomeDir) the cwd was C:\Projects\HolyQuestGo, and after ChgDir(LOOT_DIR) the cwd was C:\Projects\HolyQuestGo\Library\Loot.
+- In Validate.go, if a C++ local variable exists only as historical scaffolding and Go requires it to be read, use the smallest possible local compiler-satisfaction tactic rather than redesigning the function.
 - When comparing BigDog.cpp to BigDog.go, exclude the forwarding-wrapper section in BigDog.cpp that exists only to simplify calls to other modules.
 - After excluding those forwarding wrappers, BigDog.cpp and BigDog.go are broadly aligned.
 
@@ -92,11 +98,12 @@ Key interpretation decisions:
 Commit and todo workflow:
 - When the user says "close HQ-xxx", treat that as the trigger to create the commit for that work item with an appropriate commit message.
 - The older phrase "commit our work" can be interpreted the same way, but "close HQ-xxx" is now the preferred trigger.
-- Check Doc\ToDo.md for a matching todo.
-- If a matching todo does not exist, create one.
-- Completed work items in Doc\ToDo.md should be marked done.
+- First check Doc\ToDo.md for the specific HQ-xxx item being closed.
+- If that specific HQ-xxx item does not exist, create it.
+- Mark the specific HQ-xxx item as done when closing it.
 - If the real commit hash is not yet available at todo-creation time, use "(commit: pending)".
-- Fill in pending commit hashes later during a housekeeping/doc pass rather than amending commits by default.
+- During the same close HQ-xxx pass, update older "(commit: pending)" entries too when it is easy and appropriate.
+- In general, prefer filling pending commit hashes in later close/housekeeping passes rather than amending commits.
 
 Current status:
 - The recent chat focused on refining the instructions so the rules are grouped clearly and interpreted consistently.
@@ -107,6 +114,14 @@ Current status:
 - Room.go was compared function-by-function against C:\OMugs\Source\Server\Room.cpp.
 - Room.go currently has corresponding coverage for all Room.cpp functions; no room functions are missing in Go.
 - Recent Room.go passes focused on bringing functions closer to the C++ source in structure, shared file usage, and preserved comments.
+- Shop.go, Social.go, Calendar.go, Config.go, Help.go, Log.go, Utility.go, and Validate.go have also been aligned substantially more closely with their C++ counterparts during this chat sequence.
+- Validate.go was treated as a broad re-conversion effort rather than a small cleanup, because the prior conversion had too much systemic Go-idiomatic drift from Tools\Validate.cpp.
+- The top-level Validate.go functions LogValErr, ValidateIt, ValidateAll, ValidateLibraryLoot, ValidateLibraryMobiles, ValidateLibraryObjects, ValidateLibraryRooms, ValidateLibraryShops, ValidateLibraryWorldMobiles, ValidateRunningPlayers, ValidateRunningPlayersPlayerEqu, ValidateRunningPlayersPlayerObj, ValidateRunningRoomMob, and ValidateRunningRoomObj were all reworked to follow the C++ source much more closely.
+- A full go build completed cleanly after the major Validate.go re-conversion pass.
+- After the re-conversion, a real runtime path bug was discovered in ValidateLibraryLoot: FileExist(ObjectIdFileName) was checking the wrong effective path after ChgDir(LOOT_DIR) because OBJECTS_DIR remained project-root-relative while the process cwd had already moved into Library\Loot.
+- That specific ValidateLibraryLoot path bug was fixed locally without changing Config.go constants, and the validator now correctly begins and completes validation of LibraryLoot.
+- There is an open follow-up item to apply the same path-handling strategy used to fix HQ-090 to similar Validate.go file-existence checks where ChgDir(...) and relative directory constants may still conflict.
+- The current follow-up todo for that broader Validate.go path work is HQ-091.
 
 Preference for future discussion:
 - Keep design discussions brief.
