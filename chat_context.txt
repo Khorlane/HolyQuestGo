@@ -100,7 +100,9 @@ Commit and todo workflow:
 - The older phrase "commit our work" can be interpreted the same way, but "close HQ-xxx" is now the preferred trigger.
 - First check Doc\ToDo.md for the specific HQ-xxx item being closed.
 - If that specific HQ-xxx item does not exist, create it.
+- When creating a new HQ item in Doc\ToDo.md, use the current date as the creation date.
 - Mark the specific HQ-xxx item as done when closing it.
+- When closing an HQ item, update that item's date to the current date so the done-history reflects the completion date.
 - If the real commit hash is not yet available at todo-creation time, use "(commit: pending)".
 - During the same close HQ-xxx pass, update older "(commit: pending)" entries when their hashes are easy to determine, so the newly closed item is normally the only pending entry left.
 - After a close HQ-xxx commit, the preferred state is that the newly closed item is the only remaining "(commit: pending)" entry in Doc\ToDo.md.
