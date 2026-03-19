@@ -95,7 +95,7 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-079 - 03/19/26 - Align Dnode.go with Dnode.cpp (commit: 3e51a6c)
 - [x] HQ-080 - 03/18/26 - Align Help.go with Help.cpp (commit: 3c7aabd)
 - [x] HQ-081 - 03/18/26 - Align Log.go with Log.cpp (commit: 13bd13b)
-- [ ] HQ-082 - 03/18/26 - Align Mobile.go with Mobile.cpp
+- [x] HQ-082 - 03/19/26 - Align Mobile.go with Mobile.cpp (commit: pending)
 - [ ] HQ-083 - 03/18/26 - Align Object.go with Object.cpp
 - [ ] HQ-084 - 03/18/26 - Align Player.go with Player.cpp
 - [x] HQ-085 - 03/18/26 - Align Utility.go with Utility.cpp (commit: c6a653c)
@@ -107,4 +107,4 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-091 - 03/19/26 - Apply strategy used to correct HQ-090 correct similar issues in Validate.go (commit: db2b3a1)
 - [x] HQ-092 - 03/18/26 - End of day checkpoint and chat_context refresh (commit: b1ef41a)
 - [x] HQ-093 - 03/19/26 - Clarify commit and todo workflow in chat_context.txt (commit: 57bc461)
-- [x] HQ-094 - 03/19/26 - Add todo date workflow rules and reconcile done dates from commit history (commit: pending)
+- [x] HQ-094 - 03/19/26 - Add todo date workflow rules and reconcile done dates from commit history (commit: d48f69b)
