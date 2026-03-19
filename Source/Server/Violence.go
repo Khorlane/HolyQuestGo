@@ -36,7 +36,7 @@ func CalcDamageToPlayer(Damage int, PAC int) int {
   var Percent    int
 
   Percent = GetRandomNumber(PLAYER_DMG_PCT)
-  Deduction = int(math.Ceil(float64(Damage) * (float64(Percent) / 100.0)))
+  Deduction  = int(math.Ceil(float64(Damage) * (float64(Percent) / 100.0)))
   CalcDamage = Damage - Deduction
   CalcDamage = int(math.Floor(float64(CalcDamage) - (float64(PAC)*PACMN*float64(CalcDamage))))
   return CalcDamage
@@ -73,22 +73,28 @@ func GetMobileArmor(MobileId string) int {
   var MobileArmor            int
   var MobStatsArmorFile     *os.File
   var MobStatsArmorFileName  string
+  var err                    error
 
+  // Read mobile stats Armor file
   MobStatsArmorFileName = MOB_STATS_ARM_DIR
   MobStatsArmorFileName += MobileId
   MobStatsArmorFileName += ".txt"
-  f, err := os.Open(MobStatsArmorFileName)
+  MobStatsArmorFile, err = os.Open(MobStatsArmorFileName)
   if err != nil {
+    // Mobile Armor is not implemented, so for now, we just return zero
     MobileArmor = 0
     return MobileArmor
+    // This code is currently unreachable, on purpose.
+    LogIt("Violence::GetArmor - Open MobStatsArmorFile file failed (read)")
+    os.Exit(1)
   }
-  MobStatsArmorFile = f
   Stuff = ""
   scanner := bufio.NewScanner(MobStatsArmorFile)
   if scanner.Scan() {
     Stuff = scanner.Text()
   }
   MobStatsArmorFile.Close()
+  // Return mobile's Armor
   Stuff = StrTrimLeft(Stuff)
   Stuff = StrTrimRight(Stuff)
   MobileArmor = StrToInt(Stuff)
@@ -100,22 +106,24 @@ func GetMobileAttack(MobileId string) string {
   var MobileAttack            string
   var MobStatsAttackFile     *os.File
   var MobStatsAttackFileName  string
+  var err                     error
 
+  // Read mobile stats Attack file
   MobStatsAttackFileName = MOB_STATS_ATK_DIR
   MobStatsAttackFileName += MobileId
   MobStatsAttackFileName += ".txt"
-  f, err := os.Open(MobStatsAttackFileName)
+  MobStatsAttackFile, err = os.Open(MobStatsAttackFileName)
   if err != nil {
     LogIt("Violence::GetMobileAttack - Open MobStatsAttack file failed (read)")
     os.Exit(1)
   }
-  MobStatsAttackFile = f
   Stuff = ""
   scanner := bufio.NewScanner(MobStatsAttackFile)
   if scanner.Scan() {
     Stuff = scanner.Text()
   }
   MobStatsAttackFile.Close()
+  // Return mobile's Attack
   Stuff = StrTrimLeft(Stuff)
   Stuff = StrTrimRight(Stuff)
   MobileAttack = Stuff
@@ -127,22 +135,24 @@ func GetMobileDamage(MobileId string) int {
   var MobileDamage           int
   var MobStatsDamageFile    *os.File
   var MobStatsDamageFileName string
+  var err                    error
 
+  // Read mobile stats Damage file
   MobStatsDamageFileName = MOB_STATS_DMG_DIR
   MobStatsDamageFileName += MobileId
   MobStatsDamageFileName += ".txt"
-  f, err := os.Open(MobStatsDamageFileName)
+  MobStatsDamageFile, err = os.Open(MobStatsDamageFileName)
   if err != nil {
     LogIt("Violence::GetMobileDamage - Open MobStatsDamageFile file failed (read)")
     os.Exit(1)
   }
-  MobStatsDamageFile = f
   Stuff = ""
   scanner := bufio.NewScanner(MobStatsDamageFile)
   if scanner.Scan() {
     Stuff = scanner.Text()
   }
   MobStatsDamageFile.Close()
+  // Return mobile's Damage
   Stuff = StrTrimLeft(Stuff)
   Stuff = StrTrimRight(Stuff)
   MobileDamage = StrToInt(Stuff)
@@ -154,22 +164,24 @@ func GetMobileDesc1(MobileId string) string {
   var MobileDesc1            string
   var MobStatsDesc1File     *os.File
   var MobStatsDesc1FileName  string
+  var err                    error
 
+  // Read mobile stats Desc1 file
   MobStatsDesc1FileName = MOB_STATS_DSC_DIR
   MobStatsDesc1FileName += MobileId
   MobStatsDesc1FileName += ".txt"
-  f, err := os.Open(MobStatsDesc1FileName)
+  MobStatsDesc1File, err = os.Open(MobStatsDesc1FileName)
   if err != nil {
     LogIt("Violence::GetMobileDesc1 - Open MobStatsDesc1 file failed (read)")
     os.Exit(1)
   }
-  MobStatsDesc1File = f
   Stuff = ""
   scanner := bufio.NewScanner(MobStatsDesc1File)
   if scanner.Scan() {
     Stuff = scanner.Text()
   }
   MobStatsDesc1File.Close()
+  // Return mobile's Desc1
   Stuff = StrTrimLeft(Stuff)
   Stuff = StrTrimRight(Stuff)
   MobileDesc1 = Stuff
@@ -178,22 +190,26 @@ func GetMobileDesc1(MobileId string) string {
 
 // Get mobile Experience Points
 func GetMobileExpPointsLevel(MobileId string) string {
+  var MobStatsExpPointsFile     *os.File
   var MobStatsExpPointsFileName string
+  var err                       error
 
+  // Read mobile stats ExpPoints and Level file
   MobStatsExpPointsFileName = MOB_STATS_EXP_DIR
   MobStatsExpPointsFileName += MobileId
   MobStatsExpPointsFileName += ".txt"
-  f, err := os.Open(MobStatsExpPointsFileName)
+  MobStatsExpPointsFile, err = os.Open(MobStatsExpPointsFileName)
   if err != nil {
     LogIt("Violence::GetMobileExpPointsLevel - Open MobStatsExpPointsFile file failed (read)")
     os.Exit(1)
   }
   Stuff = ""
-  scanner := bufio.NewScanner(f)
+  scanner := bufio.NewScanner(MobStatsExpPointsFile)
   if scanner.Scan() {
     Stuff = scanner.Text()
   }
-  f.Close()
+  MobStatsExpPointsFile.Close()
+  // Return mobile's ExpPoints
   Stuff = StrTrimLeft(Stuff)
   Stuff = StrTrimRight(Stuff)
   return Stuff
@@ -201,23 +217,26 @@ func GetMobileExpPointsLevel(MobileId string) string {
 
 // Get mobile Hit Points
 func GetMobileHitPoints(MobileId string) string {
+  var MobStatsHitPointsFile     *os.File
   var MobStatsHitPointsFileName string
   var MobHitPoints              string
+  var err                       error
 
+  // Read mobile stats hit points file
   MobStatsHitPointsFileName = MOB_STATS_HPT_DIR
   MobStatsHitPointsFileName += MobileId
   MobStatsHitPointsFileName += ".txt"
-  f, err := os.Open(MobStatsHitPointsFileName)
+  MobStatsHitPointsFile, err = os.Open(MobStatsHitPointsFileName)
   if err != nil {
     LogIt("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (read)")
     os.Exit(1)
   }
   Stuff = ""
-  scanner := bufio.NewScanner(f)
+  scanner := bufio.NewScanner(MobStatsHitPointsFile)
   if scanner.Scan() {
     Stuff = scanner.Text()
   }
-  f.Close()
+  MobStatsHitPointsFile.Close()
   MobHitPoints = Stuff
   return MobHitPoints
 }
@@ -227,22 +246,24 @@ func GetMobileLoot(MobileId string) string {
   var MobileLoot            string
   var MobStatsLootFile     *os.File
   var MobStatsLootFileName  string
+  var err                   error
 
+  // Read mobile stats Loot file
   MobStatsLootFileName = MOB_STATS_LOOT_DIR
   MobStatsLootFileName += MobileId
   MobStatsLootFileName += ".txt"
-  f, err := os.Open(MobStatsLootFileName)
+  MobStatsLootFile, err = os.Open(MobStatsLootFileName)
   if err != nil {
     LogIt("Violence::GetMobileLoot - Open MobStatsLoot file failed (read)")
     os.Exit(1)
   }
-  MobStatsLootFile = f
   Stuff = ""
   scanner := bufio.NewScanner(MobStatsLootFile)
   if scanner.Scan() {
     Stuff = scanner.Text()
   }
   MobStatsLootFile.Close()
+  // Return mobile's Loot
   Stuff = StrTrimLeft(Stuff)
   Stuff = StrTrimRight(Stuff)
   MobileLoot = Stuff
@@ -254,22 +275,24 @@ func GetMobileRoom(MobileId string) string {
   var MobileRoom            string
   var MobStatsRoomFile     *os.File
   var MobStatsRoomFileName  string
+  var err                   error
 
+  // Read mobile stats Loot file
   MobStatsRoomFileName = MOB_STATS_ROOM_DIR
   MobStatsRoomFileName += MobileId
   MobStatsRoomFileName += ".txt"
-  f, err := os.Open(MobStatsRoomFileName)
+  MobStatsRoomFile, err = os.Open(MobStatsRoomFileName)
   if err != nil {
     LogIt("Violence::GetMobileRoom - Open MobStatsRoom file failed (read)")
     os.Exit(1)
   }
-  MobStatsRoomFile = f
   Stuff = ""
   scanner := bufio.NewScanner(MobStatsRoomFile)
   if scanner.Scan() {
     Stuff = scanner.Text()
   }
   MobStatsRoomFile.Close()
+  // Return mobile's Room
   Stuff = StrTrimLeft(Stuff)
   Stuff = StrTrimRight(Stuff)
   MobileRoom = Stuff
@@ -282,16 +305,16 @@ func GetMobPlayerMobileId(PlayerName string, i int) string {
   var MobileId           string
   var MobPlayerFile     *os.File
   var MobPlayerFileName  string
+  var err                error
 
   MobPlayerFileName = MOB_PLAYER_DIR
   MobPlayerFileName += PlayerName
   MobPlayerFileName += ".txt"
-  f, err := os.Open(MobPlayerFileName)
+  MobPlayerFile, err = os.Open(MobPlayerFileName)
   if err != nil {
     MobileId = "No more mobiles"
     return MobileId
   }
-  MobPlayerFile = f
   MobileId = ""
   scanner := bufio.NewScanner(MobPlayerFile)
   for j = 1; j <= i; j++ {
@@ -312,19 +335,19 @@ func GetMobPlayerMobileId(PlayerName string, i int) string {
 
 // Get PlayerMob MobileId
 func GetPlayerMobMobileId(PlayerName string) string {
-  var MobileId         string
-  var PlayerMobFile   *os.File
+  var MobileId          string
+  var PlayerMobFile    *os.File
   var PlayerMobFileName string
+  var err               error
 
   PlayerMobFileName = PLAYER_MOB_DIR
   PlayerMobFileName += PlayerName
   PlayerMobFileName += ".txt"
-  f, err := os.Open(PlayerMobFileName)
+  PlayerMobFile, err = os.Open(PlayerMobFileName)
   if err != nil {
     LogIt("Violence::GetPlayerMobMobileId - Open PlayerMob file failed")
     os.Exit(1)
   }
-  PlayerMobFile = f
   MobileId = ""
   scanner := bufio.NewScanner(PlayerMobFile)
   if scanner.Scan() {
@@ -351,24 +374,28 @@ func WhackMobile(MobileId string, DamageToMobile int, MobileDesc1 string, Weapon
   var MobStatsHitPointsFile     *os.File
   var MobStatsHitPointsFileName  string
   var WeaponAction               string
+  var err                        error
 
+  // Get mobile's total hit points and hit points left
   MobHitPointsInfo  = GetMobileHitPoints(MobileId)
   MobHitPointsTotal = StrToInt(StrGetWord(MobHitPointsInfo, 1))
   MobHitPointsLeft  = StrToInt(StrGetWord(MobHitPointsInfo, 2))
   MobHealthPctOld   = CalcPct(MobHitPointsLeft, MobHitPointsTotal)
+  // Reduce mobile's hit points by damage done and write to file
   MobHitPointsLeft  = MobHitPointsLeft - DamageToMobile
   if MobHitPointsLeft < 0 {
+    // Keep MobHitPointsLeft from going negative
     MobHitPointsLeft = 0
   }
   MobStatsHitPointsFileName = MOB_STATS_HPT_DIR
   MobStatsHitPointsFileName += MobileId
   MobStatsHitPointsFileName += ".txt"
-  f, err := os.OpenFile(MobStatsHitPointsFileName, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644)
+  MobStatsHitPointsFile, err = os.Create(MobStatsHitPointsFileName)
   if err != nil {
+    // Open failed - very bad
     LogIt("Violence::WhackMobile - Open MobStatsHitPointsFile file failed (write)")
     os.Exit(1)
   }
-  MobStatsHitPointsFile = f
   Buf    = fmt.Sprintf("%d", MobHitPointsTotal)
   TmpStr = Buf
   Stuff  = TmpStr
@@ -378,6 +405,7 @@ func WhackMobile(MobileId string, DamageToMobile int, MobileDesc1 string, Weapon
   Stuff += TmpStr
   fmt.Fprintln(MobStatsHitPointsFile, Stuff)
   MobStatsHitPointsFile.Close()
+  // Format whack message
   MobHealthPct    = CalcHealthPct(MobHitPointsLeft, MobHitPointsTotal)
   WeaponType      = StrMakeLower(WeaponType)
   WeaponAction    = TranslateWord(WeaponType)
@@ -395,6 +423,7 @@ func WhackMobile(MobileId string, DamageToMobile int, MobileDesc1 string, Weapon
     ExtraDamageMsg = "&YREALLY HURT&N"
   }
   if MobHitPointsLeft > 0 {
+    // Mobile is still alive
     MobileBeenWhacked = "alive"
     MobileBeenWhacked += " "
     MobileBeenWhacked += MobHealthPct
@@ -429,9 +458,11 @@ func WhackMobile(MobileId string, DamageToMobile int, MobileDesc1 string, Weapon
       MobileBeenWhacked += "points of damage."
     }
   } else {
+    // Mobile is dead
     MobileBeenWhacked = "dead"
     MobileBeenWhacked += " "
     if MobHealthPctOld == 100 && MobHealthPctNew == 0 {
+      // Mob was killed with one hit
       MobileBeenWhacked += "You"
       MobileBeenWhacked += " "
       MobileBeenWhacked += "&ROBLITERATED&N"
@@ -448,6 +479,7 @@ func WhackMobile(MobileId string, DamageToMobile int, MobileDesc1 string, Weapon
       MobileBeenWhacked += " "
       MobileBeenWhacked += "points of damage."
     } else {
+      // Mob died from more than one hit
       MobileBeenWhacked += "You"
       MobileBeenWhacked += " "
       MobileBeenWhacked += "vanquish"
@@ -472,7 +504,9 @@ func WhackMobile(MobileId string, DamageToMobile int, MobileDesc1 string, Weapon
 func WhackPlayer(MobileDesc1 string, MobileAttack string, DamageToPlayer int) string {
   var PlayerBeenWhacked string
 
+  // Capitalize first leter of first word of MobileDesc1
   MobileDesc1 = StrMakeFirstUpper(MobileDesc1)
+  // Format damage message
   Buf = fmt.Sprintf("%d", DamageToPlayer)
   TmpStr = Buf
   PlayerBeenWhacked = MobileDesc1
