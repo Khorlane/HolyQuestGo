@@ -172,6 +172,12 @@ func ValidateLibraryMobiles() {
   var MobileId        string
 
   LogBuf = "Begin validation LibraryMobiles"
+  // Get list of all LibraryMobiles files
+  if ChgDir(HomeDir) != nil {
+    // Change directory failed
+    LogIt("Validate::ValidateLibraryMobiles - Change directory to HomeDir failed")
+    os.Exit(1)
+  }
   LogIt(LogBuf)
   if ChgDir(MOBILES_DIR) != nil {
     // Change directory failed
