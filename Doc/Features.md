@@ -75,3 +75,21 @@ For more information, please refer to <http://unlicense.org/>
 - Design and write quest system
 
 - Send message to all players when the watch changes
+
+- Mobile Armor is not implemented yet
+GetMobileArmor()
+... Old code
+if err != nil {
+  // Mobile Armor is not implemented, so for now, we just return zero
+  MobileArmor = 0
+  return MobileArmor
+  // This code is currently unreachable, on purpose.
+  LogIt("Violence::GetArmor - Open MobStatsArmorFile file failed (read)")
+  os.Exit(1)
+}
+... New code to stop Go from complaining about unreachable code
+if err != nil {
+  // Mobile Armor is not implemented, so for now, we just return zero
+  MobileArmor = 0
+  return MobileArmor
+}
