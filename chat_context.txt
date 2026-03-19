@@ -102,7 +102,8 @@ Commit and todo workflow:
 - If that specific HQ-xxx item does not exist, create it.
 - Mark the specific HQ-xxx item as done when closing it.
 - If the real commit hash is not yet available at todo-creation time, use "(commit: pending)".
-- During the same close HQ-xxx pass, update older "(commit: pending)" entries too when it is easy and appropriate.
+- During the same close HQ-xxx pass, update older "(commit: pending)" entries when their hashes are easy to determine, so the newly closed item is normally the only pending entry left.
+- After a close HQ-xxx commit, the preferred state is that the newly closed item is the only remaining "(commit: pending)" entry in Doc\ToDo.md.
 - In general, prefer filling pending commit hashes in later close/housekeeping passes rather than amending commits.
 
 Current status:
