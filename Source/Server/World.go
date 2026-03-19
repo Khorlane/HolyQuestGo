@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"path/filepath"
 	"sort"
 	"strings"
 	"time"
@@ -22,77 +21,95 @@ import (
 
 // Create 'spawn mobile' events
 func CreateSpawnMobileEvents() {
-	var ControlMobSpawnFile *os.File
-	var ControlMobSpawnFileName string
-	var Count int
-	var CurrentTime int
-	var Days int
-	var EventFile *os.File
-	var EventFileName string
-	var EventTime string
-	var Hours int
-	var Limit int
-	var Minutes int
-	var MobileId string
-	var Months int
-	var RoomId string
-	var Seconds int
-	var Weeks int
-	var WorldMobileFile *os.File
-	var WorldMobileFileName string
-	var Years int
+	var ControlMobSpawnFile      *os.File
+	var ControlMobSpawnFileName   string
+	var Count                     int
+	var CurrentTime               int
+	var Days                      int
+	var EventFile                *os.File
+	var EventFileName             string
+	var EventTime                 string
+	var Hours                     int
+	var Limit                     int
+	var Minutes                   int
+	var MobileId                  string
+	var Months                    int
+	var RoomId                    string
+	var Seconds                   int
+	var Weeks                     int
+	var WorldMobileFile          *os.File
+	var WorldMobileFileName       string
+	var Years                     int
+	var DirEntries              []os.DirEntry
+	var err                       error
 
 	if ChgDir(WORLD_MOBILES_DIR) != nil {
-		LogIt("CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed")
+		LogIt("World::CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed")
 		os.Exit(1)
 	}
-	err := filepath.Walk("./", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
+	DirEntries, err = os.ReadDir("./")
+	if err != nil {
+		LogIt("World::CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed")
+		os.Exit(1)
+	}
+	for _, entry := range DirEntries {
+		if entry.IsDir() {
+			// Skip directories
+			continue
 		}
-		if info.IsDir() {
-			return nil
-		}
-		WorldMobileFileName = info.Name()
+		WorldMobileFileName = entry.Name()
 		MobileId = StrLeft(WorldMobileFileName, StrGetLength(WorldMobileFileName)-4)
 		if MobileId == "ReadMe" {
-			return nil
+			continue
 		}
-		// Have we already created a spawn event for this MobileId?
-		ControlMobSpawnFileName = CONTROL_MOB_SPAWN_DIR + MobileId
-		ControlMobSpawnFile, _ = os.Open(ControlMobSpawnFileName)
-		if ControlMobSpawnFile != nil {
+		//* Have we already created a spawn event for this MobileId?
+		ControlMobSpawnFileName  = CONTROL_MOB_SPAWN_DIR
+		ControlMobSpawnFileName += MobileId
+		ControlMobSpawnFile, err = os.Open(ControlMobSpawnFileName)
+		if err == nil {
+			// The NoMoreSpawnEventsFlag is set for this mobile
 			ControlMobSpawnFile.Close()
-			return nil
+			continue
 		}
-		// Check MaxInWorld against actual 'in world' count
-		WorldMobileFile, _ = os.Open(WorldMobileFileName)
-		if WorldMobileFile == nil {
-			LogIt("CreateSpawnMobileEvents - Open World Mobile file failed: " + WorldMobileFileName)
+		//* Check MaxInWorld against actual 'in world' count
+		WorldMobileFileName = WORLD_MOBILES_DIR + WorldMobileFileName
+		WorldMobileFile, err = os.Open(WorldMobileFileName)
+		if err != nil {
+			// File does not exist - Very bad!
+			LogIt("World::CreateSpawnMobileEvents - Open World Mobile file failed")
 			os.Exit(1)
 		}
-		Stuff := ""
-		fmt.Fscanln(WorldMobileFile, &Stuff)
+		Scanner := bufio.NewScanner(WorldMobileFile)
+		Scanner.Scan()
+		Stuff = Scanner.Text()
 		if StrGetWord(Stuff, 1) != "MaxInWorld:" {
-			LogIt("CreateSpawnMobileEvents - World mobile file format error MaxInWorld")
+			// World mobile file format error MaxInWorld
+			LogIt("World::CreateSpawnMobileEvents - World mobile file format error MaxInWorld")
 			os.Exit(1)
 		}
 		Count = CountMob(MobileId)
 		Limit = StrToInt(StrGetWord(Stuff, 2))
 		if Count >= Limit {
+			// No spawn event needed
 			WorldMobileFile.Close()
-			return nil
+			continue
 		}
-		// Create 'spawn mobile' event
-		fmt.Fscanln(WorldMobileFile, &Stuff)
+		//*******************************
+		//* Create 'spawn mobile' event *
+		//*******************************
+		Scanner.Scan()
+		Stuff = Scanner.Text()
 		if StrGetWord(Stuff, 1) != "RoomId:" {
-			LogIt("CreateSpawnMobileEvents - World mobile file format error RoomId")
+			// World mobile file format error RoomId
+			LogIt("World::CreateSpawnMobileEvents - World mobile file format error RoomId")
 			os.Exit(1)
 		}
 		RoomId = StrGetWord(Stuff, 2)
-		fmt.Fscanln(WorldMobileFile, &Stuff)
+		Scanner.Scan()
+		Stuff = Scanner.Text()
 		if StrGetWord(Stuff, 1) != "Interval:" {
-			LogIt("CreateSpawnMobileEvents - World mobile file format error Interval")
+			// World mobile file format error Interval
+			LogIt("World::CreateSpawnMobileEvents - World mobile file format error Interval")
 			os.Exit(1)
 		}
 		Seconds = StrToInt(StrGetWord(Stuff, 2)) * 1
@@ -110,89 +127,115 @@ func CreateSpawnMobileEvents() {
 		CurrentTime += Weeks
 		CurrentTime += Months
 		CurrentTime += Years
-		Buf := fmt.Sprintf("%d", CurrentTime)
-		EventTime = Buf
-		EventFileName = CONTROL_EVENTS_DIR + "M" + EventTime + ".txt"
-		EventFile, _ = os.OpenFile(EventFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		if EventFile == nil {
-			LogIt("CreateSpawnMobileEvents - Open Events file failed - append")
+		sprintfBuf := fmt.Sprintf("%d", CurrentTime)
+		EventTime = sprintfBuf
+		EventFileName = CONTROL_EVENTS_DIR
+		EventFileName += "M"
+		EventFileName += EventTime
+		EventFileName += ".txt"
+		EventFile, err = os.OpenFile(EventFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			// Open for append failed
+			LogIt("World::CreateSpawnMobileEvents - Open Events file failed - append")
 			os.Exit(1)
 		}
 		for Count < Limit {
-			TmpStr := MobileId + " " + RoomId + "\r\n"
-			fmt.Fprintln(EventFile, TmpStr)
+			TmpStr = MobileId
+			TmpStr += " "
+			TmpStr += RoomId
+			TmpStr += "\r\n"
+			EventFile.WriteString(TmpStr + "\n")
 			Count++
 		}
 		EventFile.Close()
 		WorldMobileFile.Close()
 		// Set the NoMoreSpawnEventsFlag for this mobile
-		ControlMobSpawnFile, _ = os.Create(ControlMobSpawnFileName)
-		if ControlMobSpawnFile == nil {
-			LogIt("CreateSpawnMobileEvents - Create Control Mobile Spawn file failed")
+		ControlMobSpawnFile, err = os.Create(ControlMobSpawnFileName)
+		if err != nil {
+			// Create file failed
+			LogIt("World::CreateSpawnMobileEvents - Create Control Mobile Spawn file failed")
 			os.Exit(1)
 		}
 		ControlMobSpawnFile.Close()
-		return nil
-	})
-	if err != nil {
-		LogIt("CreateSpawnMobileEvents - Error walking through files")
-		os.Exit(1)
 	}
 	if ChgDir(HomeDir) != nil {
-		LogIt("CreateSpawnMobileEvents - Change directory to HomeDir failed")
+		LogIt("World::CreateSpawnMobileEvents - Change directory to HomeDir failed")
 		os.Exit(1)
 	}
 }
 
 // Check 'spawn mobile' events
 func CheckSpawnMobileEvents() {
-	CheckTime := fmt.Sprintf("%d", GetTimeSeconds())
-	if err := ChgDir(CONTROL_EVENTS_DIR); err != nil {
-		LogIt("CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed")
+	var CheckTime                 string
+	var ControlMobSpawnFileName   string
+	var DirEntries              []os.DirEntry
+	var EventFile                *os.File
+	var EventFileName             string
+	var EventTime                 string
+	var MobileId                  string
+	var RoomId                    string
+	var err                       error
+
+	Buf = fmt.Sprintf("%d", GetTimeSeconds())
+	CheckTime = Buf
+	if ChgDir(CONTROL_EVENTS_DIR) != nil {
+		// Change directory failed
+		LogIt("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed")
 		os.Exit(1)
 	}
-	err := filepath.Walk("./", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-		EventFileName := info.Name()
-		if !strings.HasPrefix(EventFileName, "M") {
-			return nil
-		}
-		EventTime := strings.TrimSuffix(EventFileName, filepath.Ext(EventFileName))
-		EventTime = EventTime[1:] // Remove the 'M' prefix
-		if EventTime > CheckTime {
-			return nil
-		}
-		EventFilePath := CONTROL_EVENTS_DIR + EventFileName
-		file, err := os.Open(EventFilePath)
-		if err != nil {
-			LogIt("CheckSpawnMobileEvents - Open Events file failed")
-			os.Exit(1)
-		}
-		defer file.Close()
-		var Stuff string
-		for fmt.Fscanln(file, &Stuff); Stuff != ""; fmt.Fscanln(file, &Stuff) {
-			MobileID := strings.Fields(Stuff)[0]
-			RoomId := strings.Fields(Stuff)[1]
-			SpawnMobile(MobileID, RoomId)
-		}
-		file.Close()
-		if err := os.Remove(EventFilePath); err != nil {
-			LogIt("CheckSpawnMobileEvents - Remove Events file failed")
-			os.Exit(1)
-		}
-		return nil
-	})
+	DirEntries, err = os.ReadDir("./")
 	if err != nil {
-		LogIt("CheckSpawnMobileEvents - Error walking through files")
+		LogIt("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed")
 		os.Exit(1)
 	}
-	if err := ChgDir(HomeDir); err != nil {
-		LogIt("CheckSpawnMobileEvents - Change directory to HomeDir failed")
+	for _, entry := range DirEntries {
+		if entry.IsDir() {
+			// Skip directories
+			continue
+		}
+		EventFileName = entry.Name()
+		if !strings.HasPrefix(EventFileName, "M") {
+			// Event files starting with 'M' are 'spawn mobile' events
+			continue
+		}
+		// Is it time for this event
+		EventTime = StrLeft(EventFileName, StrGetLength(EventFileName)-4)
+		EventTime = StrRight(EventTime, StrGetLength(EventTime)-1)
+		if EventTime > CheckTime {
+			// Event is in the future, so skip it
+			continue
+		}
+		// Event's time has arrived
+		EventFileName = CONTROL_EVENTS_DIR + EventFileName
+		EventFile, err = os.Open(EventFileName)
+		if err != nil {
+			// File does not exist - Very bad!
+			LogIt("World::CheckSpawnMobileEvents - Open Events file failed")
+			os.Exit(1)
+		}
+		Scanner := bufio.NewScanner(EventFile)
+		Scanner.Scan()
+		Stuff = Scanner.Text()
+		for Stuff != "" {
+			// Get RoomId, MobileId, then spawn the mob
+			MobileId = StrGetWord(Stuff, 1)
+			RoomId = StrGetWord(Stuff, 2)
+			SpawnMobile(MobileId, RoomId)
+			// Remove the NoMoreSpawnEventsFlag for this mobile
+			// This is overkill, attempts to remove same flag over and over
+			ControlMobSpawnFileName = CONTROL_MOB_SPAWN_DIR
+			ControlMobSpawnFileName += MobileId
+			Remove(ControlMobSpawnFileName)
+			Scanner.Scan()
+			Stuff = Scanner.Text()
+		}
+		// Event completed, remove it
+		EventFile.Close()
+		Remove(EventFileName)
+	}
+	if ChgDir(HomeDir) != nil {
+		// Change directory failed
+		LogIt("World::CheckSpawnMobileEvents - Change directory to HomeDir failed")
 		os.Exit(1)
 	}
 }
@@ -206,86 +249,137 @@ func Events() {
 
 // Heal mobiles
 func HealMobiles() {
-	if err := ChgDir(MOB_STATS_HPT_DIR); err != nil {
-		LogIt("HealMobiles - Change directory to MOB_STATS_HPT_DIR failed")
+	var DirEntries                []os.DirEntry
+	var MobFighting                 bool
+	var MobileId                    string
+	var MobStatsHitPointsFileName   string
+	var PositionOfDot               int
+	var RoomId                      string
+	var err                         error
+
+	if ChgDir(MOB_STATS_HPT_DIR) != nil {
+		// Change directory failed
+		LogIt("World::HealMobiles - Change directory to MOB_STATS_HPT_DIR failed")
 		os.Exit(1)
 	}
+	//*************************
+	//* Heal no-fighting mobs *
+	//*************************
 	// Get a list of all MobStats\HitPoints files
-	err := filepath.Walk("./", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-		MobStatsHitPointsFileName := info.Name()
-		MobileID := strings.TrimSuffix(MobStatsHitPointsFileName, filepath.Ext(MobStatsHitPointsFileName))
-		if HealMobilesFightCheck("MobPlayer", MobileID) || HealMobilesFightCheck("PlayerMob", MobileID) {
-			return nil
-		}
-		RoomId := GetMobileRoom(MobileID)
-		RemoveMobFromRoom(RoomId, MobileID)
-		DeleteMobStats(MobileID)
-		PositionOfDot := strings.Index(MobileID, ".")
-		if PositionOfDot > 0 {
-			MobileID = MobileID[:PositionOfDot]
-		}
-		AddMobToRoom(RoomId, MobileID)
-		return nil
-	})
+	DirEntries, err = os.ReadDir("./")
 	if err != nil {
-		LogIt("HealMobiles - Error walking through files")
+		LogIt("World::HealMobiles - Change directory to MOB_STATS_HPT_DIR failed")
 		os.Exit(1)
 	}
-	if err := ChgDir(HomeDir); err != nil {
-		LogIt("HealMobiles - Change directory to HomeDir failed")
+	for _, entry := range DirEntries {
+		if entry.IsDir() {
+			// Skip directories
+			continue
+		}
+		MobStatsHitPointsFileName = entry.Name()
+		MobileId = StrLeft(MobStatsHitPointsFileName, StrGetLength(MobStatsHitPointsFileName)-4)
+		MobFighting = HealMobilesFightCheck("MobPlayer", MobileId)
+		if MobFighting {
+			// Mobile is fighting, no heal
+			continue
+		}
+		MobFighting = HealMobilesFightCheck("PlayerMob", MobileId)
+		if MobFighting {
+			// Mobile is fighting, no heal
+			continue
+		}
+		//*******************
+		//* Heal the mobile *
+		//*******************
+		RoomId = GetMobileRoom(MobileId)
+		RemoveMobFromRoom(RoomId, MobileId)
+		DeleteMobStats(MobileId)
+		PositionOfDot = StrFindFirstChar(MobileId, '.')
+		MobileId = StrLeft(MobileId, PositionOfDot)
+		AddMobToRoom(RoomId, MobileId)
+	}
+	if ChgDir(HomeDir) != nil {
+		// Change directory failed
+		LogIt("World::HealMobiles - Change directory to HomeDir failed")
 		os.Exit(1)
 	}
 }
 
 // See if mobile is fighting
 func HealMobilesFightCheck(dir, mobileID string) bool {
-	MobFighting := false
-	switch dir {
-	case "MobPlayer":
-		if err := ChgDir(MOB_PLAYER_DIR); err != nil {
-			LogIt("HealMobilesFightCheck - Change directory to MOB_PLAYER_DIR failed")
-			os.Exit(1)
-		}
-	case "PlayerMob":
-		if err := ChgDir(PLAYER_MOB_DIR); err != nil {
-			LogIt("HealMobilesFightCheck - Change directory to PLAYER_MOB_DIR failed")
+	var DirEntries        []os.DirEntry
+	var MobFighting         bool
+	var MobPlayerFile      *os.File
+	var MobPlayerFileName   string
+	var err error
+
+	MobFighting = false
+	if dir == "MobPlayer" {
+		// Checking MobPlayer
+		if ChgDir(MOB_PLAYER_DIR) != nil {
+			// Change directory failed
+			LogIt("World::HealMobilesFightCheck - Change directory to MOB_PLAYER_DIR failed")
 			os.Exit(1)
 		}
 	}
-	err := filepath.Walk("./", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-		MobPlayerFileName := info.Name()
-		file, err := os.Open(MobPlayerFileName)
-		if err != nil {
-			LogIt("HealMobilesFightCheck - Open " + dir + " file failed")
+	if dir == "PlayerMob" {
+		// Checking PlayerMob
+		if ChgDir(PLAYER_MOB_DIR) != nil {
+			// Change directory failed
+			LogIt("World::HealMobilesFightCheck - Change directory to PLAYER_MOB_DIR failed")
 			os.Exit(1)
 		}
-		defer file.Close()
-		var Stuff string
-		for fmt.Fscanln(file, &Stuff); Stuff != ""; fmt.Fscanln(file, &Stuff) {
-			if Stuff == mobileID {
-				MobFighting = true
-			}
-		}
-		return nil
-	})
+	}
+	// Get a list of all MobPlayer files
+	DirEntries, err = os.ReadDir("./")
 	if err != nil {
-		LogIt("HealMobilesFightCheck - Error walking through files")
+		TmpStr = "World::HealMobilesFightCheck - Open "
+		TmpStr += dir
+		TmpStr += " file failed"
+		LogIt(TmpStr)
 		os.Exit(1)
 	}
-	if err := ChgDir(HomeDir); err != nil {
-		LogIt("HealMobilesFightCheck - Change directory to HomeDir failed")
+	for _, entry := range DirEntries {
+		if entry.IsDir() {
+			// Skip directories
+			continue
+		}
+		MobPlayerFileName = entry.Name()
+		// Set file name based on Dir
+		if dir == "MobPlayer" {
+			// Checking MobPlayer
+			MobPlayerFileName = MOB_PLAYER_DIR + MobPlayerFileName
+		}
+		if dir == "PlayerMob" {
+			// Checking PlayerMob
+			MobPlayerFileName = PLAYER_MOB_DIR + MobPlayerFileName
+		}
+		MobPlayerFile, err = os.Open(MobPlayerFileName)
+		if err != nil {
+			// Failed to open MobPlayer or MobPlayer file
+			TmpStr = "World::HealMobilesFightCheck - Open "
+			TmpStr += dir
+			TmpStr += " file failed"
+			LogIt(TmpStr)
+			os.Exit(1)
+		}
+		Scanner := bufio.NewScanner(MobPlayerFile)
+		Scanner.Scan()
+		Stuff = Scanner.Text()
+		for Stuff != "" {
+			// Read all lines
+			if Stuff == mobileID {
+				// A match means the mobile is fighting
+				MobFighting = true
+			}
+			Scanner.Scan()
+			Stuff = Scanner.Text()
+		}
+		MobPlayerFile.Close()
+	}
+	if ChgDir(HomeDir) != nil {
+		// Change directory failed
+		LogIt("World::HealMobilesFightCheck - Change directory to HomeDir failed")
 		os.Exit(1)
 	}
 	return MobFighting
@@ -293,187 +387,347 @@ func HealMobilesFightCheck(dir, mobileID string) bool {
 
 // Yep, believe it or not, this makes the mobs move
 func MakeMobilesMove() {
-	RoomMobListFileName := CONTROL_DIR + "RoomMobList.txt"
-	RoomMobMoveFileName := CONTROL_DIR + "RoomMobMove.txt"
-	RoomMobListFile, err1 := os.Open(RoomMobListFileName)
-	if err1 == nil {
-		defer RoomMobListFile.Close()
+	var RoomMobListFile     *os.File
+	var RoomMobListFileName  string
+	var RoomMobMoveFile     *os.File
+	var RoomMobMoveFileName  string
+	var Success1             bool
+	var Success2             bool
+
+	//********************************
+	//* Check for existance of files *
+	//********************************
+	Success1 = false
+	Success2 = false
+	RoomMobListFileName = CONTROL_DIR
+	RoomMobListFileName += "RoomMobList.txt"
+	RoomMobListFile, err := os.Open(RoomMobListFileName)
+	if err == nil {
+		Success1 = true
 	}
-	RoomMobMoveFile, err2 := os.Open(RoomMobMoveFileName)
-	if err2 == nil {
-		defer RoomMobMoveFile.Close()
+	RoomMobMoveFileName = CONTROL_DIR
+	RoomMobMoveFileName += "RoomMobMove.txt"
+	RoomMobMoveFile, err = os.Open(RoomMobMoveFileName)
+	if err == nil {
+		Success2 = true
 	}
-	if err1 == nil {
-		if stat, _ := RoomMobListFile.Stat(); stat.Size() == 0 {
+	if Success1 {
+		// RoomMobList file exists, but is it empty?
+		FileInfo, _ := RoomMobListFile.Stat()
+		if FileInfo.Size() == 0 {
+			// Nothing in the MobList file
+			Success1 = false
 			RoomMobListFile.Close()
-			os.Remove(RoomMobListFileName)
-			err1 = os.ErrNotExist
+			Remove(RoomMobListFileName)
 		}
 	}
-	if err2 == nil {
-		if stat, _ := RoomMobMoveFile.Stat(); stat.Size() == 0 {
+	if Success2 {
+		// RoomMobMove file exists, but is it empty?
+		FileInfo, _ := RoomMobMoveFile.Stat()
+		if FileInfo.Size() == 0 {
+			// Nothing in the MobMove file
+			Success2 = false
 			RoomMobMoveFile.Close()
-			os.Remove(RoomMobMoveFileName)
-			err2 = os.ErrNotExist
+			Remove(RoomMobMoveFileName)
 		}
 	}
-	if err2 == nil {
+	//***********************************
+	//* Determine which file to process *
+	//***********************************
+	if Success2 {
+		// Process RoomMobMove until empty
 		MakeMobilesMove3()
 		return
 	}
-	if err1 == nil {
+	if Success1 {
+		// Process RoomMobList until empty, creates RoomMoveMove
 		MakeMobilesMove2()
 		return
 	}
+	// Create RoomMobList,neither RoomMobList or RoomMobMove exist
 	MakeMobilesMove1()
 }
 
 // Build file containing RoomMob file list
 func MakeMobilesMove1() {
-	RoomMobListFileName := CONTROL_DIR + "RoomMobList.txt"
-	RoomMobListFile, err := os.Create(RoomMobListFileName)
+	var DirEntries          []os.DirEntry
+	var RoomMobList         []string
+	var RoomMobFileName       string
+	var RoomMobListFile      *os.File
+	var RoomMobListFileName   string
+	var err                   error
+
+	// Open MakeMobList file
+	RoomMobListFileName  = CONTROL_DIR
+	RoomMobListFileName += "RoomMobList.txt"
+	RoomMobListFile, err = os.Create(RoomMobListFileName)
 	if err != nil {
-		LogIt("MakeMobilesMove1 - Create RoomMobList file failed")
+		// Failed to open RoomMobMove file
+		LogIt("World::MakeMobilesMove1 - Create RoomMobList file failed")
 		os.Exit(1)
 	}
-	defer RoomMobListFile.Close()
-	if err := ChgDir(ROOM_MOB_DIR); err != nil {
-		LogIt("MakeMobilesMove1 - Change directory to ROOM_MOB_DIR failed")
+	if ChgDir(ROOM_MOB_DIR) != nil {
+		// Change directory failed
+		LogIt("World::MakeMobilesMove1 - Change directory to ROOM_MOB_DIR failed")
 		os.Exit(1)
 	}
-	RoomMobList := []string{}
-	err = filepath.Walk("./", func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
+	// Get a list of all RoomMob files
+	DirEntries, err = os.ReadDir("./")
+	if err != nil {
+		LogIt("World::MakeMobilesMove1 - Change directory to ROOM_MOB_DIR failed")
+		os.Exit(1)
+	}
+	for _, entry := range DirEntries {
+		if entry.IsDir() {
+			// Skip directories
+			continue
 		}
-		if info.IsDir() {
-			return nil
-		}
-		RoomMobFileName := info.Name()
-		if !strings.Contains(RoomMobFileName, "Spawn") {
-			TmpStr := fmt.Sprintf("%05d", rand.Intn(100000))
-			TmpStr += " " + RoomMobFileName
-			RoomMobList = append(RoomMobList, TmpStr)
+		RoomMobFileName = entry.Name()
+		if StrFind(RoomMobFileName, "Spawn") == -1 {
+			// Not a spawn room, Random position in list
+			TmpStr = fmt.Sprintf("%05d", rand.Intn(100000))
 		} else {
-			TmpStr := "00000 " + RoomMobFileName
-			RoomMobList = append(RoomMobList, TmpStr)
+			// Force 'spawn' rooms to be first in list
+			TmpStr = "00000"
 		}
-		return nil
-	})
-	if err != nil {
-		LogIt("MakeMobilesMove1 - Error walking through files")
-		os.Exit(1)
+		TmpStr += " "
+		TmpStr += RoomMobFileName
+		RoomMobList = append(RoomMobList, TmpStr)
 	}
+	// sort em
 	sort.Strings(RoomMobList)
+	// Write em
 	for _, item := range RoomMobList {
-		TmpStr := strings.Fields(item)[1] + "\n"
+		TmpStr = item
+		TmpStr = StrGetWord(TmpStr, 2)
+		TmpStr += "\n"
 		RoomMobListFile.WriteString(TmpStr)
 	}
+	RoomMobListFile.Close()
 	if len(RoomMobList) == 0 {
-		os.Remove(RoomMobListFileName)
+		// No mobiles are moving, MobMove file is empty
+		Remove(RoomMobListFileName)
 	}
-	if err := ChgDir(HomeDir); err != nil {
-		LogIt("MakeMobilesMove1 - Change directory to HomeDir failed")
+	if ChgDir(HomeDir) != nil {
+		// Change to home directory failed
+		LogIt("World::MakeMobilesMove1 - Change directory to HomeDir failed")
 		os.Exit(1)
 	}
 }
 
 // Build file containing mobiles to be moved
 func MakeMobilesMove2() {
-  //var RoomId string
+	var ControlMobNoMoveFile     *os.File
+	var ControlMobNoMoveFileName  string
+	var ExitCount                 int
+	var ExitNumber                int
+	var ExitToRoomId              string
+	var i                         int
+	var MobCount                  int
+	var MobileId                  string
+	var MobileIdCheck             string
+	var MobListNotCompleted       bool
+	var PositionOfDot             int
+	var RandomPct                 int
+	var RoomId                    string
+	var RoomMobFile              *os.File
+	var RoomMobFileName           string
+	var RoomMobListFile          *os.File
+	var RoomMobListFileName       string
+	var RoomMobListTempFile      *os.File
+	var RoomMobListTempFileName   string
+	var RoomMobMoveFile          *os.File
+	var RoomMobMoveFileName       string
+	var TimerStart                time.Time
+	var TimerStop                 time.Time
+	var ValidMobRoomExits         string
+	var err                       error
 
-	RoomMobListFileName := CONTROL_DIR + "RoomMobList.txt"
-	RoomMobListTempFileName := CONTROL_DIR + "RoomMobListTemp.txt"
-	RoomMobMoveFileName := CONTROL_DIR + "RoomMobMove.txt"
-	RoomMobListFile, err := os.Open(RoomMobListFileName)
+	// Open MakeMobList file
+	RoomMobListFileName  = CONTROL_DIR
+	RoomMobListFileName += "RoomMobList.txt"
+	RoomMobListFile, err = os.Open(RoomMobListFileName)
 	if err != nil {
-		LogIt("MakeMobilesMove2 - Open RoomMobList file failed")
+		// Failed to open RoomMobList file
+		LogIt("World::MakeMobilesMove1 - Create RoomMobList file failed")
 		os.Exit(1)
 	}
-	defer RoomMobListFile.Close()
-	RoomMobListTempFile, err := os.Create(RoomMobListTempFileName)
+	// Open MakeMobListTemp file
+	RoomMobListTempFileName  = CONTROL_DIR
+	RoomMobListTempFileName += "RoomMobListTemp.txt"
+	RoomMobListTempFile, err = os.Create(RoomMobListTempFileName)
 	if err != nil {
-		LogIt("MakeMobilesMove2 - Create RoomMobListTemp file failed")
+		// Failed to open RoomMobListTemp file
+		LogIt("World::MakeMobilesMove2 - Create RoomMobListTemp file failed")
 		os.Exit(1)
 	}
-	defer RoomMobListTempFile.Close()
-	RoomMobMoveFile, err := os.Create(RoomMobMoveFileName)
+	// Open RoomMobMove file
+	RoomMobMoveFileName  = CONTROL_DIR
+	RoomMobMoveFileName += "RoomMobMove.txt"
+	RoomMobMoveFile, err = os.Create(RoomMobMoveFileName)
 	if err != nil {
-		LogIt("MakeMobilesMove2 - Create RoomMobMove file failed")
+		// Failed to open RoomMobMove file
+		LogIt("World::MakeMobilesMove2 - Create RoomMobMove file failed")
 		os.Exit(1)
 	}
-	defer RoomMobMoveFile.Close()
-	TimerStart := time.Now()
-	TimerStop := TimerStart.Add(100 * time.Millisecond)
+	//***************************
+	//* Create RoomMobMove file *
+	//***************************
+	TimerStart = time.Now()
+	TimerStop = TimerStart.Add(100 * time.Millisecond)
 	Scanner := bufio.NewScanner(RoomMobListFile)
 	for Scanner.Scan() {
-		RoomMobFileName := Scanner.Text()
+		RoomMobFileName = Scanner.Text()
 		if time.Now().After(TimerStop) {
+			// Time to stop so cpu is not maxed
+			MobListNotCompleted = true
 			RoomMobListTempFile.WriteString(RoomMobFileName + "\n")
 			continue
 		}
-		//RoomId = strings.TrimSuffix(RoomMobFileName, filepath.Ext(RoomMobFileName))
-		RoomMobFilePath := ROOM_MOB_DIR + RoomMobFileName
-		RoomMobFile, err := os.Open(RoomMobFilePath)
+		RoomId = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName)-4)
+		// Open RoomMob file
+		RoomMobFileName = ROOM_MOB_DIR + RoomMobFileName
+		RoomMobFile, err = os.Open(RoomMobFileName)
 		if err != nil {
+			// No RoomMob file? Really, I guess all the mobs got themselves killed
 			continue
 		}
-		defer RoomMobFile.Close()
 		RoomScanner := bufio.NewScanner(RoomMobFile)
 		for RoomScanner.Scan() {
 			Stuff = RoomScanner.Text()
-			// Placeholder for processing each mobile in the room
+			if Stuff == "" {
+				continue
+			}
+			// For each mobile in room
+			MobCount = StrToInt(StrGetWord(Stuff, 1))
+			MobileId = StrGetWord(Stuff, 2)
+			MobileIdCheck = MobileId
+			PositionOfDot = StrFindFirstChar(MobileIdCheck, '.')
+			if PositionOfDot > 1 {
+				// Mobile is hurt but not fighting
+				MobileIdCheck = StrLeft(MobileIdCheck, PositionOfDot)
+			}
+			//* Is the MobNoMoveFlag set?
+			ControlMobNoMoveFileName = CONTROL_MOB_NOMOVE_DIR
+			ControlMobNoMoveFileName += MobileIdCheck
+			ControlMobNoMoveFile, err = os.Open(ControlMobNoMoveFileName)
+			if err == nil {
+				// The MobNoMoveFlag is set for this mobile
+				ControlMobNoMoveFile.Close()
+			} else {
+				// Mobile may move
+				for i = 1; i <= MobCount; i++ {
+					// For each mobile occurrence
+					if StrFind(RoomId, "Spawn") == -1 {
+						// Not a spawn room, Get random chance of mob moving
+						RandomPct = GetRandomNumber(100)
+					} else {
+						// Force mobs in 'spawn' rooms to move
+						RandomPct = -1
+					}
+					if RandomPct <= MOB_MOVE_PCT {
+						// Mobile is to be moved
+						ValidMobRoomExits = GetValidMobRoomExits(RoomId)
+						ExitCount = StrCountWords(ValidMobRoomExits)
+						if ExitCount > 0 {
+							// Mob has at least one exit available
+							ExitNumber = GetRandomNumber(ExitCount)
+							ExitToRoomId = StrGetWord(ValidMobRoomExits, ExitNumber)
+							if ExitToRoomId == "" {
+								// Blow up for now, but we should LogThis, not blow up??
+								LogIt("ExitToRoomId is blank zz")
+								os.Exit(1)
+							}
+							TmpStr = MobileId
+							TmpStr += " "
+							TmpStr += RoomId
+							TmpStr += " "
+							TmpStr += ExitToRoomId
+							TmpStr += "\n"
+							RoomMobMoveFile.WriteString(TmpStr)
+						}
+					}
+				}
+			}
 		}
+		RoomMobFile.Close()
 	}
 	if err := Scanner.Err(); err != nil {
-		LogIt("MakeMobilesMove2 - Error scanning RoomMobList file")
+		LogIt("World::MakeMobilesMove2 - Open RoomMobList file failed")
 		os.Exit(1)
 	}
-	if err := os.Remove(RoomMobListFileName); err != nil {
-		LogIt("MakeMobilesMove2 - Remove RoomMobList file failed")
-		os.Exit(1)
-	}
-	if err := os.Rename(RoomMobListTempFileName, RoomMobListFileName); err != nil {
-		LogIt("MakeMobilesMove2 - Rename RoomMobListTemp file failed")
-		os.Exit(1)
+	// Close files
+	RoomMobMoveFile.Close()
+	RoomMobListFile.Close()
+	RoomMobListTempFile.Close()
+	// Done with RoomMobList file, get rid of it
+	Remove(RoomMobListFileName)
+	if MobListNotCompleted {
+		// Time ran out before MobList was completely processed
+		err = Rename(RoomMobListTempFileName, RoomMobListFileName)
+		if err != nil {
+			// If rename fails, log the error and stop execution
+			LogIt("World::MakeMobilesMove2 - Rename RoomMobListTemp file failed")
+			os.Exit(1)
+		}
+	} else {
+		// MobList was completely processed
+		err = Remove(RoomMobListTempFileName)
+		if err != nil {
+			// If delete fails, log the error and stop execution
+			LogIt("World::MakeMobilesMove2 - Remove RoomMobListTemp file failed")
+			os.Exit(1)
+		}
 	}
 }
 
 // Yep, believe it or not, this makes the mobs move
 func MakeMobilesMove3() {
-	var ArriveMsg string
-	var ExitToRoomId string
-	var LeaveMsg string
-	var MobileDesc1 string
-	var MobileId string
-	var RoomId string
-	var MobMoveNotCompleted bool
-	var RoomMobMoveFileName string
-	var RoomMobMoveTempFileName string
-	var TimerStart time.Time
-	var TimerStop time.Time
+	var ArriveMsg                string
+	var ExitToRoomId             string
+	var LeaveMsg                 string
+	var MobileDesc1              string
+	var MobileId                 string
+	var RoomId                   string
+	var MobMoveNotCompleted      bool
+	var MobStatsFileName         string
+	var RoomMobMoveFileName      string
+	var RoomMobMoveTempFileName  string
+	var TimerStart               time.Time
+	var TimerStop                time.Time
+	var PositionOfDot            int
+	var RoomMobMoveFile         *os.File
+	var RoomMobMoveTempFile     *os.File
+	var err                      error
 
+	//******************************
+	//* Initization and open files *
+	//******************************
 	MobMoveNotCompleted = false
 	RoomMobMoveFileName = CONTROL_DIR + "RoomMobMove.txt"
-	RoomMobMoveFile, err := os.Open(RoomMobMoveFileName)
+	RoomMobMoveFile, err = os.Open(RoomMobMoveFileName)
 	if err != nil {
-		LogIt("MakeMobilesMove3 - Open RoomMobMove failed")
-		return
+		// No RoomMobMove file, Ok, who delete the file when I wasn't looking?
+		LogIt("World::MakeMobilesMove3 - Open RoomMobMove failed")
+		os.Exit(1)
 	}
-	defer RoomMobMoveFile.Close()
 	RoomMobMoveTempFileName = CONTROL_DIR + "RoomMobMoveTemp.txt"
-	RoomMobMoveTempFile, err := os.Create(RoomMobMoveTempFileName)
+	RoomMobMoveTempFile, err = os.Create(RoomMobMoveTempFileName)
 	if err != nil {
-		LogIt("MakeMobilesMove3 - Open RoomMobMoveTemp failed")
-		return
+		// RoomMobMoveTemp file failed to open
+		LogIt("World::MakeMobilesMove3 - Open RoomMobMoveTemp failed")
+		os.Exit(1)
 	}
-	defer RoomMobMoveTempFile.Close()
+	//****************************
+	//* Process RoomMobMove file *
+	//****************************
 	TimerStart = time.Now()
 	TimerStop = TimerStart.Add(100 * time.Millisecond)
 	Scanner := bufio.NewScanner(RoomMobMoveFile)
 	for Scanner.Scan() {
-		Stuff := Scanner.Text()
+		Stuff = Scanner.Text()
 		if time.Now().After(TimerStop) {
+			// Time to stop so cpu is not maxed
 			MobMoveNotCompleted = true
 			RoomMobMoveTempFile.WriteString(Stuff + "\n")
 			continue
@@ -482,65 +736,95 @@ func MakeMobilesMove3() {
 		RoomId = StrGetWord(Stuff, 2)
 		ExitToRoomId = StrGetWord(Stuff, 3)
 		if !IsMobileIdInRoom(RoomId, MobileId) {
+			// Mob not in room anymore, prolly get itself killed, so can't be moved
 			continue
 		}
 		MobileDesc1 = GetMobDesc1(MobileId)
-		LeaveMsg = MobileDesc1 + " leaves."
-		ArriveMsg = MobileDesc1 + " arrives."
+		LeaveMsg = MobileDesc1
+		LeaveMsg += " leaves."
+		ArriveMsg = MobileDesc1
+		ArriveMsg += " arrives."
 		RemoveMobFromRoom(RoomId, MobileId)
 		AddMobToRoom(ExitToRoomId, MobileId)
+		pDnodeSrc = nil
+		pDnodeTgt = nil
 		SendToRoom(RoomId, LeaveMsg)
 		SendToRoom(ExitToRoomId, ArriveMsg)
-		PositionOfDot := strings.Index(MobileId, ".")
+		PositionOfDot = StrFindFirstChar(MobileId, '.')
 		if PositionOfDot > 1 {
-			MobStatsFileName := MOB_STATS_ROOM_DIR + MobileId + ".txt"
-			if err := os.Remove(MobStatsFileName); err != nil {
-				LogIt("MakeMobilesMove3 - Remove MobStats Room file failed")
-				return
+			// Delete 'MobStats' Room file
+			MobStatsFileName = MOB_STATS_ROOM_DIR
+			MobStatsFileName += MobileId
+			MobStatsFileName += ".txt"
+			err = Remove(MobStatsFileName)
+			if err != nil {
+				// If file remove fails, log the error and stop execution
+				LogIt("World::MakeMobilesMove - Remove MobStats Room file failed")
+				os.Exit(1)
 			}
+			// Write new RoomId into MobStats Room file
 			CreateMobStatsFileWrite(MOB_STATS_ROOM_DIR, MobileId, ExitToRoomId)
 		}
 	}
 	if err := Scanner.Err(); err != nil {
-		LogIt("MakeMobilesMove3 - Error scanning RoomMobMove file")
-		return
+		LogIt("World::MakeMobilesMove3 - Open RoomMobMove failed")
+		os.Exit(1)
 	}
-	if err := os.Remove(RoomMobMoveFileName); err != nil {
-		LogIt("MakeMobilesMove3 - Remove RoomMobMove file failed")
-		return
+	// Close RoomMobMove files
+	RoomMobMoveFile.Close()
+	RoomMobMoveTempFile.Close()
+	// Done with RoomMobMove file, get rid of it
+	err = Remove(RoomMobMoveFileName)
+	if err != nil {
+		// If file remove fails, log the error and stop execution
+		LogIt("World::MakeMobilesMove3 - Remove RoomMobMove file failed")
+		os.Exit(1)
 	}
+	// Check whether or not mobs got moved
 	if MobMoveNotCompleted {
-		if err := os.Rename(RoomMobMoveTempFileName, RoomMobMoveFileName); err != nil {
-			LogIt("MakeMobilesMove3 - Rename RoomMobMoveTemp file failed")
-			return
+		// Time ran out before all the mobs got moved, so moved the rest of them later
+		err = Rename(RoomMobMoveTempFileName, RoomMobMoveFileName)
+		if err != nil {
+			// If rename fails, log the error and stop execution
+			LogIt("World::MakeMobilesMove3 - Rename RoomMobMoveTemp file failed")
+			os.Exit(1)
 		}
 	} else {
-		if err := os.Remove(RoomMobMoveTempFileName); err != nil {
-			LogIt("MakeMobilesMove3 - Remove RoomMobMoveTemp file failed")
-			return
+		// All mobs got moved, delete the temp file
+		err = Remove(RoomMobMoveTempFileName)
+		if err != nil {
+			// If delete fails, log the error and stop execution
+			LogIt("World::MakeMobilesMove3 - Remove RoomMobMoveTemp file failed")
+			os.Exit(1)
 		}
 	}
 }
 
 // Spawn a mobile so players have something to whack!
 func SpawnMobile(MobileId, RoomId string) {
-	var LogMessage string
-	var MobileAction string
-	var SpawnMsg string
+	var LogMessage    string
+	var MobileAction  string
+	var SpawnMsg      string
+	var pMobile      *Mobile
 
 	//********************
 	//* Spawn the mobile *
 	//********************
-	pMobile := IsMobValid(MobileId)
+	pMobile = IsMobValid(MobileId)
 	if pMobile == nil {
 		// Very bad, no such mobile
-		LogMessage = "SpawnMobile - Mobile not found.\n"
-		LogMessage += "MobileId: " + MobileId
+		LogMessage  = "World::SpawnMobile - Mobile not found."
+		LogMessage += "\n"
+		LogMessage += "MobileId: "
+		LogMessage += MobileId
 		LogIt(LogMessage)
-		return
+		os.Exit(1)
 	}
 	AddMobToRoom(RoomId, MobileId)
-	SpawnMsg = pMobile.Desc1 + " suddenly appears!"
+	SpawnMsg = pMobile.Desc1
+	SpawnMsg += " suddenly appears!"
+	pDnodeSrc = nil
+	pDnodeTgt = nil
 	SendToRoom(RoomId, SpawnMsg)
 	MobileAction = pMobile.Action
 	// Clean up
@@ -552,11 +836,16 @@ func SpawnMobile(MobileId, RoomId string) {
 
 // Make mobile stand still
 func SpawnMobileNoMove(MobileId string) {
-	ControlMobNoMoveFileName := CONTROL_MOB_NOMOVE_DIR + MobileId
-	ControlMobNoMoveFile, err := os.Create(ControlMobNoMoveFileName)
+	var ControlMobNoMoveFile     *os.File
+	var ControlMobNoMoveFileName  string
+	var err error
+
+	ControlMobNoMoveFileName  = CONTROL_MOB_NOMOVE_DIR
+	ControlMobNoMoveFileName += MobileId
+	ControlMobNoMoveFile, err = os.Create(ControlMobNoMoveFileName)
 	if err != nil {
-		LogIt("SpawnMobileNoMove - Create Control Mobile NoMove file failed")
-		return
+		LogIt("World::SpawnMobile - Create Control Mobile NoMove file failed")
+		os.Exit(1)
 	}
-	defer ControlMobNoMoveFile.Close()
+	ControlMobNoMoveFile.Close()
 }
