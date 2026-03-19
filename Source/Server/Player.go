@@ -105,15 +105,15 @@ func PlayerConstructor() *Player {
     Experience:        0.0,
     GoToArrive:        "",
     GoToDepart:        "",
-    HitPoints:         0,
+    HitPoints:         PLAYER_HPT_PER_LEVEL,
     Hunger:            0,
     Invisible:         false,
-    Level:             0,
-    MovePoints:        0,
+    Level:             1,
+    MovePoints:        25,
     OneWhack:          false,
     Online:            "",
-    Position:          "",
-    RoomId:            "",
+    Position:          "stand",
+    RoomId:            START_ROOM,
     RoomInfo:          false,
     Sex:               "",
     Silver:            0,
@@ -127,9 +127,9 @@ func PlayerConstructor() *Player {
     Thirst:            0,
     TimePlayed:        0,
     Title:             "",
-    WeaponDamage:      0,
-    WeaponDesc1:       "",
-    WeaponType:        "",
+    WeaponDamage:      PLAYER_DMG_HAND,
+    WeaponDesc1:       "a pair of bare hands",
+    WeaponType:        "Hand",
   }
 }
 
@@ -219,7 +219,6 @@ func IsNameValid(Name string) bool {
     LogIt(LogBuf)
     os.Exit(1)
   }
-  defer ValidNameFile.Close()
   Name = StrMakeLower(Name)
   Scanner := bufio.NewScanner(ValidNameFile)
   if Scanner.Scan() {
@@ -228,6 +227,7 @@ func IsNameValid(Name string) bool {
   }
   for NameIn != "" {
     if Name == NameIn {
+      ValidNameFile.Close()
       return true
     }
     if !Scanner.Scan() {
@@ -236,6 +236,7 @@ func IsNameValid(Name string) bool {
     NameIn = Scanner.Text()
     NameIn = StrMakeLower(NameIn)
   }
+  ValidNameFile.Close()
   return false
 }
 
@@ -389,11 +390,16 @@ func ParsePlayerStuff(pPlayer *Player) {
   }
   PlayerReadLine()
   for Stuff != "" {
+    // Name
     if StrLeft(Stuff, 5) == "Name:" {
-      TmpStr = ""
-    } else if StrLeft(Stuff, 9) == "Password:" {
+      TmpStr = "" // Already got the name
+    } else
+    // Password
+    if StrLeft(Stuff, 9) == "Password:" {
       pPlayer.Password = StrRight(Stuff, StrGetLength(Stuff)-9)
-    } else if StrLeft(Stuff, 6) == "Admin:" {
+    } else
+    // Admin
+    if StrLeft(Stuff, 6) == "Admin:" {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff)-6)
       TmpStr = StrMakeLower(TmpStr)
       if TmpStr == "yes" {
@@ -401,9 +407,13 @@ func ParsePlayerStuff(pPlayer *Player) {
       } else {
         pPlayer.Admin = false
       }
-    } else if StrLeft(Stuff, 4) == "AFK:" {
-      TmpStr = ""
-    } else if StrLeft(Stuff, 12) == "AllowAssist:" {
+    } else
+    // AFK
+    if StrLeft(Stuff, 4) == "AFK:" {
+      TmpStr = "" // Does not matter what is the file
+    } else
+    // AllowAssist
+    if StrLeft(Stuff, 12) == "AllowAssist:" {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff)-12)
       TmpStr = StrMakeLower(TmpStr)
       if TmpStr == "yes" {
@@ -411,7 +421,9 @@ func ParsePlayerStuff(pPlayer *Player) {
       } else {
         pPlayer.AllowAssist = false
       }
-    } else if StrLeft(Stuff, 11) == "AllowGroup:" {
+    } else
+    // AllowGroup
+    if StrLeft(Stuff, 11) == "AllowGroup:" {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff)-11)
       TmpStr = StrMakeLower(TmpStr)
       if TmpStr == "yes" {
@@ -419,11 +431,17 @@ func ParsePlayerStuff(pPlayer *Player) {
       } else {
         pPlayer.AllowGroup = false
       }
-    } else if StrLeft(Stuff, 11) == "ArmorClass:" {
+    } else
+    // ArmorClass
+    if StrLeft(Stuff, 11) == "ArmorClass:" {
       pPlayer.ArmorClass = CalcPlayerArmorClass(pPlayer)
-    } else if StrLeft(Stuff, 5) == "Born:" {
+    } else
+    // Born
+    if StrLeft(Stuff, 5) == "Born:" {
       pPlayer.Born = int64(StrToInt(StrRight(Stuff, StrGetLength(Stuff)-5)))
-    } else if StrLeft(Stuff, 6) == "Color:" {
+    } else
+    // Color
+    if StrLeft(Stuff, 6) == "Color:" {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff)-6)
       TmpStr = StrMakeLower(TmpStr)
       if TmpStr == "yes" {
@@ -431,27 +449,39 @@ func ParsePlayerStuff(pPlayer *Player) {
       } else {
         pPlayer.Color = false
       }
-    } else if StrLeft(Stuff, 11) == "Experience:" {
+    } else
+    // Experience
+    if StrLeft(Stuff, 11) == "Experience:" {
       pPlayer.Experience = float64(StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11)))
-    } else if StrLeft(Stuff, 11) == "GoToArrive:" {
+    } else
+    // GoToArrive
+    if StrLeft(Stuff, 11) == "GoToArrive:" {
       pPlayer.GoToArrive = StrRight(Stuff, StrGetLength(Stuff)-11)
       if pPlayer.Admin {
         if pPlayer.GoToArrive == "" {
           pPlayer.GoToArrive = "arrives!"
         }
       }
-    } else if StrLeft(Stuff, 11) == "GoToDepart:" {
+    } else
+    // GoToDepart
+    if StrLeft(Stuff, 11) == "GoToDepart:" {
       pPlayer.GoToDepart = StrRight(Stuff, StrGetLength(Stuff)-11)
       if pPlayer.Admin {
         if pPlayer.GoToDepart == "" {
           pPlayer.GoToDepart = "leaves!"
         }
       }
-    } else if StrLeft(Stuff, 10) == "HitPoints:" {
+    } else
+    // HitPoints
+    if StrLeft(Stuff, 10) == "HitPoints:" {
       pPlayer.HitPoints = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-10))
-    } else if StrLeft(Stuff, 7) == "Hunger:" {
+    } else
+    // Hunger
+    if StrLeft(Stuff, 7) == "Hunger:" {
       pPlayer.Hunger = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-7))
-    } else if StrLeft(Stuff, 10) == "Invisible:" {
+    } else
+    // Invisible
+    if StrLeft(Stuff, 10) == "Invisible:" {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff)-10)
       TmpStr = StrMakeLower(TmpStr)
       if TmpStr == "yes" {
@@ -461,11 +491,17 @@ func ParsePlayerStuff(pPlayer *Player) {
         pPlayer.Invisible = false
         pDnodeActor.PlayerStateInvisible = false
       }
-    } else if StrLeft(Stuff, 6) == "Level:" {
+    } else
+    // Level
+    if StrLeft(Stuff, 6) == "Level:" {
       pPlayer.Level = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-6))
-    } else if StrLeft(Stuff, 11) == "MovePoints:" {
+    } else
+    // MovePoints
+    if StrLeft(Stuff, 11) == "MovePoints:" {
       pPlayer.MovePoints = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11))
-    } else if StrLeft(Stuff, 9) == "OneWhack:" {
+    } else
+    // OneWhack
+    if StrLeft(Stuff, 9) == "OneWhack:" {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff)-9)
       TmpStr = StrMakeLower(TmpStr)
       if TmpStr == "yes" {
@@ -473,13 +509,21 @@ func ParsePlayerStuff(pPlayer *Player) {
       } else {
         pPlayer.OneWhack = false
       }
-    } else if StrLeft(Stuff, 7) == "Online:" {
-      TmpStr = ""
-    } else if StrLeft(Stuff, 9) == "Position:" {
+    } else
+    // Online
+    if StrLeft(Stuff, 7) == "Online:" {
+      TmpStr = "" // Does not matter what is the file
+    } else
+    // Position
+    if StrLeft(Stuff, 9) == "Position:" {
       pPlayer.Position = StrRight(Stuff, StrGetLength(Stuff)-9)
-    } else if StrLeft(Stuff, 7) == "RoomId:" {
+    } else
+    // RoomId
+    if StrLeft(Stuff, 7) == "RoomId:" {
       pPlayer.RoomId = StrRight(Stuff, StrGetLength(Stuff)-7)
-    } else if StrLeft(Stuff, 9) == "RoomInfo:" {
+    } else
+    // RoomInfo
+    if StrLeft(Stuff, 9) == "RoomInfo:" {
       TmpStr = StrRight(Stuff, StrGetLength(Stuff)-9)
       TmpStr = StrMakeLower(TmpStr)
       if TmpStr == "yes" {
@@ -487,37 +531,67 @@ func ParsePlayerStuff(pPlayer *Player) {
       } else {
         pPlayer.RoomInfo = false
       }
-    } else if StrLeft(Stuff, 4) == "Sex:" {
+    } else
+    // Sex
+    if StrLeft(Stuff, 4) == "Sex:" {
       pPlayer.Sex = StrRight(Stuff, StrGetLength(Stuff)-4)
       pPlayer.Sex = StrMakeUpper(pPlayer.Sex)
-    } else if StrLeft(Stuff, 7) == "Silver:" {
+    } else
+    // Silver
+    if StrLeft(Stuff, 7) == "Silver:" {
       Amount = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-7))
       SetMoney(pPlayer, '+', Amount, "Silver")
-    } else if StrLeft(Stuff, 9) == "SkillAxe:" {
+    } else
+    // SkillAxe
+    if StrLeft(Stuff, 9) == "SkillAxe:" {
       pPlayer.SkillAxe = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-9))
-    } else if StrLeft(Stuff, 10) == "SkillClub:" {
+    } else
+    // SkillClub
+    if StrLeft(Stuff, 10) == "SkillClub:" {
       pPlayer.SkillClub = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-10))
-    } else if StrLeft(Stuff, 12) == "SkillDagger:" {
+    } else
+    // SkillDagger
+    if StrLeft(Stuff, 12) == "SkillDagger:" {
       pPlayer.SkillDagger = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-12))
-    } else if StrLeft(Stuff, 12) == "SkillHammer:" {
+    } else
+    // SkillHammer
+    if StrLeft(Stuff, 12) == "SkillHammer:" {
       pPlayer.SkillHammer = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-12))
-    } else if StrLeft(Stuff, 11) == "SkillSpear:" {
+    } else
+    // SkillSpear
+    if StrLeft(Stuff, 11) == "SkillSpear:" {
       pPlayer.SkillSpear = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11))
-    } else if StrLeft(Stuff, 11) == "SkillStaff:" {
+    } else
+    // SkillStaff
+    if StrLeft(Stuff, 11) == "SkillStaff:" {
       pPlayer.SkillStaff = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11))
-    } else if StrLeft(Stuff, 11) == "SkillSword:" {
+    } else
+    // SkillSword
+    if StrLeft(Stuff, 11) == "SkillSword:" {
       pPlayer.SkillSword = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11))
-    } else if StrLeft(Stuff, 7) == "Thirst:" {
+    } else
+    // Thirst
+    if StrLeft(Stuff, 7) == "Thirst:" {
       pPlayer.Thirst = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-7))
-    } else if StrLeft(Stuff, 11) == "TimePlayed:" {
+    } else
+    // TimePlayed
+    if StrLeft(Stuff, 11) == "TimePlayed:" {
       pPlayer.TimePlayed = int64(StrToInt(StrRight(Stuff, StrGetLength(Stuff)-11)))
-    } else if StrLeft(Stuff, 6) == "Title:" {
+    } else
+    // Title
+    if StrLeft(Stuff, 6) == "Title:" {
       pPlayer.Title = StrRight(Stuff, StrGetLength(Stuff)-6)
-    } else if StrLeft(Stuff, 13) == "WeaponDamage:" {
+    } else
+    // WeaponDamage
+    if StrLeft(Stuff, 13) == "WeaponDamage:" {
       pPlayer.WeaponDamage = StrToInt(StrRight(Stuff, StrGetLength(Stuff)-13))
-    } else if StrLeft(Stuff, 12) == "WeaponDesc1:" {
+    } else
+    // WeaponDesc1
+    if StrLeft(Stuff, 12) == "WeaponDesc1:" {
       pPlayer.WeaponDesc1 = StrRight(Stuff, StrGetLength(Stuff)-12)
-    } else if StrLeft(Stuff, 11) == "WeaponType:" {
+    } else
+    // WeaponType
+    if StrLeft(Stuff, 11) == "WeaponType:" {
       pPlayer.WeaponType = StrRight(Stuff, StrGetLength(Stuff)-11)
       pPlayer.WeaponType = StrMakeLower(pPlayer.WeaponType)
     } else {
@@ -552,31 +626,35 @@ func PlayerSave(pPlayer *Player) {
   // Admin
   if pPlayer.Admin {
     Stuff = "Admin:Yes"
+    PlayerWriteLine(Stuff)
   } else {
     Stuff = "Admin:No"
+    PlayerWriteLine(Stuff)
   }
-  PlayerWriteLine(Stuff)
   // AFK
   if pPlayer.pDnode.PlayerStateAfk {
     Stuff = "AFK:Yes"
+    PlayerWriteLine(Stuff)
   } else {
     Stuff = "AFK:No"
+    PlayerWriteLine(Stuff)
   }
-  PlayerWriteLine(Stuff)
   // AllowAssist
   if pPlayer.AllowAssist {
     Stuff = "AllowAssist:Yes"
+    PlayerWriteLine(Stuff)
   } else {
     Stuff = "AllowAssist:No"
+    PlayerWriteLine(Stuff)
   }
-  PlayerWriteLine(Stuff)
   // AllowGroup
   if pPlayer.AllowGroup {
     Stuff = "AllowGroup:Yes"
+    PlayerWriteLine(Stuff)
   } else {
     Stuff = "AllowGroup:No"
+    PlayerWriteLine(Stuff)
   }
-  PlayerWriteLine(Stuff)
   // ArmorClass - save only, ParsePlayerStuff calls CalcPlayerArmorClass
   TmpStr = fmt.Sprintf("%d", pPlayer.ArmorClass)
   Stuff = "ArmorClass:" + TmpStr
@@ -588,10 +666,11 @@ func PlayerSave(pPlayer *Player) {
   // Color
   if pPlayer.Color {
     Stuff = "Color:Yes"
+    PlayerWriteLine(Stuff)
   } else {
     Stuff = "Color:No"
+    PlayerWriteLine(Stuff)
   }
-  PlayerWriteLine(Stuff)
   // Experience
   TmpStr = fmt.Sprintf("%15.0f", pPlayer.Experience)
   Stuff = "Experience:" + TmpStr
@@ -613,10 +692,11 @@ func PlayerSave(pPlayer *Player) {
   // Invisible
   if pPlayer.Invisible {
     Stuff = "Invisible:Yes"
+    PlayerWriteLine(Stuff)
   } else {
     Stuff = "Invisible:No"
+    PlayerWriteLine(Stuff)
   }
-  PlayerWriteLine(Stuff)
   // Level
   TmpStr = fmt.Sprintf("%d", pPlayer.Level)
   Stuff = "Level:" + TmpStr
@@ -628,17 +708,19 @@ func PlayerSave(pPlayer *Player) {
   // OneWhack
   if pPlayer.OneWhack {
     Stuff = "OneWhack:Yes"
+    PlayerWriteLine(Stuff)
   } else {
     Stuff = "OneWhack:No"
+    PlayerWriteLine(Stuff)
   }
-  PlayerWriteLine(Stuff)
   // Online
   if pPlayer.pDnode.PlayerStatePlaying {
     Stuff = "Online:Yes"
+    PlayerWriteLine(Stuff)
   } else {
     Stuff = "Online:No"
+    PlayerWriteLine(Stuff)
   }
-  PlayerWriteLine(Stuff)
   // Position
   Stuff = "Position:" + pPlayer.Position
   PlayerWriteLine(Stuff)
@@ -648,10 +730,11 @@ func PlayerSave(pPlayer *Player) {
   // RoomInfo
   if pPlayer.RoomInfo {
     Stuff = "RoomInfo:Yes"
+    PlayerWriteLine(Stuff)
   } else {
     Stuff = "RoomInfo:No"
+    PlayerWriteLine(Stuff)
   }
-  PlayerWriteLine(Stuff)
   // Sex
   Stuff = "Sex:" + pPlayer.Sex
   PlayerWriteLine(Stuff)
@@ -735,8 +818,8 @@ func ShowMoney(pPlayer *Player) {
 }
 
 func ShowStatus(pPlayer *Player) {
-  var Exp1 string
-  var Exp2 string
+  var Exp1 string // Current Experience
+  var Exp2 string // Experience needed for next level
 
   pPlayer.Output = "\r\n"
   // Name
@@ -757,7 +840,7 @@ func ShowStatus(pPlayer *Player) {
   TmpStr = fmt.Sprintf("%d", pPlayer.HitPoints)
   pPlayer.Output += TmpStr
   pPlayer.Output += "/"
-  TmpStr = fmt.Sprintf("%d", pPlayer.Level*PLAYER_HPT_PER_LEVEL)
+  TmpStr = fmt.Sprintf("%d", pPlayer.Level * PLAYER_HPT_PER_LEVEL)
   pPlayer.Output += TmpStr
   pPlayer.Output += "\r\n"
   // Current Experience and Experience needed for next level
@@ -765,7 +848,7 @@ func ShowStatus(pPlayer *Player) {
   TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'))
   Exp1 = FormatCommas(TmpStr)
 
-  TmpStr = fmt.Sprintf("%15.0f", CalcLevelExperience(pPlayer.Level+1))
+  TmpStr = fmt.Sprintf("%15.0f", CalcLevelExperience(pPlayer.Level + 1))
   TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'))
   Exp2 = FormatCommas(TmpStr)
   for StrGetLength(Exp1) < StrGetLength(Exp2) {
@@ -814,6 +897,7 @@ func ShowStatus(pPlayer *Player) {
   TmpStr = pPlayer.Position
   StrReplace(&TmpStr, "s", "S")
   if TmpStr == "Sit" {
+    // Add extra 't'
     TmpStr += "t"
   }
   TmpStr += "ing"
@@ -839,29 +923,32 @@ func ShowStatus(pPlayer *Player) {
 // Close player file
 func PlayerCloseFile() {
   PlayerFile.Close()
+  PlayerFile = nil
+  PlayerReader = nil
 }
 
 // Open player file
 func OpenPlayerFile(Name string, Mode string) bool {
-  PlayerFileName := PLAYER_DIR + Name + ".txt"
-  switch Mode {
-  case "Read":
-    f, err := os.Open(PlayerFileName)
+  var PlayerFileName string
+  var err            error
+
+  PlayerFileName = PLAYER_DIR
+  PlayerFileName += Name + ".txt"
+  if Mode == "Read" {
+    PlayerFile, err = os.Open(PlayerFileName)
     if err != nil {
       return false
     }
-    PlayerFile = f
     PlayerReader = bufio.NewReader(PlayerFile)
     return true
-  case "Write":
-    f, err := os.Create(PlayerFileName)
+  } else if Mode == "Write" {
+    PlayerFile, err = os.Create(PlayerFileName)
     if err != nil {
       return false
     }
-    PlayerFile = f
     PlayerReader = bufio.NewReader(PlayerFile)
     return true
-  default:
+  } else {
     LogBuf = "Player::OpenFile - Mode is not 'Read' or 'Write'"
     LogIt(LogBuf)
     os.Exit(1)
@@ -871,22 +958,23 @@ func OpenPlayerFile(Name string, Mode string) bool {
 
 // Read a line from player file
 func PlayerReadLine() {
+  var err  error
+  var Line string
+
   DEBUGIT(5)
-  line, err := PlayerReader.ReadString('\n')
+  Line, err = PlayerReader.ReadString('\n')
   if err != nil {
     Stuff = ""
     return
   }
-  Stuff = strings.TrimRight(line, "\r\n")
+  Stuff = strings.TrimRight(Line, "\r\n")
 }
 
 // Write a line to player file
 func PlayerWriteLine(Stuff string) {
   Stuff = Stuff + "\n"
-  if PlayerFile != nil {
-    _, _ = PlayerFile.WriteString(Stuff)
-    PlayerFile.Sync()
-  }
+  PlayerFile.WriteString(Stuff)
+  PlayerFile.Sync()
 }
 
 // Check whether or not player has been in the current room
@@ -941,8 +1029,10 @@ func PlayerRoomCharToBitsConvert(pPlayer *Player) {
     pPlayer.PlayerRoomBits[i] = false
   }
   for BitPos = 7; BitPos >= 0; BitPos-- {
+    // For each bit
     Remainder = int(Char) - int(math.Pow(2, float64(BitPos)))
     if Remainder > -1 {
+      // Set bit on
       pPlayer.PlayerRoomBits[BitPos] = true
       Char = Remainder
     }
@@ -952,21 +1042,25 @@ func PlayerRoomCharToBitsConvert(pPlayer *Player) {
 // Convert from PlayerRoom bits to PlayerRoom char
 func PlayerRoomBitsToCharConvert(pPlayer *Player) {
   var BitPos int
-  var Char   int
 
-  Char = 0
+  pPlayer.PlayerRoomChar = 0
   for BitPos = 7; BitPos >= 0; BitPos-- {
+    // For each bit
     if pPlayer.PlayerRoomBits[BitPos] {
-      Char += int(math.Pow(2, float64(BitPos)))
+      // Bit is set
+      pPlayer.PlayerRoomChar = byte(int(pPlayer.PlayerRoomChar) + int(math.Pow(2, float64(BitPos))))
     }
   }
-  pPlayer.PlayerRoomChar = byte(Char)
 }
 
 // Read PlayerRoomVector from disk
 func PlayerRoomStringRead(pPlayer *Player) {
   var PlayerRoomString string
-  var BitsetFileName string
+  var BitsetFile      *os.File
+  var BitsetFileInfo  os.FileInfo
+  var BitsetFileName  string
+  var BitsetSize      int
+  var err             error
 
   BitsetFileName = PLAYER_ROOM_DIR
   BitsetFileName += pPlayer.Name
@@ -981,17 +1075,37 @@ func PlayerRoomStringRead(pPlayer *Player) {
   }
 
   pPlayer.PlayerRoomVector = []byte{}
-  Data, _ := os.ReadFile(BitsetFileName)
-  PlayerRoomString = string(Data)
+  BitsetFile, err = os.Open(BitsetFileName)
+  if err != nil {
+    return
+  }
+  BitsetFileInfo, err = BitsetFile.Stat()
+  if err != nil {
+    BitsetFile.Close()
+    return
+  }
+  BitsetSize = int(BitsetFileInfo.Size())
+  pPlayer.PlayerRoomVector = make([]byte, BitsetSize)
+  BitsetFile.Read(pPlayer.PlayerRoomVector)
+  PlayerRoomString = string(pPlayer.PlayerRoomVector)
   pPlayer.PlayerRoomVector = []byte(PlayerRoomString)
+  BitsetFile.Close()
 }
 
 // Write PlayerRoomVector to disk
 func PlayerRoomStringWrite(pPlayer *Player) {
+  var BitsetFile     *os.File
   var BitsetFileName string
+  var err            error
 
   BitsetFileName = PLAYER_ROOM_DIR
   BitsetFileName += pPlayer.Name
   BitsetFileName += ".txt"
-  _ = os.WriteFile(BitsetFileName, pPlayer.PlayerRoomVector, 0o644)
+
+  BitsetFile, err = os.Create(BitsetFileName)
+  if err != nil {
+    return
+  }
+  BitsetFile.Write(pPlayer.PlayerRoomVector)
+  BitsetFile.Close()
 }
