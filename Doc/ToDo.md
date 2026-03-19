@@ -98,8 +98,8 @@ For more information, please refer to <http://unlicense.org/>
 - [ ] HQ-082 - 03/18/26 - Align Mobile.go with Mobile.cpp
 - [ ] HQ-083 - 03/18/26 - Align Object.go with Object.cpp
 - [ ] HQ-084 - 03/18/26 - Align Player.go with Player.cpp
-- [x] HQ-085 - 03/18/26 - Align Utility.go with Utility.cpp (commit: pending)
-- [ ] HQ-086 - 03/18/26 - Align Validate.go with Tools\\Validate.cpp
+- [x] HQ-085 - 03/18/26 - Align Utility.go with Utility.cpp (commit: c6a653c)
+- [x] HQ-086 - 03/18/26 - Align Validate.go with Tools\\Validate.cpp (commit: pending)
 - [ ] HQ-087 - 03/18/26 - Align Violence.go with Violence.cpp
 - [x] HQ-088 - 03/18/26 - Temporary fix to World.go to remove compile error (commit: aba50ca)
 - [ ] HQ-089 - 03/18/26 - Align World.go with World.cpp
