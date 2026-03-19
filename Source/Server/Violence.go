@@ -84,9 +84,6 @@ func GetMobileArmor(MobileId string) int {
     // Mobile Armor is not implemented, so for now, we just return zero
     MobileArmor = 0
     return MobileArmor
-    // This code is currently unreachable, on purpose.
-    LogIt("Violence::GetArmor - Open MobStatsArmorFile file failed (read)")
-    os.Exit(1)
   }
   Stuff = ""
   scanner := bufio.NewScanner(MobStatsArmorFile)
