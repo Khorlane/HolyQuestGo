@@ -94,12 +94,12 @@ For more information, please refer to <http://unlicense.org/>
 - [ ] HQ-078 - 03/18/26 - Align Descriptor.go with Descriptor.cpp
 - [ ] HQ-079 - 03/18/26 - Align Dnode.go with Dnode.cpp
 - [x] HQ-080 - 03/18/26 - Align Help.go with Help.cpp (commit: 3c7aabd)
-- [ ] HQ-081 - 03/18/26 - Align Log.go with Log.cpp
+- [x] HQ-081 - 03/18/26 - Align Log.go with Log.cpp (commit: pending)
 - [ ] HQ-082 - 03/18/26 - Align Mobile.go with Mobile.cpp
 - [ ] HQ-083 - 03/18/26 - Align Object.go with Object.cpp
 - [ ] HQ-084 - 03/18/26 - Align Player.go with Player.cpp
 - [ ] HQ-085 - 03/18/26 - Align Utility.go with Utility.cpp
 - [ ] HQ-086 - 03/18/26 - Align Validate.go with Tools\\Validate.cpp
 - [ ] HQ-087 - 03/18/26 - Align Violence.go with Violence.cpp
-- [x] HQ-088 - 03/18/26 - Temporary fix to World.go to remove compile error (commit: pending)
+- [x] HQ-088 - 03/18/26 - Temporary fix to World.go to remove compile error (commit: aba50ca)
 - [ ] HQ-089 - 03/18/26 - Align World.go with World.cpp
