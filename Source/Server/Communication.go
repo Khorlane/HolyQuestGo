@@ -31,8 +31,10 @@ func GetTargetDnode(TargetName string) *Dnode {
 
 	TargetFound = false
 	TargetName = StrMakeLower(TargetName)
+	// Get Dnode pointer for target player
 	SetpDnodeCursorFirst()
 	for !EndOfDnodeList() {
+		// Loop thru all connections
 		pDnodeLookup = GetDnode()
 		LookupName = StrMakeLower(pDnodeLookup.PlayerName)
 		if TargetName == LookupName {
@@ -43,6 +45,7 @@ func GetTargetDnode(TargetName string) *Dnode {
 		}
 		SetpDnodeCursorNext()
 	}
+	// Re-position pDnodeCursor
 	RepositionDnodeCursor()
 	if TargetFound {
 		return pDnodeLookup
@@ -240,7 +243,7 @@ func SockClosePort(Port int) {
 func SockOpenPort(Port int) {
 	DEBUGIT(1)
 	addr := fmt.Sprintf(":%d", Port)
-		ln, err := net.Listen("tcp", addr)
+	ln, err := net.Listen("tcp", addr)
 	if err != nil {
 		Buf = err.Error()
 		LogBuf = "Communication::SockOpenPort - Error: initializing socket: " + Buf
@@ -265,15 +268,26 @@ func SockOpenPort(Port int) {
 func SockRecv() {
 	var ConnectionCount int
 	var DnodeFdSave string
+	var LineFeedPosition int
+	var RecvByteCount int
+	var err error
 
-	DEBUGIT(6)
+	DEBUGIT(5)
+	//***********************
+	//* Service connections *
+	//***********************
 	SetpDnodeCursorFirst()
 	for !EndOfDnodeList() {
+		// Loop thru all connections
 		pDnodeActor = GetDnode()
-		// Check connection status (logon timeout)
+		//***************************
+		//* Check connection status *
+		//***************************
 		if !pDnodeActor.PlayerStatePlaying {
+			// Player is logging on
 			pDnodeActor.InputTick++
 			if pDnodeActor.InputTick >= INPUT_TICK {
+				// No input, kick 'em out
 				pDnodeActor.PlayerStateBye = true
 				Buf = ""
 				if pDnodeActor.DnodeFd != nil {
@@ -285,18 +299,21 @@ func SockRecv() {
 				pDnodeActor.PlayerOut += "No input ... closing connection"
 			}
 		}
-		// Receive / exception handling via non-blocking recv
+		//***************************
+		//* Receive / exception set *
+		//***************************
 		if pDnodeActor.DnodeFd != nil {
-			buf := make([]byte, MAX_INPUT_LENGTH)
+			InpStr := make([]byte, MAX_INPUT_LENGTH)
 			_ = pDnodeActor.DnodeFd.SetReadDeadline(time.Now().Add(100 * time.Millisecond))
-			n, err := pDnodeActor.DnodeFd.Read(buf)
+			RecvByteCount, err = pDnodeActor.DnodeFd.Read(InpStr)
 			if err != nil {
 				if ne, ok := err.(net.Error); ok && ne.Timeout() {
-					// No data available
+					// Nothing worth processing
 				} else {
-					// Exception: kick out connection
+					// Kick out connections with exceptions
 					pDnodeActor.PlayerStateBye = true
 					if pDnodeActor.PlayerStatePlaying {
+						// Player is playing, so save them
 						pDnodeActor.PlayerStatePlaying = false
 						if pDnodeActor.pPlayer != nil {
 							PlayerSave(pDnodeActor.pPlayer)
@@ -304,54 +321,68 @@ func SockRecv() {
 					}
 				}
 			} else {
-				if n == 0 {
-					// Disconnected
+				if RecvByteCount == 0 {
+					// Should be input but there is none -- disconnected ??
 					pDnodeActor.PlayerStateBye = true
 					if pDnodeActor.PlayerStatePlaying {
+						// Player is playing, so save them
 						pDnodeActor.PlayerStatePlaying = false
 						if pDnodeActor.pPlayer != nil {
 							PlayerSave(pDnodeActor.pPlayer)
 						}
 					}
-				} else if n > 0 {
-					// Got input
-					pDnodeActor.PlayerInp += string(buf[:n])
+				}
+				if RecvByteCount > 0 {
+					// Got something ... append it to player input
+					pDnodeActor.PlayerInp += string(InpStr[:RecvByteCount])
 					pDnodeActor.InputTick = 0
 				}
 			}
 		}
-		// Banner for new connection
+		//*****************************
+		//* Banner for new connection *
+		//*****************************
 		if pDnodeActor.PlayerStateSendBanner {
+			// New connection
 			pDnodeActor.PlayerStateSendBanner = false
 			pDnodeActor.PlayerStateLoggingOn = true
 			pDnodeActor.PlayerStateWaitNewCharacter = true
+			// Send greeting
 			LogonGreeting()
 			pDnodeActor.PlayerOut += "\r\n"
 			pDnodeActor.PlayerOut += "Create a new character Y-N?"
 			pDnodeActor.PlayerOut += "\r\n"
 		}
-		// Update player stats
+		//***********************
+		//* Update player stats *
+		//***********************
 		if pDnodeActor.PlayerStatePlaying {
+			// Player is playing
 			pDnodeActor.StatsTick++
 			if pDnodeActor.StatsTick >= STATS_TICK {
+				// Update player stats
 				pDnodeActor.StatsTick = 0
 				UpdatePlayerStats()
 			}
 			// Hunger & thirst
 			pDnodeActor.HungerThirstTick++
 			if pDnodeActor.HungerThirstTick >= HUNGER_THIRST_TICK {
+				// Decrement hunger & thirst
 				pDnodeActor.HungerThirstTick = 0
 				pDnodeActor.pPlayer.Hunger++
 				pDnodeActor.pPlayer.Thirst++
 				if pDnodeActor.pPlayer.Level < HUNGER_THIRST_LEVEL {
+					// No hunger or thirst .. yet
 					pDnodeActor.pPlayer.Hunger = 0
 					pDnodeActor.pPlayer.Thirst = 0
 				}
 				if pDnodeActor.pPlayer.Admin {
+					// Admin immune from hunger and thirst
 					pDnodeActor.pPlayer.Hunger = 0
 					pDnodeActor.pPlayer.Thirst = 0
 				}
 				if pDnodeActor.pPlayer.Hunger > 99 {
+					// Player is hungry
 					pDnodeActor.pPlayer.Hunger = 100
 					pDnodeActor.PlayerOut += "\r\n"
 					pDnodeActor.PlayerOut += "You are extremely hungry!!!"
@@ -360,6 +391,7 @@ func SockRecv() {
 					pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 				}
 				if pDnodeActor.pPlayer.Thirst > 99 {
+					// Player is thirsty
 					pDnodeActor.pPlayer.Thirst = 100
 					pDnodeActor.PlayerOut += "\r\n"
 					pDnodeActor.PlayerOut += "You are extremely thirsty!!!"
@@ -370,15 +402,21 @@ func SockRecv() {
 				}
 			}
 		}
-		// Handle fights
+		//*****************
+		//* Handle fights *
+		//*****************
 		if pDnodeActor.PlayerStateFighting {
+			// Fighting
 			pDnodeActor.FightTick++
 			if pDnodeActor.FightTick >= FIGHT_TICK {
+				// WHACK 'em
 				pDnodeActor.FightTick = 0
 				Violence()
 			}
 		}
-		// Is game stopping?
+		//*********************
+		//* Is Game stopping? *
+		//*********************
 		if StateStopping {
 			SetpDnodeCursorFirst()
 			for !EndOfDnodeList() {
@@ -400,12 +438,16 @@ func SockRecv() {
 			}
 			RepositionDnodeCursor()
 		}
-		// Send player output
+		//**********************
+		//* Send player output *
+		//**********************
 		if StrGetLength(pDnodeActor.PlayerOut) > 0 {
 			Color()
 			SockSend(pDnodeActor.PlayerOut)
 		}
-		// Is player quitting?
+		//**********************
+		//* Is player quitting? *
+		//**********************
 		if pDnodeActor.PlayerStateBye {
 			if !pDnodeActor.PlayerStateReconnecting {
 				if pDnodeActor.pPlayer != nil {
@@ -430,9 +472,11 @@ func SockRecv() {
 			SetpDnodeCursorNext()
 			continue
 		}
-		// Process player input
+		//************************
+		//* Process player input *
+		//************************
 		if !StateStopping {
-			LineFeedPosition := StrFindOneOf(pDnodeActor.PlayerInp, "\r\n")
+			LineFeedPosition = StrFindOneOf(pDnodeActor.PlayerInp, "\r\n")
 			if LineFeedPosition > -1 {
 				if pDnodeActor.PlayerName != "Ixaka" && pDnodeActor.PlayerName != "Kwam" {
 					LogBuf = pDnodeActor.PlayerIpAddress
@@ -455,11 +499,15 @@ func SockRecv() {
 
 // Replace or strip out color codes
 func Color() {
+	var sPlayerOut string
+
 	if !pDnodeActor.PlayerStatePlaying {
+		// Player's color variable is not available
 		return
 	}
-	sPlayerOut := pDnodeActor.PlayerOut
+	sPlayerOut = pDnodeActor.PlayerOut
 	if pDnodeActor.pPlayer.Color {
+		// Player has turned color on
 		StrReplace(&sPlayerOut, "&N", Normal)
 		StrReplace(&sPlayerOut, "&K", BrightBlack)
 		StrReplace(&sPlayerOut, "&R", BrightRed)
@@ -470,6 +518,7 @@ func Color() {
 		StrReplace(&sPlayerOut, "&C", BrightCyan)
 		StrReplace(&sPlayerOut, "&W", BrightWhite)
 	} else {
+		// Strip out color codes
 		StrReplace(&sPlayerOut, "&N", "")
 		StrReplace(&sPlayerOut, "&K", "")
 		StrReplace(&sPlayerOut, "&R", "")
@@ -485,20 +534,26 @@ func Color() {
 
 // Load command array
 func CommandArrayLoad() {
-	ValidCmdsFileName := VALID_CMDS_DIR + "ValidCommands.txt"
-	file, err := os.Open(ValidCmdsFileName)
+	var ValidCmdsFile *os.File
+	var ValidCmdsFileName string
+	var err error
+
+	ValidCmdsFileName = VALID_CMDS_DIR
+	ValidCmdsFileName += "ValidCommands.txt"
+	ValidCmdsFile, err = os.Open(ValidCmdsFileName)
 	if err != nil {
+		// Open failed
 		LogBuf = "Communication::CommandArrayLoad - Open Valid Commands file failed (read)"
 		LogIt(LogBuf)
 		return
 	}
-	defer file.Close()
 	ValidCmds = ValidCmds[:0]
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(ValidCmdsFile)
 	for scanner.Scan() {
-		line := scanner.Text()
-		ValidCmds = append(ValidCmds, line)
+		Stuff = scanner.Text()
+		ValidCmds = append(ValidCmds, Stuff)
 	}
+	ValidCmdsFile.Close()
 	LogBuf = "Command array loaded"
 	LogIt(LogBuf)
 }
@@ -512,30 +567,39 @@ func CommandCheck(MudCmdChk string) string {
 
 	CommandCheckResult = "Not Found"
 	for _, ValidCmd := range ValidCmds {
+		// For each string in the ValidCmds vector
 		ValCmdInfo = ValidCmd
 		ValCmd = StrGetWord(ValCmdInfo, 1)
 		WhoCanDo = StrGetWord(ValCmdInfo, 2)
 		if MudCmdChk == ValCmd {
+			// Found the command
 			if WhoCanDo == "all" {
+				// Anyone can do this command
 				CommandCheckResult = "Ok"
 				break
 			} else if WhoCanDo == "admin" {
+				// It's an Admin command
 				if pDnodeActor.pPlayer.Admin {
+					// Player is an Admin
 					CommandCheckResult = "Ok"
 					break
 				} else {
+					// Player is not an Admin
 					CommandCheckResult = "NotOk"
 				}
 			} else if StrToInt(WhoCanDo) > pDnodeActor.pPlayer.Level {
+				// Failed level check
 				CommandCheckResult = "Level " + WhoCanDo
 				break
 			} else {
+				// Passed level check
 				CommandCheckResult = "Ok"
 				break
 			}
 		}
 	}
 	if CommandCheckResult == "" {
+		// This should never be true
 		LogBuf = "Communication::CommandCheck - Broke!"
 		LogIt(LogBuf)
 		CommandCheckResult = "Not Found"
@@ -632,15 +696,17 @@ func CommandParse() {
 	if CommandCheckResult == "Ok" {
 		// Mud command is Ok for this player
 		MudCmdOk = true
-	} else if StrGetWord(CommandCheckResult, 1) == "Level" {
-		// Level restriction on command
-		pDnodeActor.PlayerOut += "You must attain level "
-		pDnodeActor.PlayerOut += StrGetWord(CommandCheckResult, 2)
-		pDnodeActor.PlayerOut += " before you can use that command."
-		pDnodeActor.PlayerOut += "\r\n"
-		CreatePrompt(pDnodeActor.pPlayer)
-		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-		return
+	} else {
+		if StrGetWord(CommandCheckResult, 1) == "Level" {
+			// Level restriction on command
+			pDnodeActor.PlayerOut += "You must attain level "
+			pDnodeActor.PlayerOut += StrGetWord(CommandCheckResult, 2)
+			pDnodeActor.PlayerOut += " before you can use that command."
+			pDnodeActor.PlayerOut += "\r\n"
+			CreatePrompt(pDnodeActor.pPlayer)
+			pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+			return
+		}
 	}
 	//******************
 	//* SOCIAL command *
@@ -681,6 +747,7 @@ func CommandParse() {
 	//**********************
 	//* Process the MudCmd *
 	//**********************
+
 	// ADVANCE command
 	if MudCmd == "advance" {
 		DoAdvance()
@@ -1016,7 +1083,8 @@ func DoAdvance() {
 	PlayerName = StrMakeLower(PlayerName)
 	TargetName = StrMakeLower(TargetName)
 	Level = StrToInt(StrGetWord(CmdStr, 3))
-	LevelString = fmt.Sprintf("%d", Level)
+	Buf = fmt.Sprintf("%d", Level)
+	LevelString = Buf
 	if TargetName == "" {
 		// No name given
 		pDnodeActor.PlayerOut += "Advance who?"
@@ -1098,7 +1166,7 @@ func DoAdvance() {
 	pDnodeTgt.pPlayer.Level = Level
 	pDnodeTgt.pPlayer.Experience = CalcLevelExperience(Level)
 	PlayerSave(pDnodeTgt.pPlayer)
-	// Prompt
+	// Create player prompt
 	CreatePrompt(pDnodeTgt.pPlayer)
 	pDnodeTgt.PlayerOut += GetOutput(pDnodeTgt.pPlayer)
 	// Restore the player as a bonus to being advanced
@@ -1107,6 +1175,7 @@ func DoAdvance() {
 
 // Afk command
 func DoAfk() {
+	DEBUGIT(1)
 	if pDnodeActor.PlayerStateAfk {
 		// Player returning from AFK
 		pDnodeActor.PlayerStateAfk = false
@@ -1119,6 +1188,7 @@ func DoAfk() {
 		pDnodeActor.PlayerStateAfk = true
 	}
 	PlayerSave(pDnodeActor.pPlayer)
+	// Create player prompt
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
@@ -1462,7 +1532,7 @@ func DoConsider() {
 	MobileName = Target
 	Target = StrMakeLower(Target)
 	if Target == PlayerNameCheck {
-		// Trying to consider self
+		// Trying to kill self
 		pDnodeActor.PlayerOut += "Consider yourself considered!"
 		pDnodeActor.PlayerOut += "\r\n"
 		CreatePrompt(pDnodeActor.pPlayer)
@@ -1470,7 +1540,7 @@ func DoConsider() {
 		return
 	}
 	if IsPlayer(Target) {
-		// Trying to consider another player
+		// Trying to kill another player
 		pDnodeActor.PlayerOut += "Why consider another player? Player killing is not allowed."
 		pDnodeActor.PlayerOut += "\r\n"
 		CreatePrompt(pDnodeActor.pPlayer)
@@ -2630,6 +2700,7 @@ func DoGive() {
 // Go command
 func DoGo() {
 	var MudCmdIsExit string
+	var sMudCmdIsExit string
 
 	DEBUGIT(1)
 	//********************
@@ -2663,7 +2734,6 @@ func DoGo() {
 	//* Try to move *
 	//***************
 	MudCmdIsExit = "go"
-	var sMudCmdIsExit string
 	sMudCmdIsExit = MudCmdIsExit
 	if IsExit(sMudCmdIsExit) {
 		// Player has been moved
@@ -2845,15 +2915,13 @@ func DoGoToDepart() {
 
 // Group command
 func DoGroup() {
-	var (
-		pDnodeGrpLdr    *Dnode // Group leader
-		i               int
-		j               int
-		GrpFull         bool
-		PlayerNameCheck string
-		TargetNameCheck string
-		TargetNameSave  string
-	)
+	var pDnodeGrpLdr *Dnode // Group leader
+	var i int
+	var j int
+	var GrpFull bool
+	var PlayerNameCheck string
+	var TargetNameCheck string
+	var TargetNameSave string
 
 	DEBUGIT(1)
 	if IsSleeping() {
@@ -2886,25 +2954,26 @@ func DoGroup() {
 			CreatePrompt(pDnodeActor.pPlayer)
 			pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 			return
-		}
-		// Player is in a group, show members
-		pDnodeActor.PlayerOut += pDnodeActor.pPlayer.pPlayerGrpMember[0].Name
-		pDnodeActor.PlayerOut += " \r\n"
-		j = StrGetLength(pDnodeActor.pPlayer.pPlayerGrpMember[0].Name)
-		for i = 1; i < j+1; i++ {
-			pDnodeActor.PlayerOut += "-"
-		}
-		for i = 1; i < GRP_LIMIT; i++ {
-			// List group members
-			if pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i] != nil {
-				pDnodeActor.PlayerOut += " \r\n"
-				pDnodeActor.PlayerOut += pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i].Name
+		} else {
+			// Player is in a group, show members
+			pDnodeActor.PlayerOut += pDnodeActor.pPlayer.pPlayerGrpMember[0].Name
+			pDnodeActor.PlayerOut += " \r\n"
+			j = StrGetLength(pDnodeActor.pPlayer.pPlayerGrpMember[0].Name)
+			for i = 1; i < j+1; i++ {
+				pDnodeActor.PlayerOut += "-"
 			}
+			for i = 1; i < GRP_LIMIT; i++ {
+				// List group members
+				if pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i] != nil {
+					pDnodeActor.PlayerOut += " \r\n"
+					pDnodeActor.PlayerOut += pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i].Name
+				}
+			}
+			pDnodeActor.PlayerOut += " \r\n"
+			CreatePrompt(pDnodeActor.pPlayer)
+			pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+			return
 		}
-		pDnodeActor.PlayerOut += " \r\n"
-		CreatePrompt(pDnodeActor.pPlayer)
-		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-		return
 	}
 	//***********************
 	//* Turning grouping on *
@@ -2951,12 +3020,13 @@ func DoGroup() {
 			CreatePrompt(pDnodeActor.pPlayer)
 			pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 			return
+		} else {
+			// Player is in a group
+			pDnodeActor.PlayerOut += "One is a lonely number, but wait, you are already in group.\r\n"
+			CreatePrompt(pDnodeActor.pPlayer)
+			pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+			return
 		}
-		// Player is in a group
-		pDnodeActor.PlayerOut += "One is a lonely number, but wait, you are already in group.\r\n"
-		CreatePrompt(pDnodeActor.pPlayer)
-		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-		return
 	}
 	pDnodeGrpLdr = GetTargetDnode(TargetNameCheck)
 	if pDnodeGrpLdr == nil {
@@ -3693,19 +3763,22 @@ func DoMoney() {
 func DoMotd() {
 	var MotdFile *os.File
 	var MotdFileName string
+	var Scanner *bufio.Scanner
+	var err error
 
 	DEBUGIT(1)
 	// Read Motd file
 	MotdFileName = MOTD_DIR
 	MotdFileName += "Motd"
 	MotdFileName += ".txt"
-	MotdFile, err := os.Open(MotdFileName)
+	MotdFile, err = os.Open(MotdFileName)
 	if err != nil {
+		// Open failed
 		LogBuf = "Communication::DoMotd - Open Motd file failed (read)"
 		LogIt(LogBuf)
 		return
 	}
-	Scanner := bufio.NewScanner(MotdFile)
+	Scanner = bufio.NewScanner(MotdFile)
 	for Scanner.Scan() {
 		Stuff = Scanner.Text()
 		if Stuff == "End of Motd" {
@@ -3809,6 +3882,7 @@ func DoPassword() {
 
 // Played command
 func DoPlayed() {
+	var Buffer string
 	var Days int64
 	var Hours int64
 	var Minutes int64
@@ -3839,7 +3913,8 @@ func DoPlayed() {
 	Minutes = n / 60
 	n %= 60
 	Seconds = n
-	PlayerAge = fmt.Sprintf("Your age: %d days, %d hours, %d minutes, %d seconds", Days, Hours, Minutes, Seconds)
+	Buffer = fmt.Sprintf("Your age: %d days, %d hours, %d minutes, %d seconds", Days, Hours, Minutes, Seconds)
+	PlayerAge = Buffer
 	// TimePlayed
 	n = TimePlayedSec
 	Days = n / (24 * 3600)
@@ -3849,7 +3924,8 @@ func DoPlayed() {
 	Minutes = n / 60
 	n %= 60
 	Seconds = n
-	TimePlayed = fmt.Sprintf("You've played: %d days, %d hours, %d minutes, %d seconds", Days, Hours, Minutes, Seconds)
+	Buffer = fmt.Sprintf("You've played: %d days, %d hours, %d minutes, %d seconds", Days, Hours, Minutes, Seconds)
+	TimePlayed = Buffer
 	pDnodeActor.PlayerOut += PlayerAge
 	pDnodeActor.PlayerOut += "\r\n"
 	pDnodeActor.PlayerOut += TimePlayed
@@ -4551,6 +4627,7 @@ func DoStatus() {
 	DEBUGIT(1)
 	ShowStatus(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
+	// Create player prompt
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
@@ -4660,7 +4737,7 @@ func DoTime() {
 	pDnodeActor.PlayerOut += "Current game time is: "
 	pDnodeActor.PlayerOut += GetTime()
 	pDnodeActor.PlayerOut += "\r\n"
-	// Prompt
+	// Create player prompt
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 }
@@ -4991,7 +5068,7 @@ func DoTrain() {
 		IncreaseDecrease = -1
 	}
 	// Ok, so train or untrain them already
-	switch (WeaponType) {
+	switch WeaponType {
 	case "axe":
 		pDnodeActor.pPlayer.SkillAxe += IncreaseDecrease
 	case "club":
@@ -5151,7 +5228,10 @@ func DoWear() {
 	pDnodeActor.PlayerOut += "\r\n"
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-	WearMsg = pDnodeActor.PlayerName + " wears " + pObject.Desc1 + "."
+	WearMsg = pDnodeActor.PlayerName
+	WearMsg += " wears "
+	WearMsg += pObject.Desc1
+	WearMsg += "."
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, WearMsg)
@@ -5562,15 +5642,17 @@ func GrpLeaveMember() {
 
 // Logon greeting
 func LogonGreeting() {
-	var GreetingFile     *os.File
-	var GreetingFileName  string
+	var GreetingFile *os.File
+	var GreetingFileName string
+	var Scanner *bufio.Scanner
+	var err error
 
-  DEBUGIT(1)
+	DEBUGIT(1)
 	// Read greeting file
 	GreetingFileName = GREETING_DIR
 	GreetingFileName += "Greeting"
 	GreetingFileName += ".txt"
-	GreetingFile, err := os.Open(GreetingFileName)
+	GreetingFile, err = os.Open(GreetingFileName)
 	if err != nil {
 		LogBuf = "Communication::LogonGreeting - Open Greeting file failed (read)"
 		LogIt(LogBuf)
@@ -5579,7 +5661,7 @@ func LogonGreeting() {
 	pDnodeActor.PlayerOut += "Version "
 	pDnodeActor.PlayerOut += VERSION
 	pDnodeActor.PlayerOut += "\r\n"
-	Scanner := bufio.NewScanner(GreetingFile)
+	Scanner = bufio.NewScanner(GreetingFile)
 	for Scanner.Scan() {
 		Stuff = Scanner.Text()
 		if Stuff == "End of Greeting" {
@@ -5917,13 +5999,20 @@ func RepositionDnodeCursor() {
 
 // New connection
 func SockNewConnection() {
+	var IpAddress string
+	var conn net.Conn
+	var err error
+	var host string
+	var ok bool
+	var tcpConn *net.TCPConn
+
 	DEBUGIT(6)
 	if ListenSocket == nil {
-    LogIt("Communication::SockNewConnection - Error: ListenSocket is nil")
-    os.Exit(1)
+		LogIt("Communication::SockNewConnection - Error: ListenSocket is nil")
+		os.Exit(1)
 	}
-  _ = ListenSocket.SetDeadline(time.Now().Add(100 * time.Millisecond))
-	conn, err := ListenSocket.Accept()
+	_ = ListenSocket.SetDeadline(time.Now().Add(100 * time.Millisecond))
+	conn, err = ListenSocket.Accept()
 	if err != nil {
 		if ne, ok := err.(net.Error); ok && ne.Timeout() {
 			return
@@ -5931,17 +6020,16 @@ func SockNewConnection() {
 		Buf = err.Error()
 		LogBuf = "Communication::SockNewConnection - Error: accept: " + Buf
 		LogIt(LogBuf)
-    os.Exit(1)
+		os.Exit(1)
 	}
-  LogIt("Communication::SockNewConnection - Accepted new connection")
-	tcpConn, ok := conn.(*net.TCPConn)
+	tcpConn, ok = conn.(*net.TCPConn)
 	if !ok {
 		conn.Close()
 		LogIt("Communication::SockNewConnection - Error: non-TCP connection")
-    os.Exit(1)
+		os.Exit(1)
 	}
-	IpAddress := tcpConn.RemoteAddr().String()
-	if host, _, errHost := net.SplitHostPort(IpAddress); errHost == nil {
+	IpAddress = tcpConn.RemoteAddr().String()
+	if host, _, err = net.SplitHostPort(IpAddress); err == nil {
 		IpAddress = host
 	}
 	Buf = fmt.Sprintf("%p", tcpConn)
@@ -5958,6 +6046,10 @@ func SockNewConnection() {
 
 // Send message
 func SockSend(arg string) {
+	var Length int
+	var Written int
+	var err error
+
 	DEBUGIT(6)
 	if arg == "" {
 		return
@@ -5965,21 +6057,21 @@ func SockSend(arg string) {
 	if pDnodeActor.DnodeFd == nil {
 		return
 	}
-	buf := []byte(arg)
+	Length = len(arg)
 	_ = pDnodeActor.DnodeFd.SetWriteDeadline(time.Now().Add(100 * time.Millisecond))
-	n, err := pDnodeActor.DnodeFd.Write(buf)
+	Written, err = pDnodeActor.DnodeFd.Write([]byte(arg))
 	if err != nil {
 		if ne, ok := err.(net.Error); ok && ne.Timeout() {
 			return
 		}
-		LogBuf = "SockSend - Error: " + err.Error()
+		LogBuf = "Communication::SockSend - Error: " + err.Error()
 		LogIt(LogBuf)
 		return
 	}
-	if n >= len(buf) {
+	if Written == Length {
 		pDnodeActor.PlayerOut = ""
-	} else if n >= 0 {
-		pDnodeActor.PlayerOut = pDnodeActor.PlayerOut[n:]
+	} else {
+		pDnodeActor.PlayerOut = StrRight(pDnodeActor.PlayerOut, Length-Written)
 	}
 }
 
@@ -6005,7 +6097,7 @@ func UpdatePlayerStats() {
 	if HitPoints < HitPointsMax {
 		// Hit points have fallen below maximun
 		switch Position {
-    case "stand":
+		case "stand":
 			// Additional hit points gained while standing
 			HitPointsGain = Level * HPT_GAIN_STAND
 		case "sit":

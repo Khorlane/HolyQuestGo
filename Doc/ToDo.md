@@ -89,7 +89,7 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-073 - 03/18/26 - Align BigDog.go with BigDog.cpp (commit: a15cbc8)
 - [x] HQ-074 - 03/18/26 - Align Calendar.go with Calendar.cpp (commit: 3697ef6)
 - [x] HQ-075 - 03/18/26 - Align Color.go with Color.h (commit: f10f908)
-- [ ] HQ-076 - 03/18/26 - Align Communication.go with Communication.cpp
+- [x] HQ-076 - 03/19/26 - Align Communication.go with Communication.cpp (commit: pending)
 - [x] HQ-077 - 03/18/26 - Align Config.go with Config.h (commit: f78104a)
 - [x] HQ-078 - 03/19/26 - Align Descriptor.go with Descriptor.cpp (commit: 34e9bba)
 - [x] HQ-079 - 03/19/26 - Align Dnode.go with Dnode.cpp (commit: 3e51a6c)
@@ -102,7 +102,7 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-086 - 03/18/26 - Align Validate.go with Tools\\Validate.cpp (commit: 8e0f766)
 - [x] HQ-087 - 03/19/26 - Align Violence.go with Violence.cpp (commit: 49f7758)
 - [x] HQ-088 - 03/18/26 - Temporary fix to World.go to remove compile error (commit: aba50ca)
-- [x] HQ-089 - 03/19/26 - Align World.go with World.cpp (commit: pending)
+- [x] HQ-089 - 03/19/26 - Align World.go with World.cpp (commit: d3acc33)
 - [x] HQ-090 - 03/18/26 - Fix ValErr - Object file 'BearHide' not found -------------------> Bear.txt (commit: 8402562)
 - [x] HQ-091 - 03/19/26 - Apply strategy used to correct HQ-090 correct similar issues in Validate.go (commit: db2b3a1)
 - [x] HQ-092 - 03/18/26 - End of day checkpoint and chat_context refresh (commit: b1ef41a)
@@ -112,3 +112,5 @@ For more information, please refer to <http://unlicense.org/>
 - [ ] HQ-096 - 03/19/26 - Clean up unreachable code in Violence.go
 - [ ] HQ-097 - 03/19/26 - Clean up redundant return statements in Object.go
 - [ ] HQ-098 - 03/19/26 - Evaluate tagged switch on Mode in Player.go OpenPlayerFile()
+- [ ] HQ-099 - 03/19/26 - Align SockSend partial-write handling with C++ behavior in Communication.go
+- [ ] HQ-100 - 03/19/26 - Harden group pointer handling in Communication.go follow/leave helpers
