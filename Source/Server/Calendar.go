@@ -190,8 +190,8 @@ func OpenCalendarFile() {
 
   DEBUGIT(1)
   CalendarFileIsOpen = false
-  CalendarFileName = CONTROL_DIR
-  CalendarFileName += "Calendar.txt"
+  CalendarFileName   = CONTROL_DIR
+  CalendarFileName  += "Calendar.txt"
   CalendarFileInp, err := os.Open(CalendarFileName)
   if err != nil {
     // Calendar file does not exist
@@ -211,7 +211,7 @@ func LoadDayNamesArray() {
   var DayNamesFileName string
 
   DEBUGIT(1)
-  DayNamesFileName = DAY_NAMES_DIR
+  DayNamesFileName  = DAY_NAMES_DIR
   DayNamesFileName += "DayNames.txt"
   file, err := os.Open(DayNamesFileName)
   if err != nil {
@@ -240,7 +240,7 @@ func LoadDayOfMonthArray() {
   var DayOfMonthFileName string
 
   DEBUGIT(1)
-  DayOfMonthFileName = DAY_OF_MONTH_DIR
+  DayOfMonthFileName  = DAY_OF_MONTH_DIR
   DayOfMonthFileName += "DayOfMonth.txt"
   file, err := os.Open(DayOfMonthFileName)
   if err != nil {
@@ -269,7 +269,7 @@ func LoadHourNamesArray() {
   var HourNamesFileName string
 
   DEBUGIT(1)
-  HourNamesFileName = HOUR_NAMES_DIR
+  HourNamesFileName  = HOUR_NAMES_DIR
   HourNamesFileName += "HourNames.txt"
   file, err := os.Open(HourNamesFileName)
   if err != nil {
@@ -298,7 +298,7 @@ func LoadMonthNamesArray() {
   var MonthNamesFileName string
 
   DEBUGIT(1)
-  MonthNamesFileName = MONTH_NAMES_DIR
+  MonthNamesFileName  = MONTH_NAMES_DIR
   MonthNamesFileName += "MonthNames.txt"
   file, err := os.Open(MonthNamesFileName)
   if err != nil {
@@ -327,7 +327,7 @@ func SaveTime() {
   var CalendarFileName string
 
   DEBUGIT(1)
-  CalendarFileName = CONTROL_DIR
+  CalendarFileName  = CONTROL_DIR
   CalendarFileName += "Calendar.txt"
   file, err := os.Create(CalendarFileName)
   if err != nil {

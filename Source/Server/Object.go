@@ -15,7 +15,7 @@ import (
 	"strconv"
 )
 
-var ObjectFile      *os.File
+var ObjectFile     *os.File
 var ObjectFileName  string
 var ObjectId        string
 var pObject        *Object
@@ -597,12 +597,12 @@ func IsObjInPlayerInv(ObjectName string) {
 
 // Is object in room
 func IsObjInRoom(ObjectName string) {
-  var NamesCheck        string
-  var ObjectId          string
-  var ObjectIdCheck     string
-  var ObjectNameCheck   string
-  var RoomObjFileName   string
-  var RoomObjFile      *os.File
+  var NamesCheck       string
+  var ObjectId         string
+  var ObjectIdCheck    string
+  var ObjectNameCheck  string
+  var RoomObjFileName  string
+  var RoomObjFile     *os.File
 
   _ = ObjectIdCheck
   _ = ObjectNameCheck

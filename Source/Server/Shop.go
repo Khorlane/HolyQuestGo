@@ -31,11 +31,11 @@ func IsShop(RoomId string) bool {
 
 // Is this shop buying and selling this object?
 func IsShopObj(RoomId string, ObjectName string) {
-  var NamesCheck string
-  var ObjectId string
-  var Result int
-  var ShopFileName string
-  var ShopFile *os.File
+  var NamesCheck    string
+  var ObjectId      string
+  var Result        int
+  var ShopFileName  string
+  var ShopFile     *os.File
 
   ShopFileName = SHOPS_DIR
   ShopFileName += RoomId

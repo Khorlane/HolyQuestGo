@@ -27,13 +27,13 @@ func IsHelp() bool {
     return false
   }
   HelpLookup := StrGetWord(CmdStr, 2)
-  HelpLookup = StrMakeLower(HelpLookup)
-  HelpText = "Not Done"
+  HelpLookup  = StrMakeLower(HelpLookup)
+  HelpText    = "Not Done"
   for HelpText != "End of Help" {
     // Loop until Help is found or end of file
     HelpReadLine()
     HelpText = StrTrimLeft(HelpText)
-    TmpStr = StrLeft(HelpText, 5)
+    TmpStr   = StrLeft(HelpText, 5)
     if TmpStr == "Help:" {
       // Ok, a Help entry has been found
       TmpStr = StrRight(HelpText, StrGetLength(HelpText)-5)

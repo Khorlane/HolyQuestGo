@@ -21,7 +21,7 @@ var RoomScanner *bufio.Scanner
 func GetRoomId(RoomId string) string {
   var RoomFileName string
 
-  RoomFileName = ROOMS_DIR
+  RoomFileName  = ROOMS_DIR
   RoomFileName += RoomId
   RoomFileName += ".txt"
   var err error
@@ -50,7 +50,7 @@ func GetRoomName(RoomId string) string {
   var RoomFileName string
   var RoomName     string
 
-  RoomFileName = ROOMS_DIR
+  RoomFileName  = ROOMS_DIR
   RoomFileName += RoomId
   RoomFileName += ".txt"
   var err error
@@ -89,7 +89,7 @@ func GetValidMobRoomExits(RoomId string) string {
   var RoomFileName  string
   var ValidMobExits string
 
-  RoomFileName = ROOMS_DIR
+  RoomFileName  = ROOMS_DIR
   RoomFileName += RoomId
   RoomFileName += ".txt"
   var err error
@@ -240,7 +240,7 @@ func IsExit(MudCmdIsExit string) bool {
 func IsRoom(RoomId string) bool {
   var RoomFileName string
 
-  RoomFileName = ROOMS_DIR
+  RoomFileName  = ROOMS_DIR
   RoomFileName += RoomId
   RoomFileName += ".txt"
   var err error
@@ -268,7 +268,7 @@ func IsRoom(RoomId string) bool {
 func IsRoomType(RoomId string, RoomType string) bool {
   var RoomFileName string
 
-  RoomFileName = ROOMS_DIR
+  RoomFileName  = ROOMS_DIR
   RoomFileName += RoomId
   RoomFileName += ".txt"
   var err error
@@ -331,7 +331,7 @@ func CloseRoomFile() {
 func MoveFollowers(pDnode *Dnode, ExitToRoomId string) {
   // Recursive
   var pDnodeGrpMem *Dnode
-  var i int
+  var i             int
 
   for i = 1; i < GRP_LIMIT; i++ {
     if pDnode.pPlayer.pPlayerFollowers[i] == nil {
@@ -379,7 +379,7 @@ func MovePlayer(pDnode *Dnode, ExitToRoomId string) {
 func OpenRoomFile(pDnode *Dnode) bool {
   var RoomFileName string
 
-  RoomFileName = ROOMS_DIR
+  RoomFileName  = ROOMS_DIR
   RoomFileName += pDnode.pPlayer.RoomId
   RoomFileName += ".txt"
   var err error

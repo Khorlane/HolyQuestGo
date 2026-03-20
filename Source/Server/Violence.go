@@ -23,9 +23,9 @@ func CalcDamageToMobile(Damage int, WeaponSkill int) int {
   var SkillFactor int
 
   SkillFactor = int(float64(WeaponSkill) / 1.66)
-  Percent = GetRandomNumber(PLAYER_DMG_PCT - SkillFactor)
-  Deduction = int(math.Ceil(float64(Damage) * (float64(Percent) / 100.0)))
-  CalcDamage = Damage - Deduction
+  Percent     = GetRandomNumber(PLAYER_DMG_PCT - SkillFactor)
+  Deduction   = int(math.Ceil(float64(Damage) * (float64(Percent) / 100.0)))
+  CalcDamage  = Damage - Deduction
   return CalcDamage
 }
 
@@ -35,8 +35,8 @@ func CalcDamageToPlayer(Damage int, PAC int) int {
   var Deduction  int
   var Percent    int
 
-  Percent = GetRandomNumber(PLAYER_DMG_PCT)
-  Deduction  = int(math.Ceil(float64(Damage) * (float64(Percent) / 100.0)))
+  Percent    = GetRandomNumber(PLAYER_DMG_PCT)
+  Deduction  = int(math.Ceil(float64(Damage) * (float64(Percent)/100.0)))
   CalcDamage = Damage - Deduction
   CalcDamage = int(math.Floor(float64(CalcDamage) - (float64(PAC)*PACMN*float64(CalcDamage))))
   return CalcDamage
@@ -76,7 +76,7 @@ func GetMobileArmor(MobileId string) int {
   var err                    error
 
   // Read mobile stats Armor file
-  MobStatsArmorFileName = MOB_STATS_ARM_DIR
+  MobStatsArmorFileName  = MOB_STATS_ARM_DIR
   MobStatsArmorFileName += MobileId
   MobStatsArmorFileName += ".txt"
   MobStatsArmorFile, err = os.Open(MobStatsArmorFileName)
@@ -92,8 +92,8 @@ func GetMobileArmor(MobileId string) int {
   }
   MobStatsArmorFile.Close()
   // Return mobile's Armor
-  Stuff = StrTrimLeft(Stuff)
-  Stuff = StrTrimRight(Stuff)
+  Stuff       = StrTrimLeft(Stuff)
+  Stuff       = StrTrimRight(Stuff)
   MobileArmor = StrToInt(Stuff)
   return MobileArmor
 }
@@ -106,7 +106,7 @@ func GetMobileAttack(MobileId string) string {
   var err                     error
 
   // Read mobile stats Attack file
-  MobStatsAttackFileName = MOB_STATS_ATK_DIR
+  MobStatsAttackFileName  = MOB_STATS_ATK_DIR
   MobStatsAttackFileName += MobileId
   MobStatsAttackFileName += ".txt"
   MobStatsAttackFile, err = os.Open(MobStatsAttackFileName)
@@ -121,8 +121,8 @@ func GetMobileAttack(MobileId string) string {
   }
   MobStatsAttackFile.Close()
   // Return mobile's Attack
-  Stuff = StrTrimLeft(Stuff)
-  Stuff = StrTrimRight(Stuff)
+  Stuff        = StrTrimLeft(Stuff)
+  Stuff        = StrTrimRight(Stuff)
   MobileAttack = Stuff
   return MobileAttack
 }
@@ -135,7 +135,7 @@ func GetMobileDamage(MobileId string) int {
   var err                     error
 
   // Read mobile stats Damage file
-  MobStatsDamageFileName = MOB_STATS_DMG_DIR
+  MobStatsDamageFileName  = MOB_STATS_DMG_DIR
   MobStatsDamageFileName += MobileId
   MobStatsDamageFileName += ".txt"
   MobStatsDamageFile, err = os.Open(MobStatsDamageFileName)
@@ -150,8 +150,8 @@ func GetMobileDamage(MobileId string) int {
   }
   MobStatsDamageFile.Close()
   // Return mobile's Damage
-  Stuff = StrTrimLeft(Stuff)
-  Stuff = StrTrimRight(Stuff)
+  Stuff        = StrTrimLeft(Stuff)
+  Stuff        = StrTrimRight(Stuff)
   MobileDamage = StrToInt(Stuff)
   return MobileDamage
 }
@@ -164,7 +164,7 @@ func GetMobileDesc1(MobileId string) string {
   var err                    error
 
   // Read mobile stats Desc1 file
-  MobStatsDesc1FileName = MOB_STATS_DSC_DIR
+  MobStatsDesc1FileName  = MOB_STATS_DSC_DIR
   MobStatsDesc1FileName += MobileId
   MobStatsDesc1FileName += ".txt"
   MobStatsDesc1File, err = os.Open(MobStatsDesc1FileName)
@@ -192,7 +192,7 @@ func GetMobileExpPointsLevel(MobileId string) string {
   var err                        error
 
   // Read mobile stats ExpPoints and Level file
-  MobStatsExpPointsFileName = MOB_STATS_EXP_DIR
+  MobStatsExpPointsFileName  = MOB_STATS_EXP_DIR
   MobStatsExpPointsFileName += MobileId
   MobStatsExpPointsFileName += ".txt"
   MobStatsExpPointsFile, err = os.Open(MobStatsExpPointsFileName)
@@ -220,7 +220,7 @@ func GetMobileHitPoints(MobileId string) string {
   var err                        error
 
   // Read mobile stats hit points file
-  MobStatsHitPointsFileName = MOB_STATS_HPT_DIR
+  MobStatsHitPointsFileName  = MOB_STATS_HPT_DIR
   MobStatsHitPointsFileName += MobileId
   MobStatsHitPointsFileName += ".txt"
   MobStatsHitPointsFile, err = os.Open(MobStatsHitPointsFileName)
@@ -246,7 +246,7 @@ func GetMobileLoot(MobileId string) string {
   var err                   error
 
   // Read mobile stats Loot file
-  MobStatsLootFileName = MOB_STATS_LOOT_DIR
+  MobStatsLootFileName  = MOB_STATS_LOOT_DIR
   MobStatsLootFileName += MobileId
   MobStatsLootFileName += ".txt"
   MobStatsLootFile, err = os.Open(MobStatsLootFileName)
@@ -261,8 +261,8 @@ func GetMobileLoot(MobileId string) string {
   }
   MobStatsLootFile.Close()
   // Return mobile's Loot
-  Stuff = StrTrimLeft(Stuff)
-  Stuff = StrTrimRight(Stuff)
+  Stuff      = StrTrimLeft(Stuff)
+  Stuff      = StrTrimRight(Stuff)
   MobileLoot = Stuff
   return MobileLoot
 }
@@ -275,7 +275,7 @@ func GetMobileRoom(MobileId string) string {
   var err                   error
 
   // Read mobile stats Loot file
-  MobStatsRoomFileName = MOB_STATS_ROOM_DIR
+  MobStatsRoomFileName  = MOB_STATS_ROOM_DIR
   MobStatsRoomFileName += MobileId
   MobStatsRoomFileName += ".txt"
   MobStatsRoomFile, err = os.Open(MobStatsRoomFileName)
@@ -304,7 +304,7 @@ func GetMobPlayerMobileId(PlayerName string, i int) string {
   var MobPlayerFileName  string
   var err                error
 
-  MobPlayerFileName = MOB_PLAYER_DIR
+  MobPlayerFileName  = MOB_PLAYER_DIR
   MobPlayerFileName += PlayerName
   MobPlayerFileName += ".txt"
   MobPlayerFile, err = os.Open(MobPlayerFileName)
@@ -337,7 +337,7 @@ func GetPlayerMobMobileId(PlayerName string) string {
   var PlayerMobFileName  string
   var err                error
 
-  PlayerMobFileName = PLAYER_MOB_DIR
+  PlayerMobFileName  = PLAYER_MOB_DIR
   PlayerMobFileName += PlayerName
   PlayerMobFileName += ".txt"
   PlayerMobFile, err = os.Open(PlayerMobFileName)
@@ -384,7 +384,7 @@ func WhackMobile(MobileId string, DamageToMobile int, MobileDesc1 string, Weapon
     // Keep MobHitPointsLeft from going negative
     MobHitPointsLeft = 0
   }
-  MobStatsHitPointsFileName = MOB_STATS_HPT_DIR
+  MobStatsHitPointsFileName  = MOB_STATS_HPT_DIR
   MobStatsHitPointsFileName += MobileId
   MobStatsHitPointsFileName += ".txt"
   MobStatsHitPointsFile, err = os.Create(MobStatsHitPointsFileName)
@@ -456,7 +456,7 @@ func WhackMobile(MobileId string, DamageToMobile int, MobileDesc1 string, Weapon
     }
   } else {
     // Mobile is dead
-    MobileBeenWhacked = "dead"
+    MobileBeenWhacked  = "dead"
     MobileBeenWhacked += " "
     if MobHealthPctOld == 100 && MobHealthPctNew == 0 {
       // Mob was killed with one hit
@@ -506,7 +506,7 @@ func WhackPlayer(MobileDesc1 string, MobileAttack string, DamageToPlayer int) st
   // Format damage message
   Buf = fmt.Sprintf("%d", DamageToPlayer)
   TmpStr = Buf
-  PlayerBeenWhacked = MobileDesc1
+  PlayerBeenWhacked  = MobileDesc1
   PlayerBeenWhacked += " "
   PlayerBeenWhacked += MobileAttack
   PlayerBeenWhacked += " "

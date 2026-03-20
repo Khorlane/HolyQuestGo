@@ -48,12 +48,12 @@ func BigDog() {
   LogBuf = "Home directory is " + HomeDir
   LogIt(LogBuf)
   // Initialize
-  EventTick = EVENT_TICK
+  EventTick        = EVENT_TICK
   MobHealTick      = 0
   StateConnections = true
   StateRunning     = true
   StateStopping    = false
-  PACMN = 1.0 / MAC * MDRP / 100.0
+  PACMN            = 1.0 / MAC * MDRP / 100.0
   if ValErr := ValidateIt("All"); ValErr {
     // Validation failed
     LogBuf = "OMugs has stopped"

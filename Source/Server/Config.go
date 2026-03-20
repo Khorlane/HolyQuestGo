@@ -16,7 +16,7 @@ import (
 // Configuration constants
 const (
   // Version information
-  VERSION                 string  = "2025.12.18"
+  VERSION                 string  = "2026.03.19"
 
   // Debugging level
   DEBUG_LVL               int     = 1     // 0 to turn off, 1 or more to turn on

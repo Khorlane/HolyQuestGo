@@ -72,7 +72,7 @@ func CreateSpawnMobileEvents() {
 			continue
 		}
 		//* Check MaxInWorld against actual 'in world' count
-		WorldMobileFileName = WORLD_MOBILES_DIR + WorldMobileFileName
+		WorldMobileFileName  = WORLD_MOBILES_DIR + WorldMobileFileName
 		WorldMobileFile, err = os.Open(WorldMobileFileName)
 		if err != nil {
 			// File does not exist - Very bad!
@@ -119,7 +119,7 @@ func CreateSpawnMobileEvents() {
 		Weeks   = StrToInt(StrGetWord(Stuff, 6)) * 604800
 		Months  = StrToInt(StrGetWord(Stuff, 7)) * 2592000
 		Years   = StrToInt(StrGetWord(Stuff, 8)) * 31104000
-		CurrentTime = int(GetTimeSeconds())
+		CurrentTime  = int(GetTimeSeconds())
 		CurrentTime += Seconds
 		CurrentTime += Minutes
 		CurrentTime += Hours
@@ -127,9 +127,9 @@ func CreateSpawnMobileEvents() {
 		CurrentTime += Weeks
 		CurrentTime += Months
 		CurrentTime += Years
-		sprintfBuf := fmt.Sprintf("%d", CurrentTime)
-		EventTime = sprintfBuf
-		EventFileName = CONTROL_EVENTS_DIR
+		sprintfBuf  := fmt.Sprintf("%d", CurrentTime)
+		EventTime    = sprintfBuf
+		EventFileName  = CONTROL_EVENTS_DIR
 		EventFileName += "M"
 		EventFileName += EventTime
 		EventFileName += ".txt"
@@ -140,7 +140,7 @@ func CreateSpawnMobileEvents() {
 			os.Exit(1)
 		}
 		for Count < Limit {
-			TmpStr = MobileId
+			TmpStr  = MobileId
 			TmpStr += " "
 			TmpStr += RoomId
 			TmpStr += "\r\n"
@@ -206,7 +206,7 @@ func CheckSpawnMobileEvents() {
 			continue
 		}
 		// Event's time has arrived
-		EventFileName = CONTROL_EVENTS_DIR + EventFileName
+		EventFileName  = CONTROL_EVENTS_DIR + EventFileName
 		EventFile, err = os.Open(EventFileName)
 		if err != nil {
 			// File does not exist - Very bad!
@@ -219,7 +219,7 @@ func CheckSpawnMobileEvents() {
 		for Stuff != "" {
 			// Get RoomId, MobileId, then spawn the mob
 			MobileId = StrGetWord(Stuff, 1)
-			RoomId = StrGetWord(Stuff, 2)
+			RoomId   = StrGetWord(Stuff, 2)
 			SpawnMobile(MobileId, RoomId)
 			// Remove the NoMoreSpawnEventsFlag for this mobile
 			// This is overkill, attempts to remove same flag over and over
@@ -277,7 +277,7 @@ func HealMobiles() {
 			continue
 		}
 		MobStatsHitPointsFileName = entry.Name()
-		MobileId = StrLeft(MobStatsHitPointsFileName, StrGetLength(MobStatsHitPointsFileName)-4)
+		MobileId    = StrLeft(MobStatsHitPointsFileName, StrGetLength(MobStatsHitPointsFileName)-4)
 		MobFighting = HealMobilesFightCheck("MobPlayer", MobileId)
 		if MobFighting {
 			// Mobile is fighting, no heal
@@ -295,7 +295,7 @@ func HealMobiles() {
 		RemoveMobFromRoom(RoomId, MobileId)
 		DeleteMobStats(MobileId)
 		PositionOfDot = StrFindFirstChar(MobileId, '.')
-		MobileId = StrLeft(MobileId, PositionOfDot)
+		MobileId      = StrLeft(MobileId, PositionOfDot)
 		AddMobToRoom(RoomId, MobileId)
 	}
 	if ChgDir(HomeDir) != nil {
@@ -357,7 +357,7 @@ func HealMobilesFightCheck(dir, mobileID string) bool {
 		MobPlayerFile, err = os.Open(MobPlayerFileName)
 		if err != nil {
 			// Failed to open MobPlayer or MobPlayer file
-			TmpStr = "World::HealMobilesFightCheck - Open "
+			TmpStr  = "World::HealMobilesFightCheck - Open "
 			TmpStr += dir
 			TmpStr += " file failed"
 			LogIt(TmpStr)
@@ -399,13 +399,13 @@ func MakeMobilesMove() {
 	//********************************
 	Success1 = false
 	Success2 = false
-	RoomMobListFileName = CONTROL_DIR
+	RoomMobListFileName  = CONTROL_DIR
 	RoomMobListFileName += "RoomMobList.txt"
 	RoomMobListFile, err := os.Open(RoomMobListFileName)
 	if err == nil {
 		Success1 = true
 	}
-	RoomMobMoveFileName = CONTROL_DIR
+	RoomMobMoveFileName  = CONTROL_DIR
 	RoomMobMoveFileName += "RoomMobMove.txt"
 	RoomMobMoveFile, err = os.Open(RoomMobMoveFileName)
 	if err == nil {
@@ -490,16 +490,16 @@ func MakeMobilesMove1() {
 			// Force 'spawn' rooms to be first in list
 			TmpStr = "00000"
 		}
-		TmpStr += " "
-		TmpStr += RoomMobFileName
+		TmpStr     += " "
+		TmpStr     += RoomMobFileName
 		RoomMobList = append(RoomMobList, TmpStr)
 	}
 	// sort em
 	sort.Strings(RoomMobList)
 	// Write em
 	for _, item := range RoomMobList {
-		TmpStr = item
-		TmpStr = StrGetWord(TmpStr, 2)
+		TmpStr  = item
+		TmpStr  = StrGetWord(TmpStr, 2)
 		TmpStr += "\n"
 		RoomMobListFile.WriteString(TmpStr)
 	}
@@ -584,9 +584,9 @@ func MakeMobilesMove2() {
 			RoomMobListTempFile.WriteString(RoomMobFileName + "\n")
 			continue
 		}
-		RoomId = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName)-4)
+		RoomId           = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName)-4)
 		// Open RoomMob file
-		RoomMobFileName = ROOM_MOB_DIR + RoomMobFileName
+		RoomMobFileName  = ROOM_MOB_DIR + RoomMobFileName
 		RoomMobFile, err = os.Open(RoomMobFileName)
 		if err != nil {
 			// No RoomMob file? Really, I guess all the mobs got themselves killed
@@ -599,8 +599,8 @@ func MakeMobilesMove2() {
 				continue
 			}
 			// For each mobile in room
-			MobCount = StrToInt(StrGetWord(Stuff, 1))
-			MobileId = StrGetWord(Stuff, 2)
+			MobCount      = StrToInt(StrGetWord(Stuff, 1))
+			MobileId      = StrGetWord(Stuff, 2)
 			MobileIdCheck = MobileId
 			PositionOfDot = StrFindFirstChar(MobileIdCheck, '.')
 			if PositionOfDot > 1 {
@@ -608,7 +608,7 @@ func MakeMobilesMove2() {
 				MobileIdCheck = StrLeft(MobileIdCheck, PositionOfDot)
 			}
 			//* Is the MobNoMoveFlag set?
-			ControlMobNoMoveFileName = CONTROL_MOB_NOMOVE_DIR
+			ControlMobNoMoveFileName  = CONTROL_MOB_NOMOVE_DIR
 			ControlMobNoMoveFileName += MobileIdCheck
 			ControlMobNoMoveFile, err = os.Open(ControlMobNoMoveFileName)
 			if err == nil {
@@ -638,7 +638,7 @@ func MakeMobilesMove2() {
 								LogIt("ExitToRoomId is blank zz")
 								os.Exit(1)
 							}
-							TmpStr = MobileId
+							TmpStr  = MobileId
 							TmpStr += " "
 							TmpStr += RoomId
 							TmpStr += " "
@@ -703,8 +703,8 @@ func MakeMobilesMove3() {
 	//******************************
 	//* Initization and open files *
 	//******************************
-	MobMoveNotCompleted = false
-	RoomMobMoveFileName = CONTROL_DIR + "RoomMobMove.txt"
+	MobMoveNotCompleted  = false
+	RoomMobMoveFileName  = CONTROL_DIR + "RoomMobMove.txt"
 	RoomMobMoveFile, err = os.Open(RoomMobMoveFileName)
 	if err != nil {
 		// No RoomMobMove file, Ok, who delete the file when I wasn't looking?
@@ -722,7 +722,7 @@ func MakeMobilesMove3() {
 	//* Process RoomMobMove file *
 	//****************************
 	TimerStart = time.Now()
-	TimerStop = TimerStart.Add(100 * time.Millisecond)
+	TimerStop  = TimerStart.Add(100 * time.Millisecond)
 	Scanner := bufio.NewScanner(RoomMobMoveFile)
 	for Scanner.Scan() {
 		Stuff = Scanner.Text()
@@ -732,28 +732,28 @@ func MakeMobilesMove3() {
 			RoomMobMoveTempFile.WriteString(Stuff + "\n")
 			continue
 		}
-		MobileId = StrGetWord(Stuff, 1)
-		RoomId = StrGetWord(Stuff, 2)
+		MobileId     = StrGetWord(Stuff, 1)
+		RoomId       = StrGetWord(Stuff, 2)
 		ExitToRoomId = StrGetWord(Stuff, 3)
 		if !IsMobileIdInRoom(RoomId, MobileId) {
 			// Mob not in room anymore, prolly get itself killed, so can't be moved
 			continue
 		}
 		MobileDesc1 = GetMobDesc1(MobileId)
-		LeaveMsg = MobileDesc1
-		LeaveMsg += " leaves."
-		ArriveMsg = MobileDesc1
-		ArriveMsg += " arrives."
+		LeaveMsg    = MobileDesc1
+		LeaveMsg   += " leaves."
+		ArriveMsg   = MobileDesc1
+		ArriveMsg  += " arrives."
 		RemoveMobFromRoom(RoomId, MobileId)
 		AddMobToRoom(ExitToRoomId, MobileId)
-		pDnodeSrc = nil
-		pDnodeTgt = nil
+		pDnodeSrc   = nil
+		pDnodeTgt   = nil
 		SendToRoom(RoomId, LeaveMsg)
 		SendToRoom(ExitToRoomId, ArriveMsg)
 		PositionOfDot = StrFindFirstChar(MobileId, '.')
 		if PositionOfDot > 1 {
 			// Delete 'MobStats' Room file
-			MobStatsFileName = MOB_STATS_ROOM_DIR
+			MobStatsFileName  = MOB_STATS_ROOM_DIR
 			MobStatsFileName += MobileId
 			MobStatsFileName += ".txt"
 			err = Remove(MobStatsFileName)
@@ -821,7 +821,7 @@ func SpawnMobile(MobileId, RoomId string) {
 		os.Exit(1)
 	}
 	AddMobToRoom(RoomId, MobileId)
-	SpawnMsg = pMobile.Desc1
+	SpawnMsg  = pMobile.Desc1
 	SpawnMsg += " suddenly appears!"
 	pDnodeSrc = nil
 	pDnodeTgt = nil

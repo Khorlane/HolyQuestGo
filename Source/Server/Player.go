@@ -14,7 +14,7 @@ import (
   "fmt"
   "os"
   "strings"
-  "math"  
+  "math"
 )
 
 var PlayerFile   *os.File
@@ -30,12 +30,12 @@ type Player struct {
   RoomIdBeforeMove string
 
   // Private variables
-  pDnode           *Dnode
-  Output            string
-  PlayerRoomBitPos  int
-  PlayerRoomBits    [8]bool
-  PlayerRoomChar    byte
-  PlayerRoomCharPos int
+  pDnode             *Dnode
+  Output              string
+  PlayerRoomBitPos    int
+  PlayerRoomBits   [8]bool
+  PlayerRoomChar      byte
+  PlayerRoomCharPos   int
   PlayerRoomVector  []byte
 
   // Player file variables
@@ -1018,7 +1018,7 @@ func PlayerRoomHasNotBeenHere(pPlayer *Player) bool {
   }
 }
 
-// Convert from PlayerRoom char to PlayerRoom bits 
+// Convert from PlayerRoom char to PlayerRoom bits
 func PlayerRoomCharToBitsConvert(pPlayer *Player) {
   var BitPos    int
   var Char      int
@@ -1055,12 +1055,12 @@ func PlayerRoomBitsToCharConvert(pPlayer *Player) {
 
 // Read PlayerRoomVector from disk
 func PlayerRoomStringRead(pPlayer *Player) {
-  var PlayerRoomString string
-  var BitsetFile      *os.File
-  var BitsetFileInfo  os.FileInfo
-  var BitsetFileName  string
-  var BitsetSize      int
-  var err             error
+  var PlayerRoomString  string
+  var BitsetFile       *os.File
+  var BitsetFileInfo    os.FileInfo
+  var BitsetFileName    string
+  var BitsetSize        int
+  var err               error
 
   BitsetFileName = PLAYER_ROOM_DIR
   BitsetFileName += pPlayer.Name
@@ -1095,8 +1095,8 @@ func PlayerRoomStringRead(pPlayer *Player) {
 // Write PlayerRoomVector to disk
 func PlayerRoomStringWrite(pPlayer *Player) {
   var BitsetFile     *os.File
-  var BitsetFileName string
-  var err            error
+  var BitsetFileName  string
+  var err             error
 
   BitsetFileName = PLAYER_ROOM_DIR
   BitsetFileName += pPlayer.Name

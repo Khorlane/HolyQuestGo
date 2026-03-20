@@ -19,15 +19,15 @@ import (
 )
 
 // Globals
-var pDnodeOthers *Dnode
-var ListenSocket *net.TCPListener
-var ValidCmds []string
+var pDnodeOthers  *Dnode
+var ListenSocket  *net.TCPListener
+var ValidCmds    []string
 
 // Return pointer of target, if target in 'playing' state
 func GetTargetDnode(TargetName string) *Dnode {
-	var pDnodeLookup  *Dnode
-	var TargetFound    bool
-	var LookupName     string
+	var pDnodeLookup *Dnode
+	var TargetFound   bool
+	var LookupName    string
 
 	TargetFound = false
 	TargetName = StrMakeLower(TargetName)
@@ -36,7 +36,7 @@ func GetTargetDnode(TargetName string) *Dnode {
 	for !EndOfDnodeList() {
 		// Loop thru all connections
 		pDnodeLookup = GetDnode()
-		LookupName = StrMakeLower(pDnodeLookup.PlayerName)
+		LookupName   = StrMakeLower(pDnodeLookup.PlayerName)
 		if TargetName == LookupName {
 			if pDnodeLookup.PlayerStatePlaying {
 				TargetFound = true
@@ -234,7 +234,7 @@ func SockClosePort(Port int) {
 		LogIt(LogBuf)
 		return
 	}
-	Buf = fmt.Sprintf("%d", Port)
+	Buf    = fmt.Sprintf("%d", Port)
 	LogBuf = "Closed port " + Buf
 	LogIt(LogBuf)
 }
@@ -258,7 +258,7 @@ func SockOpenPort(Port int) {
 		os.Exit(1)
 	}
 	ListenSocket = tcpLn
-	Buf = fmt.Sprintf("%d", Port)
+	Buf    = fmt.Sprintf("%d", Port)
 	LogBuf = "Listening on port " + Buf
 	LogIt(LogBuf)
 	CommandArrayLoad()
@@ -344,8 +344,8 @@ func SockRecv() {
 		//*****************************
 		if pDnodeActor.PlayerStateSendBanner {
 			// New connection
-			pDnodeActor.PlayerStateSendBanner = false
-			pDnodeActor.PlayerStateLoggingOn = true
+			pDnodeActor.PlayerStateSendBanner       = false
+			pDnodeActor.PlayerStateLoggingOn        = true
 			pDnodeActor.PlayerStateWaitNewCharacter = true
 			// Send greeting
 			LogonGreeting()
@@ -422,7 +422,7 @@ func SockRecv() {
 			for !EndOfDnodeList() {
 				pDnodeOthers = GetDnode()
 				if !pDnodeOthers.PlayerStateBye {
-					pDnodeOthers.PlayerStateBye = true
+					pDnodeOthers.PlayerStateBye     = true
 					pDnodeOthers.PlayerStatePlaying = false
 					if pDnodeOthers.PlayerStatePlaying {
 						PlayerSave(pDnodeOthers.pPlayer)
@@ -538,8 +538,8 @@ func CommandArrayLoad() {
 	var ValidCmdsFileName  string
 	var err                error
 
-	ValidCmdsFileName = VALID_CMDS_DIR
-	ValidCmdsFileName += "ValidCommands.txt"
+	ValidCmdsFileName   = VALID_CMDS_DIR
+	ValidCmdsFileName  += "ValidCommands.txt"
 	ValidCmdsFile, err = os.Open(ValidCmdsFileName)
 	if err != nil {
 		// Open failed
@@ -569,8 +569,8 @@ func CommandCheck(MudCmdChk string) string {
 	for _, ValidCmd := range ValidCmds {
 		// For each string in the ValidCmds vector
 		ValCmdInfo = ValidCmd
-		ValCmd = StrGetWord(ValCmdInfo, 1)
-		WhoCanDo = StrGetWord(ValCmdInfo, 2)
+		ValCmd     = StrGetWord(ValCmdInfo, 1)
+		WhoCanDo   = StrGetWord(ValCmdInfo, 2)
 		if MudCmdChk == ValCmd {
 			// Found the command
 			if WhoCanDo == "all" {
@@ -620,8 +620,8 @@ func CommandParse() {
 	//**************************
 	// Get next command string *
 	//**************************
-	CmdStr = pDnodeActor.PlayerInp
-	CmdStrLength = StrGetLength(CmdStr)
+	CmdStr            = pDnodeActor.PlayerInp
+	CmdStrLength      = StrGetLength(CmdStr)
 	PositionOfNewline = StrFindOneOf(CmdStr, "\r\n")
 	if PositionOfNewline < 0 {
 		// No newline found, skip out
@@ -681,7 +681,7 @@ func CommandParse() {
 					pDnodeActor.PlayerOut += "\r\n"
 					CreatePrompt(pDnodeActor.pPlayer)
 					pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-					pDnodeActor.PlayerInp = ""
+					pDnodeActor.PlayerInp  = ""
 					return
 				}
 			}
@@ -1058,8 +1058,8 @@ func CommandParse() {
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 	// Log it
-	MudCmd = StrMakeFirstUpper(MudCmd)
-	LogBuf = MudCmd
+	MudCmd  = StrMakeFirstUpper(MudCmd)
+	LogBuf  = MudCmd
 	LogBuf += " is in command array, but Do"
 	LogBuf += MudCmd
 	LogBuf += " is not coded."
@@ -1076,15 +1076,15 @@ func DoAdvance() {
 	var TargetNameSave string
 
 	DEBUGIT(1)
-	PlayerName = pDnodeActor.PlayerName
-	TargetName = StrGetWord(CmdStr, 2)
+	PlayerName     = pDnodeActor.PlayerName
+	TargetName     = StrGetWord(CmdStr, 2)
 	PlayerNameSave = PlayerName
 	TargetNameSave = TargetName
-	PlayerName = StrMakeLower(PlayerName)
-	TargetName = StrMakeLower(TargetName)
-	Level = StrToInt(StrGetWord(CmdStr, 3))
-	Buf = fmt.Sprintf("%d", Level)
-	LevelString = Buf
+	PlayerName     = StrMakeLower(PlayerName)
+	TargetName     = StrMakeLower(TargetName)
+	Level          = StrToInt(StrGetWord(CmdStr, 3))
+	Buf            = fmt.Sprintf("%d", Level)
+	LevelString    = Buf
 	if TargetName == "" {
 		// No name given
 		pDnodeActor.PlayerOut += "Advance who?"
@@ -1224,7 +1224,7 @@ func DoAssist() {
 	}
 	PlayerNameCheck = pDnodeActor.PlayerName
 	TargetNameCheck = StrGetWord(CmdStr, 2)
-	TargetNameSave = TargetNameCheck
+	TargetNameSave  = TargetNameCheck
 	PlayerNameCheck = StrMakeLower(PlayerNameCheck)
 	TargetNameCheck = StrMakeLower(TargetNameCheck)
 	if PlayerNameCheck == TargetNameCheck {
@@ -1404,7 +1404,7 @@ func DoBuy() {
 	// Player receives some money
 	SetMoney(pDnodeActor.pPlayer, '-', Cost, "Silver")
 	// Send messages
-	Buf = fmt.Sprintf("%d", Cost)
+	Buf    = fmt.Sprintf("%d", Cost)
 	TmpStr = Buf
 	pDnodeActor.PlayerOut += "You buy "
 	pDnodeActor.PlayerOut += Desc1
@@ -1438,18 +1438,18 @@ func DoChat() {
 	//*************
 	//* Chat away *
 	//*************
-	PlayerMsg = "&G"
+	PlayerMsg  = "&G"
 	PlayerMsg += "You Chat: "
 	PlayerMsg += ChatMsg
 	PlayerMsg += "&N"
 	PlayerMsg += "\r\n"
-	AllMsg = "\r\n"
-	AllMsg += "&G"
-	AllMsg += pDnodeActor.PlayerName
-	AllMsg += " chats: "
-	AllMsg += ChatMsg
-	AllMsg += "&N"
-	AllMsg += "\r\n"
+	AllMsg     = "\r\n"
+	AllMsg    += "&G"
+	AllMsg    += pDnodeActor.PlayerName
+	AllMsg    += " chats: "
+	AllMsg    += ChatMsg
+	AllMsg    += "&N"
+	AllMsg    += "\r\n"
 	SendToAll(PlayerMsg, AllMsg)
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
@@ -1525,12 +1525,12 @@ func DoConsider() {
 		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 		return
 	}
-	PlayerName = pDnodeActor.PlayerName
+	PlayerName      = pDnodeActor.PlayerName
 	PlayerNameCheck = PlayerName
 	PlayerNameCheck = StrMakeLower(PlayerNameCheck)
-	Target = StrGetWord(CmdStr, 2)
-	MobileName = Target
-	Target = StrMakeLower(Target)
+	Target          = StrGetWord(CmdStr, 2)
+	MobileName      = Target
+	Target          = StrMakeLower(Target)
 	if Target == PlayerNameCheck {
 		// Trying to kill self
 		pDnodeActor.PlayerOut += "Consider yourself considered!"
@@ -1625,9 +1625,9 @@ func DoDelete() {
 		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 		return
 	}
-	Name = StrGetWord(CmdStr, 2)
+	Name     = StrGetWord(CmdStr, 2)
 	Password = StrGetWord(CmdStr, 3)
-	Phrase = StrGetWords(CmdStr, 4)
+	Phrase   = StrGetWords(CmdStr, 4)
 	if Name != pDnodeActor.PlayerName {
 		pDnodeActor.PlayerOut += "Your name was not entered correctly."
 		pDnodeActor.PlayerOut += "\r\n"
@@ -1682,7 +1682,7 @@ func DoDelete() {
 	LogBuf += " issued the DELETE command"
 	LogIt(LogBuf)
 	// Delete Player file
-	PlayerFileName = PLAYER_DIR
+	PlayerFileName  = PLAYER_DIR
 	PlayerFileName += pDnodeActor.PlayerName
 	PlayerFileName += ".txt"
 	err := Remove(PlayerFileName)
@@ -1692,12 +1692,12 @@ func DoDelete() {
 		os.Exit(1)
 	}
 	// Delete PlayerEqu file
-	PlayerFileName = PLAYER_EQU_DIR
+	PlayerFileName  = PLAYER_EQU_DIR
 	PlayerFileName += pDnodeActor.PlayerName
 	PlayerFileName += ".txt"
 	_ = Remove(PlayerFileName)
 	// Delete PlayerObj file
-	PlayerFileName = PLAYER_OBJ_DIR
+	PlayerFileName  = PLAYER_OBJ_DIR
 	PlayerFileName += pDnodeActor.PlayerName
 	PlayerFileName += ".txt"
 	_ = Remove(PlayerFileName)
@@ -1707,19 +1707,19 @@ func DoDelete() {
 	PlayerFileName += ".txt"
 	_ = Remove(PlayerFileName)
 	// Send messages
-	pDnodeSrc = pDnodeActor
-	pDnodeTgt = nil
-	PlayerMsg = "You have been DELETED!!!"
+	pDnodeSrc  = pDnodeActor
+	pDnodeTgt  = nil
+	PlayerMsg  = "You have been DELETED!!!"
 	PlayerMsg += "\r\n"
-	AllMsg = "\r\n"
-	AllMsg += pDnodeActor.PlayerName
-	AllMsg += " has just DELETED $pHimselfHerself."
-	AllMsg += "\r\n"
-	pDnodeSrc = pDnodeActor
-	pDnodeTgt = nil
-	AllMsg = PronounSubstitute(AllMsg)
-	pDnodeSrc = nil
-	pDnodeTgt = nil
+	AllMsg     = "\r\n"
+	AllMsg    += pDnodeActor.PlayerName
+	AllMsg    += " has just DELETED $pHimselfHerself."
+	AllMsg    += "\r\n"
+	pDnodeSrc  = pDnodeActor
+	pDnodeTgt  = nil
+	AllMsg     = PronounSubstitute(AllMsg)
+	pDnodeSrc  = nil
+	pDnodeTgt  = nil
 	SendToAll(PlayerMsg, AllMsg)
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
@@ -1747,10 +1747,10 @@ func DoDestroy() {
 	//****************************
 	//* Does player have object? *
 	//****************************
-	TmpStr = StrGetWord(CmdStr, 2)
+	TmpStr     = StrGetWord(CmdStr, 2)
 	ObjectName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
-	pObject = nil
+	TmpStr     = StrMakeLower(TmpStr)
+	pObject    = nil
 	IsObjInPlayerInv(TmpStr) // Sets pObject
 	if pObject == nil {
 		pDnodeActor.PlayerOut += "You don't have a(n) "
@@ -1808,8 +1808,8 @@ func DoDrink() {
 	if IsRoomType(RoomId, "Drink") {
 		// Room contains something to drink
 		RoomName = GetRoomName(RoomId)
-		TmpStr = StrGetWord(CmdStr, 2)
-		TmpStr = StrMakeLower(TmpStr)
+		TmpStr   = StrGetWord(CmdStr, 2)
+		TmpStr   = StrMakeLower(TmpStr)
 		RoomName = StrMakeLower(RoomName)
 		if StrIsWord(TmpStr, RoomName) {
 			//*****************
@@ -1818,7 +1818,7 @@ func DoDrink() {
 			// Send messages
 			pDnodeActor.PlayerOut += "You take a drink of clear &Ccool&N water."
 			pDnodeActor.PlayerOut += "\r\n"
-			DrinkMsg = pDnodeActor.PlayerName
+			DrinkMsg  = pDnodeActor.PlayerName
 			DrinkMsg += " takes a drink of clear &Ccool&N water."
 			pDnodeSrc = pDnodeActor
 			pDnodeTgt = pDnodeActor
@@ -1836,10 +1836,10 @@ func DoDrink() {
 	//****************************
 	//* Does player have object? *
 	//****************************
-	TmpStr = StrGetWord(CmdStr, 2)
+	TmpStr     = StrGetWord(CmdStr, 2)
 	ObjectName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
-	pObject = nil
+	TmpStr     = StrMakeLower(TmpStr)
+	pObject    = nil
 	IsObjInPlayerInv(TmpStr) // Sets pObject
 	if pObject == nil {
 		// Object not found in player's inventory
@@ -1872,12 +1872,12 @@ func DoDrink() {
 	pDnodeActor.PlayerOut += pObject.Desc1
 	pDnodeActor.PlayerOut += "."
 	pDnodeActor.PlayerOut += "\r\n"
-	DrinkMsg = pDnodeActor.PlayerName
-	DrinkMsg += " drinks from "
-	DrinkMsg += pObject.Desc1
-	DrinkMsg += "."
-	pDnodeSrc = pDnodeActor
-	pDnodeTgt = pDnodeActor
+	DrinkMsg  = pDnodeActor.PlayerName
+	DrinkMsg  += " drinks from "
+	DrinkMsg  += pObject.Desc1
+	DrinkMsg  += "."
+	pDnodeSrc  = pDnodeActor
+	pDnodeTgt  = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, DrinkMsg)
 	// Drink and remove object from player's inventory
 	Drink(pDnodeActor.pPlayer, pObject.DrinkPct)
@@ -1914,10 +1914,10 @@ func DoDrop() {
 	//****************************
 	//* Does player have object? *
 	//****************************
-	TmpStr = StrGetWord(CmdStr, 2)
+	TmpStr     = StrGetWord(CmdStr, 2)
 	ObjectName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
-	pObject = nil
+	TmpStr     = StrMakeLower(TmpStr)
+	pObject    = nil
 	IsObjInPlayerInv(TmpStr) // Sets pObject
 	if pObject == nil {
 		pDnodeActor.PlayerOut += "You don't have a(n) "
@@ -1939,10 +1939,10 @@ func DoDrop() {
 	pDnodeActor.PlayerOut += "\r\n"
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-	DropMsg = pDnodeActor.PlayerName
-	DropMsg += " drops "
-	DropMsg += pObject.Desc1
-	DropMsg += "."
+	DropMsg   = pDnodeActor.PlayerName
+	DropMsg  += " drops "
+	DropMsg  += pObject.Desc1
+	DropMsg  += "."
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, DropMsg)
@@ -1975,10 +1975,10 @@ func DoEat() {
 	//****************************
 	//* Does player have object? *
 	//****************************
-	TmpStr = StrGetWord(CmdStr, 2)
+	TmpStr     = StrGetWord(CmdStr, 2)
 	ObjectName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
-	pObject = nil
+	TmpStr     = StrMakeLower(TmpStr)
+	pObject    = nil
 	IsObjInPlayerInv(TmpStr) // Sets pObject
 	if pObject == nil {
 		pDnodeActor.PlayerOut += "You don't have a(n) "
@@ -2009,7 +2009,7 @@ func DoEat() {
 	pDnodeActor.PlayerOut += pObject.Desc1
 	pDnodeActor.PlayerOut += "."
 	pDnodeActor.PlayerOut += "\r\n"
-	EatMsg = pDnodeActor.PlayerName
+	EatMsg  = pDnodeActor.PlayerName
 	EatMsg += " eats "
 	EatMsg += pObject.Desc1
 	EatMsg += "."
@@ -2084,6 +2084,7 @@ func DoExamine() {
 	var ObjectFound bool
 	var ObjectName  string
 	var ObjectType  string
+
 	DEBUGIT(1)
 	//********************
 	//* Validate command *
@@ -2108,9 +2109,9 @@ func DoExamine() {
 	//* Ok, object, object ... where is the object? *
 	//***********************************************
 	ObjectFound = false
-	TmpStr = StrGetWord(CmdStr, 2)
-	ObjectName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
+	TmpStr      = StrGetWord(CmdStr, 2)
+	ObjectName  = TmpStr
+	TmpStr      = StrMakeLower(TmpStr)
 	// Check room
 	pObject = nil
 	IsObjInRoom(TmpStr) // Sets pObject
@@ -2217,11 +2218,11 @@ func DoFlee() {
 	//* Player has been moved, they fled *
 	//************************************
 	// Let everyone in room know they fled
-	FleeMsg += "&R"
-	FleeMsg += pDnodeActor.PlayerName
-	FleeMsg += " has fled for $pHisHers life!!"
-	FleeMsg += "&N"
-	FleeMsg = PronounSubstitute(FleeMsg)
+	FleeMsg  += "&R"
+	FleeMsg  += pDnodeActor.PlayerName
+	FleeMsg  += " has fled for $pHisHers life!!"
+	FleeMsg  += "&N"
+	FleeMsg   = PronounSubstitute(FleeMsg)
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(RoomIdBeforeFleeing, FleeMsg)
@@ -2247,7 +2248,7 @@ func DoFlee() {
 	// Delete PlayerMob file -- player is no longer attacking mob
 	DeletePlayerMob(PlayerName1)
 	// See if a mob is whacking player
-	MobPlayerFileName = MOB_PLAYER_DIR
+	MobPlayerFileName  = MOB_PLAYER_DIR
 	MobPlayerFileName += PlayerName1
 	MobPlayerFileName += ".txt"
 	var err error
@@ -2292,9 +2293,9 @@ func DoFlee() {
 		// No available target for MobileIdSave
 		return
 	}
-	CandidateCount = StrCountWords(CandidateList)
+	CandidateCount  = StrCountWords(CandidateList)
 	CandidateTarget = GetRandomNumber(CandidateCount)
-	Target = StrGetWord(CandidateList, CandidateTarget)
+	Target          = StrGetWord(CandidateList, CandidateTarget)
 	CreateMobPlayer(Target, MobileIdSave)
 }
 
@@ -2520,10 +2521,10 @@ func DoGet() {
 	//**********************************************
 	//* See if object is in room and can be gotten *
 	//**********************************************
-	TmpStr = StrGetWord(CmdStr, 2)
+	TmpStr     = StrGetWord(CmdStr, 2)
 	ObjectName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
-	pObject = nil
+	TmpStr     = StrMakeLower(TmpStr)
+	pObject    = nil
 	IsObjInRoom(TmpStr) // Sets pObject
 	if pObject == nil {
 		pDnodeActor.PlayerOut += "There doesn't seem to be a(n) "
@@ -2553,10 +2554,10 @@ func DoGet() {
 	pDnodeActor.PlayerOut += ".\r\n"
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-	GetMsg = pDnodeActor.PlayerName
-	GetMsg += " gets "
-	GetMsg += pObject.Desc1
-	GetMsg += "."
+	GetMsg    = pDnodeActor.PlayerName
+	GetMsg   += " gets "
+	GetMsg   += pObject.Desc1
+	GetMsg   += "."
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, GetMsg)
@@ -2600,10 +2601,10 @@ func DoGive() {
 	//****************************
 	//* Does player have object? *
 	//****************************
-	TmpStr = StrGetWord(CmdStr, 2)
+	TmpStr     = StrGetWord(CmdStr, 2)
 	ObjectName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
-	pObject = nil
+	TmpStr     = StrMakeLower(TmpStr)
+	pObject    = nil
 	IsObjInPlayerInv(TmpStr) // Sets pObject
 	if pObject == nil {
 		// Player does not have object
@@ -2618,11 +2619,11 @@ func DoGive() {
 	//* Is target Ok *
 	//****************
 	TargetNotHere = false
-	TmpStr = StrGetWord(CmdStr, 3)
-	TargetName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
-	PlayerName = pDnodeActor.PlayerName
-	PlayerName = StrMakeLower(PlayerName)
+	TmpStr        = StrGetWord(CmdStr, 3)
+	TargetName    = TmpStr
+	TmpStr        = StrMakeLower(TmpStr)
+	PlayerName    = pDnodeActor.PlayerName
+	PlayerName    = StrMakeLower(PlayerName)
 	if PlayerName == TmpStr {
 		// Player is trying to give something to themself
 		pDnodeActor.PlayerOut += "Giving something to youself is just plain silly!\r\n"
@@ -2681,12 +2682,12 @@ func DoGive() {
 	//****************
 	//* Send to room *
 	//****************
-	GiveMsg = pDnodeActor.PlayerName
-	GiveMsg += " gives "
-	GiveMsg += pObject.Desc1
-	GiveMsg += " to "
-	GiveMsg += pDnodeTgt.pPlayer.Name
-	GiveMsg += "."
+	GiveMsg   = pDnodeActor.PlayerName
+	GiveMsg  += " gives "
+	GiveMsg  += pObject.Desc1
+	GiveMsg  += " to "
+	GiveMsg  += pDnodeTgt.pPlayer.Name
+	GiveMsg  += "."
 	pDnodeSrc = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, GiveMsg)
 	//*****************************
@@ -2773,7 +2774,7 @@ func DoGoTo() {
 	//* GoTo Room *
 	//*************
 	// Send GoTo departure message
-	GoToMsg = pDnodeActor.pPlayer.GoToDepart
+	GoToMsg   = pDnodeActor.pPlayer.GoToDepart
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, GoToMsg)
@@ -2781,7 +2782,7 @@ func DoGoTo() {
 	pDnodeActor.pPlayer.RoomId = RoomId
 	DoLook("")
 	// Send GoTo arrival message
-	GoToMsg = pDnodeActor.pPlayer.GoToArrive
+	GoToMsg   = pDnodeActor.pPlayer.GoToArrive
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, GoToMsg)
@@ -2930,7 +2931,7 @@ func DoGroup() {
 	}
 	PlayerNameCheck = pDnodeActor.PlayerName
 	TargetNameCheck = StrGetWord(CmdStr, 2)
-	TargetNameSave = TargetNameCheck
+	TargetNameSave  = TargetNameCheck
 	PlayerNameCheck = StrMakeLower(PlayerNameCheck)
 	TargetNameCheck = StrMakeLower(TargetNameCheck)
 	//************************
@@ -3085,7 +3086,7 @@ func DoGroup() {
 	if GrpFull {
 		// Group is full
 		pDnodeActor.PlayerOut += "Your group is full, maximum of "
-		Buf = fmt.Sprintf("%d", GRP_LIMIT)
+		Buf    = fmt.Sprintf("%d", GRP_LIMIT)
 		TmpStr = Buf
 		TmpStr = StrTrimLeft(TmpStr)
 		TmpStr = StrTrimRight(TmpStr)
@@ -3108,9 +3109,9 @@ func DoGroup() {
 	//***********************************
 	if pDnodeActor.pPlayer.pPlayerGrpMember[0] == nil {
 		// Forming new group
-		pDnodeActor.pPlayer.pPlayerGrpMember[0] = pDnodeActor.pPlayer
+		pDnodeActor.pPlayer.pPlayerGrpMember[0]  = pDnodeActor.pPlayer
 		pDnodeGrpLdr.pPlayer.pPlayerGrpMember[0] = pDnodeActor.pPlayer
-		pDnodeActor.pPlayer.pPlayerGrpMember[1] = pDnodeGrpLdr.pPlayer
+		pDnodeActor.pPlayer.pPlayerGrpMember[1]  = pDnodeGrpLdr.pPlayer
 		pDnodeActor.PlayerOut += "You have formed a new group with "
 		pDnodeActor.PlayerOut += pDnodeGrpLdr.PlayerName
 		pDnodeActor.PlayerOut += " as your first member.\r\n"
@@ -3118,7 +3119,7 @@ func DoGroup() {
 		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 	} else {
 		// Adding a member to an existing group
-		pDnodeActor.pPlayer.pPlayerGrpMember[i] = pDnodeGrpLdr.pPlayer
+		pDnodeActor.pPlayer.pPlayerGrpMember[i]  = pDnodeGrpLdr.pPlayer
 		pDnodeGrpLdr.pPlayer.pPlayerGrpMember[0] = pDnodeActor.pPlayer
 		pDnodeActor.PlayerOut += pDnodeGrpLdr.PlayerName
 		pDnodeActor.PlayerOut += " has been added to your group.\r\n"
@@ -3233,12 +3234,12 @@ func DoHail() {
 		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 		return
 	}
-	PlayerName = pDnodeActor.PlayerName
-	RoomId = pDnodeActor.pPlayer.RoomId
+	PlayerName      = pDnodeActor.PlayerName
+	RoomId          = pDnodeActor.pPlayer.RoomId
 	PlayerNameCheck = PlayerName
 	PlayerNameCheck = StrMakeLower(PlayerNameCheck)
-	Target = StrGetWord(CmdStr, 2)
-	Target = StrMakeLower(Target)
+	Target          = StrGetWord(CmdStr, 2)
+	Target          = StrMakeLower(Target)
 	if Target == PlayerNameCheck {
 		// Trying to kill self
 		pDnodeActor.PlayerOut += "Hailing yourself is just plain silly."
@@ -3269,12 +3270,12 @@ func DoHail() {
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 	// Send message to room
-	HailMsg = "&W"
-	HailMsg += PlayerName
-	HailMsg += " hails "
-	HailMsg += pMobile.Desc1
-	HailMsg += "."
-	HailMsg += "&N"
+	HailMsg   = "&W"
+	HailMsg  += PlayerName
+	HailMsg  += " hails "
+	HailMsg  += pMobile.Desc1
+	HailMsg  += "."
+	HailMsg  += "&N"
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(RoomId, HailMsg)
@@ -3284,7 +3285,7 @@ func DoHail() {
 	pDnodeSrc = nil
 	pDnodeTgt = nil
 	SendToRoom(RoomId, MobileMsg)
-	pMobile = nil
+	pMobile   = nil
 }
 
 // Help command
@@ -3323,7 +3324,7 @@ func DoInvisible() {
 	TmpStr = StrMakeLower(TmpStr)
 	if TmpStr == "on" {
 		// Turn Invisible on
-		pDnodeActor.pPlayer.Invisible = true
+		pDnodeActor.pPlayer.Invisible    = true
 		pDnodeActor.PlayerStateInvisible = true
 		PlayerSave(pDnodeActor.pPlayer)
 		pDnodeActor.PlayerOut += "You are invisible.\r\n"
@@ -3333,7 +3334,7 @@ func DoInvisible() {
 	}
 	if TmpStr == "off" {
 		// Turn Invisible off
-		pDnodeActor.pPlayer.Invisible = false
+		pDnodeActor.pPlayer.Invisible    = false
 		pDnodeActor.PlayerStateInvisible = false
 		PlayerSave(pDnodeActor.pPlayer)
 		pDnodeActor.PlayerOut += "You are visible.\r\n"
@@ -3414,12 +3415,12 @@ func DoKill() {
 		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 		return
 	}
-	PlayerName = pDnodeActor.PlayerName
+	PlayerName      = pDnodeActor.PlayerName
 	PlayerNameCheck = PlayerName
 	PlayerNameCheck = StrMakeLower(PlayerNameCheck)
-	Target = StrGetWord(CmdStr, 2)
-	MobileName = Target
-	Target = StrMakeLower(Target)
+	Target          = StrGetWord(CmdStr, 2)
+	MobileName      = Target
+	Target          = StrMakeLower(Target)
 	if Target == PlayerNameCheck {
 		// Trying to kill self
 		pDnodeActor.PlayerOut += "That would be just awful."
@@ -3460,12 +3461,12 @@ func DoKill() {
 		CreatePrompt(pDnodeActor.pPlayer)
 		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 		// Send kill message to room
-		KillMsg = "&R"
-		KillMsg += PlayerName
-		KillMsg += " kills "
-		KillMsg += pMobile.Desc1
-		KillMsg += " with one WHACK!"
-		KillMsg += "&N"
+		KillMsg   = "&R"
+		KillMsg  += PlayerName
+		KillMsg  += " kills "
+		KillMsg  += pMobile.Desc1
+		KillMsg  += " with one WHACK!"
+		KillMsg  += "&N"
 		pDnodeSrc = pDnodeActor
 		pDnodeTgt = pDnodeActor
 		SendToRoom(RoomId, KillMsg)
@@ -3487,12 +3488,12 @@ func DoKill() {
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 	// Send message to room
-	KillMsg = "&R"
-	KillMsg += PlayerName
-	KillMsg += " starts a fight with "
-	KillMsg += pMobile.Desc1
-	KillMsg += "!"
-	KillMsg += "&N"
+	KillMsg   = "&R"
+	KillMsg  += PlayerName
+	KillMsg  += " starts a fight with "
+	KillMsg  += pMobile.Desc1
+	KillMsg  += "!"
+	KillMsg  += "&N"
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(RoomId, KillMsg)
@@ -3612,7 +3613,7 @@ func DoLoad() {
 		// Loading an mobile
 		MobileId = StrGetWord(CmdStr, 3)
 		MobileId = StrMakeLower(MobileId)
-		pMobile = IsMobValid(MobileId)
+		pMobile  = IsMobValid(MobileId)
 		if pMobile == nil {
 			// Mobile does not exist
 			pDnodeActor.PlayerOut += "Mobile not found.\r\n"
@@ -3625,12 +3626,12 @@ func DoLoad() {
 		pDnodeActor.PlayerOut += "Load successful\r\n"
 		CreatePrompt(pDnodeActor.pPlayer)
 		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-		LoadMsg = pMobile.Desc1
-		LoadMsg += " suddenly appears!"
+		LoadMsg   = pMobile.Desc1
+		LoadMsg  += " suddenly appears!"
 		pDnodeSrc = pDnodeActor
 		pDnodeTgt = pDnodeActor
 		SendToRoom(pDnodeActor.pPlayer.RoomId, LoadMsg)
-		pMobile = nil
+		pMobile   = nil
 		return
 	}
 }
@@ -3703,10 +3704,10 @@ func DoLook(CmdStr1 string) {
 	//*******************
 	//* Is it a player? *
 	//*******************
-	IsPlayer = true
+	IsPlayer   = true
 	TargetName = TmpStr
 	TargetName = StrMakeLower(TargetName)
-	pDnodeTgt = GetTargetDnode(TargetName)
+	pDnodeTgt  = GetTargetDnode(TargetName)
 	if pDnodeTgt == nil {
 		// Target is not online and/or not in 'playing' state
 		IsPlayer = false
@@ -3768,7 +3769,7 @@ func DoMotd() {
 
 	DEBUGIT(1)
 	// Read Motd file
-	MotdFileName = MOTD_DIR
+	MotdFileName  = MOTD_DIR
 	MotdFileName += "Motd"
 	MotdFileName += ".txt"
 	MotdFile, err = os.Open(MotdFileName)
@@ -3852,7 +3853,7 @@ func DoPassword() {
 		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 		return
 	}
-	Password = StrGetWord(CmdStr, 2)
+	Password     = StrGetWord(CmdStr, 2)
 	NewPassword1 = StrGetWord(CmdStr, 3)
 	NewPassword2 = StrGetWord(CmdStr, 4)
 	if Password != pDnodeActor.pPlayer.Password {
@@ -3898,12 +3899,12 @@ func DoPlayed() {
 
 	DEBUGIT(1)
 	PlayerSave(pDnodeActor.pPlayer) // Save() updates TimePlayed
-	NowSec = time.Now().Unix()
-	BornSec = pDnodeActor.pPlayer.Born
-	PlayerAgeSec = NowSec - BornSec
+	NowSec        = time.Now().Unix()
+	BornSec       = pDnodeActor.pPlayer.Born
+	PlayerAgeSec  = NowSec - BornSec
 	TimePlayedSec = pDnodeActor.pPlayer.TimePlayed
 	// Birthday
-	BirthDay = time.Unix(BornSec, 0).Format(time.ANSIC)
+	BirthDay      = time.Unix(BornSec, 0).Format(time.ANSIC)
 	// Age
 	n = PlayerAgeSec
 	Days = n / (24 * 3600)
@@ -3955,16 +3956,16 @@ func DoQuit() {
 	pDnodeActor.PlayerStatePlaying = false
 	PlayerSave(pDnodeActor.pPlayer)
 	GrpLeave()
-	LogBuf = pDnodeActor.PlayerName
+	LogBuf  = pDnodeActor.PlayerName
 	LogBuf += " issued the QUIT command"
 	LogIt(LogBuf)
-	PlayerMsg = "\r\n"
+	PlayerMsg  = "\r\n"
 	PlayerMsg += "Bye Bye!"
 	PlayerMsg += "\r\n"
-	AllMsg = "\r\n"
-	AllMsg += pDnodeActor.PlayerName
-	AllMsg += " has left the game."
-	AllMsg += "\r\n"
+	AllMsg     = "\r\n"
+	AllMsg    += pDnodeActor.PlayerName
+	AllMsg    += " has left the game."
+	AllMsg    += "\r\n"
 	SendToAll(PlayerMsg, AllMsg)
 }
 
@@ -4037,8 +4038,8 @@ func DoRemove() {
 	}
 	// Get pointer to object
 	ObjectName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
-	pObject = nil
+	TmpStr     = StrMakeLower(TmpStr)
+	pObject    = nil
 	IsObjInPlayerEqu(TmpStr) // Sets pObject
 	if pObject == nil {
 		// Object not in equipment
@@ -4060,12 +4061,12 @@ func DoRemove() {
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 	// Send remove message to room
-	RemoveMsg = pDnodeActor.PlayerName
+	RemoveMsg  = pDnodeActor.PlayerName
 	RemoveMsg += " removes "
 	RemoveMsg += pObject.Desc1
 	RemoveMsg += "."
-	pDnodeSrc = pDnodeActor
-	pDnodeTgt = pDnodeActor
+	pDnodeSrc  = pDnodeActor
+	pDnodeTgt  = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, RemoveMsg)
 	// Add object to player's inventory
 	AddObjToPlayerInv(pDnodeTgt, pObject.ObjectId)
@@ -4074,8 +4075,8 @@ func DoRemove() {
 	if TmpStr == "weapon" {
 		// Now player has no weapon
 		pDnodeActor.pPlayer.WeaponDamage = PLAYER_DMG_HAND
-		pDnodeActor.pPlayer.WeaponDesc1 = "a pair of bare hands"
-		pDnodeActor.pPlayer.WeaponType = "Hand"
+		pDnodeActor.pPlayer.WeaponDesc1  = "a pair of bare hands"
+		pDnodeActor.pPlayer.WeaponType   = "Hand"
 	}
 	pObject = nil
 }
@@ -4090,11 +4091,11 @@ func DoRestore(CmdStr string) {
 	//********************
 	//* Validate command *
 	//********************
-	PlayerName = pDnodeActor.PlayerName
-	TargetName = StrGetWord(CmdStr, 2)
+	PlayerName     = pDnodeActor.PlayerName
+	TargetName     = StrGetWord(CmdStr, 2)
 	TargetNameSave = TargetName
-	PlayerName = StrMakeLower(PlayerName)
-	TargetName = StrMakeLower(TargetName)
+	PlayerName     = StrMakeLower(PlayerName)
+	TargetName     = StrMakeLower(TargetName)
 	if StrGetLength(TargetName) < 1 {
 		// No target, assume self
 		TargetName = PlayerName
@@ -4103,8 +4104,8 @@ func DoRestore(CmdStr string) {
 		// Admin is restore themself
 		pDnodeActor.PlayerOut += "You restore yourself!\r\n"
 		pDnodeActor.pPlayer.HitPoints = pDnodeActor.pPlayer.Level * PLAYER_HPT_PER_LEVEL
-		pDnodeActor.pPlayer.Hunger = 0
-		pDnodeActor.pPlayer.Thirst = 0
+		pDnodeActor.pPlayer.Hunger    = 0
+		pDnodeActor.pPlayer.Thirst    = 0
 		PlayerSave(pDnodeActor.pPlayer)
 		CreatePrompt(pDnodeActor.pPlayer)
 		pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
@@ -4121,8 +4122,8 @@ func DoRestore(CmdStr string) {
 	}
 	// Restore the player
 	pDnodeTgt.pPlayer.HitPoints = pDnodeTgt.pPlayer.Level * PLAYER_HPT_PER_LEVEL
-	pDnodeTgt.pPlayer.Hunger = 0
-	pDnodeTgt.pPlayer.Thirst = 0
+	pDnodeTgt.pPlayer.Hunger    = 0
+	pDnodeTgt.pPlayer.Thirst    = 0
 	PlayerSave(pDnodeTgt.pPlayer)
 	//****************************
 	//* Send the restore message *
@@ -4222,7 +4223,7 @@ func DoSay() {
 	pDnodeActor.PlayerOut += "\r\n"
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-	TmpStr = "&W"
+	TmpStr  = "&W"
 	TmpStr += pDnodeActor.PlayerName
 	TmpStr += " says: "
 	TmpStr += SayMsg
@@ -4304,7 +4305,7 @@ func DoSell() {
 	//********************
 	//* Check sell count *
 	//********************
-	InvCountInt = StrToInt(InvCountStr)
+	InvCountInt  = StrToInt(InvCountStr)
 	SellCountStr = StrGetWord(CmdStr, 3)
 	SellCountStr = StrMakeLower(SellCountStr) // In case player typed 'all'
 	if SellCountStr == "" {
@@ -4538,7 +4539,7 @@ func DoSit() {
 	pDnodeActor.PlayerOut += "\r\n"
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-	SitMsg = pDnodeActor.PlayerName + " sits down."
+	SitMsg    = pDnodeActor.PlayerName + " sits down."
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, SitMsg)
@@ -4577,9 +4578,9 @@ func DoSleep() {
 	pDnodeActor.PlayerOut += "\r\n"
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-	SleepMsg = pDnodeActor.PlayerName + " goes to sleep."
-	pDnodeSrc = pDnodeActor
-	pDnodeTgt = pDnodeActor
+	SleepMsg    = pDnodeActor.PlayerName + " goes to sleep."
+	pDnodeSrc   = pDnodeActor
+	pDnodeTgt   = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, SleepMsg)
 }
 
@@ -4616,7 +4617,7 @@ func DoStand() {
 	pDnodeActor.PlayerOut += "\r\n"
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-	StandMsg = pDnodeActor.PlayerName + " stands up."
+	StandMsg  = pDnodeActor.PlayerName + " stands up."
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, StandMsg)
@@ -4639,13 +4640,13 @@ func DoStop() {
 
 	DEBUGIT(1)
 	StateStopping = true
-	LogBuf = pDnodeActor.PlayerName
+	LogBuf  = pDnodeActor.PlayerName
 	LogBuf += " issued the STOP command"
 	LogIt(LogBuf)
 	pDnodeActor.PlayerOut += "Stop command issued!\r\n"
-	GoGoGoFileName = CONTROL_DIR
+	GoGoGoFileName  = CONTROL_DIR
 	GoGoGoFileName += "GoGoGo"
-	StopItFileName = CONTROL_DIR
+	StopItFileName  = CONTROL_DIR
 	StopItFileName += "StopIt"
 	Rename(GoGoGoFileName, StopItFileName)
 }
@@ -4661,11 +4662,11 @@ func DoTell() {
 	//********************
 	//* Validate command *
 	//********************
-	PlayerName = pDnodeActor.PlayerName
-	TargetName = StrGetWord(CmdStr, 2)
+	PlayerName     = pDnodeActor.PlayerName
+	TargetName     = StrGetWord(CmdStr, 2)
 	TargetNameSave = TargetName
-	PlayerName = StrMakeLower(PlayerName)
-	TargetName = StrMakeLower(TargetName)
+	PlayerName     = StrMakeLower(PlayerName)
+	TargetName     = StrMakeLower(TargetName)
 	if TargetName == PlayerName {
 		pDnodeActor.PlayerOut += "Seems silly to tell yourself something!\r\n"
 		CreatePrompt(pDnodeActor.pPlayer)
@@ -4838,7 +4839,7 @@ func DoTrain() {
 	UnTrainCost = StrGetWord(CmdStr, 4)
 	WeaponType = StrMakeLower(WeaponType)
 	// Calculate skill points used and remaining
-	SkillPointsUsed = 0
+	SkillPointsUsed  = 0
 	SkillPointsUsed += pDnodeActor.pPlayer.SkillAxe
 	SkillPointsUsed += pDnodeActor.pPlayer.SkillClub
 	SkillPointsUsed += pDnodeActor.pPlayer.SkillDagger
@@ -5003,55 +5004,55 @@ func DoTrain() {
 		pDnodeActor.PlayerOut += "\r\n"
 		// Axe
 		pDnodeActor.PlayerOut += "Axe:    "
-		Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillAxe)
+		Buf    = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillAxe)
 		TmpStr = Buf
 		pDnodeActor.PlayerOut += TmpStr
 		pDnodeActor.PlayerOut += "\r\n"
 		// Club
 		pDnodeActor.PlayerOut += "Club:   "
-		Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillClub)
+		Buf    = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillClub)
 		TmpStr = Buf
 		pDnodeActor.PlayerOut += TmpStr
 		pDnodeActor.PlayerOut += "\r\n"
 		// Dagger
 		pDnodeActor.PlayerOut += "Dagger: "
-		Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillDagger)
+		Buf    = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillDagger)
 		TmpStr = Buf
 		pDnodeActor.PlayerOut += TmpStr
 		pDnodeActor.PlayerOut += "\r\n"
 		// Hammer
 		pDnodeActor.PlayerOut += "Hammer: "
-		Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillHammer)
+		Buf    = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillHammer)
 		TmpStr = Buf
 		pDnodeActor.PlayerOut += TmpStr
 		pDnodeActor.PlayerOut += "\r\n"
 		// Spear
 		pDnodeActor.PlayerOut += "Spear:  "
-		Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillSpear)
+		Buf    = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillSpear)
 		TmpStr = Buf
 		pDnodeActor.PlayerOut += TmpStr
 		pDnodeActor.PlayerOut += "\r\n"
 		// Staff
 		pDnodeActor.PlayerOut += "Staff:  "
-		Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillStaff)
+		Buf    = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillStaff)
 		TmpStr = Buf
 		pDnodeActor.PlayerOut += TmpStr
 		pDnodeActor.PlayerOut += "\r\n"
 		// Sword
 		pDnodeActor.PlayerOut += "Sword:  "
-		Buf = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillSword)
+		Buf    = fmt.Sprintf("%3d", pDnodeActor.pPlayer.SkillSword)
 		TmpStr = Buf
 		pDnodeActor.PlayerOut += TmpStr
 		pDnodeActor.PlayerOut += "\r\n"
 		// Skill points used
 		pDnodeActor.PlayerOut += "Skill points used:      "
-		Buf = fmt.Sprintf("%4d", SkillPointsUsed)
+		Buf    = fmt.Sprintf("%4d", SkillPointsUsed)
 		TmpStr = Buf
 		pDnodeActor.PlayerOut += TmpStr
 		pDnodeActor.PlayerOut += "\r\n"
 		// Skill points remaining
 		pDnodeActor.PlayerOut += "Skill points remaining: "
-		Buf = fmt.Sprintf("%4d", SkillPointsRemaining)
+		Buf    = fmt.Sprintf("%4d", SkillPointsRemaining)
 		TmpStr = Buf
 		pDnodeActor.PlayerOut += TmpStr
 		pDnodeActor.PlayerOut += "\r\n"
@@ -5070,19 +5071,19 @@ func DoTrain() {
 	// Ok, so train or untrain them already
 	switch WeaponType {
 	case "axe":
-		pDnodeActor.pPlayer.SkillAxe += IncreaseDecrease
+		pDnodeActor.pPlayer.SkillAxe    += IncreaseDecrease
 	case "club":
-		pDnodeActor.pPlayer.SkillClub += IncreaseDecrease
+		pDnodeActor.pPlayer.SkillClub   += IncreaseDecrease
 	case "dagger":
 		pDnodeActor.pPlayer.SkillDagger += IncreaseDecrease
 	case "hammer":
 		pDnodeActor.pPlayer.SkillHammer += IncreaseDecrease
 	case "spear":
-		pDnodeActor.pPlayer.SkillSpear += IncreaseDecrease
+		pDnodeActor.pPlayer.SkillSpear  += IncreaseDecrease
 	case "staff":
-		pDnodeActor.pPlayer.SkillStaff += IncreaseDecrease
+		pDnodeActor.pPlayer.SkillStaff  += IncreaseDecrease
 	case "sword":
-		pDnodeActor.pPlayer.SkillSword += IncreaseDecrease
+		pDnodeActor.pPlayer.SkillSword  += IncreaseDecrease
 	}
 	if MinusSign != "-" {
 		// Training
@@ -5160,10 +5161,10 @@ func DoWear() {
 		return
 	}
 	// Get pointer to object
-	TmpStr = StrGetWord(CmdStr, 2)
+	TmpStr     = StrGetWord(CmdStr, 2)
 	ObjectName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
-	pObject = nil
+	TmpStr     = StrMakeLower(TmpStr)
+	pObject    = nil
 	IsObjInPlayerInv(TmpStr) // Sets pObject
 	if pObject == nil {
 		// Player does not have object in inventory
@@ -5228,10 +5229,10 @@ func DoWear() {
 	pDnodeActor.PlayerOut += "\r\n"
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
-	WearMsg = pDnodeActor.PlayerName
-	WearMsg += " wears "
-	WearMsg += pObject.Desc1
-	WearMsg += "."
+	WearMsg   = pDnodeActor.PlayerName
+	WearMsg  += " wears "
+	WearMsg  += pObject.Desc1
+	WearMsg  += "."
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, WearMsg)
@@ -5363,10 +5364,10 @@ func DoWield() {
 	//*************************
 	//* Get pointer to object *
 	//*************************
-	TmpStr = StrGetWord(CmdStr, 2)
+	TmpStr     = StrGetWord(CmdStr, 2)
 	ObjectName = TmpStr
-	TmpStr = StrMakeLower(TmpStr)
-	pObject = nil
+	TmpStr     = StrMakeLower(TmpStr)
+	pObject    = nil
 	IsObjInPlayerInv(TmpStr) // Sets pObject
 	if pObject == nil {
 		// Player does not have object in inventory
@@ -5649,7 +5650,7 @@ func LogonGreeting() {
 
 	DEBUGIT(1)
 	// Read greeting file
-	GreetingFileName = GREETING_DIR
+	GreetingFileName  = GREETING_DIR
 	GreetingFileName += "Greeting"
 	GreetingFileName += ".txt"
 	GreetingFile, err = os.Open(GreetingFileName)
@@ -5690,28 +5691,28 @@ func LogonWaitMaleFemale() {
 	} else {
 		// M or F entered, save them, let them play
 		DoMotd()
-		pDnodeActor.pPlayer = PlayerConstructor()
-		pDnodeActor.pPlayer.Name = pDnodeActor.PlayerName
-		pDnodeActor.pPlayer.Password = pDnodeActor.PlayerPassword
-		pDnodeActor.pPlayer.Sex = CmdStr
-		pDnodeActor.pPlayer.Born = GetTimeSeconds()
+		pDnodeActor.pPlayer              = PlayerConstructor()
+		pDnodeActor.pPlayer.Name         = pDnodeActor.PlayerName
+		pDnodeActor.pPlayer.Password     = pDnodeActor.PlayerPassword
+		pDnodeActor.pPlayer.Sex          = CmdStr
+		pDnodeActor.pPlayer.Born         = GetTimeSeconds()
 		PlayerSave(pDnodeActor.pPlayer)
-		pDnodeActor.pPlayer.SessionTime = GetTimeSeconds()
+		pDnodeActor.pPlayer.SessionTime  = GetTimeSeconds()
 		pDnodeActor.PlayerStateLoggingOn = false
-		pDnodeActor.PlayerStatePlaying = true
+		pDnodeActor.PlayerStatePlaying   = true
 		PlayerSave(pDnodeActor.pPlayer)
-		PlayerMsg = "\r\n"
+		PlayerMsg  = "\r\n"
 		PlayerMsg += "May your travels be safe."
 		PlayerMsg += "\r\n"
 		PlayerMsg += "\r\n"
-		AllMsg = "\r\n"
+		AllMsg  = "\r\n"
 		AllMsg += "Please welcome new player "
 		AllMsg += pDnodeActor.PlayerName
 		AllMsg += "."
 		AllMsg += "\r\n"
 		SendToAll(PlayerMsg, AllMsg)
 		ShowRoom(pDnodeActor)
-		LogBuf = "New player "
+		LogBuf  = "New player "
 		LogBuf += pDnodeActor.PlayerName
 		LogIt(LogBuf)
 		PlayerSave(pDnodeActor.pPlayer)
@@ -5904,19 +5905,19 @@ func LogonWaitPassword() {
 				// Not reconnecting
 				DoMotd()
 				pDnodeActor.PlayerStateLoggingOn = false
-				pDnodeActor.PlayerStatePlaying = true
-				pDnodeActor.pPlayer.SessionTime = GetTimeSeconds()
-				PlayerMsg = "\r\n"
+				pDnodeActor.PlayerStatePlaying   = true
+				pDnodeActor.pPlayer.SessionTime  = GetTimeSeconds()
+				PlayerMsg  = "\r\n"
 				PlayerMsg += "May your travels be safe."
 				PlayerMsg += "\r\n"
 				PlayerMsg += "\r\n"
-				AllMsg = "\r\n"
+				AllMsg  = "\r\n"
 				AllMsg += pDnodeActor.PlayerName
 				AllMsg += " has entered the game."
 				AllMsg += "\r\n"
 				SendToAll(PlayerMsg, AllMsg)
 				ShowRoom(pDnodeActor)
-				LogBuf = "Returning player "
+				LogBuf  = "Returning player "
 				LogBuf += pDnodeActor.PlayerName
 				LogIt(LogBuf)
 				PlayerSave(pDnodeActor.pPlayer)
@@ -6033,8 +6034,8 @@ func SockNewConnection() {
 		IpAddress = host
 	}
 	Buf = fmt.Sprintf("%p", tcpConn)
-	TmpStr = Buf
-	LogBuf = "New connection with socket handle "
+	TmpStr  = Buf
+	LogBuf  = "New connection with socket handle "
 	LogBuf += TmpStr
 	LogBuf += " and address "
 	LogBuf += IpAddress
@@ -6087,12 +6088,12 @@ func UpdatePlayerStats() {
 	var ThirstPct     int
 
 	HitPointsGain = 0
-	HitPoints = pDnodeActor.pPlayer.HitPoints
-	Level = pDnodeActor.pPlayer.Level
-	Position = pDnodeActor.pPlayer.Position
-	HitPointsMax = Level * PLAYER_HPT_PER_LEVEL
-	HungerPct = pDnodeActor.pPlayer.Hunger
-	ThirstPct = pDnodeActor.pPlayer.Thirst
+	HitPoints     = pDnodeActor.pPlayer.HitPoints
+	Level         = pDnodeActor.pPlayer.Level
+	Position      = pDnodeActor.pPlayer.Position
+	HitPointsMax  = Level * PLAYER_HPT_PER_LEVEL
+	HungerPct     = pDnodeActor.pPlayer.Hunger
+	ThirstPct     = pDnodeActor.pPlayer.Thirst
 	GainReducePct = int(math.Floor(float64(HungerPct+ThirstPct) / (200.0 / float64(MGRP))))
 	if HitPoints < HitPointsMax {
 		// Hit points have fallen below maximun
@@ -6108,7 +6109,7 @@ func UpdatePlayerStats() {
 			HitPointsGain = Level * HPT_GAIN_SLEEP
 		}
 		HitPointsGain -= int(math.Ceil(float64(HitPointsGain) * (float64(GainReducePct) / 100.0)))
-		HitPoints += HitPointsGain
+		HitPoints     += HitPointsGain
 		if HitPoints > HitPointsMax {
 			// Prevent hit points from exceeding the maximum
 			HitPoints = HitPointsMax
@@ -6144,22 +6145,22 @@ func ViolenceMobile() {
 	MobileId = GetMobPlayerMobileId(pDnodeActor.PlayerName, i)
 	for MobileId != "No more mobiles" {
 		// For each mob whacking the player
-		PAC = pDnodeActor.pPlayer.ArmorClass
-		MobileAttack = GetMobileAttack(MobileId)
-		MobileDamage = GetMobileDamage(MobileId)
-		MobileDesc1 = GetMobileDesc1(MobileId)
-		DamageToPlayer = CalcDamageToPlayer(MobileDamage, PAC)
-		PlayerBeenWhacked = WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer)
+		PAC                            = pDnodeActor.pPlayer.ArmorClass
+		MobileAttack                   = GetMobileAttack(MobileId)
+		MobileDamage                   = GetMobileDamage(MobileId)
+		MobileDesc1                    = GetMobileDesc1(MobileId)
+		DamageToPlayer                 = CalcDamageToPlayer(MobileDamage, PAC)
+		PlayerBeenWhacked              = WhackPlayer(MobileDesc1, MobileAttack, DamageToPlayer)
 		pDnodeActor.pPlayer.HitPoints -= DamageToPlayer
-		HitPoints = pDnodeActor.pPlayer.HitPoints
+		HitPoints                      = pDnodeActor.pPlayer.HitPoints
 		// Calculate health percentage
-		HitPointsMax = pDnodeActor.pPlayer.Level * PLAYER_HPT_PER_LEVEL
-		HealthPct = CalcHealthPct(HitPoints, HitPointsMax)
+		HitPointsMax                   = pDnodeActor.pPlayer.Level * PLAYER_HPT_PER_LEVEL
+		HealthPct                      = CalcHealthPct(HitPoints, HitPointsMax)
 		// Add heath pct to PlayerBeenWhacked
-		PlayerBeenWhacked = StrInsert(PlayerBeenWhacked, 0, " ")
-		PlayerBeenWhacked = StrInsert(PlayerBeenWhacked, 0, HealthPct)
-		pDnodeActor.PlayerOut += PlayerBeenWhacked
-		pDnodeActor.PlayerOut += "\r\n"
+		PlayerBeenWhacked              = StrInsert(PlayerBeenWhacked, 0, " ")
+		PlayerBeenWhacked              = StrInsert(PlayerBeenWhacked, 0, HealthPct)
+		pDnodeActor.PlayerOut         += PlayerBeenWhacked
+		pDnodeActor.PlayerOut         += "\r\n"
 		if HitPoints <= 0 {
 			// Player is dead, how sad
 			ViolencePlayerDied(MobileDesc1)
@@ -6185,18 +6186,18 @@ func ViolenceMobileDied(MobileBeenWhacked string, MobileDesc1 string, MobileId s
 	var MobileLoot           string
 
 	MobileExpPointsLevel = MobileId
-	MobileExpPoints = StrToInt(StrGetWord(MobileExpPointsLevel, 1))
-	MobileLevel = StrToInt(StrGetWord(MobileExpPointsLevel, 2))
-	MobileLoot = GetMobileLoot(MobileId)
+	MobileExpPoints      = StrToInt(StrGetWord(MobileExpPointsLevel, 1))
+	MobileLevel          = StrToInt(StrGetWord(MobileExpPointsLevel, 2))
+	MobileLoot           = GetMobileLoot(MobileId)
 	// Send dead mob message to player
 	pDnodeActor.PlayerOut += "\r\n"
 	pDnodeActor.PlayerOut += MobileBeenWhacked
 	// Let others in room know that the mobile is DEAD!
-	DeadMsg = "&R"
-	DeadMsg += pDnodeActor.PlayerName
-	DeadMsg += " has vanquished "
-	DeadMsg += MobileDesc1
-	DeadMsg += "!"
+	DeadMsg   = "&R"
+	DeadMsg  += pDnodeActor.PlayerName
+	DeadMsg  += " has vanquished "
+	DeadMsg  += MobileDesc1
+	DeadMsg  += "!"
 	pDnodeSrc = pDnodeActor
 	pDnodeTgt = pDnodeActor
 	SendToRoom(pDnodeActor.pPlayer.RoomId, DeadMsg)
@@ -6286,7 +6287,7 @@ func ViolenceMobileLoot(Loot string) {
 	var MobileLootFileName  string
 	var NoLoot              bool
 
-	MobileLootFileName = LOOT_DIR
+	MobileLootFileName  = LOOT_DIR
 	MobileLootFileName += Loot
 	MobileLootFileName += ".txt"
 	MobileLootFile, err := os.Open(MobileLootFileName)
@@ -6359,9 +6360,9 @@ func ViolenceMobileLootHandOut(Loot string) bool {
 	var ObjectId       string
 	var Percent        int
 
-	GotLoot = false
-	Count = StrToInt(StrGetWord(Loot, 1))
-	Percent = StrToInt(StrGetWord(Loot, 2))
+	GotLoot  = false
+	Count    = StrToInt(StrGetWord(Loot, 1))
+	Percent  = StrToInt(StrGetWord(Loot, 2))
 	ObjectId = StrGetWord(Loot, 3)
 	for i = 1; i <= Count; i++ {
 		// For each object, for example twice if '2 60 RatEar' is specified
@@ -6437,18 +6438,18 @@ func ViolencePlayer() {
 	var WeaponSkill       int
 	var WeaponType        string
 
-	WeaponSkill = GetWeaponSkill(pDnodeActor.pPlayer)
-	WeaponType = pDnodeActor.pPlayer.WeaponType
+	WeaponSkill       = GetWeaponSkill(pDnodeActor.pPlayer)
+	WeaponType        = pDnodeActor.pPlayer.WeaponType
 	MaxDamageToMobile = pDnodeActor.pPlayer.WeaponDamage
-	MobileId = GetPlayerMobMobileId(pDnodeActor.PlayerName)
-	MobileArmor = GetMobileArmor(MobileId)
-	MobileDesc1 = GetMobileDesc1(MobileId)
-	DamageToMobile = CalcDamageToMobile(MaxDamageToMobile, WeaponSkill)
+	MobileId          = GetPlayerMobMobileId(pDnodeActor.PlayerName)
+	MobileArmor       = GetMobileArmor(MobileId)
+	MobileDesc1       = GetMobileDesc1(MobileId)
+	DamageToMobile    = CalcDamageToMobile(MaxDamageToMobile, WeaponSkill)
 	MobileBeenWhacked = WhackMobile(MobileId, DamageToMobile, MobileDesc1, WeaponType)
 	// Player has whacked the mobile
-	DeadOrAlive = StrGetWord(MobileBeenWhacked, 1)
+	DeadOrAlive       = StrGetWord(MobileBeenWhacked, 1)
 	MobileBeenWhacked = StrDeleteWord(MobileBeenWhacked, 1)
-	DeadOrAlive = StrMakeLower(DeadOrAlive)
+	DeadOrAlive       = StrMakeLower(DeadOrAlive)
 	if DeadOrAlive == "alive" {
 		// Mobile is not dead, Send fight messages to player
 		pDnodeActor.PlayerOut += "\r\n"
@@ -6506,7 +6507,7 @@ func ViolencePlayerDied(MobileDesc1 string) {
 		pDnodeActor.PlayerOut += "\r\n"
 	}
 	// Tell players in room of player's demise
-	DeadMsg = "&R"
+	DeadMsg  = "&R"
 	DeadMsg += pDnodeActor.PlayerName
 	DeadMsg += " has been vanquished by "
 	DeadMsg += MobileDesc1
@@ -6560,9 +6561,9 @@ func ViolencePlayerDied(MobileDesc1 string) {
 		// MobileIdSave's target is still in room, nothing to do
 		return
 	}
-	CandidateCount = StrCountWords(CandidateList)
+	CandidateCount  = StrCountWords(CandidateList)
 	CandidateTarget = GetRandomNumber(CandidateCount)
-	Target = StrGetWord(CandidateList, CandidateTarget)
+	Target          = StrGetWord(CandidateList, CandidateTarget)
 	CreateMobPlayer(Target, MobileIdSave)
 }
 

@@ -26,7 +26,7 @@ func LogValErr(Message string, FileName string) {
     Message += "-"
   }
   Message += "> "
-  LogBuf = "ValErr"
+  LogBuf  = "ValErr"
   LogBuf += Message
   LogBuf += FileName
   LogIt(LogBuf)
@@ -139,7 +139,7 @@ func ValidateLibraryLoot() {
       ObjectIdFileName = filepath.Join(HomeDir, OBJECTS_DIR, ObjectId+".txt")
       if !FileExist(ObjectIdFileName) {
         // ObjectId file not found
-        Message = "Object file"
+        Message  = "Object file"
         Message += " '"
         Message += ObjectId
         Message += "' "
@@ -200,9 +200,9 @@ func ValidateLibraryMobiles() {
       continue
     }
     // Open mobile file
-    MobileFileName = entry.Name()
-    MobileId = StrLeft(MobileFileName, StrGetLength(MobileFileName)-4)
-    MobileFileName = MOBILES_DIR + MobileFileName
+    MobileFileName  = entry.Name()
+    MobileId        = StrLeft(MobileFileName, StrGetLength(MobileFileName)-4)
+    MobileFileName  = MOBILES_DIR + MobileFileName
     MobileFile, err = os.Open(MobileFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -219,7 +219,7 @@ func ValidateLibraryMobiles() {
     for Stuff != "" {
       // For all lines
       LineCount++
-      FieldName = StrGetWord(Stuff, 1)
+      FieldName  = StrGetWord(Stuff, 1)
       FieldValue = StrGetWord(Stuff, 2)
       //********************************
       //* MobileId field must be first *
@@ -276,7 +276,7 @@ func ValidateLibraryMobiles() {
         // Faction field validation
         if StrIsNotWord(FieldValue, "Evil Lawless Neutral Lawful Good") {
           // Invalid mobile faction
-          Message = "Mobile faction is invalid"
+          Message  = "Mobile faction is invalid"
           FileName = MobileFileName
           LogValErr(Message, FileName)
         }
@@ -289,7 +289,7 @@ func ValidateLibraryMobiles() {
         FieldValue = StrMakeLower(FieldValue)
         if StrIsNotWord(FieldValue, "bites claws crushes hits mauls pierces punches slashes stabs stings thrashes") {
           // Invalid mobile attack
-          Message = "Mobile attack is invalid"
+          Message  = "Mobile attack is invalid"
           FileName = MobileFileName
           LogValErr(Message, FileName)
         }
@@ -299,7 +299,7 @@ func ValidateLibraryMobiles() {
       //*********
       if FieldName == "Loot:" {
         // Loot field validation
-        LootFileName = LOOT_DIR
+        LootFileName  = LOOT_DIR
         LootFileName += FieldValue
         LootFileName += ".txt"
         if !FileExist(LootFileName) {
@@ -355,9 +355,9 @@ func ValidateLibraryObjects() {
       continue
     }
     // Open object file
-    ObjectFileName = entry.Name()
-    ObjectId = StrLeft(ObjectFileName, StrGetLength(ObjectFileName)-4)
-    ObjectFileName = OBJECTS_DIR + ObjectFileName
+    ObjectFileName  = entry.Name()
+    ObjectId        = StrLeft(ObjectFileName, StrGetLength(ObjectFileName)-4)
+    ObjectFileName  = OBJECTS_DIR + ObjectFileName
     ObjectFile, err = os.Open(ObjectFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -374,7 +374,7 @@ func ValidateLibraryObjects() {
     for Stuff != "" {
       // For all lines
       LineCount++
-      FieldName = StrGetWord(Stuff, 1)
+      FieldName  = StrGetWord(Stuff, 1)
       FieldValue = StrGetWord(Stuff, 2)
       //********************************
       //* ObjectId field must be first *
@@ -383,7 +383,7 @@ func ValidateLibraryObjects() {
         // First line
         if FieldName != "ObjectId:" {
           // Must be ObjectId
-          Message = "ObjectId field must be the first field"
+          Message  = "ObjectId field must be the first field"
           FileName = ObjectFileName
           LogValErr(Message, FileName)
         }
@@ -395,7 +395,7 @@ func ValidateLibraryObjects() {
         // ObjectId field validation
         if ObjectId != FieldValue {
           // ObjectId must match file name
-          Message = "ObjectId must match file name"
+          Message  = "ObjectId must match file name"
           FileName = ObjectFileName
           LogValErr(Message, FileName)
         }
@@ -407,7 +407,7 @@ func ValidateLibraryObjects() {
         // Type field validation
         if StrIsNotWord(FieldValue, "Armor Container Drink Food Junk Key Light NoTake Treasure Weapon") {
           // Invalid object type
-          Message = "Object type is invalid"
+          Message  = "Object type is invalid"
           FileName = ObjectFileName
           LogValErr(Message, FileName)
         }
@@ -428,7 +428,7 @@ func ValidateLibraryObjects() {
           FieldValue = StrGetWord(Stuff, 2)
           if FieldName != "ArmorValue:" {
             // ArmorValue must follow 'Type: Armor' specification
-            Message = "ArmorValue must follow 'Type: Armor' specification"
+            Message  = "ArmorValue must follow 'Type: Armor' specification"
             FileName = ObjectFileName
             LogValErr(Message, FileName)
           }
@@ -445,7 +445,7 @@ func ValidateLibraryObjects() {
           FieldValue = StrGetWord(Stuff, 2)
           if FieldName != "ArmorWear:" {
             // ArmorWear must follow 'ArmorValue' specification
-            Message = "ArmorWear must follow 'ArmorValue' specification"
+            Message  = "ArmorWear must follow 'ArmorValue' specification"
             FileName = ObjectFileName
             LogValErr(Message, FileName)
           } else {
@@ -471,18 +471,18 @@ func ValidateLibraryObjects() {
             Stuff = ""
           }
           LineCount++
-          FieldName = StrGetWord(Stuff, 1)
+          FieldName  = StrGetWord(Stuff, 1)
           FieldValue = StrGetWord(Stuff, 2)
           if FieldName != "WeaponType:" {
             // WeaponType must follow 'Type: Weapon' specification
-            Message = "WeaponType must follow 'Type: Weapon' specification"
+            Message  = "WeaponType must follow 'Type: Weapon' specification"
             FileName = ObjectFileName
             LogValErr(Message, FileName)
           } else {
             // Validate WeaponType
             if StrIsNotWord(FieldValue, "Axe Club Dagger Hammer Spear Staff Sword") {
               // Invalid weapon type
-              Message = "Weapon type is invalid"
+              Message  = "Weapon type is invalid"
               FileName = ObjectFileName
               LogValErr(Message, FileName)
             }
@@ -496,11 +496,11 @@ func ValidateLibraryObjects() {
             Stuff = ""
           }
           LineCount++
-          FieldName = StrGetWord(Stuff, 1)
+          FieldName  = StrGetWord(Stuff, 1)
           FieldValue = StrGetWord(Stuff, 2)
           if FieldName != "WeaponDamage:" {
             // WeaponDamage must follow WeaponType specification
-            Message = "WeaponDamage must follow WeaponType specification"
+            Message  = "WeaponDamage must follow WeaponType specification"
             FileName = ObjectFileName
             LogValErr(Message, FileName)
           }
@@ -556,9 +556,9 @@ func ValidateLibraryRooms() {
       continue
     }
     // Open room file
-    RoomFileName = entry.Name()
-    RoomId = StrLeft(RoomFileName, StrGetLength(RoomFileName)-4)
-    RoomFileName = ROOMS_DIR + RoomFileName
+    RoomFileName  = entry.Name()
+    RoomId        = StrLeft(RoomFileName, StrGetLength(RoomFileName)-4)
+    RoomFileName  = ROOMS_DIR + RoomFileName
     RoomFile, err = os.Open(RoomFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -584,7 +584,7 @@ func ValidateLibraryRooms() {
         // First line
         if FieldName != "RoomId:" {
           // Must be RoomId
-          Message = "RoomId field must be the first field"
+          Message  = "RoomId field must be the first field"
           FileName = RoomFileName
           LogValErr(Message, FileName)
         }
@@ -596,7 +596,7 @@ func ValidateLibraryRooms() {
         // RoomId field validation
         if RoomId != FieldValue {
           // RoomId must match file name
-          Message = "RoomId must match file name"
+          Message  = "RoomId must match file name"
           FileName = RoomFileName
           LogValErr(Message, FileName)
         }
@@ -618,7 +618,7 @@ func ValidateLibraryRooms() {
             }
           } else {
             // Invalid RoomType
-            Message = "RoomType has an invalid entry"
+            Message  = "RoomType has an invalid entry"
             FileName = RoomFileName
             LogValErr(Message, FileName)
             RoomTypeError = true
@@ -635,7 +635,7 @@ func ValidateLibraryRooms() {
           // Valid Terrain
         } else {
           // Invalid Terrain
-          Message = "Terrain is invalid"
+          Message  = "Terrain is invalid"
           FileName = RoomFileName
           LogValErr(Message, FileName)
         }
@@ -650,7 +650,7 @@ func ValidateLibraryRooms() {
         ExitToRoomIdFileName += ".txt"
         if !FileExist(ExitToRoomIdFileName) {
           // ExitToRoom file not found
-          Message = "Room file"
+          Message  = "Room file"
           Message += " '"
           Message += FieldValue
           Message += "' "
@@ -709,10 +709,10 @@ func ValidateLibraryShops() {
       continue
     }
     // Open player file
-    ShopFileName = entry.Name()
-    PlayerName = StrLeft(ShopFileName, StrGetLength(ShopFileName)-4)
+    ShopFileName  = entry.Name()
+    PlayerName    = StrLeft(ShopFileName, StrGetLength(ShopFileName)-4)
     _ = PlayerName
-    ShopFileName = SHOPS_DIR + ShopFileName
+    ShopFileName  = SHOPS_DIR + ShopFileName
     ShopFile, err = os.Open(ShopFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -729,7 +729,7 @@ func ValidateLibraryShops() {
     for Stuff != "End of Shop" {
       // For all lines
       LineCount++
-      FieldName = StrGetWord(Stuff, 1)
+      FieldName  = StrGetWord(Stuff, 1)
       FieldValue = StrGetWord(Stuff, 2)
       if FieldName != "Item:" {
         // Not an item line
@@ -818,9 +818,9 @@ func ValidateLibraryWorldMobiles() {
       // Skip ReadMe files
       continue
     }
-    WorldMobileName = StrLeft(WorldMobileFileName, StrGetLength(WorldMobileFileName)-4)
-    MobileId = WorldMobileName
-    WorldMobileFileName = WORLD_MOBILES_DIR + WorldMobileFileName
+    WorldMobileName      = StrLeft(WorldMobileFileName, StrGetLength(WorldMobileFileName)-4)
+    MobileId             = WorldMobileName
+    WorldMobileFileName  = WORLD_MOBILES_DIR + WorldMobileFileName
     WorldMobileFile, err = os.Open(WorldMobileFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -830,12 +830,12 @@ func ValidateLibraryWorldMobiles() {
     //************
     //* MobileId *
     //************
-    MobileIdFileName = MOBILES_DIR
+    MobileIdFileName  = MOBILES_DIR
     MobileIdFileName += MobileId
     MobileIdFileName += ".txt"
     if !FileExist(MobileIdFileName) {
       // MobileId file not found
-      Message = "Mobile file"
+      Message  = "Mobile file"
       Message += " '"
       Message += MobileId
       Message += "' "
@@ -856,14 +856,14 @@ func ValidateLibraryWorldMobiles() {
     for Stuff != "" {
       // For all lines
       LineCount++
-      FieldName = StrGetWord(Stuff, 1)
+      FieldName  = StrGetWord(Stuff, 1)
       FieldValue = StrGetWord(Stuff, 2)
       //**********
       //* RoomId *
       //**********
       if FieldName == "RoomId:" {
         // RoomId field validation
-        RoomIdFileName = ROOMS_DIR
+        RoomIdFileName  = ROOMS_DIR
         RoomIdFileName += FieldValue
         RoomIdFileName += ".txt"
         if !FileExist(RoomIdFileName) {
@@ -924,9 +924,9 @@ func ValidateRunningPlayers() {
       continue
     }
     // Open player file
-    PlayerFileName = entry.Name()
-    PlayerName = StrLeft(PlayerFileName, StrGetLength(PlayerFileName)-4)
-    PlayerFileName = PLAYER_DIR + PlayerFileName
+    PlayerFileName  = entry.Name()
+    PlayerName      = StrLeft(PlayerFileName, StrGetLength(PlayerFileName)-4)
+    PlayerFileName  = PLAYER_DIR + PlayerFileName
     PlayerFile, err = os.Open(PlayerFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -944,7 +944,7 @@ func ValidateRunningPlayers() {
       // For all lines
       LineCount++
       StrReplace(&Stuff, ":", " ")
-      FieldName = StrGetWord(Stuff, 1)
+      FieldName  = StrGetWord(Stuff, 1)
       FieldValue = StrGetWord(Stuff, 2)
       //****************************
       //* Name field must be first *
@@ -953,7 +953,7 @@ func ValidateRunningPlayers() {
         // First line
         if FieldName != "Name" {
           // Must be Name
-          Message = "Name field must be the first field"
+          Message  = "Name field must be the first field"
           FileName = PlayerFileName
           LogValErr(Message, FileName)
         }
@@ -965,7 +965,7 @@ func ValidateRunningPlayers() {
         // Name field validation
         if PlayerName != FieldValue {
           // Name must match file name
-          Message = "Name must match file name"
+          Message  = "Name must match file name"
           FileName = PlayerFileName
           LogValErr(Message, FileName)
         }
@@ -975,12 +975,12 @@ func ValidateRunningPlayers() {
       //**********
       if FieldName == "RoomId" {
         // RoomId field validation
-        RoomIdFileName = ROOMS_DIR
+        RoomIdFileName  = ROOMS_DIR
         RoomIdFileName += FieldValue
         RoomIdFileName += ".txt"
         if !FileExist(RoomIdFileName) {
           // RoomId file not found
-          Message = "Room file"
+          Message  = "Room file"
           Message += " '"
           Message += FieldValue
           Message += "' "
@@ -1036,10 +1036,10 @@ func ValidateRunningPlayersPlayerEqu() {
       continue
     }
     // Open player file
-    PlayerEquFileName = entry.Name()
-    PlayerName = StrLeft(PlayerEquFileName, StrGetLength(PlayerEquFileName)-4)
+    PlayerEquFileName  = entry.Name()
+    PlayerName         = StrLeft(PlayerEquFileName, StrGetLength(PlayerEquFileName)-4)
     _ = PlayerName
-    PlayerEquFileName = PLAYER_EQU_DIR + PlayerEquFileName
+    PlayerEquFileName  = PLAYER_EQU_DIR + PlayerEquFileName
     PlayerEquFile, err = os.Open(PlayerEquFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -1057,31 +1057,31 @@ func ValidateRunningPlayersPlayerEqu() {
       // For all lines
       LineCount++
       WearPosition = StrGetWord(Stuff, 1)
-      ObjectId = StrGetWord(Stuff, 2)
+      ObjectId     = StrGetWord(Stuff, 2)
       //*****************
       //* Wear position *
       //*****************
       if WearPosition < "01" {
         // Wear position must be 01 - 20
-        Message = "Wear position < 01"
+        Message  = "Wear position < 01"
         FileName = PlayerEquFileName
         LogValErr(Message, FileName)
       }
       if WearPosition > "20" {
         // Wear position must be 01 - 20
-        Message = "Wear position > 20"
+        Message  = "Wear position > 20"
         FileName = PlayerEquFileName
         LogValErr(Message, FileName)
       }
       //************
       //* ObjectId *
       //************
-      ObjectIdFileName = OBJECTS_DIR
+      ObjectIdFileName  = OBJECTS_DIR
       ObjectIdFileName += ObjectId
       ObjectIdFileName += ".txt"
       if !FileExist(ObjectIdFileName) {
         // ObjectId file not found
-        Message = "Object file"
+        Message  = "Object file"
         Message += " '"
         Message += ObjectId
         Message += "' "
@@ -1135,10 +1135,10 @@ func ValidateRunningPlayersPlayerObj() {
       continue
     }
     // Open player file
-    PlayerObjFileName = entry.Name()
-    PlayerName = StrLeft(PlayerObjFileName, StrGetLength(PlayerObjFileName)-4)
+    PlayerObjFileName  = entry.Name()
+    PlayerName         = StrLeft(PlayerObjFileName, StrGetLength(PlayerObjFileName)-4)
     _ = PlayerName
-    PlayerObjFileName = PLAYER_OBJ_DIR + PlayerObjFileName
+    PlayerObjFileName  = PLAYER_OBJ_DIR + PlayerObjFileName
     PlayerObjFile, err = os.Open(PlayerObjFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -1159,12 +1159,12 @@ func ValidateRunningPlayersPlayerObj() {
       //************
       //* ObjectId *
       //************
-      ObjectIdFileName = OBJECTS_DIR
+      ObjectIdFileName  = OBJECTS_DIR
       ObjectIdFileName += ObjectId
       ObjectIdFileName += ".txt"
       if !FileExist(ObjectIdFileName) {
         // ObjectId file not found
-        Message = "Object file"
+        Message  = "Object file"
         Message += " '"
         Message += ObjectId
         Message += "' "
@@ -1225,8 +1225,8 @@ func ValidateRunningRoomMob() {
       // Skip ReadMe files
       continue
     }
-    RoomId = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName)-4)
-    RoomMobFileName = ROOM_MOB_DIR + RoomMobFileName
+    RoomId           = StrLeft(RoomMobFileName, StrGetLength(RoomMobFileName)-4)
+    RoomMobFileName  = ROOM_MOB_DIR + RoomMobFileName
     RoomMobFile, err = os.Open(RoomMobFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -1236,7 +1236,7 @@ func ValidateRunningRoomMob() {
     //**********
     //* RoomId *
     //**********
-    RoomIdFileName = ROOMS_DIR
+    RoomIdFileName  = ROOMS_DIR
     RoomIdFileName += RoomId
     RoomIdFileName += ".txt"
     if !FileExist(RoomIdFileName) {
@@ -1268,7 +1268,6 @@ func ValidateRunningRoomMob() {
         // Mobile is hurt
         MobileId = StrLeft(MobileId, PositionOfDot)
       }
-
       //************
       //* MobileId *
       //************
@@ -1277,7 +1276,7 @@ func ValidateRunningRoomMob() {
       MobileIdFileName += ".txt"
       if !FileExist(MobileIdFileName) {
         // MobileId file not found
-        Message = "Mobile file"
+        Message  = "Mobile file"
         Message += " '"
         Message += MobileId
         Message += "' "
@@ -1337,8 +1336,8 @@ func ValidateRunningRoomObj() {
       // Skip ReadMe files
       continue
     }
-    RoomId = StrLeft(RoomObjFileName, StrGetLength(RoomObjFileName)-4)
-    RoomObjFileName = ROOM_OBJ_DIR + RoomObjFileName
+    RoomId           = StrLeft(RoomObjFileName, StrGetLength(RoomObjFileName)-4)
+    RoomObjFileName  = ROOM_OBJ_DIR + RoomObjFileName
     RoomObjFile, err = os.Open(RoomObjFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -1348,12 +1347,12 @@ func ValidateRunningRoomObj() {
     //**********
     //* RoomId *
     //**********
-    RoomIdFileName = ROOMS_DIR
+    RoomIdFileName  = ROOMS_DIR
     RoomIdFileName += RoomId
     RoomIdFileName += ".txt"
     if !FileExist(RoomIdFileName) {
       // RoomId file not found
-      Message = "Room file"
+      Message  = "Room file"
       Message += " '"
       Message += RoomId
       Message += "' "
@@ -1383,7 +1382,7 @@ func ValidateRunningRoomObj() {
       ObjectIdFileName += ".txt"
       if !FileExist(ObjectIdFileName) {
         // ObjectId file not found
-        Message = "Object file"
+        Message  = "Object file"
         Message += " '"
         Message += ObjectId
         Message += "' "

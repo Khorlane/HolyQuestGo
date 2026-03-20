@@ -17,24 +17,24 @@ import (
 )
 
 // Public variables
-var Action     string
-var Armor      int
-var Attack     string
-var Damage     int
-var Desc1      string
-var Desc2      string
-var Desc3      string
-var ExpPoints  int
-var Faction    string
-var HitPoints  int
-var Hurt       bool
-var Level      int
-var Loot       string
+var Action      string
+var Armor       int
+var Attack      string
+var Damage      int
+var Desc1       string
+var Desc2       string
+var Desc3       string
+var ExpPoints   int
+var Faction     string
+var HitPoints   int
+var Hurt        bool
+var Level       int
+var Loot        string
 var MobileFile *os.File
-var MobileId   string
-var MobNbr     string
-var Names      string
-var Talk       string
+var MobileId    string
+var MobNbr      string
+var Names       string
+var Talk        string
 
 // Mobile struct definition
 type Mobile struct {

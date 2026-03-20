@@ -13,10 +13,10 @@ import "os"
 
 // Append new connection to connection list
 func AppendIt() {
-  pDnodeActor.pDnodePrev = pDnodeHead.pDnodePrev
+  pDnodeActor.pDnodePrev           = pDnodeHead.pDnodePrev
   pDnodeHead.pDnodePrev.pDnodeNext = pDnodeActor
-  pDnodeHead.pDnodePrev = pDnodeActor
-  pDnodeActor.pDnodeNext = pDnodeHead
+  pDnodeHead.pDnodePrev            = pDnodeActor
+  pDnodeActor.pDnodeNext           = pDnodeHead
 }
 
 // Clear descriptor linked list
@@ -28,7 +28,7 @@ func ClearDescriptor() {
 // Delete connection from connection list and close socket
 func DeleteNode() bool {
   var pDnode *Dnode
-  var Result int
+  var Result  int
 
   if pDnodeCursor.DnodeFd == nil {
     return false
@@ -39,8 +39,8 @@ func DeleteNode() bool {
     PrintIt("Descriptor::DeleteNode - Error: closesocket")
     os.Exit(1)
   }
-  pDnodeActor = nil
-  pDnode = pDnodeCursor.pDnodePrev
+  pDnodeActor  = nil
+  pDnode       = pDnodeCursor.pDnodePrev
   DnodeDestructor(pDnodeCursor)
   pDnodeCursor = pDnode
   return true
@@ -58,10 +58,10 @@ func GetDnode() *Dnode {
 
 // Initialize descriptor pointers
 func InitDescriptor() {
-  pDnodeHead = DnodeConstructor(nil, "")
+  pDnodeHead            = DnodeConstructor(nil, "")
   pDnodeHead.pDnodeNext = pDnodeHead
   pDnodeHead.pDnodePrev = pDnodeHead
-  pDnodeCursor = pDnodeHead
+  pDnodeCursor          = pDnodeHead
 }
 
 // Set Dnode pointer to the first Dnode in the list

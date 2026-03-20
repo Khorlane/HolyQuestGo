@@ -98,9 +98,9 @@ func GetRandomNumber(Limit int) int {
 // Get a SQL statement
 func GetSqlStmt(SqlStmtId string) string {
   //var RipOutMoreSpaces int
-  var SqlStmt string
-  var SqlStmtFile *os.File
-  var SqlStmtFileName string
+  var SqlStmt          string
+  var SqlStmtFile     *os.File
+  var SqlStmtFileName  string
 
   //RipOutMoreSpaces = 0
   // Read mobile stats Desc1 file

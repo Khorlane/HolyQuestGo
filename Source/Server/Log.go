@@ -33,9 +33,9 @@ func LogIt(LogBuf string) {
 
 // Open log file
 func OpenLogFile() {
-  var LogFileName string
+  var LogFileName     string
   var LogSaveFileName string
-  var LogTime string
+  var LogTime         string
 
   PrintIt("Log::OpenLogFile()")
   LogFileName = LOG_DIR

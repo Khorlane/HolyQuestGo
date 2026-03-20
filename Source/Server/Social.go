@@ -19,8 +19,8 @@ var SocialScanner *bufio.Scanner
 
 // Is MudCmd a social command?
 func IsSocial() bool {
-  var Found bool
-  var MinPos string
+  var Found   bool
+  var MinPos  string
   var MsgText string
 
   Found = false
@@ -89,7 +89,7 @@ func OpenSocialFile() bool {
 
 // Is player in a valid position for the social
 func PositionNotOk(pDnode *Dnode, MinPos string) bool {
-  var MinPosNbr int
+  var MinPosNbr    int
   var PlayerPosNbr int
 
   MinPosNbr = PosNbr(MinPos)
