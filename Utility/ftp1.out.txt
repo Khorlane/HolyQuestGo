@@ -1,0 +1,17 @@
+ftp> Connected to www.holyquest.org.
+open www.holyquest.org
+220 WFTPD 2.4 service (by Texas Imperial Software) ready for new user
+User (www.holyquest.org:(none)): 
+331 Give me your password, please
+
+230 Logged in successfully
+ftp> ftp> 
+cd \HolyQuest\Library
+250 "C:/HolyQuest/Library" is current directory
+ftp> put \OMugs\Library\Help.txt
+200 PORT command okay
+150 "C:/HolyQuest/Library/Help.txt" file ready to receive in ASCII mode
+226 Transfer finished successfully.
+ftp: 21466 bytes sent in 0.00Seconds 21466000.00Kbytes/sec.
+ftp> quit
+221 Windows FTP Server (WFTPD, by Texas Imperial Software) says goodbye

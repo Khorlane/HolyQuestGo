@@ -1,0 +1,6 @@
+open www.holyquest.org
+khorlane
+alys4258
+cd \HolyQuest\Library
+put \OMugs\Library\Help.txt
+quit

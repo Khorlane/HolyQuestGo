@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>HolyQest - Game Stats</title>
+<link rel="stylesheet" type="text/css" href="layout.css"/>
+</head>
+<body >
+
+<script language="JScript">
+  var objShell = new ActiveXObject("WScript.Shell");
+  objShell.Run("c:\\holyquest\\bin\\WhoIsOnline.exe",6);
+</script>
+
+<div class="banner">
+<img src="images/campfire.gif" class="leftbanner" >
+<img src="images/HQ-title.jpg" class="centerbanner">
+<img src="images/campfire.gif" class="rightbanner">
+</div>
+
+<div class="nav">
+
+<a href="news.htm" class="link1">News</a></br>
+<a href="history.htm" class="link2">History</a></br>
+<a href="tutorial1.htm" class="link3">Tutorials</a></br>
+<a href="rules.htm" class="link4">Rules</a></br>
+<a href="glossary.htm" class="link5">Glossary</a></br>
+<a href="faq.htm" class="link6">FAQ</a></br>
+<a href="links.htm" class="link7">Links</a></br>
+<a href="stats.htm" class="link8">Game Sats</a></br>
+<a href="e-mail.htm" class="link9">E-Mail</a></br>
+<a href="home.htm" class="link10">Home</a></br>
+</div>
+
+<div class="title">
+<p>Game Stats</p>
+</div>
+
+<div class="main">
+
+<p class="pbody">Who is online now</p>
+
+</br>
+
+<xml id="stats" src="statswho.xml"></xml>
+
+<table class="table" datasrc="#stats">
+
+<thead>
+<tr>
+<th class="tdheader">Name</th>
+<th class="tdheader">Level</th>
+<th class="tdheader">AFK</th>
+<th class="tdheader">Title</th>
+</tr>
+</thead>
+
+<tfoot>
+<tr><th colspan="4"></th></tr>
+</tfoot>
+
+<tbody>
+<tr>
+<td class="tdbody"><span datafld="name"></span></td>
+<td class="tdbody"><span datafld="level"></span></td>
+<td class="tdbody"><span datafld="afk"></span></td>
+<td class="tdbody"><span datafld="title"></span></td>
+
+</tr>
+</tbody>
+
+</table>
+
+</br>
+<hr>
+</br>
+
+<p class="copyright">
+Copyright &copy; 1999-2022 HolyQuest
+</br>
+All Rights Reserved.
+</br>
+</br>
+</br>
+
+</div>
+
+</body>
+</html>
