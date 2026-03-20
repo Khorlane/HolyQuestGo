@@ -3,7 +3,6 @@
 
 ## Table of Contents
 
-- [License](#license)
 - [Introduction](#introduction)
 - [Origin](#origin)
 	- [CircleMUD](#circlemud)
@@ -18,24 +17,15 @@
 	- [Socializing](#socializing)
 - [Conclusion](#conclusion)
 
-# License
-
-This is free and unencumbered software released into the public domain.
-
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any means.
-
-For more information, please refer to <http://unlicense.org/>
-
-Author  
-Stephen L Bryant 
+```
+Author
+Stephen L Bryant
 
 Revision 1.0 December  5, 2002
 Revision 1.1 December 22, 2025
 
 Revision tracking after December 22, 2025 is maintained via git.
-
+```
 # Introduction
 
 This document describes the origin of OMugs which is a 'mud server'. In

@@ -1,18 +1,6 @@
 # OMugs – Online Multi-User Game Server
 
-# Done List
-
-# License
-
-This is free and unencumbered software released into the public domain.
-
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any means.
-
-For more information, please refer to <http://unlicense.org/>
-
-# Things Done
+# ToDo List
 
 - [x] HQ-001 - 12/15/02 - Implement player levels
 - [x] HQ-002 - 12/17/02 - Make mobiles fight back
@@ -115,3 +103,4 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-099 - 03/20/26 - Align SockSend partial-write handling with C++ behavior in Communication.go (commit: 0834d20)
 - [x] HQ-100 - 03/20/26 - Harden group pointer handling in Communication.go follow/leave helpers (commit: 23afe12)
 - [x] HQ-101 - 03/20/26 - Normalize non-PascalCase variable names across Go source files - with exceptions (commit: 10689d9)
+- [x] HQ-102 - 03/20/26 - Cleanup documentation in Doc folder (commit: pending)

@@ -17,7 +17,6 @@ Reference C++ source:
 
 Project workflow files:
 - C:\Projects\HolyQuestGo\Doc\ToDo.md is the done-history file
-- C:\Projects\HolyQuestGo\Doc\Features.md is the active backlog / todo file
 
 Project knowledge:
 - In OMugs C++, DEBUGIT is a macro in Config.h; Go's DEBUGIT(level int) function is a language-driven replacement for that macro and should not be treated as a mismatch.

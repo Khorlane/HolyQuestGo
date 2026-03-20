@@ -120,27 +120,17 @@
     - [Armor class](#armor-class)
     - [Damage Reduction Percentage calculation](#damage-reduction-percentage-calculation)
     - [Combat example](#combat-example)
+```
+Author
+Stephen L Bryant
 
-# License
-
-This is free and unencumbered software released into the public domain.
-
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any means.
-
-For more information, please refer to <http://unlicense.org/>
-
-Author  
-Stephen L Bryant  
-
-Revision 1.0 April    22, 2001  
-Revision 1.1 December  4, 2002  
-Revision 1.2 October  23, 2003  
+Revision 1.0 April    22, 2001
+Revision 1.1 December  4, 2002
+Revision 1.2 October  23, 2003
 Revision 1.3 December 22, 2025
 
 Revision tracking after December 22, 2025 is maintained via git.
-
+```
 # Introduction
 
 ## Terminology
@@ -181,10 +171,10 @@ distinctions such as a 'Player' usually refers to person at the keyboard
 and 'Character' refers to the in-game representation being controlled by
 the player.
 
-Room ⬄ Place ⬄ Location  
-NPC ⬄ Mobile ⬄ Mob  
-Object ⬄ Item ⬄ Thing  
-Player ⬄ Character ⬄ Toon  
+Room ⬄ Place ⬄ Location
+NPC ⬄ Mobile ⬄ Mob
+Object ⬄ Item ⬄ Thing
+Player ⬄ Character ⬄ Toon
 
 ## Creating a virtual world
 
@@ -297,27 +287,27 @@ ArmorShop.
 
 ## Room specification
 
-A room is specified as follows:  
+A room is specified as follows:
 -----------------------------
 ```
-RoomId:       xxxx  
-RoomType:     xxxx  
-Terrain:      xxxx  
-RoomName:     xxxx  
-RoomDesc:     xxxx  
-End of RoomDesc  
-ExitName:     xxxx  
-ExitDesc:     xxxx  
-ExitToRoomId: <RoomId>  
-End of Exits  
-End of Room  
+RoomId:       xxxx
+RoomType:     xxxx
+Terrain:      xxxx
+RoomName:     xxxx
+RoomDesc:     xxxx
+End of RoomDesc
+ExitName:     xxxx
+ExitDesc:     xxxx
+ExitToRoomId: <RoomId>
+End of Exits
+End of Room
 ```
 -----------------------------
 
-Room Id  
+Room Id
 This must be unique within the whole virtual world.
 
-RoomType  
+RoomType
 Describes the type of room using one or more of the following codes separated by spaces:
 | Code | Meaning |
 |---|---|
@@ -327,53 +317,53 @@ Describes the type of room using one or more of the following codes separated by
 | NoFight | No fighting |
 | NoNPC   | NPC are not allowed to enter this room from another room |
 
-Terrain  
+Terrain
 The type of terrain effects number of movement points used when a player
-enters a room. It also effects the rate of food and water consumption.  
-Terrain must be **<u>one</u>** of the following:  
-Inside  
-Street  
-Road  
-Field  
-Forest  
-Swamp  
-Desert  
-Hill  
+enters a room. It also effects the rate of food and water consumption.
+Terrain must be **<u>one</u>** of the following:
+Inside
+Street
+Road
+Field
+Forest
+Swamp
+Desert
+Hill
 Mountain
 
-RoomName  
+RoomName
 This is the room's name and is displayed to players upon entering a
 room.
 
-RoomDesc  
+RoomDesc
 This is the room's description and is displayed to players upon entering
 a room. It should be as descriptive as possible, but should not tell the
 player how he/she feels. Room descriptions should, in general, be longer
 than one line. The room description is free form and is displayed to the
-player 'as is' including blank lines and spaces.  
+player 'as is' including blank lines and spaces.
 
-End of RoomDesc  
+End of RoomDesc
 This line indicates the end of the room description.
 
-ExitName  
+ExitName
 This text is the name of the exit displayed to the player. A player will
 use this name to exit the room or manipulate the door, if a door is
 specified. ExitName must be unique for this room.
 
-ExitDesc  
+ExitDesc
 This text will be displayed to the player when using the command 'look
 ExitName'. The text should start on the next line.
 
-ExitToRoomId  
+ExitToRoomId
 This is the unique id of the room to which the player will be moved when
-using the command  
+using the command
 'go ExitName' which can be shortened to `n` to go north.
 
-End of Exits  
+End of Exits
 This line indicates the end of all exit information. Even if there are
 no exits, this line is required
 
-End of Room  
+End of Room
 This line indicates the end of all room information
 
 ### A note about room exits
@@ -386,8 +376,8 @@ assume two rooms say and Entry and a Dining Room. The Entry would have
 an exit to the Dining room and the Dining Room would have an exit to the
 Entry.
 
-## Room example 1  
-The specifications for an example room \Library\Rooms\Entry.txt follows:  
+## Room example 1
+The specifications for an example room \Library\Rooms\Entry.txt follows:
 ```
 RoomId:   Entry
 RoomType: NoFight
@@ -463,43 +453,43 @@ KeyObjectId: None | `<ObjectId>
 ResetInterval: `<time>
 ```
 
-DoorId  
+DoorId
 The first specification is the concatenation of RoomId and an
 ExitToRoomId. The second specification is a concatenation of the same
 ExitToRoomId and the same RoomId.
 
-DoorName  
+DoorName
 The name that the player must use to refer to this particular door when
 opening, closing, locking, or unlocking the door. Typically this will be
 simply 'door', but it could be 'gate' or anything else.
 
-InitialState  
+InitialState
 This controls whether the door is open or closed when the games starts
 and is specified as 'Open' or 'Closed'. This is the state the door will
 normally be in when encountered by a player.
 
-ResetInterval  
+ResetInterval
 This controls how long before the door is returned to the InitialState
 after a player opens/closes the door. It also controls how long before
 the lock is returned to the LockInitialState after being locked/unlocked
 by a player. ResetInterval `<time>` is specified as a series of 7
 integer numbers, each separated from the next by a space and in the
-following sequence:  
-seconds  
-minutes  
-hours  
-days  
-weeks  
-months  
+following sequence:
+seconds
+minutes
+hours
+days
+weeks
+months
 years
 
-LockInitialState  
+LockInitialState
 Specifies the state of the lock when the game starts.
 NoLock The door has no lock and cannot be locked or unlocked.
 Locked The door has a lock which will normally be locked
 Unlocked The door has a lock which will normally be unlocked
 
-KeyObjectId  
+KeyObjectId
 The ObjectId of the key which fits the lock. The player must have the
 key in their inventory when they issue the lock/unlock command. If
 LockInitialState is Locked or Unlocked, then a valid ObjectId must be
@@ -546,20 +536,20 @@ on one side of the door.
 
 ### Door states
 
-Open NoLock  
-Open Unlocked  
-Closed NoLock  
-Closed Unlocked  
+Open NoLock
+Open Unlocked
+Closed NoLock
+Closed Unlocked
 Closed Locked
 
 ### Door state transitions
 
-OpenNoLock 🡪 Close 🡪 ClosedNoLock  
-OpenUnlocked 🡪 Close 🡪 CloseUnlocked  
-ClosedNoLock 🡪 Open 🡪 OpenNoLock  
-ClosedUnlocked 🡪 Open 🡪 OpenUnlocked  
-ClosedUnlocked 🡪 Lock 🡪 ClosedLocked  
-ClosedLocked 🡪 Unlock 🡪 ClosedUnlocked  
+OpenNoLock 🡪 Close 🡪 ClosedNoLock
+OpenUnlocked 🡪 Close 🡪 CloseUnlocked
+ClosedNoLock 🡪 Open 🡪 OpenNoLock
+ClosedUnlocked 🡪 Open 🡪 OpenUnlocked
+ClosedUnlocked 🡪 Lock 🡪 ClosedLocked
+ClosedLocked 🡪 Unlock 🡪 ClosedUnlocked
 
 ### Current door status
 
@@ -570,10 +560,10 @@ the lock on that side of the door. The secondary door tracks only the
 status of the lock on that side of the door. Possible file content
 combinations are show below:
 
-DiningRoomEntry.txt  
+DiningRoomEntry.txt
 Open|Closed NoLock|Locked|Unlocked
 
-EntryDinigRoom.txt  
+EntryDinigRoom.txt
 Open|Closed NoLock|Locked|Unlocked
 
 # NPCs
@@ -620,15 +610,15 @@ Loot: <NPCtype>
 Talk: <NPCtype>
 ```
 
-MobileId  
+MobileId
 This must be unique within the whole virtual world. Players can use this
 id to identify the NPC.
 
-Names  
+Names
 A list of names, separated by spaces, that a player can use to identify
 the NPC.
 
-Sex  
+Sex
 The sex of the NPC. It must be **<u>one</u>** of the following codes:
 | Code | Meaning |
 |---|---|
@@ -636,7 +626,7 @@ The sex of the NPC. It must be **<u>one</u>** of the following codes:
 | M | Male |
 | N | Neutral |
 
-Desc1 
+Desc1
 The description of the NPC used when the NPC takes some action. For
 example, a short description of "the Mangy Mutt" would result in
 messages such as "The Mangy Mutt leaves south." and "The Mangy Mutt
@@ -645,21 +635,21 @@ punctuation mark because it will be used as part of sentences such as
 those above. If Desc1 starts a sentence, the first letter of the first
 word will be capitalized,.
 
-Desc2  
+Desc2
 The description displayed when the NPC is just hanging out. For example,
 "The Mangy Mutt is here, running around and barking." Desc2 should be a
 complete sentence including the appropriate punctuation and
 capitalization.
 
-Desc3  
+Desc3
 The description displayed when a player looks at the NPC by typing `look <mobile>`.
 Desc3 can be multi-line and will be displayed to the player
 'as is' including blank lines and spaces.
 
-End of Mobile Desc3  
+End of Mobile Desc3
 This line indicates the end of the Desc3 specification.
 
-Action  
+Action
 Action is used modify the behavior of the NPC. Upper and lowercase must
 be specified exactly as shown. If no action code is required, specify
 only 'Action:', thereby indicating a blank action code. If multiple
@@ -672,55 +662,55 @@ may be selected:
 | Aggro   | will attack a player without warning and without considering faction|
 | Faction | will determine whether or not to attack player based on factions |
 | Destroy | will destroy any object laying around that can be taken |
-| Help    | will help other NPCs in the same room that are being attacked| 
+| Help    | will help other NPCs in the same room that are being attacked|
 | NoMove  | will not move |
 | Wimpy   | will flee when about to die |
 
-Faction  
+Faction
 Use one of the following to describe the NPC's faction. Faction is used
 to determine whether or not an NPC that is sensitive to factions (Action
 set to Faction) will attack a player without provocation. It is
 required, but will be ignored if the 'Action' codes do not include
-'Faction'. It must be **<u>one</u>** of the following:  
-Good  
-Lawful  
-Neutral  
-Lawless  
-Evil  
+'Faction'. It must be **<u>one</u>** of the following:
+Good
+Lawful
+Neutral
+Lawless
+Evil
 
-Level  
+Level
 This number is the level of the NPC. Level is used when creating an NPC
 to establish HitPoints, Armor, Damage, and ExpPoints, each of which can
 be modified.
 
-HitPoints  
+HitPoints
 This number is added to the NPC’s base HitPoints. This allows the NPCs
 to be created that are more difficult than the standard NPC for a given
 level. Negative numbers are also allowed, thus making an NPC easier than
 normal. This number should be zero for most NPCs.
 
-Armor  
+Armor
 This number is added to the NPC’s base Armor and determines the ability
 of the NPC to avoid damage. Not implemented.
 
-Attack  
+Attack
 This specifies the type of attack the NPC will use during combat to
 produce the appropriate message. It is converted to lower case because
 it is used in the middle of a sentence. For example, The Mangy Mutt
-*bites* you for 5 points of damage. Attack must be **<u>one</u>** of the following:  
-bites  
-claws  
-crushes  
-hits  
-mauls  
-pierces  
-punches  
-slashes  
-stabs  
-stings  
-thrashes  
+*bites* you for 5 points of damage. Attack must be **<u>one</u>** of the following:
+bites
+claws
+crushes
+hits
+mauls
+pierces
+punches
+slashes
+stabs
+stings
+thrashes
 
-Damage  
+Damage
 This number is added to the NPC’s base Damage. Damage is the amount of
 damage the NPC can do per round. This is not the exact amount of damage,
 a random number of damage points will be added or subtracted from this
@@ -728,18 +718,18 @@ number for each round of combat to obtain the actual amount of damage.
 Negative numbers are also allowed, thus making an NPC easier than
 normal. This number should be zero for most NPCs.
 
-ExpPoints  
+ExpPoints
 This number is added to the NPC’s base ExpPoints. ExpPoints is the
 number of experience points used to award experience to players when the
 NPC is killed. Negative numbers are also allowed, thus making an NPC
 give less experience than normal. This number should be zero for most
 NPCs.
 
-Loot  
+Loot
 Specify `<NPCtype>` like dog, bee, snake, etc. This MUST match exactly
 an existing NPCtype located in \Library\Loot..
 
-Talk  
+Talk
 Specify `<NPCtype>` like dog, bee, snake, etc. This MUST match exactly
 an existing NPCtype located in \Library\Talk..
 
@@ -776,7 +766,7 @@ already exist in the \Library\Loot and \Library\Talk directories.
 
 ## NPC example 2
 
-The specifications for an example NPC \Library\Mobiles\SandScorpion.txt follows:  
+The specifications for an example NPC \Library\Mobiles\SandScorpion.txt follows:
 ```
 MobileId:  SandScorpion
 Names:     sand scorpion
@@ -824,45 +814,45 @@ Type: xxxx
 <Object type specifications>
 ```
 
-ObjectId  
+ObjectId
 This must be unique within the whole virtual world.
 
-Names  
+Names
 A list of names, separated by spaces, that a player uses to identify the
 object. At least one of these names must be unique within the whole
 virtual world, for example the ObjectId.
 
-Desc1  
+Desc1
 The description displayed when the object is used. For example, a short
 description of "a long, green stick" would result in messages such as
 "The Mangy Mutt picks up the long, green stick.". Desc1 should be kept
 short and should never end with a punctuation mark because it will be
 inserted into the middle of sentences.
 
-Desc2  
+Desc2
 The description displayed when the object is just there. For example, "A
 folded robe is lying here". Desc2 should be kept short and should end
 with appropriate punctuation.
 
-Desc3  
+Desc3
 The description displayed for the object when a player examines the
 object by typing 'examine `<object>`. Desc3 should be a fairly
 descriptive and should typically be more than one line
 
-End Desc3  
+End Desc3
 This line indicates the end of Desc3.
 
-Weight  
+Weight
 The weight of the object. The amount of weight players can carry is
 limited. The stronger they are, the more they can carry. Weight can be
 zero for very small objects. This is a whole number that is zero or
 greater.
 
-Cost  
+Cost
 The value used to calculate the price when a player is buying or selling
 the object in a shop. The value is specified as silver pieces.
 
-Type  
+Type
 Specifies the object type and must be **<u>one</u>** of the following
 codes:
 
@@ -886,79 +876,79 @@ require additional specifications that are unique to that object type.
 For example, an object type of 'Weapon' requires additional
 specifications of 'WeaponType' and 'WeaponDamage'.
 
-Armor  
-ArmorValue:999  
+Armor
+ArmorValue:999
 This value is added to the player's armor class when the object is worn
 and is subtracted from the player's armor class when the object is
 removed. As a player increases their armor class, the amount of damage
 taken during fights is reduced. See the World Building section for more
 about armor class.
 
-ArmorWear:xxxx  
-Where xxxx is **<u>one</u>** of the following:  
-Head  
-Ear  
-Neck  
-Shoulders  
-Chest  
-Back  
-Arms  
-Wrist  
-Hands  
-Finger  
-Shield  
-Waist  
-Legs  
-Ankle  
-Feet  
+ArmorWear:xxxx
+Where xxxx is **<u>one</u>** of the following:
+Head
+Ear
+Neck
+Shoulders
+Chest
+Back
+Arms
+Wrist
+Hands
+Finger
+Shield
+Waist
+Legs
+Ankle
+Feet
 
-Note: The player may also specify 'left' or 'right' when 'wearing' one of these objects.  
-Ear  
-Wrist  
-Finger  
-Ankle  
+Note: The player may also specify 'left' or 'right' when 'wearing' one of these objects.
+Ear
+Wrist
+Finger
+Ankle
 
-Container  
-Capacity:999  
-The sum of the weight of all objects in the container cannot exceed the capacity.  
+Container
+Capacity:999
+The sum of the weight of all objects in the container cannot exceed the capacity.
 
-Drink  
-DrinkPct:999  
+Drink
+DrinkPct:999
 The player's thirst will be decreased by this percentage when they drink
 this item. Drink items are completely used up in one use. Pct ranges
 from -100 to +100. Salt water is an example of an item that would have a
 negative percent thereby increasing thirst.
 
-Food  
-FoodPct:999  
+Food
+FoodPct:999
 The player's hunger will be decreased by this percentage when they eat
 this item. Food items are completely used up in one use. Pct ranges from
 -100 to +100. Moldy bread is an example of an item that would have a
 negative percent thereby increasing hunger.
 
-Junk  
+Junk
 This is just what is says, Junk! Not worth very much.
 
-Key  
+Key
 A key’s object id should match at least one door's KeyObjId
 specification, unless of course you want confuse players. No additional
 specification is required.
 
-Light  
+Light
 Hours:99
-Number of hours this light will burn.  
+Number of hours this light will burn.
 
-NoTake  
+NoTake
 This object can be used to enhance the virtual world. Example are:
 statues, tables, carvings.
 
-Treasure  
+Treasure
 Players will enjoy find these objects of great value. These objects
 should be worth a significant amount of money and should not be easy to
 obtain. No additional specification is required.
 
-Weapon  
-WeaponType:xxx  
+Weapon
+WeaponType:xxx
 Specify the type of weapon as **<u>one</u>** of the following:
 | Type   | Message |
 | ---    | --- |
@@ -970,15 +960,15 @@ Specify the type of weapon as **<u>one</u>** of the following:
 | Staff  | Whack
 | Sword  | Slash
 
-WeaponDamage:999  
+WeaponDamage:999
 The amount of damage the weapon can do per round. This is not the exact
 amount of damage, a random number will be subtracted from this number
 for each round of combat to obtain the actual amount of damage.
 
 ## Object examples
 
-The specifications for two example objects follows:  
-Object example 1 \Library\Objects\ShortSword.txt  
+The specifications for two example objects follows:
+Object example 1 \Library\Objects\ShortSword.txt
 ```
 ObjectId : ShortSword
 Names:     Short Sword ShortSword
@@ -997,7 +987,7 @@ This object's id is 'shortsword' and it can be referenced by the names
 'shortsword', 'short', or 'sword'. It weighs 3 units and its cost is 5
 units. It is a sword type weapon that does maximum damage of 10 points.
 
-Object example 2 \Library\Objects\TrainingSkullCap.txt  
+Object example 2 \Library\Objects\TrainingSkullCap.txt
 ```
 ObjectId:    TrainingSkullCap
 ObjectNames: Training Skull Cap TrainingSkullCap
@@ -1040,31 +1030,31 @@ codes are specified as follows:
 ```
 <shop welcome message>
 Item: <ObjectId>
-.  
-.  
-.  
+.
+.
+.
 Item: <ObjectId>
-End of Items  
-End of Shop  
+End of Items
+End of Shop
 ```
 
-`<shop welcome message>`  
-The message given to a player when the player issues the 'list' command.  
+`<shop welcome message>`
+The message given to a player when the player issues the 'list' command.
 
-Item  
+Item
 Item that this shop will buy and sell. ObjectId MUST match exactly an
 ObjectId that exists in the \Library\Objects directory. This
-specification is repeated for each item bought and sold in this shop.  
+specification is repeated for each item bought and sold in this shop.
 
-End of Items  
+End of Items
 This line indicates the end of the list of items.
 
-End of Shop  
+End of Shop
 This line indicates the end of the shop specifications.
 
 ## Shop example
 
-The specifications for an example shop \Library\Shops\WeaponShop follows:  
+The specifications for an example shop \Library\Shops\WeaponShop follows:
 ```
 Welcome to my weapon shop
 Item: RustySword
@@ -1096,24 +1086,24 @@ example, Rat.txt would contain specifications for rat loot.
 
 Each NPCtype is specified in a separate file whose name MUST match
 exactly the 'loot' specification in an NPC specification. The loot is
-specified as follows:  
+specified as follows:
 
-`<count>` `<percent>` `<ObjectId>`  
+`<count>` `<percent>` `<ObjectId>`
 
-`<count>`  
+`<count>`
 The NPC has this many of the specified object . When more than 1 is
 specified, the object is considered `<count>` times for looting.
 
-`<percent>`  
-The chance the player has of getting this object.  
+`<percent>`
+The chance the player has of getting this object.
 
-`<ObjectId>`  
+`<ObjectId>`
 The ObjectId of the object. This MUST match exactly an ObjectId
 specified in the \Library\Objects directory.
 
 ## Loot example
 
-The specifications for an example loot file \Library\Loot\Bee.txt follows:  
+The specifications for an example loot file \Library\Loot\Bee.txt follows:
 ```
 1 50 BeeStinger
 2 65 BeeWing
@@ -1145,28 +1135,28 @@ Message <sequence number>
 End of Message
 End of Messages
 ```
-Maximum Message Number `<count>`  
+Maximum Message Number `<count>`
 `<count>` is simply the number of messages. Each time a player hails an
 NPC, a random number is generated between 1 and `<count>` to determine
-which message will be used to respond to the player.  
+which message will be used to respond to the player.
 
-Message `<sequence number>`  
+Message `<sequence number>`
 The first message must be sequence number 1, the second message must be
-sequence number two, etc.  
+sequence number two, etc.
 
-`<message text>`  
+`<message text>`
 This message, when selected, will be displayed 'as is' to the player
 including spaces and blank lines.
 
-End of Message  
+End of Message
 This line indicates the end of a message.
 
-End of Messages  
+End of Messages
 This line indicates the end of all messages.
 
 ## Talk example
 
-The specifications for an example talk file \Library\Loot\Thief.txt follows:  
+The specifications for an example talk file \Library\Loot\Thief.txt follows:
 ```
 Maximum Message Number 2
 Message 1
@@ -1200,19 +1190,19 @@ MaxInWorld: <count>
 RoomId: <RoomId>
 Interval: <time>
 ```
-MaxInWorld  
+MaxInWorld
 This controls the maximum number of the specified NPC that can exist in
 the world at the same time.
 
-RoomId  
+RoomId
 The RoomId into which the NPC will spawn. This RoomId MUST exist in the
 \Library\Rooms directory.
 
-Interval  
+Interval
 This determines the amount of time that will elapse between the time an
 NPC is killed and when they spawn again. Interval `<time>` is specified
 as a series of 7 integer numbers, each separated from the next by a
-space and in the following sequence:  
+space and in the following sequence:
 seconds
 minutes
 hours
@@ -1223,7 +1213,7 @@ years
 
 ## NPC spawn example
 
-The specifications for an example NPC spawn file \Library\World\Mobiles\SmallRat.txt follows:  
+The specifications for an example NPC spawn file \Library\World\Mobiles\SmallRat.txt follows:
 ```
 MaxInWorld: 30
 RoomId: RatSpawnRoom220
@@ -1283,21 +1273,21 @@ Message to target when target is given
 Message to all players in the room when target is given
 ```
 
-Social  
+Social
 The unique name of the social. This is used by players just like any
 command and must be only **<u>one</u>** word.
 
-MinPos  
+MinPos
 This is the minimum position the player must be in to execute the
 social. The order of the positions are from lowest to highest: sleep,
 sit, stand. This must be **<u>one</u>** of those three values.
 
-Lines  
+Lines
 This is the number of lines in the social and it must be either a '2' or
 a '7'. A two line social cannot have a target, but a 7 line social may
 or may not have a target.
 
-Messages  
+Messages
 The messages may contain any combination of the following substitution
 codes:
 
@@ -1429,14 +1419,14 @@ Xxxx xxxx xxxx
 Related help:xxxx
 ```
 
-Help  
+Help
 This is the unique help keyword. Leaving this blank for **<u>one</u>**
 help entry will cause that entry to be displayed if the player types
 only 'help'. Everything from this line, down to and including 'Related
 help', is displayed to the player 'as is', so care should be taken to
 format the help text in an easy to read manner.
 
-Related help  
+Related help
 This is where related help topics are listed and is required.
 
 ## Help example
@@ -1474,7 +1464,7 @@ CAPITAL - Indicates parameters that, when used, must be spelled exactly as indic
 |       - Separates a list of possible parameter values
 < >     - Specifies a value to be supplied by the player
 ```
-Some examples: 
+Some examples:
 The Inventory command's usage is "inventory", which means this command
 has no parameters.
 
@@ -1544,7 +1534,7 @@ disconnected immediately.
 
 ## Drink
 
-Usage : drink `<object>` 
+Usage : drink `<object>`
 
 Player drinks the object specified only if the object is a drink object.
 Each drink object drunk reduces the player's thirst. Thirst is
@@ -1554,20 +1544,20 @@ faster than a player with a thirst of 100.
 
 ## Destroy
 
-Usage : destroy `<object>` 
+Usage : destroy `<object>`
 
 Allows a player to 'delete' an object from their inventory.
 
 ## Drop
 
-Usage : drop `<object>` 
+Usage : drop `<object>`
 
 Allows a player to remove an object from their inventory and drop it on
 the ground.
 
 ## Eat
 
-Usage : eat `<object>` 
+Usage : eat `<object>`
 
 Player eats the object specified only if the object is a food object.
 Each food object eaten reduces the player's hunger. Hunger is
@@ -1577,7 +1567,7 @@ faster than a player with a hunger of 100.
 
 ## Emote
 
-Usage : emote `<message>` 
+Usage : emote `<message>`
 
 Message is sent to all players in the same room as the originating
 player. The `<message>` is prefixed by the originating player's name. So
@@ -1612,13 +1602,13 @@ Lists objects that the player is wearing and wielding.
 
 ## Examine
 
-Usage : examine `<object>` 
+Usage : examine `<object>`
 
 Allow a player to get more information about an object.
 
 ## Flee
 
-Usage : flee `<direction>` 
+Usage : flee `<direction>`
 
 Allows a player to flee from a fight in the `<direction>` indicated. The
 `<direction>` must be a standard room exit such as North, South, East,
@@ -1626,7 +1616,7 @@ or West.
 
 ## Follow
 
-Usage : follow LIST | NONE | `<player>` 
+Usage : follow LIST | NONE | `<player>`
 
 Allows players to automatically follow each other. Before players can
 follow, they must be grouped with the player they are going to follow.
@@ -2035,16 +2025,16 @@ MDRP Maximum Damage Reduction Percent, your choice
 DRP  Damage Reduction Percent, what we are calculating
 ```
 
-Calculations:  
-POP = PAC / MAC * 100  
-DRP = POP * MDRP / 100  
+Calculations:
+POP = PAC / MAC * 100
+DRP = POP * MDRP / 100
 
-Example:  
-PAC = 12 (Add up player's armor values)  
-MAC = 300 (your choice)  
-MDRP = 60% (your choice)  
-POP = 12 / 300 * 100 = 4%  
-DRP = 4 * 60 / 100 = 2.4%  
+Example:
+PAC = 12 (Add up player's armor values)
+MAC = 300 (your choice)
+MDRP = 60% (your choice)
+POP = 12 / 300 * 100 = 4%
+DRP = 4 * 60 / 100 = 2.4%
 
 In this example, the player's armor provides 4% protection which in turn
 will reduce the damage taken by 2.4%.
@@ -2053,11 +2043,11 @@ will reduce the damage taken by 2.4%.
 
 Let's assume Ixaka is fighting a viper.
 
-Given:  
-Ixaka's armor class is 17 (PAC)  
-Maximum armor class is 300 (MAC)  
-Maximum damage reduction percent is 60 (MDRP)  
-Viper bites Ixaka for 15 points of damage (POD)  
+Given:
+Ixaka's armor class is 17 (PAC)
+Maximum armor class is 300 (MAC)
+Maximum damage reduction percent is 60 (MDRP)
+Viper bites Ixaka for 15 points of damage (POD)
 
 Damage to Ixaka (DTI):
 ```

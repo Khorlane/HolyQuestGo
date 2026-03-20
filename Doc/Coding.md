@@ -44,25 +44,16 @@
   - [Front End](#front-end)
   - [Back End](#back-end)
 
-# License
-
-This is free and unencumbered software released into the public domain.
-
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any means.
-
-For more information, please refer to <http://unlicense.org/>
-
-Author  
+```
+Author
 Stephen L Bryant
 
-Revision 1.0 April 22, 2001
-Revision 1.1 December 4, 2002
+Revision 1.0 April    22, 2001
+Revision 1.1 December  4, 2002
 Revision 1.2 December 22, 2025
 
 Revision tracking after December 22, 2025 is maintained via git.
-
+```
 # Introduction
 
 This document is intended to give a 'would be' OMugs coder a head start
@@ -194,16 +185,16 @@ This section outlines the flow of the code and is intended as a way to
 
 BigDog
 
-🡪 OpenPort  
-🡪 InitDescriptor  
-🡪 CheckForNewConnections  
-> 🡪 NewConnection  
->  
-> 🡪 Dnode constructor  
-🡪 RecvIt  
-> 🡪 SendIt  
->  
-> 🡪 CommandParse  
+🡪 OpenPort
+🡪 InitDescriptor
+🡪 CheckForNewConnections
+> 🡪 NewConnection
+>
+> 🡪 Dnode constructor
+🡪 RecvIt
+> 🡪 SendIt
+>
+> 🡪 CommandParse
 
 ## BigDog
 
@@ -451,8 +442,8 @@ CommandParse calls the appropriate function.
 ## Message and Prompt
 
 The 'eat' command should send a message to the player and all players in
-the room. Something like:  
-Ixaka sees: You take a big bite from a red apple.  
+the room. Something like:
+Ixaka sees: You take a big bite from a red apple.
 Players in the room see: Ixaka takes a big bite from a red apple.
 
 ## Do Checking

@@ -1,9 +1,36 @@
-# OMugs – Online Multi-User Game Server
-# Project Status
+# History
 
-## Table of Contents
+## Original Development
 
-- [License](#license)
+- 2002-04 to 2002-07: Core play loop takes shape, including logon, help, socials, movement, money, who, say/tell, follow/group, inventory/drop/get, goto, save, sit/stand/sleep/wake, and early player file support.
+- 2002-08 to 2002-12: Character equipment and combat-related systems expand with equipment, remove, wear, wield, examine, load mobile, kill, flee, played, time, where mobile, restore, spawning, and AFK support.
+- 2003-02 to 2003-05: Administrative and progression systems mature with advance, password, buy/list/sell, delete, MOTD, armor class, player levels, skills, and training.
+- 2003-06 to 2003-10: Social and communication features broaden with hail, refresh, emote, show, chat, drink, eat, consider, and invisible.
+- 2003-12 to 2004-01: Content-building and world systems deepen with mobile/object editors and the calendar/time system.
+- 2005-04 to present: Version 2005.04.26 remains the live production OMugs server at www.holyquest.org.
+
+## Remove MFC
+
+- 2021-04-09: Beginning of the project to remove MFC from OMugs server code.
+- 2021-06-14: `BigDog` is marked done under the `feat-remove-MFC` work.
+- 2021-07-22: Major progress is reached by finishing MFC removal in Osi, WhoIsOnline, and LineCount.
+- 2021-11-24: Rooms are marked done with no MFC.
+- 2025-07-25: All MFC is removed from `Communication.cpp`, a major late-stage milestone in the server code.
+- 2025-07-26: Major milestone reached - removing `StdAfx.h` and `StdAfx.cpp` from the project.
+- 2026-03-19: This version becomes the gold copy for the Convert To Go project.
+
+## Convert To Go
+
+- 2025-11-17: HolyQuestGo begins as a Go conversion project for the OMugs server codebase and the first project structure for the Go port is established.
+- 2025-12-19: The bulk of the initial server conversion lands rapidly, including Communication, Object, Player, Room, Shop, Social, Utility, Validate, Violence, and World coverage.
+- 2025-12-23: Early post-port fixes and project setup continue, including standard library socket changes, connection fixes, documentation, build scripting, and a successful logon milestone.
+- 2026-03-19: A concentrated alignment pass brings HolyQuestGo much closer to OMugs module by module across the server codebase.
+- 2026-03-20: Follow-up cleanup, documentation, and review work continue after the alignment pass, including FileMap/chat context refinement and variable-name normalization with exceptions, and HolyQuestGo appears to have reached an at-or-near conversion-complete state.
+
+## Addendum - OMugs Early Development
+
+### Table of Contents
+
 - [Introduction](#introduction)
 - [Server Components Completed](#server-components-completed)
 - [OMugs Source Code and Headers](#omugs-source-code-and-headers)
@@ -17,17 +44,16 @@
 	- [WinApp header files](#winapp-header-files)
 - [Summary](#summary)
 
-# License
+### Introduction
 
-This is free and unencumbered software released into the public domain.
+This historical document's purpose is to document the early progress of
+the OMugs project. Most of the components listed are also game commands,
+exceptions are components like 'logon players', which refer to the code
+that handles a player's from initial connection state to the 'ready to
+play' state.
 
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any means.
-
-For more information, please refer to <http://unlicense.org/>
-
-Author  
+```
+Author
 Stephen L Bryant
 
 Revision 1.0 April    22, 2001
@@ -35,16 +61,8 @@ Revision 1.1 December  4, 2002
 Revision 1.2 December 22, 2025
 
 Revision tracking after December 22, 2025 is maintained via git.
-
-# Introduction
-
-This historical document's purpose is to document the early progress of 
-the OMugs project. Most of the components listed are also game commands,
-exceptions are components like 'logon players', which refer to the code
-that handles a player's from initial connection state to the 'ready to
-play' state.
-
-# Server Components Completed
+```
+### Server Components Completed
 
 <table style="width:31%;">
 <colgroup>
@@ -341,7 +359,7 @@ play' state.
 </tbody>
 </table>
 
-# OMugs Source Code and Headers
+### OMugs Source Code and Headers
 
 The source code file names, descriptions, and number of lines are listed
 below and are divided into the following sections:
@@ -354,7 +372,7 @@ WinApp 🡪 Windows application code
 
 Osi 🡪 OMugs Script Interpreter.
 
-## Server cpp files
+#### Server cpp files
 
 |                   |                                             |           |
 |-------------------|---------------------------------------------|----------:|
@@ -377,7 +395,7 @@ Osi 🡪 OMugs Script Interpreter.
 | World.cpp         | Functions to make the world come alive      |      1109 |
 | **Total**         |                                             | **16623** |
 
-## Server header files
+#### Server header files
 
 |                 |                             |           |
 |-----------------|-----------------------------|----------:|
@@ -402,7 +420,7 @@ Osi 🡪 OMugs Script Interpreter.
 | World.h         | Defines World class         |        52 |
 | **Total**       |                             |  **1419** |
 
-## Osi cpp files
+#### Osi cpp files
 
 |              |                                               |           |
 |--------------|-----------------------------------------------|----------:|
@@ -417,7 +435,7 @@ Osi 🡪 OMugs Script Interpreter.
 | Token.cpp    | Extracts tokens                               |       307 |
 | **Total**    |                                               |  **2053** |
 
-## Osi header files
+#### Osi header files
 
 |            |                        |           |
 |------------|------------------------|----------:|
@@ -432,7 +450,7 @@ Osi 🡪 OMugs Script Interpreter.
 | Token.h    | Defines Token class    |        71 |
 | **Total**  |                        |   **492** |
 
-## Tools cpp files
+#### Tools cpp files
 
 |                   |                                       |           |
 |-------------------|---------------------------------------|----------:|
@@ -443,7 +461,7 @@ Osi 🡪 OMugs Script Interpreter.
 | WhoIsOnline.cpp   | Generate 'who' web content            |       230 |
 | **Total**         |                                       |  **2522** |
 
-## Tools header files
+#### Tools header files
 
 |                 |                            |           |
 |-----------------|----------------------------|----------:|
@@ -454,7 +472,7 @@ Osi 🡪 OMugs Script Interpreter.
 | WhoIsOnline.h   | Define WhoIsOnline class   |        59 |
 | **Total**       |                            |   **271** |
 
-## WinApp cpp files
+#### WinApp cpp files
 
 |                      |                     |           |
 |----------------------|---------------------|----------:|
@@ -471,7 +489,7 @@ Osi 🡪 OMugs Script Interpreter.
 | StdAfx.cpp           | Standard headers    |         8 |
 | **Total**            |                     |  **2960** |
 
-## WinApp header files
+#### WinApp header files
 
 |                    |                               |           |
 |--------------------|-------------------------------|----------:|
@@ -489,7 +507,7 @@ Osi 🡪 OMugs Script Interpreter.
 | StdAfx.h           | Standard headers              |        28 |
 | **Total**          |                               |   **809** |
 
-# Summary
+### Summary
 
 This summary includes all source code, documents, spreadsheets, world
 files, etc. In other words, the whole OMugs directory. Only the 'debug'
