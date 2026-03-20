@@ -58,6 +58,7 @@ Go Code Style Rules
 - NEVER EVER RUN gofmt
 - Keep multi-variable var declarations on separate lines (e.g., var x int then var y int), not grouped in a single var (x int, y int) block.
 - In consecutive single-line var declarations, pad with spaces so the type columns line up when practical (e.g., var Foo int then var BarBaz string).
+- When checking variable names for PascalCase, ignore these vars: err, single-letter vars, c, z, iss, idx, names starting with lowercase p followed by PascalCase-like content (for example pCalendar, pMobile, pPlayer, pDnode), sPlayerOut, sMudCmdIsExit, fGrpLimit, fGrpMemberCount, PACMN, ok, arg
 
 C++ to Go Conversion Rules
 - Strive for line by line conversion
