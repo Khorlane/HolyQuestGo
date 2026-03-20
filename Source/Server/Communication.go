@@ -2434,6 +2434,13 @@ func DoFollow(pDnode *Dnode, CmdStr1 string) {
 		return
 	}
 	pDnodeGrpLdr = GetTargetDnode(pDnode.pPlayer.pPlayerGrpMember[0].Name)
+	if pDnodeGrpLdr == nil {
+		pDnode.PlayerOut += "You must be in a group before you can follow."
+		pDnode.PlayerOut += "\r\n"
+		CreatePrompt(pDnode.pPlayer)
+		pDnode.PlayerOut += GetOutput(pDnode.pPlayer)
+		return
+	}
 	TargetInGroup = false
 	for i = 0; i < GRP_LIMIT; i++ {
 		// For each member of leader's group including the leader
@@ -2443,6 +2450,9 @@ func DoFollow(pDnode *Dnode, CmdStr1 string) {
 		}
 		// Get group member's dnode
 		pDnodeGrpMem = GetTargetDnode(pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i].Name)
+		if pDnodeGrpMem == nil {
+			continue
+		}
 		if pDnodeGrpMem == pDnodeTgt {
 			// Target member found
 			TargetInGroup = true
@@ -5547,6 +5557,9 @@ func GrpLeaveLeader() {
 			pDnodeActor.pPlayer.pPlayerGrpMember[i].pPlayerGrpMember[0] = nil
 			// Null member's pointer
 			pDnodeActor.pPlayer.pPlayerGrpMember[i] = nil
+			if pDnodeGrpMem == nil {
+				continue
+			}
 			// Let the group members know that group is disbanded
 			pDnodeGrpMem.PlayerOut += "\r\n"
 			pDnodeGrpMem.PlayerOut += "The group has been disbanded.\r\n"
@@ -5572,11 +5585,12 @@ func GrpLeaveLeader() {
 
 // Groups - Member is leaving - Remove them from the group
 func GrpLeaveMember() {
-	var pDnodeGrpLdr *Dnode // Group leader
-	var pDnodeGrpMem *Dnode // Other group members
-	var i             int
-	var j             int
-	var GrpEmpty      bool
+	var pDnodeGrpLdr  *Dnode  // Group leader's Dnode
+	var pDnodeGrpMem  *Dnode  // Other group members
+	var pPlayerGrpLdr *Player // Group leader's Player struct
+	var i              int
+	var j              int
+	var GrpEmpty       bool
 
 	if pDnodeActor.pPlayer.pPlayerFollowers[0] != nil {
 		// Player is following someone
@@ -5596,17 +5610,23 @@ func GrpLeaveMember() {
 	CreatePrompt(pDnodeActor.pPlayer)
 	pDnodeActor.PlayerOut += GetOutput(pDnodeActor.pPlayer)
 	// Let group leader know when a member leaves the group
-	pDnodeGrpLdr = GetTargetDnode(pDnodeActor.pPlayer.pPlayerGrpMember[0].Name)
-	pDnodeGrpLdr.PlayerOut += "\r\n"
-	pDnodeGrpLdr.PlayerOut += pDnodeActor.PlayerName
-	pDnodeGrpLdr.PlayerOut += " has left your group.\r\n"
+	pPlayerGrpLdr = pDnodeActor.pPlayer.pPlayerGrpMember[0]
+	pDnodeGrpLdr = GetTargetDnode(pPlayerGrpLdr.Name)
 	GrpEmpty = true
+	if pDnodeGrpLdr != nil {
+		pDnodeGrpLdr.PlayerOut += "\r\n"
+		pDnodeGrpLdr.PlayerOut += pDnodeActor.PlayerName
+		pDnodeGrpLdr.PlayerOut += " has left your group.\r\n"
+	}
 	for i = 1; i < GRP_LIMIT; i++ {
 		// For each member of leader's group
-		if pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i] != nil {
+		if pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i] != nil {
 			// Let other group members know that player has left
 			GrpEmpty = false
-			pDnodeGrpMem = GetTargetDnode(pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i].Name)
+			pDnodeGrpMem = GetTargetDnode(pDnodeActor.pPlayer.pPlayerGrpMember[0].pPlayerGrpMember[i].Name)
+			if pDnodeGrpMem == nil {
+				continue
+			}
 			pDnodeGrpMem.PlayerOut += "\r\n"
 			pDnodeGrpMem.PlayerOut += pDnodeActor.PlayerName
 			pDnodeGrpMem.PlayerOut += " has left the group.\r\n"
@@ -5621,19 +5641,24 @@ func GrpLeaveMember() {
 	pDnodeActor.pPlayer.pPlayerGrpMember[0] = nil
 	if GrpEmpty {
 		// Player was the last in the group, let the leader know
-		pDnodeGrpLdr.pPlayer.pPlayerGrpMember[0] = nil
-		pDnodeGrpLdr.PlayerOut += "Your group has disbanded.\r\n"
-		// Leader has no group, remove any followers
-		for i = 0; i < GRP_LIMIT; i++ {
-			pDnodeGrpLdr.pPlayer.pPlayerFollowers[i] = nil
+		if pPlayerGrpLdr != nil {
+			pPlayerGrpLdr.pPlayerGrpMember[0] = nil
+			for i = 0; i < GRP_LIMIT; i++ {
+				pPlayerGrpLdr.pPlayerFollowers[i] = nil
+			}
+		}
+		if pDnodeGrpLdr != nil {
+			pDnodeGrpLdr.PlayerOut += "Your group has disbanded.\r\n"
 		}
 	}
-	CreatePrompt(pDnodeGrpLdr.pPlayer)
-	pDnodeGrpLdr.PlayerOut += GetOutput(pDnodeGrpLdr.pPlayer)
+	if pDnodeGrpLdr != nil {
+		CreatePrompt(pDnodeGrpLdr.pPlayer)
+		pDnodeGrpLdr.PlayerOut += GetOutput(pDnodeGrpLdr.pPlayer)
+	}
 	// Compact the list of members, so new members are at the end
 	for i = j; i < GRP_LIMIT-1; i++ { // j is subscript of member who is leaving
-		pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i] = pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i+1]
-		pDnodeGrpLdr.pPlayer.pPlayerGrpMember[i+1] = nil
+		pPlayerGrpLdr.pPlayerGrpMember[i] = pPlayerGrpLdr.pPlayerGrpMember[i+1]
+		pPlayerGrpLdr.pPlayerGrpMember[i+1] = nil
 	}
 	// When a member leaves a group, remove any followers
 	for i = 0; i < GRP_LIMIT; i++ {
