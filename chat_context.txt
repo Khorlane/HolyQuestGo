@@ -1,5 +1,8 @@
 Chat Resume Context
 
+---------------------
+- Permanent Section -
+---------------------
 Purpose:
 - This file exists to preserve continuity across chat sessions so project conventions, decisions, exceptions, and current context do not need to be re-explained after closing and reopening the project.
 
@@ -10,10 +13,7 @@ Project root:
 - C:\Projects\HolyQuestGo
 
 Reference C++ source:
-- When referring to C++ or cpp code, look in C:\OMugs\Source\Server
-- For OMugs-to-HolyQuestGo file mapping, see C:\Projects\HolyQuestGo\Doc\FileMap.md
-- For the purposes of this project, ignore C:\OMugs\Source\Osi and C:\OMugs\Source\WinApp
-- Treat C:\OMugs\Source\Tools\Validate.cpp / Validate.h as the counterpart for Source\Server\Validate.go
+- Canonical OMugs source locations, exclusions, and file mapping are documented in C:\Projects\HolyQuestGo\Doc\FileMap.md.
 
 Project workflow files:
 - C:\Projects\HolyQuestGo\Doc\ToDo.md is the done-history file
@@ -46,14 +46,7 @@ Project knowledge:
 - When comparing BigDog.cpp to BigDog.go, exclude the forwarding-wrapper section in BigDog.cpp that exists only to simplify calls to other modules.
 - After excluding those forwarding wrappers, BigDog.cpp and BigDog.go are broadly aligned.
 
-Primary files discussed:
-- chat_context.txt
-- Doc\FileMap.md
-- Source\Server\BigDog.go
-- Source\Server\Room.go
-
 Persistent instructions:
-
 Go Code Style Rules
 - All functions are free, no methods
 - Do not use defer
@@ -88,14 +81,6 @@ C++ to Go Conversion Rules
 - When comparing BigDog.cpp to BigDog.go, exclude the forwarding-wrapper section in BigDog.cpp that exists only to simplify calls to other modules.
 - After excluding those forwarding wrappers, BigDog.cpp and BigDog.go are broadly aligned.
 
-Key interpretation decisions:
-- Process-only instructions were removed from the style/conversion discussion and treated separately.
-- Rules about preserving original function names, variable names, and comments belong under C++ to Go Conversion Rules.
-- "Avoid creating new variables" was clarified to account for identifiers that may actually be globals.
-- If a new variable is unavoidable during conversion, it should use PascalCase.
-- The "flower box" comment rule stays under Go Code Style Rules because it describes output code shape.
-- The old spacing rule was too broad and was replaced.
-
 Commit and todo workflow:
 - When the user says "close HQ-xxx", treat that as the trigger to create the commit for that work item with an appropriate commit message.
 - The older phrase "commit our work" can be interpreted the same way, but "close HQ-xxx" is now the preferred trigger.
@@ -109,29 +94,19 @@ Commit and todo workflow:
 - After a close HQ-xxx commit, the preferred state is that the newly closed item is the only remaining "(commit: pending)" entry in Doc\ToDo.md.
 - In general, prefer filling pending commit hashes in later close/housekeeping passes rather than amending commits.
 
-Current status:
-- The recent chat focused on refining the instructions so the rules are grouped clearly and interpreted consistently.
-- NEVER EVER RUN gofmt is now a permanent project rule.
-- BigDog.go was reviewed against the updated Go Code Style Rules.
-- On the latest pass, BigDog.go was considered broadly compliant with the updated Go Code Style Rules.
-- The import block uses tabs, but that is acceptable under the explicit formatter-controlled import-block exception.
-- Compact expressions like x+1 and y-x-1 are acceptable under the revised spacing rule.
-- Room.go was compared function-by-function against C:\OMugs\Source\Server\Room.cpp.
-- Room.go currently has corresponding coverage for all Room.cpp functions; no room functions are missing in Go.
-- Recent Room.go passes focused on bringing functions closer to the C++ source in structure, shared file usage, and preserved comments.
-- Shop.go, Social.go, Calendar.go, Config.go, Help.go, Log.go, Utility.go, and Validate.go have also been aligned substantially more closely with their C++ counterparts during this chat sequence.
-- Validate.go was treated as a broad re-conversion effort rather than a small cleanup, because the prior conversion had too much systemic Go-idiomatic drift from Tools\Validate.cpp.
-- The top-level Validate.go functions LogValErr, ValidateIt, ValidateAll, ValidateLibraryLoot, ValidateLibraryMobiles, ValidateLibraryObjects, ValidateLibraryRooms, ValidateLibraryShops, ValidateLibraryWorldMobiles, ValidateRunningPlayers, ValidateRunningPlayersPlayerEqu, ValidateRunningPlayersPlayerObj, ValidateRunningRoomMob, and ValidateRunningRoomObj were all reworked to follow the C++ source much more closely.
-- A full go build completed cleanly after the major Validate.go re-conversion pass.
-- After the re-conversion, a real runtime path bug was discovered in ValidateLibraryLoot: FileExist(ObjectIdFileName) was checking the wrong effective path after ChgDir(LOOT_DIR) because OBJECTS_DIR remained project-root-relative while the process cwd had already moved into Library\Loot.
-- That specific ValidateLibraryLoot path bug was fixed locally without changing Config.go constants, and the validator now correctly begins and completes validation of LibraryLoot.
-- HQ-091 was completed to apply the same path-handling strategy used to fix HQ-090 to similar Validate.go file-existence checks where ChgDir(...) and relative directory constants conflicted.
-- The major remaining code-alignment HQ items that were completed in this session are HQ-076 Communication.go, HQ-082 Mobile.go, HQ-083 Object.go, HQ-084 Player.go, HQ-087 Violence.go, and HQ-089 World.go.
-- HQ-096 was completed to remove unreachable code in Violence.go.
-- The currently open follow-up cleanup items are HQ-097, HQ-098, HQ-099, and HQ-100.
-- Later in the session, a broad whitespace-only cleanup pass was committed across the server sources. Treat that pass as formatting-only, not behavioral.
-
-Preference for future discussion:
+Discussion Preferences:
 - Keep design discussions brief.
 - When reviewing a file against the rules, do not enumerate every observation if there are many; summarize only the highest-signal items.
 - Use plain-text file paths and line numbers in responses rather than markdown file links, because the links opened as web pages in this environment.
+
+---------------------
+- Transient Section -
+---------------------
+Current status:
+- Validate.go was treated as a broad re-conversion effort rather than a small cleanup, because the prior conversion had too much systemic Go-idiomatic drift from Tools\Validate.cpp.
+- A full go build completed cleanly after the major Validate.go re-conversion pass.
+- After the re-conversion, a real runtime path bug was discovered in ValidateLibraryLoot: FileExist(ObjectIdFileName) was checking the wrong effective path after ChgDir(LOOT_DIR) because OBJECTS_DIR remained project-root-relative while the process cwd had already moved into Library\Loot.
+- That specific ValidateLibraryLoot path bug was fixed locally without changing Config.go constants, and the validator now correctly begins and completes validation of LibraryLoot.
+- HQ-097, HQ-098, HQ-099, and HQ-100 were completed as follow-up cleanup items.
+- Later in the session, a broad whitespace-only cleanup pass was committed across the server sources. Treat that pass as formatting-only, not behavioral.
+- Later housekeeping expanded Doc\FileMap.md into a broader OMugs-to-HolyQuestGo project mapping document.
