@@ -25,9 +25,9 @@ var ValidCmds []string
 
 // Return pointer of target, if target in 'playing' state
 func GetTargetDnode(TargetName string) *Dnode {
-	var pDnodeLookup *Dnode
-	var TargetFound bool
-	var LookupName string
+	var pDnodeLookup  *Dnode
+	var TargetFound    bool
+	var LookupName     string
 
 	TargetFound = false
 	TargetName = StrMakeLower(TargetName)
@@ -56,7 +56,7 @@ func GetTargetDnode(TargetName string) *Dnode {
 // Check to see if player is fighting
 func IsFighting() bool {
 	var RandomNumber int
-	var FightingMsg string
+	var FightingMsg  string
 
 	if !pDnodeActor.PlayerStateFighting {
 		return false
@@ -86,7 +86,7 @@ func IsFighting() bool {
 // Check to see if player is sleeping
 func IsSleeping() bool {
 	var RandomNumber int
-	var SleepingMsg string
+	var SleepingMsg  string
 
 	if pDnodeActor.pPlayer.Position != "sleep" {
 		return false
@@ -266,11 +266,11 @@ func SockOpenPort(Port int) {
 
 // Receive player input, check player status, send output
 func SockRecv() {
-	var ConnectionCount int
-	var DnodeFdSave string
+	var ConnectionCount  int
+	var DnodeFdSave      string
 	var LineFeedPosition int
-	var RecvByteCount int
-	var err error
+	var RecvByteCount    int
+	var err              error
 
 	DEBUGIT(5)
 	//***********************
@@ -534,9 +534,9 @@ func Color() {
 
 // Load command array
 func CommandArrayLoad() {
-	var ValidCmdsFile *os.File
-	var ValidCmdsFileName string
-	var err error
+	var ValidCmdsFile     *os.File
+	var ValidCmdsFileName  string
+	var err                error
 
 	ValidCmdsFileName = VALID_CMDS_DIR
 	ValidCmdsFileName += "ValidCommands.txt"
@@ -561,9 +561,9 @@ func CommandArrayLoad() {
 // Check command authorization, level, and validity
 func CommandCheck(MudCmdChk string) string {
 	var CommandCheckResult string
-	var ValCmd string
-	var ValCmdInfo string
-	var WhoCanDo string
+	var ValCmd             string
+	var ValCmdInfo         string
+	var WhoCanDo           string
 
 	CommandCheckResult = "Not Found"
 	for _, ValidCmd := range ValidCmds {
@@ -609,13 +609,13 @@ func CommandCheck(MudCmdChk string) string {
 
 // Command parsing
 func CommandParse() {
-	var BadCommandMsg string
-	var CmdStrLength int
+	var BadCommandMsg      string
+	var CmdStrLength       int
 	var CommandCheckResult string
-	var MudCmdChk string
-	var MudCmdOk bool
-	var PositionOfNewline int
-	var RandomNumber int
+	var MudCmdChk          string
+	var MudCmdOk           bool
+	var PositionOfNewline  int
+	var RandomNumber       int
 
 	//**************************
 	// Get next command string *
@@ -1068,11 +1068,11 @@ func CommandParse() {
 
 // Advance command
 func DoAdvance() {
-	var Level int
-	var LevelString string
-	var PlayerName string
+	var Level          int
+	var LevelString    string
+	var PlayerName     string
 	var PlayerNameSave string
-	var TargetName string
+	var TargetName     string
 	var TargetNameSave string
 
 	DEBUGIT(1)
@@ -1195,12 +1195,12 @@ func DoAfk() {
 
 // Assist command
 func DoAssist() {
-	var AssistMsg string
-	var MobileId string
+	var AssistMsg       string
+	var MobileId        string
 	var PlayerNameCheck string
 	var TargetNameCheck string
-	var TargetNameSave string
-	var TargetNotHere bool
+	var TargetNameSave  string
+	var TargetNotHere   bool
 
 	DEBUGIT(1)
 	//********************
@@ -1330,11 +1330,11 @@ func DoAssist() {
 
 // Buy command
 func DoBuy() {
-	var Cost int
-	var Desc1 string
-	var ObjectId string
+	var Cost       int
+	var Desc1      string
+	var ObjectId   string
 	var ObjectName string
-	var RoomId string
+	var RoomId     string
 
 	DEBUGIT(1)
 	//********************
@@ -1418,8 +1418,8 @@ func DoBuy() {
 
 // Chat command
 func DoChat() {
-	var AllMsg string
-	var ChatMsg string
+	var AllMsg    string
+	var ChatMsg   string
 	var PlayerMsg string
 
 	DEBUGIT(1)
@@ -1493,13 +1493,13 @@ func DoColor() {
 
 // Consider command
 func DoConsider() {
-	var pMobile *Mobile
-	var HintMsg string
-	var LevelDiff int
-	var MobileName string
-	var PlayerName string
-	var PlayerNameCheck string
-	var Target string
+	var pMobile         *Mobile
+	var HintMsg          string
+	var LevelDiff        int
+	var MobileName       string
+	var PlayerName       string
+	var PlayerNameCheck  string
+	var Target           string
 
 	DEBUGIT(1)
 	//********************
@@ -1599,12 +1599,12 @@ func DoConsider() {
 
 // Delete command
 func DoDelete() {
-	var AllMsg string
-	var Name string
-	var Password string
-	var Phrase string
+	var AllMsg         string
+	var Name           string
+	var Password       string
+	var Phrase         string
 	var PlayerFileName string
-	var PlayerMsg string
+	var PlayerMsg      string
 
 	DEBUGIT(1)
 	//********************
@@ -1776,10 +1776,10 @@ func DoDestroy() {
 
 // Drink command
 func DoDrink() {
-	var DrinkMsg string
+	var DrinkMsg   string
 	var ObjectName string
-	var RoomId string
-	var RoomName string
+	var RoomId     string
+	var RoomName   string
 
 	DEBUGIT(1)
 	//********************
@@ -1892,7 +1892,7 @@ func DoDrink() {
 
 // Drop command
 func DoDrop() {
-	var DropMsg string
+	var DropMsg    string
 	var ObjectName string
 
 	DEBUGIT(1)
@@ -1953,7 +1953,7 @@ func DoDrop() {
 
 // Eat command
 func DoEat() {
-	var EatMsg string
+	var EatMsg     string
 	var ObjectName string
 
 	DEBUGIT(1)
@@ -2082,8 +2082,8 @@ func DoEquipment() {
 // Examine command
 func DoExamine() {
 	var ObjectFound bool
-	var ObjectName string
-	var ObjectType string
+	var ObjectName  string
+	var ObjectType  string
 	DEBUGIT(1)
 	//********************
 	//* Validate command *
@@ -2171,19 +2171,19 @@ func DoExamine() {
 
 // Flee command
 func DoFlee() {
-	var CandidateCount int
-	var CandidateList string
-	var CandidateTarget int
-	var FleeMsg string
-	var MobileId string
-	var MobileIdSave string
-	var MobPlayerFile *os.File
-	var MobPlayerFileName string
-	var MudCmdIsExit string
-	var PlayerName1 string
-	var PlayerName2 string
-	var RoomIdBeforeFleeing string
-	var Target string
+	var CandidateCount       int
+	var CandidateList        string
+	var CandidateTarget      int
+	var FleeMsg              string
+	var MobileId             string
+	var MobileIdSave         string
+	var MobPlayerFile       *os.File
+	var MobPlayerFileName    string
+	var MudCmdIsExit         string
+	var PlayerName1          string
+	var PlayerName2          string
+	var RoomIdBeforeFleeing  string
+	var Target               string
 
 	DEBUGIT(1)
 	//********************
@@ -2302,9 +2302,9 @@ func DoFlee() {
 func DoFollow(pDnode *Dnode, CmdStr1 string) {
 	var pDnodeGrpLdr *Dnode
 	var pDnodeGrpMem *Dnode
-	var i int
-	var j int
-	var Target string
+	var i             int
+	var j             int
+	var Target        string
 	var TargetInGroup bool
 
 	DEBUGIT(1)
@@ -2498,7 +2498,7 @@ func DoFollow(pDnode *Dnode, CmdStr1 string) {
 
 // Get command
 func DoGet() {
-	var GetMsg string
+	var GetMsg     string
 	var ObjectName string
 
 	DEBUGIT(1)
@@ -2567,10 +2567,10 @@ func DoGet() {
 
 // Give command
 func DoGive() {
-	var GiveMsg string
-	var ObjectName string
-	var PlayerName string
-	var TargetName string
+	var GiveMsg       string
+	var ObjectName    string
+	var PlayerName    string
+	var TargetName    string
 	var TargetNotHere bool
 
 	DEBUGIT(1)
@@ -2699,7 +2699,7 @@ func DoGive() {
 
 // Go command
 func DoGo() {
-	var MudCmdIsExit string
+	var MudCmdIsExit  string
 	var sMudCmdIsExit string
 
 	DEBUGIT(1)
@@ -2750,7 +2750,7 @@ func DoGo() {
 // Goto command
 func DoGoTo() {
 	var GoToMsg string
-	var RoomId string
+	var RoomId  string
 
 	DEBUGIT(1)
 	//********************
@@ -2915,13 +2915,13 @@ func DoGoToDepart() {
 
 // Group command
 func DoGroup() {
-	var pDnodeGrpLdr *Dnode // Group leader
-	var i int
-	var j int
-	var GrpFull bool
-	var PlayerNameCheck string
-	var TargetNameCheck string
-	var TargetNameSave string
+	var pDnodeGrpLdr    *Dnode // Group leader
+	var i                int
+	var j                int
+	var GrpFull          bool
+	var PlayerNameCheck  string
+	var TargetNameCheck  string
+	var TargetNameSave   string
 
 	DEBUGIT(1)
 	if IsSleeping() {
@@ -3137,8 +3137,8 @@ func DoGroup() {
 func DoGsay() {
 	var pDnodeGrpLdr *Dnode // Group leader
 	var pDnodeGrpMem *Dnode // Group members
-	var GsayMsg string
-	var i int
+	var GsayMsg       string
+	var i             int
 
 	DEBUGIT(1)
 	//********************
@@ -3197,13 +3197,13 @@ func DoGsay() {
 
 // Hail command
 func DoHail() {
-	var pMobile *Mobile
-	var HailMsg string
-	var MobileMsg string
-	var PlayerName string
-	var PlayerNameCheck string
-	var RoomId string
-	var Target string
+	var pMobile         *Mobile
+	var HailMsg          string
+	var MobileMsg        string
+	var PlayerName       string
+	var PlayerNameCheck  string
+	var RoomId           string
+	var Target           string
 
 	DEBUGIT(1)
 	//********************
@@ -3356,14 +3356,14 @@ func DoInvisible() {
 
 // Kill command
 func DoKill() {
-	var pMobile *Mobile
-	var KillMsg string
-	var MobileId string
-	var MobileName string
-	var PlayerName string
-	var PlayerNameCheck string
-	var RoomId string
-	var Target string
+	var pMobile         *Mobile
+	var KillMsg          string
+	var MobileId         string
+	var MobileName       string
+	var PlayerName       string
+	var PlayerNameCheck  string
+	var RoomId           string
+	var Target           string
 
 	DEBUGIT(1)
 	//********************
@@ -3548,10 +3548,10 @@ func DoList() {
 
 // Load command
 func DoLoad() {
-	var pMobile *Mobile
-	var LoadMsg string
-	var MobileId string
-	var ObjectId string
+	var pMobile  *Mobile
+	var LoadMsg   string
+	var MobileId  string
+	var ObjectId  string
 
 	DEBUGIT(1)
 	//********************
@@ -3672,10 +3672,10 @@ func DoLogon() {
 
 // Look command
 func DoLook(CmdStr1 string) {
-	var pMobile *Mobile
-	var IsPlayer bool
-	var MudCmdIsExit string
-	var TargetName string
+	var pMobile      *Mobile
+	var IsPlayer      bool
+	var MudCmdIsExit  string
+	var TargetName    string
 
 	DEBUGIT(1)
 	CmdStr = CmdStr1
@@ -3761,10 +3761,10 @@ func DoMoney() {
 
 // Motd command
 func DoMotd() {
-	var MotdFile *os.File
-	var MotdFileName string
-	var Scanner *bufio.Scanner
-	var err error
+	var MotdFile     *os.File
+	var MotdFileName  string
+	var Scanner      *bufio.Scanner
+	var err           error
 
 	DEBUGIT(1)
 	// Read Motd file
@@ -3832,7 +3832,7 @@ func DoOneWhack() {
 
 // Password command
 func DoPassword() {
-	var Password string
+	var Password     string
 	var NewPassword1 string
 	var NewPassword2 string
 
@@ -3882,18 +3882,18 @@ func DoPassword() {
 
 // Played command
 func DoPlayed() {
-	var Buffer string
-	var Days int64
-	var Hours int64
-	var Minutes int64
-	var Seconds int64
-	var n int64
-	var BirthDay string
-	var PlayerAge string
-	var TimePlayed string
-	var BornSec int64
-	var NowSec int64
-	var PlayerAgeSec int64
+	var Buffer        string
+	var Days          int64
+	var Hours         int64
+	var Minutes       int64
+	var Seconds       int64
+	var n             int64
+	var BirthDay      string
+	var PlayerAge     string
+	var TimePlayed    string
+	var BornSec       int64
+	var NowSec        int64
+	var PlayerAgeSec  int64
 	var TimePlayedSec int64
 
 	DEBUGIT(1)
@@ -3939,7 +3939,7 @@ func DoPlayed() {
 
 // Quit command
 func DoQuit() {
-	var AllMsg string
+	var AllMsg    string
 	var PlayerMsg string
 
 	DEBUGIT(1)
@@ -4008,7 +4008,7 @@ func DoRefresh() {
 // Remove command
 func DoRemove() {
 	var ObjectName string
-	var RemoveMsg string
+	var RemoveMsg  string
 
 	DEBUGIT(1)
 	//********************
@@ -4082,8 +4082,8 @@ func DoRemove() {
 
 // Restore command
 func DoRestore(CmdStr string) {
-	var PlayerName string
-	var TargetName string
+	var PlayerName     string
+	var TargetName     string
 	var TargetNameSave string
 
 	DEBUGIT(1)
@@ -4234,13 +4234,13 @@ func DoSay() {
 
 // Sell command
 func DoSell() {
-	var Cost int
-	var Desc1 string
-	var InvCountInt int
-	var InvCountStr string
-	var ObjectId string
-	var ObjectName string
-	var RoomId string
+	var Cost         int
+	var Desc1        string
+	var InvCountInt  int
+	var InvCountStr  string
+	var ObjectId     string
+	var ObjectName   string
+	var RoomId       string
 	var SellCountInt int
 	var SellCountStr string
 
@@ -4365,12 +4365,12 @@ func DoSell() {
 // Show command
 func DoShow() {
 	var CommandCheckResult string
-	var HelpFileName string
-	var HelpText string
-	var SocialFileName string
-	var SocialText string
-	var MudCmdChk string
-	var ValCmdInfo string
+	var HelpFileName       string
+	var HelpText           string
+	var SocialFileName     string
+	var SocialText         string
+	var MudCmdChk          string
+	var ValCmdInfo         string
 
 	DEBUGIT(1)
 	//********************
@@ -4652,10 +4652,10 @@ func DoStop() {
 
 // Tell command
 func DoTell() {
-	var PlayerName string
-	var TargetName string
+	var PlayerName     string
+	var TargetName     string
 	var TargetNameSave string
-	var TellMsg string
+	var TellMsg        string
 
 	DEBUGIT(1)
 	//********************
@@ -4813,12 +4813,12 @@ func DoTitle() {
 
 // Train command
 func DoTrain() {
-	var IncreaseDecrease int
-	var MinusSign string
-	var SkillPointsUsed int
+	var IncreaseDecrease     int
+	var MinusSign            string
+	var SkillPointsUsed      int
 	var SkillPointsRemaining int
-	var UnTrainCost string
-	var WeaponType string
+	var UnTrainCost          string
+	var WeaponType           string
 
 	DEBUGIT(1)
 	//********************
@@ -5141,7 +5141,7 @@ func DoWake() {
 func DoWear() {
 	var ObjectName string
 	var WearFailed bool
-	var WearMsg string
+	var WearMsg    string
 
 	DEBUGIT(1)
 	//********************
@@ -5287,7 +5287,7 @@ func DoWhere() {
 
 // Who command
 func DoWho() {
-	var DisplayName string
+	var DisplayName  string
 	var DisplayLevel string
 
 	DEBUGIT(1)
@@ -5340,9 +5340,9 @@ func DoWho() {
 
 // Wield command
 func DoWield() {
-	var ObjectName string
+	var ObjectName  string
 	var WieldFailed bool
-	var WieldMsg string
+	var WieldMsg    string
 
 	DEBUGIT(1)
 	//********************
@@ -5431,18 +5431,18 @@ func DoWield() {
 
 // Groups - Calculate group experience, if any
 func GrpExperience(MobileExpPoints int, MobileLevel int) {
-	var pDnode *Dnode
-	var pDnodeGrpLdr *Dnode // Group leader
-	var pDnodeGrpMem *Dnode // Group members
-	var pPlayer *Player
-	var ExpPoints int
-	var fGrpLimit float64
-	var fGrpMemberCount float64
-	var GainLoose string
-	var GrpMemberCount int
-	var i int
-	var LevelTotal float64
-	var PlayerExpPct int
+	var pDnode          *Dnode
+	var pDnodeGrpLdr    *Dnode // Group leader
+	var pDnodeGrpMem    *Dnode // Group members
+	var pPlayer         *Player
+	var ExpPoints        int
+	var fGrpLimit        float64
+	var fGrpMemberCount  float64
+	var GainLoose        string
+	var GrpMemberCount   int
+	var i                int
+	var LevelTotal       float64
+	var PlayerExpPct     int
 
 	// Count group members
 	GrpMemberCount = 0
@@ -5533,8 +5533,8 @@ func GrpLeave() {
 // Groups - Leader is leaving - Disband the whole group
 func GrpLeaveLeader() {
 	var pDnodeGrpMem *Dnode // Other group members
-	var i int
-	var j int
+	var i             int
+	var j             int
 
 	// Player is group leader, disband the whole group
 	for i = 1; i < GRP_LIMIT; i++ {
@@ -5573,9 +5573,9 @@ func GrpLeaveLeader() {
 func GrpLeaveMember() {
 	var pDnodeGrpLdr *Dnode // Group leader
 	var pDnodeGrpMem *Dnode // Other group members
-	var i int
-	var j int
-	var GrpEmpty bool
+	var i             int
+	var j             int
+	var GrpEmpty      bool
 
 	if pDnodeActor.pPlayer.pPlayerFollowers[0] != nil {
 		// Player is following someone
@@ -5642,10 +5642,10 @@ func GrpLeaveMember() {
 
 // Logon greeting
 func LogonGreeting() {
-	var GreetingFile *os.File
-	var GreetingFileName string
-	var Scanner *bufio.Scanner
-	var err error
+	var GreetingFile     *os.File
+	var GreetingFileName  string
+	var Scanner          *bufio.Scanner
+	var err               error
 
 	DEBUGIT(1)
 	// Read greeting file
@@ -5675,7 +5675,7 @@ func LogonGreeting() {
 
 // Logon wait male female
 func LogonWaitMaleFemale() {
-	var AllMsg string
+	var AllMsg    string
 	var PlayerMsg string
 
 	CmdStr = StrMakeUpper(CmdStr)
@@ -5841,7 +5841,7 @@ func LogonWaitNewCharacter() {
 
 // Logon wait password
 func LogonWaitPassword() {
-	var AllMsg string
+	var AllMsg    string
 	var PlayerMsg string
 
 	if pDnodeActor.PlayerPassword == CmdStr {
@@ -5999,12 +5999,12 @@ func RepositionDnodeCursor() {
 
 // New connection
 func SockNewConnection() {
-	var IpAddress string
-	var conn net.Conn
-	var err error
-	var host string
-	var ok bool
-	var tcpConn *net.TCPConn
+	var IpAddress  string
+	var conn       net.Conn
+	var err        error
+	var host       string
+	var ok         bool
+	var tcpConn   *net.TCPConn
 
 	DEBUGIT(6)
 	if ListenSocket == nil {
@@ -6046,9 +6046,9 @@ func SockNewConnection() {
 
 // Send message
 func SockSend(arg string) {
-	var Length int
+	var Length  int
 	var Written int
-	var err error
+	var err     error
 
 	DEBUGIT(6)
 	if arg == "" {
@@ -6078,13 +6078,13 @@ func SockSend(arg string) {
 // Update player statistics that are 'tick' dependant
 func UpdatePlayerStats() {
 	var GainReducePct int
-	var HitPoints int
+	var HitPoints     int
 	var HitPointsGain int
-	var HitPointsMax int
-	var HungerPct int
-	var Level int
-	var Position string
-	var ThirstPct int
+	var HitPointsMax  int
+	var HungerPct     int
+	var Level         int
+	var Position      string
+	var ThirstPct     int
 
 	HitPointsGain = 0
 	HitPoints = pDnodeActor.pPlayer.HitPoints
@@ -6127,16 +6127,16 @@ func Violence() {
 
 // Mobile's turn to do some damage
 func ViolenceMobile() {
-	var DamageToPlayer int
-	var HealthPct string
-	var HitPoints int
-	var HitPointsMax int
-	var i int
-	var MobileAttack string
-	var MobileDamage int
-	var MobileDesc1 string
-	var MobileId string
-	var PAC int
+	var DamageToPlayer    int
+	var HealthPct         string
+	var HitPoints         int
+	var HitPointsMax      int
+	var i                 int
+	var MobileAttack      string
+	var MobileDamage      int
+	var MobileDesc1       string
+	var MobileId          string
+	var PAC               int
 	var PlayerBeenWhacked string
 
 	i = 0
@@ -6175,14 +6175,14 @@ func ViolenceMobile() {
 
 // Mobile has died
 func ViolenceMobileDied(MobileBeenWhacked string, MobileDesc1 string, MobileId string) {
-	var DeadMsg string
-	var ExpPoints int
-	var GainLoose string
-	var MobileExpPoints int
+	var DeadMsg              string
+	var ExpPoints            int
+	var GainLoose            string
+	var MobileExpPoints      int
 	var MobileExpPointsLevel string
-	var MobileIdCheck string
-	var MobileLevel int
-	var MobileLoot string
+	var MobileIdCheck        string
+	var MobileLevel          int
+	var MobileLoot           string
 
 	MobileExpPointsLevel = MobileId
 	MobileExpPoints = StrToInt(StrGetWord(MobileExpPointsLevel, 1))
@@ -6278,13 +6278,13 @@ func ViolenceMobileDied(MobileBeenWhacked string, MobileDesc1 string, MobileId s
 
 // Hand out the loot
 func ViolenceMobileLoot(Loot string) {
-	var pDnodeGrpMem *Dnode
-	var pPlayerGrpLdr *Player
-	var i int
-	var LootFlag bool
-	var MobileLootFile *os.File
-	var MobileLootFileName string
-	var NoLoot bool
+	var pDnodeGrpMem       *Dnode
+	var pPlayerGrpLdr      *Player
+	var i                   int
+	var LootFlag            bool
+	var MobileLootFile     *os.File
+	var MobileLootFileName  string
+	var NoLoot              bool
 
 	MobileLootFileName = LOOT_DIR
 	MobileLootFileName += Loot
@@ -6350,14 +6350,14 @@ func ViolenceMobileLoot(Loot string) {
 
 // Hand out the loot - for real this time
 func ViolenceMobileLootHandOut(Loot string) bool {
-	var pDnodeGrpMem *Dnode
+	var pDnodeGrpMem  *Dnode
 	var pPlayerGrpLdr *Player
-	var Chance int
-	var Count int
-	var GotLoot bool
-	var i int
-	var ObjectId string
-	var Percent int
+	var Chance         int
+	var Count          int
+	var GotLoot        bool
+	var i              int
+	var ObjectId       string
+	var Percent        int
 
 	GotLoot = false
 	Count = StrToInt(StrGetWord(Loot, 1))
@@ -6427,15 +6427,15 @@ func ViolenceMobileMore() {
 
 // Player's turn to do some damage
 func ViolencePlayer() {
-	var DamageToMobile int
-	var DeadOrAlive string
+	var DamageToMobile    int
+	var DeadOrAlive       string
 	var MaxDamageToMobile int
-	var MobileArmor int
+	var MobileArmor       int
 	var MobileBeenWhacked string
-	var MobileDesc1 string
-	var MobileId string
-	var WeaponSkill int
-	var WeaponType string
+	var MobileDesc1       string
+	var MobileId          string
+	var WeaponSkill       int
+	var WeaponType        string
 
 	WeaponSkill = GetWeaponSkill(pDnodeActor.pPlayer)
 	WeaponType = pDnodeActor.pPlayer.WeaponType
@@ -6463,14 +6463,14 @@ func ViolencePlayer() {
 
 // Player has died, sad but true
 func ViolencePlayerDied(MobileDesc1 string) {
-	var CandidateCount int
-	var CandidateList string
-	var CandidateTarget int
-	var DeadMsg string
-	var MobileId string
-	var MobileIdSave string
+	var CandidateCount    int
+	var CandidateList     string
+	var CandidateTarget   int
+	var DeadMsg           string
+	var MobileId          string
+	var MobileIdSave      string
 	var RoomIdBeforeDying string
-	var Target string
+	var Target            string
 
 	pDnodeActor.pPlayer.HitPoints = 0
 	// Tell player of their demise
