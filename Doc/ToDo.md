@@ -112,5 +112,5 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-096 - 03/19/26 - Clean up unreachable code in Violence.go (commit: ff9e399)
 - [x] HQ-097 - 03/19/26 - Clean up redundant return statements in Object.go (commit: 0465675)
 - [x] HQ-098 - 03/20/26 - Evaluate tagged switch on Mode in Player.go OpenPlayerFile() (commit: bbd8e28)
-- [x] HQ-099 - 03/20/26 - Align SockSend partial-write handling with C++ behavior in Communication.go (commit: pending)
+- [x] HQ-099 - 03/20/26 - Align SockSend partial-write handling with C++ behavior in Communication.go (commit: 0834d20)
 - [ ] HQ-100 - 03/19/26 - Harden group pointer handling in Communication.go follow/leave helpers
