@@ -109,15 +109,15 @@ func MobileConstructor(MobileIdParm string) *Mobile {
 
 // Add a mobile to a room
 func AddMobToRoom(RoomId, MobileId string) {
-  var BytesInFile        int64
-  var NewRoomMobFile     bool
-  var MobCount           int
-  var MobileIdAdded      bool
-  var MobileIdCheck      string
-  var RoomMobFile       *os.File
-  var RoomMobFileName    string
-  var RoomMobTmpFile    *os.File
-  var RoomMobTmpFileName string
+  var BytesInFile         int64
+  var NewRoomMobFile      bool
+  var MobCount            int
+  var MobileIdAdded       bool
+  var MobileIdCheck       string
+  var RoomMobFile        *os.File
+  var RoomMobFileName     string
+  var RoomMobTmpFile     *os.File
+  var RoomMobTmpFileName  string
 
   UpdateMobInWorld(MobileId, "add")
   MobileId = StrMakeLower(MobileId)
