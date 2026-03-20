@@ -62,7 +62,7 @@ Go Code Style Rules
 - Allow normal compact expression formatting where spacing is not serving structure or readability
 - Always indent 2 spaces
 - Never use TABS, except in formatter-controlled import blocks if the IDE reintroduces them
-- Convert any multi-line "flower box" function comment into a single // comment directly above the corresponding func line
+- NEVER EVER RUN gofmt
 - Keep multi-variable var declarations on separate lines (e.g., var x int then var y int), not grouped in a single var (x int, y int) block.
 - In consecutive single-line var declarations, pad with spaces so the type columns line up when practical (e.g., var Foo int then var BarBaz string).
 
@@ -71,6 +71,7 @@ C++ to Go Conversion Rules
 - Always preserve original function names and case
 - If converting class methods to free functions would cause a package-level name collision, use the smallest clear prefix needed to avoid the collision (for example, OpenRoomFile, CloseRoomFile)
 - Always preserve original variable names and case
+- Convert any multi-line "flower box" function comment into a single // comment directly above the corresponding func line
 - Preserve existing comments from the C++ source during conversion
 - Do not omit, collapse, or silently rewrite C++ comments unless direct preservation would no longer make sense in Go
 - If a comment must be adapted, keep its original intent, placement, and level of specificity as closely as possible so it still accurately describes the Go code
@@ -110,6 +111,7 @@ Commit and todo workflow:
 
 Current status:
 - The recent chat focused on refining the instructions so the rules are grouped clearly and interpreted consistently.
+- NEVER EVER RUN gofmt is now a permanent project rule.
 - BigDog.go was reviewed against the updated Go Code Style Rules.
 - On the latest pass, BigDog.go was considered broadly compliant with the updated Go Code Style Rules.
 - The import block uses tabs, but that is acceptable under the explicit formatter-controlled import-block exception.
@@ -123,8 +125,11 @@ Current status:
 - A full go build completed cleanly after the major Validate.go re-conversion pass.
 - After the re-conversion, a real runtime path bug was discovered in ValidateLibraryLoot: FileExist(ObjectIdFileName) was checking the wrong effective path after ChgDir(LOOT_DIR) because OBJECTS_DIR remained project-root-relative while the process cwd had already moved into Library\Loot.
 - That specific ValidateLibraryLoot path bug was fixed locally without changing Config.go constants, and the validator now correctly begins and completes validation of LibraryLoot.
-- There is an open follow-up item to apply the same path-handling strategy used to fix HQ-090 to similar Validate.go file-existence checks where ChgDir(...) and relative directory constants may still conflict.
-- The current follow-up todo for that broader Validate.go path work is HQ-091.
+- HQ-091 was completed to apply the same path-handling strategy used to fix HQ-090 to similar Validate.go file-existence checks where ChgDir(...) and relative directory constants conflicted.
+- The major remaining code-alignment HQ items that were completed in this session are HQ-076 Communication.go, HQ-082 Mobile.go, HQ-083 Object.go, HQ-084 Player.go, HQ-087 Violence.go, and HQ-089 World.go.
+- HQ-096 was completed to remove unreachable code in Violence.go.
+- The currently open follow-up cleanup items are HQ-097, HQ-098, HQ-099, and HQ-100.
+- Later in the session, a broad whitespace-only cleanup pass was committed across the server sources. Treat that pass as formatting-only, not behavioral.
 
 Preference for future discussion:
 - Keep design discussions brief.
