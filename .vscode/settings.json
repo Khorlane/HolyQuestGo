@@ -2,7 +2,10 @@
   // Go tooling
   "go.useLanguageServer": true,
   "gopls": {
-    "vulncheck": "Imports"
+    "vulncheck": "Imports",
+    "analyses": {
+      "QF1003": false
+    }
   },
 
   // Reduce approval prompts
