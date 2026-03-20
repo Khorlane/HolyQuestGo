@@ -263,6 +263,7 @@ func StrGetAt(Str1 string, Position int) byte {
   }
   return Str1[Position]
 }
+
 // Get the length of a string
 func StrGetLength(Str1 string) int {
   return len(Str1)
@@ -272,7 +273,7 @@ func StrGetLength(Str1 string) int {
 func StrGetWord(Str1 string, WordNbr int) string {
   var Word string
   var i    int
-  
+
   iss := strings.Fields(Str1)
   for _, Word = range iss {
     i++
