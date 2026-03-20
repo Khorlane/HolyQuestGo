@@ -6061,6 +6061,11 @@ func SockSend(arg string) {
 	Length = len(arg)
 	_ = pDnodeActor.DnodeFd.SetWriteDeadline(time.Now().Add(100 * time.Millisecond))
 	Written, err = pDnodeActor.DnodeFd.Write([]byte(arg))
+	if Written == Length {
+		pDnodeActor.PlayerOut = ""
+	} else if Written > 0 {
+		pDnodeActor.PlayerOut = StrRight(pDnodeActor.PlayerOut, Length-Written)
+	}
 	if err != nil {
 		if ne, ok := err.(net.Error); ok && ne.Timeout() {
 			return
@@ -6069,9 +6074,7 @@ func SockSend(arg string) {
 		LogIt(LogBuf)
 		return
 	}
-	if Written == Length {
-		pDnodeActor.PlayerOut = ""
-	} else {
+	if Written == 0 && Length > 0 {
 		pDnodeActor.PlayerOut = StrRight(pDnodeActor.PlayerOut, Length-Written)
 	}
 }
