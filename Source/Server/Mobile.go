@@ -475,7 +475,7 @@ func DeletePlayerMob(PlayerName string) {
 }
 
 // Check if a mobile is in the room by its name
-func IsMobInRoom(mobileName string) *Mobile {
+func IsMobInRoom(MobileName string) *Mobile {
   var pMobile         *Mobile
   var NamesCheck       string
   var MobileHurt       bool
@@ -505,13 +505,13 @@ func IsMobInRoom(mobileName string) *Mobile {
     // Room has no mobiles
     return nil
   }
-  scanner := bufio.NewScanner(RoomMobFile)
-  scanner.Scan()
-  Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(RoomMobFile)
+  Scanner.Scan()
+  Stuff = Scanner.Text()
   for Stuff != "" {
     // Process each mobile in the room
     MobileId = StrGetWord(Stuff, 2)
-    if MobileId == mobileName {
+    if MobileId == MobileName {
       // This mobile is a match
       RoomMobFile.Close()
       PositionOfDot = StrFindFirstChar(MobileId, '.')
@@ -528,8 +528,8 @@ func IsMobInRoom(mobileName string) *Mobile {
       pMobile.MobNbr = MobNbr
       return pMobile
     }
-    scanner.Scan()
-    Stuff = scanner.Text()
+    Scanner.Scan()
+    Stuff = Scanner.Text()
   }
   RoomMobFile.Close()
   //***************************************************
@@ -541,9 +541,9 @@ func IsMobInRoom(mobileName string) *Mobile {
     // Room has no mobiles
     return nil
   }
-  scanner = bufio.NewScanner(RoomMobFile)
-  scanner.Scan()
-  Stuff = scanner.Text()
+  Scanner = bufio.NewScanner(RoomMobFile)
+  Scanner.Scan()
+  Stuff = Scanner.Text()
   for Stuff != "" {
     // Process each mobile in the room
     MobileId      = StrGetWord(Stuff, 2)
@@ -561,7 +561,7 @@ func IsMobInRoom(mobileName string) *Mobile {
     pMobile.MobNbr = MobNbr
     if pMobile.Hurt {
       // Mobile is hurt
-      if MobNbr == mobileName {
+      if MobNbr == MobileName {
         // Kill nnn was entered, where nnn is the MobNbr
         RoomMobFile.Close()
         return pMobile
@@ -569,7 +569,7 @@ func IsMobInRoom(mobileName string) *Mobile {
     }
     NamesCheck = pMobile.Names
     NamesCheck = StrMakeLower(NamesCheck)
-    if StrIsWord(mobileName, NamesCheck) {
+    if StrIsWord(MobileName, NamesCheck) {
       // This mobile is a match
       RoomMobFile.Close()
       return pMobile
@@ -577,8 +577,8 @@ func IsMobInRoom(mobileName string) *Mobile {
       // This mobile doesn't match
       pMobile = nil
     }
-    scanner.Scan()
-    Stuff = scanner.Text()
+    Scanner.Scan()
+    Stuff = Scanner.Text()
   }
   RoomMobFile.Close()
   return nil
@@ -652,7 +652,7 @@ func IsMobileIdInRoom(RoomId, MobileId string) bool {
 }
 
 // Check if a mobile is valid by its ID
-func IsMobValid(mobileId string) *Mobile {
+func IsMobValid(MobileId string) *Mobile {
   var pMobile        *Mobile
   var MobileFileName  string
   var MobileFile     *os.File
@@ -660,10 +660,10 @@ func IsMobValid(mobileId string) *Mobile {
   _ = MobileFile
 
   MobileFileName = MOBILES_DIR
-  MobileFileName += mobileId
+  MobileFileName += MobileId
   MobileFileName += ".txt"
   if FileExist(MobileFileName) {
-    pMobile = MobileConstructor(mobileId)
+    pMobile = MobileConstructor(MobileId)
     return pMobile
   } else {
     return nil
@@ -990,7 +990,7 @@ func MobAttacks(pMobile *Mobile) string {
 }
 
 // Search all rooms for a specific mobile
-func WhereMob(mobileIdSearch string) {
+func WhereMob(MobileIdSearch string) {
   var FileName         string
   var MobileHurt       bool
   var MobileId         string
@@ -1009,17 +1009,17 @@ func WhereMob(mobileIdSearch string) {
     LogIt(LogBuf)
     os.Exit(1)
   }
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogBuf = "Mobile::WhereMob - Failed to read ROOM_MOB_DIR"
     LogIt(LogBuf)
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
-    FileName = entry.Name()
+    FileName = DirEntry.Name()
     // Open RoomMob file
     RoomMobFileName = FileName
     RoomMobFile, err = os.Open(RoomMobFileName)
@@ -1041,7 +1041,7 @@ func WhereMob(mobileIdSearch string) {
         MobileHurt = true
         MobileId = StrLeft(MobileId, PositionOfDot)
       }
-      if MobileId == mobileIdSearch {
+      if MobileId == MobileIdSearch {
         pDnodeActor.PlayerOut += RoomName
         pDnodeActor.PlayerOut += " "
         if MobileHurt {
@@ -1064,21 +1064,21 @@ func WhereMob(mobileIdSearch string) {
 }
 
 // Update the count of a mobile in the world
-func UpdateMobInWorld(mobileId string, addRemove string) {
+func UpdateMobInWorld(MobileId string, AddRemove string) {
   var MobInWorldCount     int
   var MobInWorldFile     *os.File
   var MobInWorldFileName  string
   var PositionOfDot       int
 
   MobInWorldCount = 0
-  PositionOfDot = StrFindFirstChar(mobileId, '.')
+  PositionOfDot = StrFindFirstChar(MobileId, '.')
   if PositionOfDot > 1 {
     // Get MobileId
-    mobileId = StrLeft(mobileId, PositionOfDot)
+    MobileId = StrLeft(MobileId, PositionOfDot)
   }
   // Open Mobile InWorld file
   MobInWorldFileName = CONTROL_MOB_INWORLD_DIR
-  MobInWorldFileName += mobileId
+  MobInWorldFileName += MobileId
   MobInWorldFileName += ".txt"
   MobInWorldFile, err := os.Open(MobInWorldFileName)
   if err == nil {
@@ -1096,7 +1096,7 @@ func UpdateMobInWorld(mobileId string, addRemove string) {
     LogIt(LogBuf)
     return
   }
-  if addRemove == "add" {
+  if AddRemove == "add" {
     // Mobile is being added to the world
     MobInWorldCount++
   } else {
@@ -1305,11 +1305,11 @@ func CloseMobFile() {
 }
 
 // Open the file for a given mobile ID
-func OpenMobFile(mobileId string) {
+func OpenMobFile(MobileId string) {
   var MobileFileName string
 
   MobileFileName = MOBILES_DIR
-  MobileFileName += mobileId
+  MobileFileName += MobileId
   MobileFileName += ".txt"
   MobileFile, err := os.Open(MobileFileName)
   if err != nil {

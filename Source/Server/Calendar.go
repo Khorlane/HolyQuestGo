@@ -45,8 +45,8 @@ var pCalendar =  &Calendar{
 // Initializes the calendar system
 func CalendarConstructor() {
   DEBUGIT(1)
-  timer := time.Now().Unix()
-  pCalendar.TimeToAdvanceHour = timer + int64(REAL_MINUTES_PER_HOUR*60)
+  Timer := time.Now().Unix()
+  pCalendar.TimeToAdvanceHour = Timer + int64(REAL_MINUTES_PER_HOUR*60)
   pCalendar.Year      = 1
   pCalendar.Month     = 1
   pCalendar.Day       = 1
@@ -135,16 +135,16 @@ func CloseCalendarFile() {
 // Retrieves the start time from the calendar file
 func GetStartTime() {
   DEBUGIT(1)
-  scanner := bufio.NewScanner(CalendarFile)
-  stuff := ""
-  scanner.Scan()
-  stuff = scanner.Text()
+  Scanner := bufio.NewScanner(CalendarFile)
+  Stuff := ""
+  Scanner.Scan()
+  Stuff = Scanner.Text()
   CloseCalendarFile()
-  pCalendar.Year      = StrToInt(StrGetWord(stuff, 1))
-  pCalendar.Month     = StrToInt(StrGetWord(stuff, 2))
-  pCalendar.Day       = StrToInt(StrGetWord(stuff, 3))
-  pCalendar.Hour      = StrToInt(StrGetWord(stuff, 4))
-  pCalendar.DayOfWeek = StrToInt(StrGetWord(stuff, 5))
+  pCalendar.Year      = StrToInt(StrGetWord(Stuff, 1))
+  pCalendar.Month     = StrToInt(StrGetWord(Stuff, 2))
+  pCalendar.Day       = StrToInt(StrGetWord(Stuff, 3))
+  pCalendar.Hour      = StrToInt(StrGetWord(Stuff, 4))
+  pCalendar.DayOfWeek = StrToInt(StrGetWord(Stuff, 5))
   if pCalendar.Year <= 0 {
     // Invalid year
     pCalendar.Year = 1
@@ -176,11 +176,11 @@ func GetStartTime() {
     LogIt(LogBuf)
   }
   LogBuf = "Start date and time is: "
-  buf := fmt.Sprintf(
+  Buf := fmt.Sprintf(
     "Year: %d Month: %d Day: %d Hour: %d Day of Week: %d",
     pCalendar.Year, pCalendar.Month, pCalendar.Day, pCalendar.Hour, pCalendar.DayOfWeek,
   )
-  LogBuf += buf
+  LogBuf += Buf
   LogIt(LogBuf)
 }
 
@@ -213,7 +213,7 @@ func LoadDayNamesArray() {
   DEBUGIT(1)
   DayNamesFileName  = DAY_NAMES_DIR
   DayNamesFileName += "DayNames.txt"
-  file, err := os.Open(DayNamesFileName)
+  File, err := os.Open(DayNamesFileName)
   if err != nil {
     // Open failed
     LogBuf = "Calendar::LoadDayNamesArray - Open Day Names file failed (read)"
@@ -221,16 +221,16 @@ func LoadDayNamesArray() {
     return
   }
   pCalendar.DayNames = nil
-  scanner := bufio.NewScanner(file)
-  scanner.Scan()
-  Stuff = scanner.Text()
-  for scanner.Scan() {
+  Scanner := bufio.NewScanner(File)
+  Scanner.Scan()
+  Stuff = Scanner.Text()
+  for Scanner.Scan() {
     // Read all day names
     pCalendar.DayNames = append(pCalendar.DayNames, Stuff)
-    Stuff = scanner.Text()
+    Stuff = Scanner.Text()
   }
   pCalendar.DayNames = append(pCalendar.DayNames, Stuff)
-  file.Close()
+  File.Close()
   LogBuf = "DayNames array loaded"
   LogIt(LogBuf)
 }
@@ -242,7 +242,7 @@ func LoadDayOfMonthArray() {
   DEBUGIT(1)
   DayOfMonthFileName  = DAY_OF_MONTH_DIR
   DayOfMonthFileName += "DayOfMonth.txt"
-  file, err := os.Open(DayOfMonthFileName)
+  File, err := os.Open(DayOfMonthFileName)
   if err != nil {
     // Open failed
     LogBuf = "Calendar::LoadDayOfMonthArray - Open Day Of Month file failed (read)"
@@ -250,16 +250,16 @@ func LoadDayOfMonthArray() {
     return
   }
   pCalendar.DayOfMonth = nil
-  scanner := bufio.NewScanner(file)
-  scanner.Scan()
-  Stuff = scanner.Text()
-  for scanner.Scan() {
+  Scanner := bufio.NewScanner(File)
+  Scanner.Scan()
+  Stuff = Scanner.Text()
+  for Scanner.Scan() {
     // Read all day of month
     pCalendar.DayOfMonth = append(pCalendar.DayOfMonth, Stuff)
-    Stuff = scanner.Text()
+    Stuff = Scanner.Text()
   }
   pCalendar.DayOfMonth = append(pCalendar.DayOfMonth, Stuff)
-  file.Close()
+  File.Close()
   LogBuf = "DayOfMonth array loaded"
   LogIt(LogBuf)
 }
@@ -271,7 +271,7 @@ func LoadHourNamesArray() {
   DEBUGIT(1)
   HourNamesFileName  = HOUR_NAMES_DIR
   HourNamesFileName += "HourNames.txt"
-  file, err := os.Open(HourNamesFileName)
+  File, err := os.Open(HourNamesFileName)
   if err != nil {
     // Open failed
     LogBuf = "Calendar::LoadHourNamesArray - Open Hour Names file failed (read)"
@@ -279,16 +279,16 @@ func LoadHourNamesArray() {
     return
   }
   pCalendar.HourNames = nil
-  scanner := bufio.NewScanner(file)
-  scanner.Scan()
-  Stuff = scanner.Text()
-  for scanner.Scan() {
+  Scanner := bufio.NewScanner(File)
+  Scanner.Scan()
+  Stuff = Scanner.Text()
+  for Scanner.Scan() {
     // Read all hour names
     pCalendar.HourNames = append(pCalendar.HourNames, Stuff)
-    Stuff = scanner.Text()
+    Stuff = Scanner.Text()
   }
   pCalendar.HourNames = append(pCalendar.HourNames, Stuff)
-  file.Close()
+  File.Close()
   LogBuf = "HourNames array loaded"
   LogIt(LogBuf)
 }
@@ -300,7 +300,7 @@ func LoadMonthNamesArray() {
   DEBUGIT(1)
   MonthNamesFileName  = MONTH_NAMES_DIR
   MonthNamesFileName += "MonthNames.txt"
-  file, err := os.Open(MonthNamesFileName)
+  File, err := os.Open(MonthNamesFileName)
   if err != nil {
     // Open failed
     LogBuf = "Calendar::LoadMonthNamesArray - Open Month Names file failed (read)"
@@ -308,16 +308,16 @@ func LoadMonthNamesArray() {
     return
   }
   pCalendar.MonthNames = nil
-  scanner := bufio.NewScanner(file)
-  scanner.Scan()
-  Stuff = scanner.Text()
-  for scanner.Scan() {
+  Scanner := bufio.NewScanner(File)
+  Scanner.Scan()
+  Stuff = Scanner.Text()
+  for Scanner.Scan() {
     // Read all month names
     pCalendar.MonthNames = append(pCalendar.MonthNames, Stuff)
-    Stuff = scanner.Text()
+    Stuff = Scanner.Text()
   }
   pCalendar.MonthNames = append(pCalendar.MonthNames, Stuff)
-  file.Close()
+  File.Close()
   LogBuf = "MonthNames array loaded"
   LogIt(LogBuf)
 }
@@ -329,14 +329,14 @@ func SaveTime() {
   DEBUGIT(1)
   CalendarFileName  = CONTROL_DIR
   CalendarFileName += "Calendar.txt"
-  file, err := os.Create(CalendarFileName)
+  File, err := os.Create(CalendarFileName)
   if err != nil {
     // Open failed
     LogBuf = "Calendar::SaveTime - Open calendar file - Failed"
     LogIt(LogBuf)
     return
   }
-  buffer := fmt.Sprintf("%d %d %d %d %d", pCalendar.Year, pCalendar.Month, pCalendar.Day, pCalendar.Hour, pCalendar.DayOfWeek)
-  file.WriteString(buffer)
-  file.Close()
+  Buffer := fmt.Sprintf("%d %d %d %d %d", pCalendar.Year, pCalendar.Month, pCalendar.Day, pCalendar.Hour, pCalendar.DayOfWeek)
+  File.WriteString(Buffer)
+  File.Close()
 }

@@ -114,3 +114,4 @@ For more information, please refer to <http://unlicense.org/>
 - [x] HQ-098 - 03/20/26 - Evaluate tagged switch on Mode in Player.go OpenPlayerFile() (commit: bbd8e28)
 - [x] HQ-099 - 03/20/26 - Align SockSend partial-write handling with C++ behavior in Communication.go (commit: 0834d20)
 - [x] HQ-100 - 03/20/26 - Harden group pointer handling in Communication.go follow/leave helpers (commit: 23afe12)
+- [x] HQ-101 - 03/20/26 - Normalize non-PascalCase variable names across Go source files - with exceptions (commit: pending)

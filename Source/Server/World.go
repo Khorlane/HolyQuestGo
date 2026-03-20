@@ -52,12 +52,12 @@ func CreateSpawnMobileEvents() {
 		LogIt("World::CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed")
 		os.Exit(1)
 	}
-	for _, entry := range DirEntries {
-		if entry.IsDir() {
+	for _, DirEntry := range DirEntries {
+		if DirEntry.IsDir() {
 			// Skip directories
 			continue
 		}
-		WorldMobileFileName = entry.Name()
+		WorldMobileFileName = DirEntry.Name()
 		MobileId = StrLeft(WorldMobileFileName, StrGetLength(WorldMobileFileName)-4)
 		if MobileId == "ReadMe" {
 			continue
@@ -127,8 +127,8 @@ func CreateSpawnMobileEvents() {
 		CurrentTime += Weeks
 		CurrentTime += Months
 		CurrentTime += Years
-		sprintfBuf  := fmt.Sprintf("%d", CurrentTime)
-		EventTime    = sprintfBuf
+		SprintfBuf  := fmt.Sprintf("%d", CurrentTime)
+		EventTime    = SprintfBuf
 		EventFileName  = CONTROL_EVENTS_DIR
 		EventFileName += "M"
 		EventFileName += EventTime
@@ -188,12 +188,12 @@ func CheckSpawnMobileEvents() {
 		LogIt("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed")
 		os.Exit(1)
 	}
-	for _, entry := range DirEntries {
-		if entry.IsDir() {
+	for _, DirEntry := range DirEntries {
+		if DirEntry.IsDir() {
 			// Skip directories
 			continue
 		}
-		EventFileName = entry.Name()
+		EventFileName = DirEntry.Name()
 		if !strings.HasPrefix(EventFileName, "M") {
 			// Event files starting with 'M' are 'spawn mobile' events
 			continue
@@ -271,12 +271,12 @@ func HealMobiles() {
 		LogIt("World::HealMobiles - Change directory to MOB_STATS_HPT_DIR failed")
 		os.Exit(1)
 	}
-	for _, entry := range DirEntries {
-		if entry.IsDir() {
+	for _, DirEntry := range DirEntries {
+		if DirEntry.IsDir() {
 			// Skip directories
 			continue
 		}
-		MobStatsHitPointsFileName = entry.Name()
+		MobStatsHitPointsFileName = DirEntry.Name()
 		MobileId    = StrLeft(MobStatsHitPointsFileName, StrGetLength(MobStatsHitPointsFileName)-4)
 		MobFighting = HealMobilesFightCheck("MobPlayer", MobileId)
 		if MobFighting {
@@ -306,7 +306,7 @@ func HealMobiles() {
 }
 
 // See if mobile is fighting
-func HealMobilesFightCheck(dir, mobileID string) bool {
+func HealMobilesFightCheck(Dir, MobileId string) bool {
 	var DirEntries        []os.DirEntry
 	var MobFighting         bool
 	var MobPlayerFile      *os.File
@@ -314,7 +314,7 @@ func HealMobilesFightCheck(dir, mobileID string) bool {
 	var err error
 
 	MobFighting = false
-	if dir == "MobPlayer" {
+	if Dir == "MobPlayer" {
 		// Checking MobPlayer
 		if ChgDir(MOB_PLAYER_DIR) != nil {
 			// Change directory failed
@@ -322,7 +322,7 @@ func HealMobilesFightCheck(dir, mobileID string) bool {
 			os.Exit(1)
 		}
 	}
-	if dir == "PlayerMob" {
+	if Dir == "PlayerMob" {
 		// Checking PlayerMob
 		if ChgDir(PLAYER_MOB_DIR) != nil {
 			// Change directory failed
@@ -334,23 +334,23 @@ func HealMobilesFightCheck(dir, mobileID string) bool {
 	DirEntries, err = os.ReadDir("./")
 	if err != nil {
 		TmpStr = "World::HealMobilesFightCheck - Open "
-		TmpStr += dir
+		TmpStr += Dir
 		TmpStr += " file failed"
 		LogIt(TmpStr)
 		os.Exit(1)
 	}
-	for _, entry := range DirEntries {
-		if entry.IsDir() {
+	for _, DirEntry := range DirEntries {
+		if DirEntry.IsDir() {
 			// Skip directories
 			continue
 		}
-		MobPlayerFileName = entry.Name()
+		MobPlayerFileName = DirEntry.Name()
 		// Set file name based on Dir
-		if dir == "MobPlayer" {
+		if Dir == "MobPlayer" {
 			// Checking MobPlayer
 			MobPlayerFileName = MOB_PLAYER_DIR + MobPlayerFileName
 		}
-		if dir == "PlayerMob" {
+		if Dir == "PlayerMob" {
 			// Checking PlayerMob
 			MobPlayerFileName = PLAYER_MOB_DIR + MobPlayerFileName
 		}
@@ -358,7 +358,7 @@ func HealMobilesFightCheck(dir, mobileID string) bool {
 		if err != nil {
 			// Failed to open MobPlayer or MobPlayer file
 			TmpStr  = "World::HealMobilesFightCheck - Open "
-			TmpStr += dir
+			TmpStr += Dir
 			TmpStr += " file failed"
 			LogIt(TmpStr)
 			os.Exit(1)
@@ -368,7 +368,7 @@ func HealMobilesFightCheck(dir, mobileID string) bool {
 		Stuff = Scanner.Text()
 		for Stuff != "" {
 			// Read all lines
-			if Stuff == mobileID {
+			if Stuff == MobileId {
 				// A match means the mobile is fighting
 				MobFighting = true
 			}
@@ -477,12 +477,12 @@ func MakeMobilesMove1() {
 		LogIt("World::MakeMobilesMove1 - Change directory to ROOM_MOB_DIR failed")
 		os.Exit(1)
 	}
-	for _, entry := range DirEntries {
-		if entry.IsDir() {
+	for _, DirEntry := range DirEntries {
+		if DirEntry.IsDir() {
 			// Skip directories
 			continue
 		}
-		RoomMobFileName = entry.Name()
+		RoomMobFileName = DirEntry.Name()
 		if StrFind(RoomMobFileName, "Spawn") == -1 {
 			// Not a spawn room, Random position in list
 			TmpStr = fmt.Sprintf("%05d", rand.Intn(100000))
@@ -497,8 +497,8 @@ func MakeMobilesMove1() {
 	// sort em
 	sort.Strings(RoomMobList)
 	// Write em
-	for _, item := range RoomMobList {
-		TmpStr  = item
+	for _, Item := range RoomMobList {
+		TmpStr  = Item
 		TmpStr  = StrGetWord(TmpStr, 2)
 		TmpStr += "\n"
 		RoomMobListFile.WriteString(TmpStr)

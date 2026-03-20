@@ -243,10 +243,10 @@ func IsNameValid(Name string) bool {
 // Create player prompt
 func CreatePrompt(pPlayer *Player) {
   pPlayer.Output = "\r\n"
-  hpStr := fmt.Sprintf("%d", pPlayer.HitPoints)
-  pPlayer.Output += hpStr + "H "
-  mpStr := fmt.Sprintf("%d", pPlayer.MovePoints)
-  pPlayer.Output += mpStr + "M "
+  HpStr := fmt.Sprintf("%d", pPlayer.HitPoints)
+  pPlayer.Output += HpStr + "H "
+  MpStr := fmt.Sprintf("%d", pPlayer.MovePoints)
+  pPlayer.Output += MpStr + "M "
   pPlayer.Output += "> "
 }
 

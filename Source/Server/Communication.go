@@ -242,8 +242,8 @@ func SockClosePort(Port int) {
 // Open port
 func SockOpenPort(Port int) {
 	DEBUGIT(1)
-	addr := fmt.Sprintf(":%d", Port)
-	ln, err := net.Listen("tcp", addr)
+	Addr := fmt.Sprintf(":%d", Port)
+	Listener, err := net.Listen("tcp", Addr)
 	if err != nil {
 		Buf = err.Error()
 		LogBuf = "Communication::SockOpenPort - Error: initializing socket: " + Buf
@@ -251,13 +251,13 @@ func SockOpenPort(Port int) {
 		PrintIt("Communication::SockOpenPort - Error: initializing socket")
 		os.Exit(1)
 	}
-	tcpLn, ok := ln.(*net.TCPListener)
+	TcpListener, ok := Listener.(*net.TCPListener)
 	if !ok {
 		LogIt("Communication::SockOpenPort - Error: listener is not TCP")
 		PrintIt("Communication::SockOpenPort - Error: listener is not TCP")
 		os.Exit(1)
 	}
-	ListenSocket = tcpLn
+	ListenSocket = TcpListener
 	Buf    = fmt.Sprintf("%d", Port)
 	LogBuf = "Listening on port " + Buf
 	LogIt(LogBuf)
@@ -307,7 +307,7 @@ func SockRecv() {
 			_ = pDnodeActor.DnodeFd.SetReadDeadline(time.Now().Add(100 * time.Millisecond))
 			RecvByteCount, err = pDnodeActor.DnodeFd.Read(InpStr)
 			if err != nil {
-				if ne, ok := err.(net.Error); ok && ne.Timeout() {
+				if NetErr, ok := err.(net.Error); ok && NetErr.Timeout() {
 					// Nothing worth processing
 				} else {
 					// Kick out connections with exceptions
@@ -548,9 +548,9 @@ func CommandArrayLoad() {
 		return
 	}
 	ValidCmds = ValidCmds[:0]
-	scanner := bufio.NewScanner(ValidCmdsFile)
-	for scanner.Scan() {
-		Stuff = scanner.Text()
+	Scanner := bufio.NewScanner(ValidCmdsFile)
+	for Scanner.Scan() {
+		Stuff = Scanner.Text()
 		ValidCmds = append(ValidCmds, Stuff)
 	}
 	ValidCmdsFile.Close()
@@ -6026,11 +6026,11 @@ func RepositionDnodeCursor() {
 // New connection
 func SockNewConnection() {
 	var IpAddress  string
-	var conn       net.Conn
+	var Conn       net.Conn
 	var err        error
-	var host       string
+	var Host       string
 	var ok         bool
-	var tcpConn   *net.TCPConn
+	var TcpConn   *net.TCPConn
 
 	DEBUGIT(6)
 	if ListenSocket == nil {
@@ -6038,9 +6038,9 @@ func SockNewConnection() {
 		os.Exit(1)
 	}
 	_ = ListenSocket.SetDeadline(time.Now().Add(100 * time.Millisecond))
-	conn, err = ListenSocket.Accept()
+	Conn, err = ListenSocket.Accept()
 	if err != nil {
-		if ne, ok := err.(net.Error); ok && ne.Timeout() {
+		if NetErr, ok := err.(net.Error); ok && NetErr.Timeout() {
 			return
 		}
 		Buf = err.Error()
@@ -6048,24 +6048,24 @@ func SockNewConnection() {
 		LogIt(LogBuf)
 		os.Exit(1)
 	}
-	tcpConn, ok = conn.(*net.TCPConn)
+	TcpConn, ok = Conn.(*net.TCPConn)
 	if !ok {
-		conn.Close()
+		Conn.Close()
 		LogIt("Communication::SockNewConnection - Error: non-TCP connection")
 		os.Exit(1)
 	}
-	IpAddress = tcpConn.RemoteAddr().String()
-	if host, _, err = net.SplitHostPort(IpAddress); err == nil {
-		IpAddress = host
+	IpAddress = TcpConn.RemoteAddr().String()
+	if Host, _, err = net.SplitHostPort(IpAddress); err == nil {
+		IpAddress = Host
 	}
-	Buf = fmt.Sprintf("%p", tcpConn)
+	Buf = fmt.Sprintf("%p", TcpConn)
 	TmpStr  = Buf
 	LogBuf  = "New connection with socket handle "
 	LogBuf += TmpStr
 	LogBuf += " and address "
 	LogBuf += IpAddress
 	LogIt(LogBuf)
-	pDnodeActor = DnodeConstructor(tcpConn, IpAddress)
+	pDnodeActor = DnodeConstructor(TcpConn, IpAddress)
 	AppendIt()
 	StateConnections = true
 }
@@ -6092,7 +6092,7 @@ func SockSend(arg string) {
 		pDnodeActor.PlayerOut = StrRight(pDnodeActor.PlayerOut, Length-Written)
 	}
 	if err != nil {
-		if ne, ok := err.(net.Error); ok && ne.Timeout() {
+		if NetErr, ok := err.(net.Error); ok && NetErr.Timeout() {
 			return
 		}
 		LogBuf = "Communication::SockSend - Error: " + err.Error()
@@ -6601,11 +6601,11 @@ func clock() int64 {
 }
 
 // Close a socket handle (C++ closesocket equivalent)
-func CloseSocket(conn net.Conn) int {
-	if conn == nil {
+func CloseSocket(Conn net.Conn) int {
+	if Conn == nil {
 		return 0
 	}
-	err := conn.Close()
+	err := Conn.Close()
 	if err != nil {
 		return 1
 	}

@@ -86,9 +86,9 @@ func GetMobileArmor(MobileId string) int {
     return MobileArmor
   }
   Stuff = ""
-  scanner := bufio.NewScanner(MobStatsArmorFile)
-  if scanner.Scan() {
-    Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(MobStatsArmorFile)
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
   }
   MobStatsArmorFile.Close()
   // Return mobile's Armor
@@ -115,9 +115,9 @@ func GetMobileAttack(MobileId string) string {
     os.Exit(1)
   }
   Stuff = ""
-  scanner := bufio.NewScanner(MobStatsAttackFile)
-  if scanner.Scan() {
-    Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(MobStatsAttackFile)
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
   }
   MobStatsAttackFile.Close()
   // Return mobile's Attack
@@ -144,9 +144,9 @@ func GetMobileDamage(MobileId string) int {
     os.Exit(1)
   }
   Stuff = ""
-  scanner := bufio.NewScanner(MobStatsDamageFile)
-  if scanner.Scan() {
-    Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(MobStatsDamageFile)
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
   }
   MobStatsDamageFile.Close()
   // Return mobile's Damage
@@ -173,9 +173,9 @@ func GetMobileDesc1(MobileId string) string {
     os.Exit(1)
   }
   Stuff = ""
-  scanner := bufio.NewScanner(MobStatsDesc1File)
-  if scanner.Scan() {
-    Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(MobStatsDesc1File)
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
   }
   MobStatsDesc1File.Close()
   // Return mobile's Desc1
@@ -201,9 +201,9 @@ func GetMobileExpPointsLevel(MobileId string) string {
     os.Exit(1)
   }
   Stuff = ""
-  scanner := bufio.NewScanner(MobStatsExpPointsFile)
-  if scanner.Scan() {
-    Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(MobStatsExpPointsFile)
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
   }
   MobStatsExpPointsFile.Close()
   // Return mobile's ExpPoints
@@ -229,9 +229,9 @@ func GetMobileHitPoints(MobileId string) string {
     os.Exit(1)
   }
   Stuff = ""
-  scanner := bufio.NewScanner(MobStatsHitPointsFile)
-  if scanner.Scan() {
-    Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(MobStatsHitPointsFile)
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
   }
   MobStatsHitPointsFile.Close()
   MobHitPoints = Stuff
@@ -255,9 +255,9 @@ func GetMobileLoot(MobileId string) string {
     os.Exit(1)
   }
   Stuff = ""
-  scanner := bufio.NewScanner(MobStatsLootFile)
-  if scanner.Scan() {
-    Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(MobStatsLootFile)
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
   }
   MobStatsLootFile.Close()
   // Return mobile's Loot
@@ -284,9 +284,9 @@ func GetMobileRoom(MobileId string) string {
     os.Exit(1)
   }
   Stuff = ""
-  scanner := bufio.NewScanner(MobStatsRoomFile)
-  if scanner.Scan() {
-    Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(MobStatsRoomFile)
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
   }
   MobStatsRoomFile.Close()
   // Return mobile's Room
@@ -313,10 +313,10 @@ func GetMobPlayerMobileId(PlayerName string, i int) string {
     return MobileId
   }
   MobileId = ""
-  scanner := bufio.NewScanner(MobPlayerFile)
+  Scanner := bufio.NewScanner(MobPlayerFile)
   for j = 1; j <= i; j++ {
-    if scanner.Scan() {
-      MobileId = scanner.Text()
+    if Scanner.Scan() {
+      MobileId = Scanner.Text()
     } else {
       break
     }
@@ -346,9 +346,9 @@ func GetPlayerMobMobileId(PlayerName string) string {
     os.Exit(1)
   }
   MobileId = ""
-  scanner := bufio.NewScanner(PlayerMobFile)
-  if scanner.Scan() {
-    MobileId = scanner.Text()
+  Scanner := bufio.NewScanner(PlayerMobFile)
+  if Scanner.Scan() {
+    MobileId = Scanner.Text()
   }
   PlayerMobFile.Close()
   MobileId = StrTrimLeft(MobileId)

@@ -20,9 +20,9 @@ import (
 // BigDog is the main entry point for the OMugs server
 func BigDog() {
   var EventTick      int
-  var goGoGoFileName string
+  var GoGoGoFileName string
   var MobHealTick    int
-  var stopItFileName string
+  var StopItFileName string
 
   PrintIt("OMugs Starting")
   HomeDir = GetHomeDir()
@@ -32,11 +32,11 @@ func BigDog() {
     os.Exit(1)
   }
   // Set Go Stop, force Go status
-  stopItFileName = CONTROL_DIR + "StopIt"
-  goGoGoFileName = CONTROL_DIR + "GoGoGo"
-  if FileExist(stopItFileName) {
+  StopItFileName = CONTROL_DIR + "StopIt"
+  GoGoGoFileName = CONTROL_DIR + "GoGoGo"
+  if FileExist(StopItFileName) {
     // If StopIt file exists, Rename it to GoGoGo
-    if err := Rename(stopItFileName, goGoGoFileName); err != nil {
+    if err := Rename(StopItFileName, GoGoGoFileName); err != nil {
       PrintIt("BigDog() - Rename of 'StopIt' to 'GoGoGo' failed!")
       os.Exit(1)
     }
@@ -71,7 +71,7 @@ func BigDog() {
     AdvanceTime()
     if !StateStopping {
       // Game is not stopping, but should it be?
-      if FileExist(stopItFileName) {
+      if FileExist(StopItFileName) {
         // StopIt file was found, Stop the game
         StateStopping = true
         LogBuf = "Game is stopping"
@@ -136,32 +136,32 @@ func FileExist(Name string) bool {
 }
 
 // Rename a file
-func Rename(file1, file2 string) error {
-  return os.Rename(file1, file2)
+func Rename(File1, File2 string) error {
+  return os.Rename(File1, File2)
 }
 
 // Remove deletes a file and returns an error value
-func Remove(file1 string) error {
-  err := os.Remove(file1)
+func Remove(File1 string) error {
+  err := os.Remove(File1)
   return err
 }
 
 // Return the number of seconds since the epoch
 func GetTimeSeconds() int64 {
-  now := time.Now()
-  epoch := now.Unix()
-  return epoch
+  Now := time.Now()
+  Epoch := Now.Unix()
+  return Epoch
 }
 
 // Print a message to stdout
-func PrintIt(message string) {
-  message = "\r\n" + message + "\r\n"
-  println(message)
+func PrintIt(Message string) {
+  Message = "\r\n" + Message + "\r\n"
+  println(Message)
 }
 
 // Pause execution for the specified duration
-func Sleep(milliseconds int) {
-  time.Sleep(time.Duration(milliseconds) * time.Millisecond)
+func Sleep(Milliseconds int) {
+  time.Sleep(time.Duration(Milliseconds) * time.Millisecond)
 }
 
 //-----------------------------------------------------------------------------
@@ -170,35 +170,35 @@ func Sleep(milliseconds int) {
 
 // Count characters in a string
 func StrCountChar(Str1 string, c rune) int {
-  count := 0
-  for _, char := range Str1 {
-    if char == c {
-      count++
+  Count := 0
+  for _, Char := range Str1 {
+    if Char == c {
+      Count++
     }
   }
-  return count
+  return Count
 }
 
 // Count the number of words in a string
-func StrCountWords(str1 string) int {
+func StrCountWords(Str1 string) int {
   // Squeeze spaces in the string
-  s1 := StrSqueeze(str1)
+  S1 := StrSqueeze(Str1)
   // Split the string into words
-  words := strings.Fields(s1)
+  Words := strings.Fields(S1)
   // Return the number of words
-  return len(words)
+  return len(Words)
 }
 
 // Delete characters from a string
-func StrDelete(s string, pos int, length int) string {
-  if pos < 0 || pos >= len(s) || length <= 0 {
+func StrDelete(s string, Pos int, Length int) string {
+  if Pos < 0 || Pos >= len(s) || Length <= 0 {
     return s
   }
-  end := pos + length
-  if end > len(s) {
-    end = len(s)
+  End := Pos + Length
+  if End > len(s) {
+    End = len(s)
   }
-  return s[:pos] + s[end:]
+  return s[:Pos] + s[End:]
 }
 
 // Delete the word specified by WordNbr, squeezing string first
@@ -208,11 +208,11 @@ func StrDeleteWord(Str1 string, WordNbr int) string {
     return ""
   }
   Words := strings.Split(S1, " ")
-  index := WordNbr - 1
-  if index < 0 || index >= len(Words) {
+  Index := WordNbr - 1
+  if Index < 0 || Index >= len(Words) {
     return Str1
   }
-  Words = append(Words[:index], Words[index+1:]...)
+  Words = append(Words[:Index], Words[Index+1:]...)
   Str1 = ""
   for _, s := range Words {
     Str1 += s
@@ -235,12 +235,12 @@ func StrFindAfterPos(HayStack, Needle string, Pos int) int {
 }
 
 // Find the first occurrence of a character in a string
-func StrFindFirstChar(str1 string, c rune) int {
-  idx := strings.IndexRune(str1, c)
-  if idx == -1 {
+func StrFindFirstChar(Str1 string, c rune) int {
+  Idx := strings.IndexRune(Str1, c)
+  if Idx == -1 {
     return 0
   }
-  return idx
+  return Idx
 }
 
 // Find one of the characters specified in Needle in the HayStack
@@ -285,28 +285,28 @@ func StrGetWord(Str1 string, WordNbr int) string {
 }
 
 // Get the position and length of a word from String
-func StrGetWordPosLen(str string, wordNbr int) string {
-  if StrWordCount(str) < wordNbr {
+func StrGetWordPosLen(Str string, WordNbr int) string {
+  if StrWordCount(Str) < WordNbr {
     return "0 0"
   }
   for {
-    old := str
-    StrReplace(&str, "  ", " ")
-    if old == str {
+    Old := Str
+    StrReplace(&Str, "  ", " ")
+    if Old == Str {
       break
     }
   }
-  str = StrTrimLeft(str)
-  str = StrTrimRight(str)
-  str = " " + str + " "
-  z := StrGetLength(str)
+  Str = StrTrimLeft(Str)
+  Str = StrTrimRight(Str)
+  Str = " " + Str + " "
+  z := StrGetLength(Str)
   i := 0
   x := 0
   y := 0
-  for j := 1; j <= wordNbr; j++ {
-    x = StrFindAfterPos(str, " ", i)
+  for j := 1; j <= WordNbr; j++ {
+    x = StrFindAfterPos(Str, " ", i)
     i = x + 1
-    y = StrFindAfterPos(str, " ", i)
+    y = StrFindAfterPos(Str, " ", i)
     i = y
     if i >= z {
       return "0 0"
@@ -329,9 +329,9 @@ func StrGetWords(Str1 string, WordNbr int) string {
       if idx+1 >= len(iss) {
         return ""
       }
-      rest := strings.Join(iss[idx+1:], " ")
-      rest = StrTrimLeft(rest)
-      return rest
+      Rest := strings.Join(iss[idx+1:], " ")
+      Rest = StrTrimLeft(Rest)
+      return Rest
     }
   }
   return ""
@@ -365,14 +365,14 @@ func StrIsNotWord(Word, WordList string) bool {
     return true
   }
   n := StrWordCount(WordList)
-  found := false
+  Found := false
   for i := 1; i <= n; i++ {
     s := StrGetWord(WordList, i)
     if Word == s {
-      found = true
+      Found = true
     }
   }
-  return !found
+  return !Found
 }
 
 // Check if a word exists in a word list
@@ -429,13 +429,13 @@ func StrMakeUpper(Str1 string) string {
 
 // Remove all occurrences of a character from a string
 func StrRemove(Str1 string, c byte) string {
-  out := make([]byte, 0, len(Str1))
+  Out := make([]byte, 0, len(Str1))
   for i := 0; i < len(Str1); i++ {
     if Str1[i] != c {
-      out = append(out, Str1[i])
+      Out = append(Out, Str1[i])
     }
   }
-  return string(out)
+  return string(Out)
 }
 
 // Replace all occurrences of a substring with another substring in a string

@@ -139,10 +139,10 @@ var (
 )
 
 // DEBUGIT logs a message if the debug level is greater than or equal to the specified level.
-func DEBUGIT(level int) {
-  if DEBUG_LVL >= level {
+func DEBUGIT(Level int) {
+  if DEBUG_LVL >= Level {
     pc, _, _, _ := runtime.Caller(1)
-    functionName := runtime.FuncForPC(pc).Name()
-    LogIt(functionName)
+    FunctionName := runtime.FuncForPC(pc).Name()
+    LogIt(FunctionName)
   }
 }

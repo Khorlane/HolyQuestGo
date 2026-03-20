@@ -105,17 +105,17 @@ func ValidateLibraryLoot() {
     LogIt("Validate::ValidateLibraryLoot - Change directory to LOOT_DIR failed")
     os.Exit(1)
   }
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateLibraryLoot - ReadDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open loot file
-    LootFileName = entry.Name()
+    LootFileName = DirEntry.Name()
     LootFile, err = os.Open(LootFileName)
     if err != nil {
       // File does not exist - Very bad!
@@ -185,7 +185,7 @@ func ValidateLibraryMobiles() {
     os.Exit(1)
   }
   // Get list of all LibraryMobiles files
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateLibraryMobiles - ReadDir failed")
     os.Exit(1)
@@ -195,12 +195,12 @@ func ValidateLibraryMobiles() {
     LogIt("Validate::ValidateLibraryMobiles - Change directory to HomeDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open mobile file
-    MobileFileName  = entry.Name()
+    MobileFileName  = DirEntry.Name()
     MobileId        = StrLeft(MobileFileName, StrGetLength(MobileFileName)-4)
     MobileFileName  = MOBILES_DIR + MobileFileName
     MobileFile, err = os.Open(MobileFileName)
@@ -340,7 +340,7 @@ func ValidateLibraryObjects() {
     os.Exit(1)
   }
   // Get list of all LibarryObjects files
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateLibraryObjects - ReadDir failed")
     os.Exit(1)
@@ -350,12 +350,12 @@ func ValidateLibraryObjects() {
     LogIt("Validate::ValidateLibraryObjects - Change directory to HomeDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open object file
-    ObjectFileName  = entry.Name()
+    ObjectFileName  = DirEntry.Name()
     ObjectId        = StrLeft(ObjectFileName, StrGetLength(ObjectFileName)-4)
     ObjectFileName  = OBJECTS_DIR + ObjectFileName
     ObjectFile, err = os.Open(ObjectFileName)
@@ -541,7 +541,7 @@ func ValidateLibraryRooms() {
     os.Exit(1)
   }
   // Get list of all LibraryRooms files
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateLibraryRooms - ReadDir failed")
     os.Exit(1)
@@ -551,12 +551,12 @@ func ValidateLibraryRooms() {
     LogIt("Validate::ValidateRooms - Change directory to HomeDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open room file
-    RoomFileName  = entry.Name()
+    RoomFileName  = DirEntry.Name()
     RoomId        = StrLeft(RoomFileName, StrGetLength(RoomFileName)-4)
     RoomFileName  = ROOMS_DIR + RoomFileName
     RoomFile, err = os.Open(RoomFileName)
@@ -694,7 +694,7 @@ func ValidateLibraryShops() {
     os.Exit(1)
   }
   // Get list of all LibraryShops files
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateLibraryShops - ReadDir failed")
     os.Exit(1)
@@ -704,12 +704,12 @@ func ValidateLibraryShops() {
     LogIt("Validate::ValidateLibraryShops - Change directory to HomeDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open player file
-    ShopFileName  = entry.Name()
+    ShopFileName  = DirEntry.Name()
     PlayerName    = StrLeft(ShopFileName, StrGetLength(ShopFileName)-4)
     _ = PlayerName
     ShopFileName  = SHOPS_DIR + ShopFileName
@@ -798,7 +798,7 @@ func ValidateLibraryWorldMobiles() {
     os.Exit(1)
   }
   // Get list of all LibraryWorldMobiles files
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateLibraryWorldMobiles - ReadDir failed")
     os.Exit(1)
@@ -808,12 +808,12 @@ func ValidateLibraryWorldMobiles() {
     LogIt("Validate::ValidateLibraryWorldMobiles - Change directory to HomeDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open world mobile file
-    WorldMobileFileName = entry.Name()
+    WorldMobileFileName = DirEntry.Name()
     if WorldMobileFileName == "ReadMe.txt" {
       // Skip ReadMe files
       continue
@@ -909,7 +909,7 @@ func ValidateRunningPlayers() {
     os.Exit(1)
   }
   // Get list of all RunningPlayers files
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateRunningPlayers - ReadDir failed")
     os.Exit(1)
@@ -919,12 +919,12 @@ func ValidateRunningPlayers() {
     LogIt("Validate::ValidateRunningPlayers - Change directory to HomeDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open player file
-    PlayerFileName  = entry.Name()
+    PlayerFileName  = DirEntry.Name()
     PlayerName      = StrLeft(PlayerFileName, StrGetLength(PlayerFileName)-4)
     PlayerFileName  = PLAYER_DIR + PlayerFileName
     PlayerFile, err = os.Open(PlayerFileName)
@@ -1021,7 +1021,7 @@ func ValidateRunningPlayersPlayerEqu() {
     os.Exit(1)
   }
   // Get list of all RunningPlayersPlayerEqu files
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateRunningPlayersPlayerEqu - ReadDir failed")
     os.Exit(1)
@@ -1031,12 +1031,12 @@ func ValidateRunningPlayersPlayerEqu() {
     LogIt("Validate::ValidateRunningPlayersPlayerEqu - Change directory to HomeDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open player file
-    PlayerEquFileName  = entry.Name()
+    PlayerEquFileName  = DirEntry.Name()
     PlayerName         = StrLeft(PlayerEquFileName, StrGetLength(PlayerEquFileName)-4)
     _ = PlayerName
     PlayerEquFileName  = PLAYER_EQU_DIR + PlayerEquFileName
@@ -1120,7 +1120,7 @@ func ValidateRunningPlayersPlayerObj() {
     os.Exit(1)
   }
   // Get list of all RunningPlayersPlayerObj files
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateRunningPlayersPlayerObj - ReadDir failed")
     os.Exit(1)
@@ -1130,12 +1130,12 @@ func ValidateRunningPlayersPlayerObj() {
     LogIt("Validate::ValidateRunningPlayersPlayerObj - Change directory to HomeDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open player file
-    PlayerObjFileName  = entry.Name()
+    PlayerObjFileName  = DirEntry.Name()
     PlayerName         = StrLeft(PlayerObjFileName, StrGetLength(PlayerObjFileName)-4)
     _ = PlayerName
     PlayerObjFileName  = PLAYER_OBJ_DIR + PlayerObjFileName
@@ -1205,7 +1205,7 @@ func ValidateRunningRoomMob() {
     os.Exit(1)
   }
   // Get list of all RunningRoomMob files
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateRunningRoomMob - ReadDir failed")
     os.Exit(1)
@@ -1215,12 +1215,12 @@ func ValidateRunningRoomMob() {
     LogIt("Validate::ValidateRunningRoomMob - Change directory to HomeDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open world mobile file
-    RoomMobFileName = entry.Name()
+    RoomMobFileName = DirEntry.Name()
     if RoomMobFileName == "ReadMe.txt" {
       // Skip ReadMe files
       continue
@@ -1316,7 +1316,7 @@ func ValidateRunningRoomObj() {
     os.Exit(1)
   }
   // Get list of all RunningRoomObj files
-  entries, err := os.ReadDir("./")
+  DirEntries, err := os.ReadDir("./")
   if err != nil {
     LogIt("Validate::ValidateRunningRoomObj - ReadDir failed")
     os.Exit(1)
@@ -1326,12 +1326,12 @@ func ValidateRunningRoomObj() {
     LogIt("Validate::ValidateRunningRoomObj - Change directory to HomeDir failed")
     os.Exit(1)
   }
-  for _, entry := range entries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
     // Open RunningRoomObj file
-    RoomObjFileName = entry.Name()
+    RoomObjFileName = DirEntry.Name()
     if RoomObjFileName == "ReadMe.txt" {
       // Skip ReadMe files
       continue

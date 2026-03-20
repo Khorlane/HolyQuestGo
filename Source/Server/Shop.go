@@ -46,9 +46,9 @@ func IsShopObj(RoomId string, ObjectName string) {
     LogIt("Shop::IsShopObj - Shop does not exist")
     os.Exit(1) // _endthread()
   }
-  scanner := bufio.NewScanner(ShopFile)
-  scanner.Scan()
-  Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(ShopFile)
+  Scanner.Scan()
+  Stuff = Scanner.Text()
   for Stuff != "End of Items" {
     // Read 'item' lines in ShopFile
     Stuff = StrTrimLeft(Stuff)
@@ -75,8 +75,8 @@ func IsShopObj(RoomId string, ObjectName string) {
         }
       }
     }
-    scanner.Scan()
-    Stuff = scanner.Text()
+    Scanner.Scan()
+    Stuff = Scanner.Text()
   }
   // Object not found in shop item list
   ShopFile.Close()
@@ -89,9 +89,9 @@ func IsShopObj(RoomId string, ObjectName string) {
     LogIt("Shop::IsShopObj - Shop does not exist")
     os.Exit(1)
   }
-  scanner = bufio.NewScanner(ShopFile)
-  scanner.Scan()
-  Stuff = scanner.Text()
+  Scanner = bufio.NewScanner(ShopFile)
+  Scanner.Scan()
+  Stuff = Scanner.Text()
   for Stuff != "End of Items" {
     // Read 'item' lines in ShopFile
     Stuff = StrTrimLeft(Stuff)
@@ -120,8 +120,8 @@ func IsShopObj(RoomId string, ObjectName string) {
         pObject = nil
       }
     }
-    scanner.Scan()
-    Stuff = scanner.Text()
+    Scanner.Scan()
+    Stuff = Scanner.Text()
   }
   ShopFile.Close()
   // No match found, Object is not buyable from this shop

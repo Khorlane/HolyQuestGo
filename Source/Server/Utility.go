@@ -71,9 +71,9 @@ func GetHomeDir() string {
     LogIt("Utility::GetHomeDir - Open HomeDir file failed (read)")
     os.Exit(1)
   }
-  scanner := bufio.NewScanner(HomeDirFile)
-  if scanner.Scan() {
-    Buffer = scanner.Text()
+  Scanner := bufio.NewScanner(HomeDirFile)
+  if Scanner.Scan() {
+    Buffer = Scanner.Text()
   }
   HomeDir = Buffer
   HomeDirFile.Close()
@@ -113,9 +113,9 @@ func GetSqlStmt(SqlStmtId string) string {
     LogIt("Utility::GetSqlStmt - Open SqlStmt file failed")
     os.Exit(1)
   }
-  scanner := bufio.NewScanner(SqlStmtFile)
-  if scanner.Scan() {
-    Stuff = scanner.Text()
+  Scanner := bufio.NewScanner(SqlStmtFile)
+  if Scanner.Scan() {
+    Stuff = Scanner.Text()
   } else {
     Stuff = ""
   }
@@ -123,8 +123,8 @@ func GetSqlStmt(SqlStmtId string) string {
     // Read SQL statement
     SqlStmt += Stuff
     SqlStmt += " "
-    if scanner.Scan() {
-      Stuff = scanner.Text()
+    if Scanner.Scan() {
+      Stuff = Scanner.Text()
     } else {
       Stuff = ""
     }

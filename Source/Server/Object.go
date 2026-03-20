@@ -1153,11 +1153,11 @@ func WhereObjPlayerEqu(ObjectIdSearch string) {
     LogIt(LogBuf)
     os.Exit(1)
   }
-  for _, entry := range DirEntries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
-    FileName = entry.Name()
+    FileName = DirEntry.Name()
     // Open PlayerEqu file
     PlayerEquFileName = FileName
     PlayerEquFile, err = os.Open(PlayerEquFileName)
@@ -1217,11 +1217,11 @@ func WhereObjPlayerObj(ObjectIdSearch string) {
     LogIt(LogBuf)
     os.Exit(1)
   }
-  for _, entry := range DirEntries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
-    FileName = entry.Name()
+    FileName = DirEntry.Name()
     // Open PlayerObj file
     PlayerObjFileName = FileName
     PlayerObjFile, err = os.Open(PlayerObjFileName)
@@ -1281,11 +1281,11 @@ func WhereObjRoomObj(ObjectIdSearch string) {
     LogIt(LogBuf)
     os.Exit(1)
   }
-  for _, entry := range DirEntries {
-    if entry.IsDir() {
+  for _, DirEntry := range DirEntries {
+    if DirEntry.IsDir() {
       continue
     }
-    FileName = entry.Name()
+    FileName = DirEntry.Name()
     // Open RoomObj file
     RoomObjFileName = FileName
     RoomObjFile, err = os.Open(RoomObjFileName)
