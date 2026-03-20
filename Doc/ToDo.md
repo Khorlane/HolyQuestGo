@@ -103,4 +103,4 @@
 - [x] HQ-099 - 03/20/26 - Align SockSend partial-write handling with C++ behavior in Communication.go (commit: 0834d20)
 - [x] HQ-100 - 03/20/26 - Harden group pointer handling in Communication.go follow/leave helpers (commit: 23afe12)
 - [x] HQ-101 - 03/20/26 - Normalize non-PascalCase variable names across Go source files - with exceptions (commit: 10689d9)
-- [x] HQ-102 - 03/20/26 - Cleanup documentation in Doc folder (commit: pending)
+- [x] HQ-102 - 03/20/26 - Cleanup documentation in Doc folder (commit: 565ec2a)
