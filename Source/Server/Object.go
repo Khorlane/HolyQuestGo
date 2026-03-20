@@ -15,7 +15,7 @@ import (
 	"strconv"
 )
 
-var ObjectFile     *os.File
+var ObjectFile      *os.File
 var ObjectFileName  string
 var ObjectId        string
 var pObject        *Object
@@ -76,14 +76,14 @@ func ObjectConstructor(ObjectIdParm string) {
 
 // Add an object to player's equipment
 func AddObjToPlayerEqu(WearPosition string, ObjectId string) bool {
-  var NewPlayerEquFile bool
-  var ObjectIdAdded bool
-  var PlayerEquFileName string
-  var PlayerEquFileNameTmp string
-  var PlayerEquFile *os.File
-  var PlayerEquFileTmp *os.File
-  var WearPositionCheck string
-  var WearWieldFailed bool
+  var NewPlayerEquFile      bool
+  var ObjectIdAdded         bool
+  var PlayerEquFileName     string
+  var PlayerEquFileNameTmp  string
+  var PlayerEquFile        *os.File
+  var PlayerEquFileTmp     *os.File
+  var WearPositionCheck     string
+  var WearWieldFailed       bool
 
   DEBUGIT(5)
   WearWieldFailed = false
@@ -170,14 +170,14 @@ func AddObjToPlayerEqu(WearPosition string, ObjectId string) bool {
 
 // Add an object to player's inventory
 func AddObjToPlayerInv(pDnodeTgt1 *Dnode, ObjectId string) {
-  var NewPlayerObjFile bool
-  var ObjectIdAdded bool
-  var ObjectIdCheck string
-  var ObjCount int
-  var PlayerObjFileName string
-  var PlayerObjFileNameTmp string
-  var PlayerObjFile *os.File
-  var PlayerObjFileTmp *os.File
+  var NewPlayerObjFile      bool
+  var ObjectIdAdded         bool
+  var ObjectIdCheck         string
+  var ObjCount              int
+  var PlayerObjFileName     string
+  var PlayerObjFileNameTmp  string
+  var PlayerObjFile        *os.File
+  var PlayerObjFileTmp     *os.File
 
   DEBUGIT(5)
   pDnodeTgt = pDnodeTgt1
@@ -265,14 +265,14 @@ func AddObjToPlayerInv(pDnodeTgt1 *Dnode, ObjectId string) {
 
 // Add an object to room
 func AddObjToRoom(RoomId string, ObjectId string) {
-  var NewRoomObjFile bool
-  var ObjectIdAdded bool
-  var ObjectIdCheck string
-  var ObjCount int
-  var RoomObjFileName string
-  var RoomObjFileNameTmp string
-  var RoomObjFile *os.File
-  var RoomObjFileTmp *os.File
+  var NewRoomObjFile      bool
+  var ObjectIdAdded       bool
+  var ObjectIdCheck       string
+  var ObjCount            int
+  var RoomObjFileName     string
+  var RoomObjFileNameTmp  string
+  var RoomObjFile        *os.File
+  var RoomObjFileTmp     *os.File
 
   DEBUGIT(5)
   ObjectId = StrMakeLower(ObjectId)
@@ -364,12 +364,12 @@ func AddObjToRoom(RoomId string, ObjectId string) {
 
 // Calculate player armor class
 func CalcPlayerArmorClass(pPlayer *Player) int {
-  var ArmorClass int
-  var ObjectId string
-  var PlayerEquFile *os.File
-  var PlayerEquFileName string
-  var WearPosition string
-  var err error
+  var ArmorClass         int
+  var ObjectId           string
+  var PlayerEquFile     *os.File
+  var PlayerEquFileName  string
+  var WearPosition       string
+  var err                error
 
   _ = WearPosition
 
@@ -402,12 +402,12 @@ func CalcPlayerArmorClass(pPlayer *Player) int {
 
 // Is object in player's equipment?
 func IsObjInPlayerEqu(ObjectName string) {
-  var NamesCheck string
-  var ObjectId string
-  var ObjectIdCheck string
-  var ObjectNameCheck string
-  var PlayerEquFileName string
-  var PlayerEquFile *os.File
+  var NamesCheck         string
+  var ObjectId           string
+  var ObjectIdCheck      string
+  var ObjectNameCheck    string
+  var PlayerEquFileName  string
+  var PlayerEquFile     *os.File
 
   _ = ObjectIdCheck
   _ = ObjectNameCheck
@@ -495,17 +495,16 @@ func IsObjInPlayerEqu(ObjectName string) {
   PlayerEquFile.Close()
   // Object not found in player's inventory
   pObject = nil
-  return
 }
 
 // Is object in player's inventory?
 func IsObjInPlayerInv(ObjectName string) {
-  var NamesCheck string
-  var ObjectId string
-  var ObjectIdCheck string
-  var ObjectNameCheck string
-  var PlayerObjFileName string
-  var PlayerObjFile *os.File
+  var NamesCheck         string
+  var ObjectId           string
+  var ObjectIdCheck      string
+  var ObjectNameCheck    string
+  var PlayerObjFileName  string
+  var PlayerObjFile     *os.File
 
   _ = ObjectIdCheck
   _ = ObjectNameCheck
@@ -594,17 +593,16 @@ func IsObjInPlayerInv(ObjectName string) {
   }
   PlayerObjFile.Close()
   // Object not found in player's inventory
-  return
 }
 
 // Is object in room
 func IsObjInRoom(ObjectName string) {
-  var NamesCheck string
-  var ObjectId string
-  var ObjectIdCheck string
-  var ObjectNameCheck string
-  var RoomObjFileName string
-  var RoomObjFile *os.File
+  var NamesCheck        string
+  var ObjectId          string
+  var ObjectIdCheck     string
+  var ObjectNameCheck   string
+  var RoomObjFileName   string
+  var RoomObjFile      *os.File
 
   _ = ObjectIdCheck
   _ = ObjectNameCheck
@@ -692,13 +690,12 @@ func IsObjInRoom(ObjectName string) {
   RoomObjFile.Close()
   // Object not found in room
   pObject = nil
-  return
 }
 
 // Is this a valid object?
 func IsObject(ObjectId string) {
-  var ObjectFileName string
-  var ObjectFile *os.File
+  var ObjectFileName  string
+  var ObjectFile     *os.File
 
   _ = ObjectFile
 
@@ -718,13 +715,13 @@ func IsObject(ObjectId string) {
 
 // Remove an object from player's equipment
 func RemoveObjFromPlayerEqu(ObjectId string) {
-  var BytesInFile int64
-  var ObjectIdRemoved bool
-  var ObjectIdCheck string
-  var PlayerEquFileName string
-  var PlayerEquFileNameTmp string
-  var PlayerEquFile *os.File
-  var PlayerEquFileTmp *os.File
+  var BytesInFile           int64
+  var ObjectIdRemoved       bool
+  var ObjectIdCheck         string
+  var PlayerEquFileName     string
+  var PlayerEquFileNameTmp  string
+  var PlayerEquFile        *os.File
+  var PlayerEquFileTmp     *os.File
 
   DEBUGIT(5)
   ObjectId = StrMakeLower(ObjectId)
@@ -800,14 +797,14 @@ func RemoveObjFromPlayerEqu(ObjectId string) {
 
 // Remove an object from player's inventory
 func RemoveObjFromPlayerInv(ObjectId string, Count int) {
-  var BytesInFile int64
-  var ObjectIdRemoved bool
-  var ObjectIdCheck string
-  var ObjCount int
-  var PlayerObjFileName string
-  var PlayerObjFileNameTmp string
-  var PlayerObjFile *os.File
-  var PlayerObjFileTmp *os.File
+  var BytesInFile           int64
+  var ObjectIdRemoved       bool
+  var ObjectIdCheck         string
+  var ObjCount              int
+  var PlayerObjFileName     string
+  var PlayerObjFileNameTmp  string
+  var PlayerObjFile        *os.File
+  var PlayerObjFileTmp     *os.File
 
   DEBUGIT(5)
   ObjectId = StrMakeLower(ObjectId)
@@ -891,14 +888,14 @@ func RemoveObjFromPlayerInv(ObjectId string, Count int) {
 
 // Remove an object from room
 func RemoveObjFromRoom(ObjectId string) {
-  var BytesInFile int64
-  var ObjectIdRemoved bool
-  var ObjectIdCheck string
-  var ObjCount int
-  var RoomObjFileName string
-  var RoomObjFileNameTmp string
-  var RoomObjFile *os.File
-  var RoomObjFileTmp *os.File
+  var BytesInFile         int64
+  var ObjectIdRemoved     bool
+  var ObjectIdCheck       string
+  var ObjCount            int
+  var RoomObjFileName     string
+  var RoomObjFileNameTmp  string
+  var RoomObjFile        *os.File
+  var RoomObjFileTmp     *os.File
 
   DEBUGIT(5)
   ObjectId = StrMakeLower(ObjectId)
@@ -982,10 +979,10 @@ func RemoveObjFromRoom(ObjectId string) {
 
 // Show player equipment
 func ShowPlayerEqu(pDnodeTgt1 *Dnode) {
-  var ObjectId string
-  var PlayerEquFile *os.File
-  var PlayerEquFileName string
-  var WearPosition string
+  var ObjectId           string
+  var PlayerEquFile     *os.File
+  var PlayerEquFileName  string
+  var WearPosition       string
 
   DEBUGIT(5)
   pDnodeTgt = pDnodeTgt1
@@ -1041,10 +1038,10 @@ func ShowPlayerEqu(pDnodeTgt1 *Dnode) {
 
 // Show player inventory
 func ShowPlayerInv() {
-  var ObjectCount string
-  var ObjectId string
-  var PlayerObjFile *os.File
-  var PlayerObjFileName string
+  var ObjectCount        string
+  var ObjectId           string
+  var PlayerObjFile     *os.File
+  var PlayerObjFileName  string
 
   DEBUGIT(5)
   // Open PlayerObj file
@@ -1085,10 +1082,10 @@ func ShowPlayerInv() {
 
 // Show objects in room
 func ShowObjsInRoom(pDnode *Dnode) {
-  var ObjectCount string
-  var ObjectId string
-  var RoomObjFile *os.File
-  var RoomObjFileName string
+  var ObjectCount      string
+  var ObjectId         string
+  var RoomObjFile     *os.File
+  var RoomObjFileName  string
 
   DEBUGIT(5)
   // Open RoomObj file
@@ -1133,11 +1130,11 @@ func WhereObj(ObjectIdSearch string) {
 
 // Where is object in PlayerEqu
 func WhereObjPlayerEqu(ObjectIdSearch string) {
-  var FileName string
-  var ObjectId string
-  var PlayerEquFileName string
-  var PlayerEquFile *os.File
-  var PlayerName string
+  var FileName           string
+  var ObjectId           string
+  var PlayerEquFileName  string
+  var PlayerEquFile     *os.File
+  var PlayerName         string
 
   DEBUGIT(5)
   pDnodeActor.PlayerOut += "\r\n"
@@ -1197,11 +1194,11 @@ func WhereObjPlayerEqu(ObjectIdSearch string) {
 
 // Where is object in PlayerObj
 func WhereObjPlayerObj(ObjectIdSearch string) {
-  var FileName string
-  var ObjectId string
-  var PlayerObjFileName string
-  var PlayerObjFile *os.File
-  var PlayerName string
+  var FileName           string
+  var ObjectId           string
+  var PlayerObjFileName  string
+  var PlayerObjFile     *os.File
+  var PlayerName         string
 
   DEBUGIT(5)
   pDnodeActor.PlayerOut += "\r\n"
@@ -1261,11 +1258,11 @@ func WhereObjPlayerObj(ObjectIdSearch string) {
 
 // Where is object in RoomObj
 func WhereObjRoomObj(ObjectIdSearch string) {
-  var FileName string
-  var ObjectId string
-  var RoomName string
-  var RoomObjFileName string
-  var RoomObjFile *os.File
+  var FileName         string
+  var ObjectId         string
+  var RoomName         string
+  var RoomObjFileName  string
+  var RoomObjFile     *os.File
 
   DEBUGIT(5)
   pDnodeActor.PlayerOut += "\r\n"
