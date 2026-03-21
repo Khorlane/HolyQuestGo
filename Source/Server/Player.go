@@ -844,12 +844,10 @@ func ShowStatus(pPlayer *Player) {
   pPlayer.Output += TmpStr
   pPlayer.Output += "\r\n"
   // Current Experience and Experience needed for next level
-  TmpStr = fmt.Sprintf("%15.0f", pPlayer.Experience)
-  TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'))
+  TmpStr = fmt.Sprintf("%.0f", pPlayer.Experience)
   Exp1 = FormatCommas(TmpStr)
 
-  TmpStr = fmt.Sprintf("%15.0f", CalcLevelExperience(pPlayer.Level + 1))
-  TmpStr = StrLeft(TmpStr, StrFindFirstChar(TmpStr, '.'))
+  TmpStr = fmt.Sprintf("%.0f", CalcLevelExperience(pPlayer.Level + 1))
   Exp2 = FormatCommas(TmpStr)
   for StrGetLength(Exp1) < StrGetLength(Exp2) {
     Exp1 = StrInsertChar(Exp1, 0, ' ')
