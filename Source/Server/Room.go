@@ -85,30 +85,33 @@ func GetRoomName(RoomId string) string {
 
 // Get the list of exits that mobiles are allowed to use
 func GetValidMobRoomExits(RoomId string) string {
-  var ExitToRoomId  string
-  var RoomFileName  string
-  var ValidMobExits string
+  var ExitToRoomId   string
+  var LocalRoomFile *os.File
+  var LocalScanner  *bufio.Scanner
+  var LocalStuff     string
+  var RoomFileName   string
+  var ValidMobExits  string
 
   RoomFileName  = ROOMS_DIR
   RoomFileName += RoomId
   RoomFileName += ".txt"
   var err error
-  RoomFile, err = os.Open(RoomFileName)
+  LocalRoomFile, err = os.Open(RoomFileName)
   if err != nil {
     // No such file???, But there should be, This is bad!
     LogIt("Room::GetValidMobRoomExits - Room does not exist")
     os.Exit(1)
   }
   ValidMobExits = ""
-  Stuff = "Not Done"
-  RoomScanner = bufio.NewScanner(RoomFile)
-  for Stuff != "End of Exits" {
+  LocalStuff = "Not Done"
+  LocalScanner = bufio.NewScanner(LocalRoomFile)
+  for LocalStuff != "End of Exits" {
     // Loop - process all exits
-    RoomScanner.Scan()
-    Stuff = RoomScanner.Text()
-    if StrLeft(Stuff, 13) == "ExitToRoomId:" {
+    LocalScanner.Scan()
+    LocalStuff = LocalScanner.Text()
+    if StrLeft(LocalStuff, 13) == "ExitToRoomId:" {
       // An Exit has been found
-      ExitToRoomId = StrGetWord(Stuff, 2)
+      ExitToRoomId = StrGetWord(LocalStuff, 2)
       if ExitToRoomId == "VineyardPath382" {
         //Success = 100;
         var x int
@@ -123,7 +126,7 @@ func GetValidMobRoomExits(RoomId string) string {
     }
   }
   ValidMobExits = StrTrimRight(ValidMobExits)
-  RoomFile.Close()
+  LocalRoomFile.Close()
   return ValidMobExits
 }
 
@@ -266,34 +269,37 @@ func IsRoom(RoomId string) bool {
 
 // Is the room type valid?
 func IsRoomType(RoomId string, RoomType string) bool {
+  var LocalRoomFile *os.File
+  var LocalScanner  *bufio.Scanner
+  var LocalStuff    string
   var RoomFileName string
 
   RoomFileName  = ROOMS_DIR
   RoomFileName += RoomId
   RoomFileName += ".txt"
   var err error
-  RoomFile, err = os.Open(RoomFileName)
+  LocalRoomFile, err = os.Open(RoomFileName)
   if err != nil {
     // No such file???, But there should be, This is bad!
     LogIt("Room::IsRoomType - Room does not exist")
     os.Exit(1) // _endthread()
   }
   // RoomType
-  RoomScanner = bufio.NewScanner(RoomFile)
-  RoomScanner.Scan()
-  Stuff = RoomScanner.Text()
-  RoomScanner.Scan()
-  Stuff = RoomScanner.Text()
-  if StrLeft(Stuff, 9) != "RoomType:" {
+  LocalScanner = bufio.NewScanner(LocalRoomFile)
+  LocalScanner.Scan()
+  LocalStuff = LocalScanner.Text()
+  LocalScanner.Scan()
+  LocalStuff = LocalScanner.Text()
+  if StrLeft(LocalStuff, 9) != "RoomType:" {
     // Very bad, where did the RoomType go anyway?
     LogIt("Room::IsRoomType - RoomType: not found")
     os.Exit(1)
   }
-  Stuff = StrGetWords(Stuff, 2)
-  Stuff = StrTrimLeft(Stuff)
-  Stuff = StrTrimRight(Stuff)
-  RoomFile.Close()
-  if StrIsNotWord(RoomType, Stuff) {
+  LocalStuff = StrGetWords(LocalStuff, 2)
+  LocalStuff = StrTrimLeft(LocalStuff)
+  LocalStuff = StrTrimRight(LocalStuff)
+  LocalRoomFile.Close()
+  if StrIsNotWord(RoomType, LocalStuff) {
     // No matching RoomType found
     return false
   }

@@ -105,5 +105,5 @@
 - [x] HQ-101 - 03/20/26 - Normalize non-PascalCase variable names across Go source files - with exceptions (commit: 10689d9)
 - [x] HQ-102 - 03/20/26 - Cleanup documentation in Doc folder (commit: 565ec2a)
 - [x] HQ-103 - 03/20/26 - Fix blank Experience and Next level lines in status display (commit: pending)
-- [ ] HQ-104 - 03/20/26 - Fix shared RoomScanner / Stuff state corruption between GetValidMobRoomExits() and IsRoomType()
+- [x] HQ-104 - 03/20/26 - Fix shared RoomScanner / Stuff state corruption between GetValidMobRoomExits() and IsRoomType() (commit: pending)
 - [ ] HQ-105 - 03/20/26 - Fix world event path handling and enhance related file/path failure logging
