@@ -52,6 +52,12 @@ func CreateSpawnMobileEvents() {
 		LogIt("World::CreateSpawnMobileEvents - Change directory to WORLD_MOBILES_DIR failed")
 		os.Exit(1)
 	}
+	if ChgDir(HomeDir) != nil {
+		LogBuf  = "World::CreateSpawnMobileEvents - Change directory to HomeDir failed: "
+		LogBuf += HomeDir
+		LogIt(LogBuf)
+		os.Exit(1)
+	}
 	for _, DirEntry := range DirEntries {
 		if DirEntry.IsDir() {
 			// Skip directories
@@ -76,7 +82,11 @@ func CreateSpawnMobileEvents() {
 		WorldMobileFile, err = os.Open(WorldMobileFileName)
 		if err != nil {
 			// File does not exist - Very bad!
-			LogIt("World::CreateSpawnMobileEvents - Open World Mobile file failed")
+			LogBuf  = "World::CreateSpawnMobileEvents - Open World Mobile file failed: "
+			LogBuf += WorldMobileFileName
+			LogBuf += " - "
+			LogBuf += err.Error()
+			LogIt(LogBuf)
 			os.Exit(1)
 		}
 		Scanner := bufio.NewScanner(WorldMobileFile)
@@ -136,7 +146,11 @@ func CreateSpawnMobileEvents() {
 		EventFile, err = os.OpenFile(EventFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			// Open for append failed
-			LogIt("World::CreateSpawnMobileEvents - Open Events file failed - append")
+			LogBuf  = "World::CreateSpawnMobileEvents - Open Events file failed - append: "
+			LogBuf += EventFileName
+			LogBuf += " - "
+			LogBuf += err.Error()
+			LogIt(LogBuf)
 			os.Exit(1)
 		}
 		for Count < Limit {
@@ -153,7 +167,11 @@ func CreateSpawnMobileEvents() {
 		ControlMobSpawnFile, err = os.Create(ControlMobSpawnFileName)
 		if err != nil {
 			// Create file failed
-			LogIt("World::CreateSpawnMobileEvents - Create Control Mobile Spawn file failed")
+			LogBuf  = "World::CreateSpawnMobileEvents - Create Control Mobile Spawn file failed: "
+			LogBuf += ControlMobSpawnFileName
+			LogBuf += " - "
+			LogBuf += err.Error()
+			LogIt(LogBuf)
 			os.Exit(1)
 		}
 		ControlMobSpawnFile.Close()
@@ -188,6 +206,12 @@ func CheckSpawnMobileEvents() {
 		LogIt("World::CheckSpawnMobileEvents - Change directory to CONTROL_EVENTS_DIR failed")
 		os.Exit(1)
 	}
+	if ChgDir(HomeDir) != nil {
+		LogBuf  = "World::CheckSpawnMobileEvents - Change directory to HomeDir failed: "
+		LogBuf += HomeDir
+		LogIt(LogBuf)
+		os.Exit(1)
+	}
 	for _, DirEntry := range DirEntries {
 		if DirEntry.IsDir() {
 			// Skip directories
@@ -210,7 +234,11 @@ func CheckSpawnMobileEvents() {
 		EventFile, err = os.Open(EventFileName)
 		if err != nil {
 			// File does not exist - Very bad!
-			LogIt("World::CheckSpawnMobileEvents - Open Events file failed")
+			LogBuf  = "World::CheckSpawnMobileEvents - Open Events file failed: "
+			LogBuf += EventFileName
+			LogBuf += " - "
+			LogBuf += err.Error()
+			LogIt(LogBuf)
 			os.Exit(1)
 		}
 		Scanner := bufio.NewScanner(EventFile)
@@ -235,7 +263,9 @@ func CheckSpawnMobileEvents() {
 	}
 	if ChgDir(HomeDir) != nil {
 		// Change directory failed
-		LogIt("World::CheckSpawnMobileEvents - Change directory to HomeDir failed")
+		LogBuf  = "World::CheckSpawnMobileEvents - Change directory to HomeDir failed: "
+		LogBuf += HomeDir
+		LogIt(LogBuf)
 		os.Exit(1)
 	}
 }
